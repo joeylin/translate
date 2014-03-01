@@ -1,0 +1,211 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>Translate community</title>
+    <meta name="description" content="Your questions about the Ghost blogging platform answered. Get help with Ghost problems or issues on our community support forum.">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+    
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="https://ghost.org/assets/favicon-e13fe17b11ad125601924cfb260f20da.ico">
+    <link rel="canonical" href="https://ghost.org/forum">
+    <link rel="stylesheet" type="text/css" href="./The Ghost.org Forum - Support, Help and Questions_files/css">
+    <link data-turbolinks-track="true" href="https://ghost.org/assets/application-818b55640a43600a0b2281e6bf13ddb4.css" media="all" rel="stylesheet">
+    
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="lR9CGV5H5WARo8ySDfNRHeYqr9MSG4X1KBdXa8SWteE=" name="csrf-token"> -->
+
+    <!-- fonts -->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:700,400,300">
+
+    <link rel="stylesheet" type="text/css" href="../public/css/custom.css">
+
+    <style type="text/css">
+        .forum-table {
+            margin-top: 0px;
+        }
+        .ghost {
+            text-decoration: none;
+        }
+        .ghost-logo span {
+            color: #fff;
+            font-weight: 500;
+            line-height: 26.7px;
+            font-size: 17;
+        }
+    </style>
+</head>
+
+<body class="forum" data-logged-in-user="">
+    <header id="global-header" class="navbar">
+        <nav role="navigation">
+            <div class="wrapper">
+                <a class="ghost-logo" href="https://ghost.org/" with_host="true">
+                    <span>Translate</span>
+                </a>
+                <button type="button" class="mobile-menu" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="hidden">Menu</span>
+                </button>
+                <ul id="main-menu" class="navbar-collapse collapse">
+                    <li><a class="" href="https://ghost.org/blogs/" with_host="true">home</a>
+                    </li>
+                    <li><a href="http://marketplace.ghost.org/">Translate this article</a>
+                    </li>
+                    <li><a href="http://docs.ghost.org/">process</a>
+                    </li>   
+                    <li>
+                        <div class="dropdown">
+                            <a data-toggle="dropdown" class="usermenu" href="https://ghost.org/forum/#">china</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <a data-toggle="dropdown" class="usermenu" href="https://ghost.org/forum/#">joeylin</a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li><a class="" href="https://ghost.org/joeylin/" with_host="true">View my Profile</a>
+                                </li>
+                                <li><a class="" href="https://ghost.org/settings/profile/" with_host="true">Account Settings</a>
+                                </li>
+                                <li class="divider" role="presentation"></li>
+                                <li><a class="logout" href="https://ghost.org/logout/" with_host="true">Log out</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="clearfix"></div>
+    <main role="main">
+        <section class="page-wrapper">
+            <header class="forum-header">
+                <h1>Problems after upgrade to 0.4? Please read this</h1>
+            </header>
+            <section class="forum-thread">
+                <article class="forum-post" id="forum-post-1">
+                    <header class="forum-post-header">
+                        <span class="name"><a class="" href="https://ghost.org/Hannah">Hannah</a>
+                        </span>
+                        <span class="created">Posted at 15:34 on 14 January 2014</span>
+                        <a class="post-number" data-post-number="1" href="https://ghost.org/forum/installation/4543-problems-after-upgrade-to-0-4-please-read-this/1/">1</a>
+                    </header>
+                    <div class="forum-post-content">
+                        <section class="forum-post-body">
+                            <p>We are seeing a number of posts here on the forum with people who are unfortunately having problems either starting Ghost, or logging in to Ghost after upgrading to 0.4.</p>
+                            <p>The following post tries to separate out the different problems, and their relative solutions. We will keep updating this post as we get new information.</p>
+                            <h3 id="toc_0">I'm getting 502 Error from nginx / Ghost won't start</h3>
+                            <p>This is usually due to owner errors with the files. After copying over the new core directory you need to make sure you set it to be owned by the same user as the old directory. This should be the same user you are running Ghost as.</p>
+                            <p>If you're using the DigitalOcean Ghost droplet, the command to do this would be
+                                <code>cd /var/www/</code>followed by
+                                <code>chown -R ghost:ghost ghost/*</code>.</p>
+                            <h3 id="toc_1">I'm getting 500: You must pass a string or Handlebars AST to Handlebars.compile.</h3>
+                            <p>This is a bug with empty partials in themes. Some themes, <a href="https://github.com/oswaldoacauan/ghostium/issues/47" rel="nofollow">Ghostium</a> for one example, have partials which are completely empty. Unfortunately, Ghost 0.4 throws an error when encountering this. We're working on getting this fixed in 0.4.1.</p>
+                            <p>In the meantime, to fix this, find the empty partial and enter a comment, with a blank line afterwards.</p>
+                            <pre>
+                                <code>{{! this is a handlebars comment}}
+
+                                </code>
+                            </pre>
+                            <p>Then restart Ghost and everything should be working again.</p>
+                            <h3 id="toc_2">I'm getting 403: Unknown Error when signing in</h3>
+                            <p>403 errors are generated by the CSRF token handler, in some cases this can be caused by misconfigured SSL / HTTPS in your url in config.js</p>
+                            <h4 id="toc_3">If you're using SSL / HTTPS</h4>
+                            <p>Make sure you read <a href="http://docs.ghost.org/installation/deploy/#ssl" rel="nofollow">http://docs.ghost.org/installation/deploy/#ssl</a>, you may need to configure your proxy to add certain headers.</p>
+                            <p>For nginx you need to add:</p>
+                            <pre>
+                                <code>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header Host $http_host; proxy_set_header X-Forwarded-Proto $scheme;
+                                </code>
+                            </pre>
+                            <p>For apache you need to add (Thanks to <a href="https://ghost.org/forum/installation/4431-upgraded-to-0-4-can-t-log-in/21/" rel="nofollow">@jme</a>):</p>
+                            <pre>
+                                <code>ProxyVia On ProxyRequests Off ProxyPreserveHost On RequestHeader set X-Forwarded-Proto "https" early
+                                </code>
+                            </pre>
+                            <h4 id="toc_4">If you're not using SSL / HTTPS</h4>
+                            <p>Make sure that if you're using nginx or apache as a proxy, that it is configured to pass through CSRF headers.
+                                <br>If you're using nginx this is done with
+                                <code>proxy_pass_header X-CSRF-TOKEN;</code>
+                            </p>
+                            <p>Please also clear your cookies and browser cache, refresh the sign in page and try again</p>
+                            <p>If you're having this problem and none of the above helps, please post on the forum and we'll try to help.</p>
+                            <h3 id="toc_5">I'm getting 'There is no user with that email address.' when signing in</h3>
+                            <p>This can be caused by a couple of things. To debug this problem take the following steps:</p>
+                            <ol>
+                                <li>Ensure you are starting Ghost in the same mode as before,
+                                    <strong>development</strong>or
+                                    <strong>production</strong>
+                                </li>
+                                <li>(This only applies if you are using Ghost's default SQLite database). Check your
+                                    <code>content/data</code>directory to make sure it still has your
+                                    <code>.db</code>file. If you were running
+                                    <strong>development</strong>mode before, you'll have a
+                                    <code>ghost-dev.db</code>file, and if you were running production mode the file will be called
+                                    <code>ghost.db</code>. If there is no db file, hopefully you backed up before upgrading. Follow the instructions on 'How to restore from a GhostData.json file' below.</li>
+                                <li>If you originally signed up / created your Ghost account with an email address which had capital letters / uppercase characters in it, then unfortunately you've run into a bug in Ghost 0.4. This bug will be fixed in 0.4.1 which will be released as soon as possible. To fix it in the meantime, please follow the instructions on 'How to fix an email address with uppercase characters'</li>
+                            </ol>
+                            <h3 id="toc_6">I've got a different problem / it's still not working:</h3>
+                            <ul>
+                                <li>Make sure that all the new files have the same owner and permissions as the old files</li>
+                                <li>Make sure you use the same command to start Ghost again as you did before</li>
+                                <li>Ensure you start Ghost in the same mode development or production</li>
+                                <li>Clear your browser cache.</li>
+                                <li>Create a new forum topic describing your problem clearly which contains full details of where and how you are running Ghost, as well as full logs if there are any errors, and we'll try to help.</li>
+                            </ul>
+                            <h3 id="toc_7">How to restore from a GhostData.json file</h3>
+                            <p>This assumes that you have upgraded Ghost but accidentally overwritten your content folder. At this point, you effectively have a fresh install again and need to create a new user at
+                                <code>your-ghost-blog.com/ghost/signup/</code>.</p>
+                            <p>Once you have signed up again, navigate to
+                                <code>your-ghost-blog.com/ghost/debug/</code>and choose the GhostData.json file to import.</p>
+                            <p>After importing the file, all your old blog posts and tags, and most of your custom settings will be back. Your posts will be associated with your new user account. If you were using a custom theme, you will need to put the theme back in
+                                <code>content/themes</code>and re-activate it from the settings page.</p>
+                            <h3 id="toc_8">How to fix an email address with uppercase characters</h3>
+                            <p>First to explain the problem: In the database, your email address was stored with uppercase characters in it, but when you signin Ghost assumes lowercase. This bug will be fixed in 0.4.1, and released as soon as possible.</p>
+                            <p>Right now the only way to get around this is to fix the email address in the database. We will publish a fix to GitHub as soon as possible, once that is done there will be other options.</p>
+                            <p>If you are running on a linux webhost (e.g. Digital Ocean) and are comfortable with the command line, you can install a command line version of SQLite3 and fix the database manually.</p>
+                            <p>
+                                <strong>Please</strong>only do this if you are comfortable with the steps, otherwise please wait, a easier fix will be available shortly.</p>
+                            <p>For example to fix the database on a DigitalOcean Ghost Droplet you would do:</p>
+                            <ul>
+                                <li>
+                                    <code>apt-get install sqlite3</code>to install the sqlite3 command line client</li>
+                                <li>
+                                    <code>cd /var/www/ghost/content/data</code>to go to the data directory</li>
+                                <li>
+                                    <code>sqlite3 ghost.db</code>to open the database file</li>
+                                <li>
+                                    <code>select * from users;</code>to see all your user data</li>
+                                <li>if you can see your email address has uppercase characters then fix it with:
+                                    <code>
+                                        update users set `email` = "&lt;NEW LOWERCASE EMAIL HERE&gt;" where `email` = "&lt;OLD EMAIL HERE&gt;";
+                                    </code>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="forum-post-options">
+                            <ul class="options right">
+                                <li>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </section>
+                    </div>
+                </article>
+            </section>
+            <div class="clearfix"></div>
+            <hr>
+            <h5 class="forum-topic-closed">This topic is closed.</h5>
+        </section>
+    </main>
+    <div class="clearfix"></div>
+
+    <footer id="global-footer">
+
+        <div class="clearfix"></div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>Translate community</title>
+    <meta name="description" content="Your questions about the Ghost blogging platform answered. Get help with Ghost problems or issues on our community support forum.">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+    
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="https://ghost.org/assets/favicon-e13fe17b11ad125601924cfb260f20da.ico">
+    <link rel="canonical" href="https://ghost.org/forum">
+    <link rel="stylesheet" type="text/css" href="./The Ghost.org Forum - Support, Help and Questions_files/css">
+    <link data-turbolinks-track="true" href="https://ghost.org/assets/application-818b55640a43600a0b2281e6bf13ddb4.css" media="all" rel="stylesheet">
+    
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="lR9CGV5H5WARo8ySDfNRHeYqr9MSG4X1KBdXa8SWteE=" name="csrf-token"> -->
+
+    <!-- fonts -->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:700,400,300">
+
+    <link rel="stylesheet" type="text/css" href="../public/css/custom.css">
+
+    <style type="text/css">
+        .forum-table {
+            margin-top: 0px;
+        }
+        .ghost {
+            text-decoration: none;
+        }
+        .ghost-logo span {
+            color: #fff;
+            font-weight: 500;
+            line-height: 26.7px;
+            font-size: 17;
+        }
+        /*for new topic style*/
+        .forum-table tr:hover {
+            background: none;
+        }
+        .textCenter {
+            text-align: center;
+        }
+        .forum form {
+            margin: 0;
+        }
+        .forum form fieldset {
+            border-top: none;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body class="forum" data-logged-in-user="">
+    <header id="global-header" class="navbar">
+        <nav role="navigation">
+            <div class="wrapper">
+                <a class="ghost-logo" href="https://ghost.org/" with_host="true">
+                    <span>Translate</span>
+                </a>
+                <button type="button" class="mobile-menu" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="hidden">Menu</span>
+                </button>
+                <ul id="main-menu" class="navbar-collapse collapse">
+                    <li><a class="" href="https://ghost.org/" with_host="true">Dashboard</a>
+                    </li>
+                    <li><a class="" href="https://ghost.org/blogs/" with_host="true">My Blogs</a>
+                    </li>
+                    <li><a href="http://marketplace.ghost.org/">one</a>
+                    </li>
+                    <li><a href="http://docs.ghost.org/">process</a>
+                    </li>
+                    <li><a class=" current" href="" with_host="true"></a>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <a data-toggle="dropdown" class="usermenu" href="https://ghost.org/forum/#">joeylin</a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li><a class="" href="https://ghost.org/joeylin/" with_host="true">View my Profile</a>
+                                </li>
+                                <li><a class="" href="https://ghost.org/settings/profile/" with_host="true">Account Settings</a>
+                                </li>
+                                <li class="divider" role="presentation"></li>
+                                <li><a class="logout" href="https://ghost.org/logout/" with_host="true">Log out</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="clearfix"></div>
+    <main role="main">
+        <section class="page-wrapper">
+            <header class="forum-header">
+                <h1>Import Your Topic</h1>
+            </header>
+            <table class="forum-table" style="margin-bottom:0px">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="content">
+                                <a class="forum-category-title" href="/forum/installation/">Url</a>
+                                <span class="forum-category-description">Input your page url, we will process for you</span>
+                            </div>
+                        </td>
+                        <td>
+                            <input />
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="content">
+                                <a class="forum-category-title" href="/forum/using-ghost/">Upload</a>
+                                <span class="forum-category-description">upload your markdown file</span>
+                            </div>
+                        </td>
+                        <td>
+                            <input />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="content">
+                                <a class="forum-category-title" href="/forum/themes/">Online Edit</a>
+                                <span class="forum-category-description">copy and clip your content to online editor</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="importFromEdit">open edit</button>
+                        </td>
+                    </tr>
+                    <tr id="eidtorForm">
+                        <td style="border:none;" colspan="2">
+                            <form accept-charset="UTF-8" action="/forum/using-ghost/" class="new_forum_topic" id="new_forum_topic" method="post">
+                                <fieldset>
+                                    <label style="margin:0">
+                                        <input id="forum_topic_title" name="forum_topic[title]" placeholder="Topic Title" type="text">
+                                    </label>
+                                    <label style="margin-bottom:0">
+                                        <textarea id="forum_topic_content" name="forum_topic[content]" placeholder="The content of your post. You can use Markdown, just like in Ghost."></textarea>
+                                    </label>
+                                </fieldset>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr style="margin-top:0px">
+            <div class="textCenter">
+                <a class="button-add" href="/forum/installation/new/">Save And Preview</a>
+            </div>
+        </section>
+    </main>
+    <div class="clearfix"></div>
+
+    <footer id="global-footer">
+        <div class="clearfix"></div>
+    </footer>
+    <!-- jQuery -->
+    <script type="text/javascript" src="../public/js/vendor/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        // editor oen and close
+        var editorIsOpen = false;
+        $('.importFromEdit').on('click', function() {
+            if (editorIsOpen) {
+                $('#eidtorForm').css({display:'none'});
+                editorIsOpen = false;
+            } else {
+                $('#eidtorForm').css({display: 'table-row'});
+                editorIsOpen = true;
+            }
+        });
+    </script>
+</body>
+
+</html>
