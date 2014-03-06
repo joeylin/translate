@@ -91,4 +91,4 @@ Node.js 的 API 文档是使用 Markdown 格式来编写的，这种文档有一
         +tpl              // html模板文件缓存目录
         +upload           // 上传文件缓存目录
     -app.js             // Node.js入口文件
-    -package.json       // jsGen信息文件
+    -package.json       // 信息文件
