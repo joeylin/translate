@@ -61,7 +61,7 @@ Node.js 的 API 文档是使用 Markdown 格式来编写的，这种文档有一
     +node_modules           // Node.js模块目录，npm install后产生内容
     +public                 // 浏览器端AngularJS WEB应用
         +css
-        +font-awesome           //很酷的web icon
+        +fonts                  //很酷的web icon
         +libs
         +imgs
         +js
