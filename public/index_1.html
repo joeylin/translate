@@ -14,7 +14,7 @@
     </head>
     <body class="metro">
         <header class="bg-dark" data-load="header.html">
-            <div class="navigation-bar dark">
+            <div class="navigation-bar fixed-top dark">
                 <nav class="navigation-bar-content container">
                     <a href="/" class="element"><span class="icon-grid-view"></span> Transalte </a>
                     <span class="element-divider"></span>
@@ -26,54 +26,89 @@
                 </nav>
             </div>
         </header>
-        <article class="container custom">
-            <header>
-
-            </header>
-            <section class="grid">
-                <h3>DOCs</h3>
+        <article class="container main">
+            <section class="grid main-body">
+                <div>
+                    <h3>AngularJS</h3>
+                    <a href="#">download</a>
+                </div>
                 <div class="row">
-                    <section class="sidebar span3">
-                        <nav class="sidebar light">
-                            <ul>
-                                <li class="active"><a href="#">Dashboard</a>
-                                </li>
-                                <li><a href="#">Layouts</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-toggle" href="#"><i class="icon-tree-view"></i>Sub menu</a>
-                                    <ul class="dropdown-menu" data-role="dropdown" style="display: none;">
-                                        <li><a href="">Subitem 1</a>
-                                        </li>
-                                        <li><a href="">Subitem 2</a>
-                                        </li>
-                                        <li><a href="">Subitem 3</a>
-                                        </li>
+                    <section class="sidebar-toc span3">
+                        <div>
+                            <h2><a href="#">Angular</a></h2>
+                            <span></span>
+                        </div>
+                        <a href="#" class="toc-toggle">show / hide TOC</a>
+                        <div>
+                            <ul class="toc-list">
+                                <li class="toc-item toc-has-sub">
+                                    <a href="#">ng</a>
+                                    <ul class="toc-sub-list">
+                                        <li class="toc-item toc-has-sub">
+                                            <a href="#">function</a>
+                                            <ul class="toc-sub-list">
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bind</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bootstrap</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.copy</a>
+                                                </li>       
+                                            </ul>
+                                        </li>         
                                     </ul>
                                 </li>
-                                <li><a href="#">Thread item</a>
-                                </li>
-                                <li><a href="#">Other Item 1</a>
-                                </li>
-                                <li><a href="#">Other item 2</a>
-                                </li>
-                                <li><a href="#">Other item 3</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-toggle" href="#">Sub menu 2</a>
-                                    <ul class="dropdown-menu" data-role="dropdown">
-                                        <li><a href="">Subitem 1</a>
-                                        </li>
-                                        <li><a href="">Subitem 2</a>
-                                        </li>
-                                        <li><a href="">Subitem 3</a>
-                                        </li>
+                                <li class="toc-item toc-has-sub">
+                                    <a href="#">auto</a>
+                                    <ul class="toc-sub-list">
+                                        <li class="toc-item toc-has-sub">
+                                            <a href="#">function</a>
+                                            <ul class="toc-sub-list">
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bind</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bootstrap</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.copy</a>
+                                                </li>       
+                                            </ul>
+                                        </li>         
                                     </ul>
                                 </li>
+                                <li class="toc-item toc-has-sub">
+                                    <a href="#">mock</a>
+                                    <ul class="toc-sub-list">
+                                        <li class="toc-item toc-has-sub">
+                                            <a href="#">function</a>
+                                            <ul class="toc-sub-list">
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bind</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bootstrap</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.copy</a>
+                                                </li>       
+                                            </ul>
+                                        </li>         
+                                    </ul>
+                                </li>                                              
                             </ul>
-                        </nav>
+                        </div>
                     </section>
-                    <section class="content span9">
+                    <section class="offset3 span9">
+                        <div class="content-loading">loading</div>
+                        <div class="content">
+                            <h1>title</h1>
+                            <a href="#">translate this page</a>
+                            <!-- content begin here -->
+                            
+                        </div>
                     </section>
                 </div>
             </section>

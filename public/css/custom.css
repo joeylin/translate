@@ -1,0 +1,11 @@
+.sidebar-toc {
+	position: fixed;
+	top: 60px;
+	bottom: 0;
+	padding-bottom: 120px;
+	overflow: auto;
+}
+.main-body {
+	margin-top: 60px;
+	position: relative;
+}
