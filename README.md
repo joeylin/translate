@@ -47,6 +47,7 @@ Node.js 的 API 文档是使用 Markdown 格式来编写的，这种文档有一
         -message.js             // 站内信息系统API接口
         -tag.js                 // 标签系统API接口
         -user.js                // 用户系统API
+    +api                    // 服务端api接口
     +middlewares            // 中间层组件
         -check_signin.js        // 文章和评论系统API接口
     +utils                  // 通用工具模块
