@@ -1,11 +1,43 @@
 .sidebar-toc {
 	position: fixed;
-	top: 60px;
+	top: 100px;
 	bottom: 0;
-	padding-bottom: 120px;
+	padding-bottom: 60px;
 	overflow: auto;
+}
+.doc-title {
+	position: fixed;
+	top: 60px;
+	width: 260px;
+	background-color: #d9d9d9;
+}
+.doc-toc ul, .doc-toc li {
+	list-style: none;
+}
+.grid-left {
+	width: 260px;
+}
+.grid-right {
+	margin-left: 270px;
+	position: relative;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 .main-body {
 	margin-top: 60px;
 	position: relative;
+}
+.content-loading, .toc-toggle {
+	display: none;
+}
+.footer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	color: white;
+}
+.footer .color-white a {
+	color: white;
 }

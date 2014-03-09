@@ -5,8 +5,10 @@
 
         <link rel="stylesheet" href="css/metro-bootstrap.min.css">
         <link rel="stylesheet" href="css/metro-bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/iconFont.css">
         <script src="js/vendor/jquery/jquery-1.9.1.min.js"></script>
         <script src="js/vendor/jquery/jquery.widget.min.js"></script>
+        <script src="js/vendor/jquery.mousewheel.js"></script>
         <script src="js/vendor/metro/metro.min.js"></script>
 
         <!-- custom  -->
@@ -23,23 +25,64 @@
                     <a href="/" class="element"><span class="icon-grid-view"></span> collections </a>
                     <a href="/" class="element"><span class="icon-grid-view"></span> dash </a>
                     <a href="#" class="element place-right">joeylin</a>
+                    <a href="#" class="element place-right">download</a>
                 </nav>
             </div>
         </header>
         <section class="container main">
-            <section class="grid main-body">
-                <div>
-                    <h3>AngularJS</h3>
-                    <a href="#">download</a>
-                </div>
+            <section class="fluid grid main-body">
                 <div class="row">
-                    <section class="sidebar-toc span3">
-                        <div>
-                            <h2><a href="#">Angular</a></h2>
-                            <span></span>
+                    <div class="doc-title"><h4>AngularJS</h4></div>
+                    <section class="offset3 grid-right">
+                        <div class="content-loading">loading</div>
+                        <div class="content">
+                            <div class="place-right control-btn">
+                                <button><i class="icon-rocket on-left"></i>translate</button>
+                                <button>edit<i class="icon-rocket on-right"></i></button>
+                            </div>
+                            <h2>title</h2>
+                            <!-- content begin here -->
+                            <p>
+                                For a simple two column layout, create a <code>.row</code> and add the appropriate number of <code>.span*</code> columns.
+                                As this is a 12-column grid, each <code>.span*</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).
+                            </p>
+                            <pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"grid"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"row"</span><span class="tag">&gt;</span></li><li class="L2"><span class="pln">        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"span4"</span><span class="tag">&gt;</span><span class="pln">...</span><span class="tag">&lt;/div&gt;</span></li><li class="L3"><span class="pln">        </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"span8"</span><span class="tag">&gt;</span><span class="pln">...</span><span class="tag">&lt;/div&gt;</span></li><li class="L4"><span class="pln">    </span><span class="tag">&lt;/div&gt;</span></li><li class="L5"><span class="tag">&lt;/div&gt;</span></li></ol></pre>
+                            <p class="description">
+                                Given this example, we have <code>.span4</code> and <code>.span8</code>, making for 12 total columns and a complete row.
+                            </p>
+                            <p>
+                                For a simple two column layout, create a <code>.row</code> and add the appropriate number of <code>.span*</code> columns.
+                                As this is a 12-column grid, each <code>.span*</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).
+                            </p>
+                            <p>
+                                For a simple two column layout, create a <code>.row</code> and add the appropriate number of <code>.span*</code> columns.
+                                As this is a 12-column grid, each <code>.span*</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).
+                            </p>
+                            <h3>Toolbar groups</h3>
+                            <p>
+                                For a simple two column layout, create a <code>.row</code> and add the appropriate number of <code>.span*</code> columns.
+                                As this is a 12-column grid, each <code>.span*</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).
+                            </p>
+                            <h3>Toolbar groups</h3>
+                            <p>
+                                For a simple two column layout, create a <code>.row</code> and add the appropriate number of <code>.span*</code> columns.
+                                As this is a 12-column grid, each <code>.span*</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).
+                            </p>
+                            <h3>Toolbar groups</h3>
+                            <p>
+                                For a simple two column layout, create a <code>.row</code> and add the appropriate number of <code>.span*</code> columns.
+                                As this is a 12-column grid, each <code>.span*</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).
+                            </p>
+                            <h3>Toolbar groups</h3>
+                            <p>
+                                For a simple two column layout, create a <code>.row</code> and add the appropriate number of <code>.span*</code> columns.
+                                As this is a 12-column grid, each <code>.span*</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).
+                            </p>
                         </div>
+                    </section>
+                    <section class="sidebar-toc grid-left">
                         <a href="#" class="toc-toggle">show / hide TOC</a>
-                        <div>
+                        <div class="doc-toc">
                             <ul class="toc-list">
                                 <li class="toc-item toc-has-sub">
                                     <a href="#">ng</a>
@@ -97,27 +140,93 @@
                                             </ul>
                                         </li>         
                                     </ul>
+                                </li> 
+                                <li class="toc-item toc-has-sub">
+                                    <a href="#">mock</a>
+                                    <ul class="toc-sub-list">
+                                        <li class="toc-item toc-has-sub">
+                                            <a href="#">function</a>
+                                            <ul class="toc-sub-list">
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bind</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bootstrap</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.copy</a>
+                                                </li>       
+                                            </ul>
+                                        </li>         
+                                    </ul>
+                                </li> 
+                                <li class="toc-item toc-has-sub">
+                                    <a href="#">mock</a>
+                                    <ul class="toc-sub-list">
+                                        <li class="toc-item toc-has-sub">
+                                            <a href="#">function</a>
+                                            <ul class="toc-sub-list">
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bind</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bootstrap</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.copy</a>
+                                                </li>       
+                                            </ul>
+                                        </li>         
+                                    </ul>
+                                </li> 
+                                <li class="toc-item toc-has-sub">
+                                    <a href="#">mock</a>
+                                    <ul class="toc-sub-list">
+                                        <li class="toc-item toc-has-sub">
+                                            <a href="#">function</a>
+                                            <ul class="toc-sub-list">
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bind</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bootstrap</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.copy</a>
+                                                </li>       
+                                            </ul>
+                                        </li>         
+                                    </ul>
+                                </li> 
+                                <li class="toc-item toc-has-sub">
+                                    <a href="#">mock</a>
+                                    <ul class="toc-sub-list">
+                                        <li class="toc-item toc-has-sub">
+                                            <a href="#">function</a>
+                                            <ul class="toc-sub-list">
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bind</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.bootstrap</a>
+                                                </li>
+                                                <li class="toc-item">
+                                                    <a href="#">angular.copy</a>
+                                                </li>       
+                                            </ul>
+                                        </li>         
+                                    </ul>
                                 </li>                                              
                             </ul>
-                        </div>
-                    </section>
-                    <section class="offset3 span9">
-                        <div class="content-loading">loading</div>
-                        <div class="content">
-                            <button id="ctrl-translate" class="button large primary place-right">translate</button>
-                            <button id="ctrl-edit" class="button large primary place-right">edit</button>
-                            <h1>title</h1>
-                            <!-- content begin here -->
-
                         </div>
                     </section>
                 </div>
             </section>
         </section>
-        <footer class="bg-dark no-tablet-portrait no-phone">
+        <footer class="footer bg-dark no-tablet-portrait no-phone">
             <div class="container fg-white">
-                <ul class="horizontal-menu compact">
-                    <li>© 2014 Translate</li>
+                <ul class="horizontal-menu compact color-white">
+                    <li>@ 2014 Translate</li>
                     <li><a href="#">Privacy</a></li>
                     <li><a href="#">Legal</a></li>
                     <li><a href="#">Advertise</a></li>
