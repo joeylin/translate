@@ -1,6 +1,7 @@
 .page-main {
 	background-color: #fdfdfd;
 	margin-bottom: 45px !important;
+	padding-bottom: 40px !important;
 }
 .home-header {
 	-webkit-box-sizing: border-box;
@@ -48,4 +49,13 @@
 
 .docs-application {
 	border-top: 1px solid #ccc;
+	padding-top: 20px;
 }
+
+/* metro add style */
+
+.metro .button.middle, .metro button.middle {
+	padding: 7px 17px;
+	font-size: 17.5px;
+}
+
