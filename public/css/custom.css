@@ -45,3 +45,32 @@
 .footer .color-white a {
 	color: white;
 }
+.content .content-translate {
+	padding: 20px 40px;
+	border: 1px #ccc solid;
+	position: relative;
+	margin: 0 0 10px 0;
+	background-color: #fdfdfd !important;
+	min-height: 100px;
+}
+
+/* according rest style*/
+.content-refer {
+	margin-bottom: 10px;
+}
+.metro .accordion>.accordion-frame > .heading {
+	padding: 5px 20px;
+}
+.metro .accordion.with-marker .heading:before {
+	position: absolute;
+	display: block;
+	left: 5px;
+	top: 7px;
+	content: '';
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-top: 7px solid transparent;
+	border-bottom: 7px solid black;
+}
+

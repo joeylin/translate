@@ -1,0 +1,51 @@
+.page-main {
+	background-color: #fdfdfd;
+	margin-bottom: 45px !important;
+}
+.home-header {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	height: 410px;
+	background: #E3EDF3;
+	background: url(../imgs/headerBg.jpg) no-repeat bottom center;
+	background-size: cover;
+	display: table;
+	margin-top: 45px;
+}
+.home-header .home-title {
+	line-height: 410px;
+	text-align: center;
+	color: #fff;
+}
+.home-main {
+	margin-left: 40px;
+	margin-right: 40px;
+}
+.home-main .screenshot {
+	position: relative;
+	top: -60px;
+	height: 196px;
+	width: 380px;
+	float: left;
+}
+.home-main .content {
+	float: left;
+	width: 670px;
+}
+.home-main .content .content-text {
+	margin: 28px 0;
+	font-size: 19px;
+}
+
+.dashboard {
+	border-top: 1px solid #ccc;
+}
+.dashboard-docs, .dashboard-post {
+	border-right: 1px solid #ccc;
+}
+
+.docs-application {
+	border-top: 1px solid #ccc;
+}
