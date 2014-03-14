@@ -38,6 +38,7 @@
 .home-main .content .content-text {
 	margin: 28px 0;
 	font-size: 19px;
+	line-height: 31px;
 }
 
 .dashboard {
@@ -46,10 +47,38 @@
 .dashboard-docs, .dashboard-post {
 	border-right: 1px solid #ccc;
 }
-
-.docs-application {
+.dashboard .dashboard-list {
+	list-style: none;
+	margin: 20px 0 0 0;
+	padding: 0;
+}
+.social-index .star, .social-index .reply {
+	padding: 0 5px 0 0;
+	font-weight: 600;
+}
+.social-index .subcribe {
+	padding: 0 5px 0 10px;
+	font-weight: 600;
+}
+.dashboard-post .post-detail {
+	padding: 5px 0 15px 0;
+}
+.dashboard-group {
+	background: url(../imgs/group.png) no-repeat bottom center;
+}
+.dashboard-group .group-join {
+	padding-top: 15px;
+	padding-bottom: 194px;
+	text-align: center;
+}
+.docs-submit {
 	border-top: 1px solid #ccc;
 	padding-top: 20px;
+	text-align: center;
+}
+.docs-submit .docs-submit-text {
+	font-size: 19px;
+	line-height: 31px;
 }
 
 /* metro add style */
