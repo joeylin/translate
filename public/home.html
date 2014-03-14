@@ -148,8 +148,7 @@
                     <button class="button middle info">submit</button>
                 </div>
             </div>
-        </section>
-        
+        </section>    
         <footer class="footer bg-dark no-tablet-portrait no-phone">
             <div class="container fg-white">
                 <ul class="horizontal-menu compact color-white">
@@ -162,5 +161,34 @@
                 </ul>
             </div>
         </footer>
+
+        <section class="login">
+            <header class="login-header">
+                <h2>Log in to Your Account</h2>
+            </header>
+            <form class="auth-form" action="/login/" method="post" accept-charset="UTF-8">
+                <div style="margin: 0px; padding: 0px; display: inline;">
+                    <input name="utf8" type="hidden" value="✓">
+                    <input name="authenticity_token" type="hidden" value="xH4lfL8hgfawZNMNkzZN+8RmaK276uzKIDNvgLKUyGY=">
+                </div>
+                <div class="input-control text">
+                    <input name="username" type="text" value="" placeholder="Username or Email"/>
+                    <button class="btn-clear"></button>
+                </div>
+                <div class="input-control password">
+                    <input name="password" type="password" value="" placeholder="Password"/>
+                    <button class="btn-reveal"></button>
+                </div>
+                <label class="login-inline-label">
+                    <input id="login-remember" type="checkbox">
+                    <span class="auth-inline-span">Keep me logged in</span>
+                    <p class="login-question"><a href="/login/recover/">Forgotten Your Password?</a>
+                    </p>
+                </label>
+                <div class="login-ctrl">
+                    <button class="button-save login-button middle info" type="submit">Login</button>
+                </div>
+            </form>
+        </section>
     </body>
 </html>

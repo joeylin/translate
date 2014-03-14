@@ -82,9 +82,32 @@
 }
 
 /* metro add style */
-
 .metro .button.middle, .metro button.middle {
 	padding: 7px 17px;
 	font-size: 17.5px;
+}
+
+
+/* component login */
+.login {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 500;
+	width: 342px;
+	max-width: 400px;
+	padding: 20px 20px;
+	border: 1px solid #ccc;
+	background-color: #fdfdfd;
+}
+.login .login-header {
+	text-align: center;
+	padding-bottom: 20px;
+}
+.login .login-inline-label {
+	float: right;
+}
+.login .login-ctrl {
+	margin-top: 10px;
 }
 
