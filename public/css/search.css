@@ -1,0 +1,36 @@
+.global-body {
+	background-color: #f4f4ee;
+}
+.search-body {
+	margin-top: 90px;
+}
+.search-tag-list {
+	margin-top: 8px !important;
+	margin-left: 5px !important;
+}
+.post-header {
+	margin-bottom: 20px;
+}
+.post-type-meta span {
+	display: block
+}
+.post-ctrl {
+	float: right;
+}
+.post-list .post-entry {
+	border-top: 1px solid #ccc;
+	padding: 10px 0 15px 0;
+}
+.post-entry .entry-thumbnail {
+	float: left;
+	width: 100px;
+	height: 100px;
+	margin: 14px 20px 9px 20px;
+}
+.post-entry .post-ctrl {
+	margin-right: 20px;
+}
+.post-pagination {
+	padding-top: 30px;
+	border-top: 1px solid #ccc;
+}

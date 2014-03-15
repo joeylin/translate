@@ -90,15 +90,14 @@
 
 /* component login */
 .login {
-	position: fixed;
-	top: 0;
-	left: 0;
+	position: relative;
 	z-index: 500;
 	width: 342px;
 	max-width: 400px;
 	padding: 20px 20px;
 	border: 1px solid #ccc;
 	background-color: #fdfdfd;
+	margin: 20px auto;
 }
 .login .login-header {
 	text-align: center;
@@ -109,5 +108,21 @@
 }
 .login .login-ctrl {
 	margin-top: 10px;
+}
+
+/* component signup */
+.signup {
+	position: relative;
+	z-index: 500;
+	width: 342px;
+	max-width: 400px;
+	padding: 20px 20px;
+	border: 1px solid #ccc;
+	background-color: #fdfdfd;
+	margin: 20px auto;
+} 
+.signup .signup-header {
+	text-align: center;
+	padding-bottom: 20px;
 }
 

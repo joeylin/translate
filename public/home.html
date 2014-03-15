@@ -5,11 +5,13 @@
 
         <link rel="stylesheet" href="css/metro-bootstrap.min.css">
         <link rel="stylesheet" href="css/metro-bootstrap-responsive.min.css">
-        <link rel="stylesheet" href="css/iconFont.css">
+        <link rel="stylesheet" href="css/magnific-popup.css">
+        <link rel="stylesheet" href="css/iconFont.min.css">
         <script src="js/vendor/jquery/jquery-1.9.1.min.js"></script>
         <script src="js/vendor/jquery/jquery.widget.min.js"></script>
         <script src="js/vendor/jquery.mousewheel.js"></script>
         <script src="js/vendor/metro/metro.min.js"></script>
+        <script src="js/vendor/jquery.magnific-popup.min.js"></script>
 
         <!-- custom  -->
         <link rel="stylesheet" type="text/css" href="css/home.css">
@@ -18,14 +20,14 @@
         <header class="bg-dark" data-load="header.html">
             <div class="navigation-bar dark">
                 <nav class="navigation-bar-content container">
-                    <a href="/" class="element"><span class="icon-grid-view"></span> Transalte </a>
+                    <a href="/" class="element">Transalte </a>
                     <span class="element-divider"></span>
-                    <a href="/" class="element"><span class="icon-grid-view"></span> home </a>
-                    <a href="/" class="element"><span class="icon-grid-view"></span> blogs </a>
-                    <a href="/" class="element"><span class="icon-grid-view"></span> collections </a>
-                    <a href="/" class="element"><span class="icon-grid-view"></span> dash </a>
-                    <a href="#" class="element place-right">LOG IN</a>
-                    <a href="#" class="element place-right">SIGN UP</a>
+                    <a href="/" class="element">home </a>
+                    <a href="/" class="element">blogs </a>
+                    <a href="/" class="element">collections </a>
+                    <a href="/" class="element">dash </a>
+                    <a href="#login-form" class="element place-right popup-with-form">LOG IN</a>
+                    <a href="#signup-form" class="element place-right popup-with-form">SIGN UP</a>
                 </nav>
             </div>
         </header>
@@ -162,7 +164,7 @@
             </div>
         </footer>
 
-        <section class="login">
+        <section id="login-form" class="login mfp-hide">
             <header class="login-header">
                 <h2>Log in to Your Account</h2>
             </header>
@@ -190,5 +192,43 @@
                 </div>
             </form>
         </section>
+        <section id="signup-form" class="signup mfp-hide">
+            <header class="signup-header">
+                <h1>Get Started</h1>
+            </header>
+            <form class="auth-form" action="/signup/" method="post" accept-charset="UTF-8">
+                <div style="margin: 0px; padding: 0px; display: inline;">
+                    <input name="utf8" type="hidden" value="✓">
+                    <input name="authenticity_token" type="hidden" value="xH4lfL8hgfawZNMNkzZN+8RmaK276uzKIDNvgLKUyGY=">
+                </div>
+                <div class="input-control text">
+                    <input name="username" type="text" value="" placeholder="Choose a username"/>
+                    <button class="btn-clear"></button>
+                </div>
+                <div class="input-control text">
+                    <input name="username" type="text" value="" placeholder="Enter your e-mail"/>
+                    <button class="btn-clear"></button>
+                </div>
+                <div class="input-control password">
+                    <input name="password" type="password" value="" placeholder="Create a password"/>
+                    <button class="btn-reveal"></button>
+                </div>
+                
+                <div class="signup-ctrl">
+                    <button class="middle success" type="submit">Sign Up</button>
+                </div>
+                <p style="margin: 1rem 0px 0px;">By clicking on "Sign Up", you agree to our <a href="/about/terms/">Terms of Service</a> and <a href="/about/privacy/">Privacy Policy</a>.</p>
+            </form>
+        </section>
+
+        <!--  js -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.popup-with-form').magnificPopup({
+                    type: 'inline',
+                    preloader: false
+                });
+            });
+        </script>
     </body>
 </html>
