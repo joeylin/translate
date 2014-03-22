@@ -2,18 +2,22 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var TranslateSchema = new Schema({
-    content: {
+var ChapterSchema = new Schema({
+    name: {
         type: String
     },
-    author: {
+    doc: {
         type: ObjectId,
-        ref: 'User'
+        ref: 'Doc'
     },
-    star: {
+    index: {
         type: Number,
         default: 0
     },
+    sections: [{
+        type: ObjectId,
+        ref: 'Section'
+    }],
     create_at: {
         type: Date,
         default: Date.now
@@ -21,10 +25,7 @@ var TranslateSchema = new Schema({
     update_at: {
         type: Date,
         default: Date.now
-    },
-    content_is_html: {
-        type: Boolean
     }
 });
 
-mongoose.model('Translate', TranslateSchema);
+mongoose.model('Chapter', ChapterSchema);

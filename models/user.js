@@ -3,10 +3,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var UserSchema = new Schema({
-    _id: {
-        type: ObjectId
-    },
-    loginname: {
+    name: {
         type: String,
         unique: true
     },

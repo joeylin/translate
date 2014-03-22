@@ -53,6 +53,13 @@
 	background-color: #fdfdfd !important;
 	min-height: 100px;
 }
+.control-btn .control-translate {
+	padding-top: 5px;
+	margin-right: 40px;
+}
+/*.control-btn .control-switch {
+	margin-right: 40px;
+}*/
 
 /* according rest style*/
 .content-refer {
@@ -73,4 +80,15 @@
 	border-top: 7px solid transparent;
 	border-bottom: 7px solid black;
 }
+/*.metro .notice.translateTip {
+	display: block;
+	min-width: 200px;
+	height: auto;
+	position: relative;
+	background-color: #ffffe1;
+	padding: 5px 10px;
+}
+.metro .notice.translateTip .tipText {
+	line-height: 31px;
+}*/
 

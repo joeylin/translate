@@ -66,7 +66,7 @@ Node.js 的 API 文档是使用 Markdown 格式来编写的，这种文档有一
         +libs
         +imgs
         +js
-            +lib                    // AngularJS、jQuery等js模块
+        +lib                    // AngularJS、jQuery等js模块
             -app.js                 // 全局初始化模块
             -controllers.js         // 控制器模块
             -directives.js          // 指令模块
@@ -85,3 +85,27 @@ Node.js 的 API 文档是使用 Markdown 格式来编写的，这种文档有一
         +upload                 // 上传文件缓存目录
     -app.js                 // Node.js入口文件
     -package.json           // 信息文件
+
+APIS
+==========================
+
+www.translate.com/docs // docs list
+
+wwww.translate.com/node.js
+
+
+wwww.translate.com/node.js/progress
+wwww.translate.com/node.js/tags
+
+www.translate.com/user/joeylin
+
+www.translate.com/login
+www.translate.com/signup
+
+www.translate.com/tags?id="xxx"
+wwww.translate.com/stars?id="xxx"
+
+www.translate.com/search?key="xxxx"
+
+
+

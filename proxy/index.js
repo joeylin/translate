@@ -1,7 +1,8 @@
 exports.User = require('./user');
-exports.Topic = require('./topic');
 exports.TopicTag = require('./tag');
-exports.TopicCollect = require('./topic_collect');
-exports.TranslateVote = require('./translate_vote');
-exports.Paragraph = require('./paragraph');
+
+exports.Doc = require('./doc');
+exports.Chapter = require('./chapter');
+exports.Section = require('./section');
 exports.Translate = require('./translate');
+

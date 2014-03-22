@@ -11,17 +11,17 @@ mongoose.connect(config.db, function(err) {
 // models 
 require('./user');
 require('./tag');
-require('./topic');
-require('./paragraph');
+
+require('./doc');
+require('./chapter');
+require('./section');
 require('./translate');
-require('./translate_vote');
-require('./topic_collect');
 
 
 exports.User = mongoose.model('User');
 exports.TopicTag = mongoose.model('Tag');
-exports.Topic = mongoose.model('Topic');
-exports.Topic = mongoose.model('Paragraph');
-exports.Topic = mongoose.model('Translate');
-exports.Topic = mongoose.model('TranslateVote');
-exports.TopicCollect = mongoose.model('TopicCollect');
+
+exports.Doc = mongoose.model('Doc');
+exports.Chapter = mongoose.model('Chapter');
+exports.Section = mongoose.model('Section');
+exports.Translate = mongoose.model('Translate');
