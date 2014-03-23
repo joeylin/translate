@@ -5,9 +5,9 @@ exports.getSectionByName = function(name, callback) {
         name: name
     }, callback);
 };
-exports.getSectionByhash = function(hash, callback) {
+exports.getSectionByhash = function(id, callback) {
     Section.find({
-        hash: hash
+        _id: id
     }, callback);
 };
 exports.getSpecSection = function(n, m, callback) {
@@ -25,19 +25,17 @@ exports.getSectionByDocHash = function(docHash, callback) {
 exports.remove = function(name, hash, callback) {
     Section.remove({
         name: name,
-        hash: hash
+        _id: id
     }, callback);
 };
 
-exports.newAndSave = function(name, hash, docHash, md, html, translate, pIndex, callback) {
+exports.newAndSave = function(chapterId, docId, md, html, translate, index, callback) {
     var Section = new Section();
-    Section.name = name;
-    Section.hash = hash;
-    Section.docHash = docHash;
+    Section.chapterId = chapterId;
+    Section.docId = docId;
     Section.md = md;
     Section.html = html;
-    Section.pIndex = pIndex;
-    Section.translate = translate;
     Section.index = index;
+    Section.translate = translate;
     Section.save(callback);
 };

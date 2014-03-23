@@ -41,10 +41,9 @@ exports.remove = function(name, id, callback) {
         _id: id
     }, callback);
 };
-exports.newAndSave = function(name, describe, hash, chapter, tag, callback) {
+exports.newAndSave = function(name, describe, chapter, tag, callback) {
     var doc = new Doc();
     doc.name = name;
-    doc.hash = hash;
     doc.des = describe;
     if (chapter) {
         doc.chapters.push(chapter);
