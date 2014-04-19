@@ -7,7 +7,7 @@ var ChapterSchema = new Schema({
         type: String
     },
     doc: {
-        type: ObjectId,
+        type: String,
         ref: 'Doc'
     },
     index: {
@@ -18,14 +18,41 @@ var ChapterSchema = new Schema({
         type: ObjectId,
         ref: 'Section'
     }],
-    create_at: {
+    createAt: {
         type: Date,
         default: Date.now
     },
-    update_at: {
+    updateAt: {
         type: Date,
         default: Date.now
     }
+});
+
+ChapterSchema.virtual('total').get(function() {
+    return this.sections.length;
+});
+
+// method
+ChapterSchema.methods.getChapterSections = function(cb) {
+    this.populate('sections').exec(cb);
+};
+// static
+ChapterSchema.statics.createNew = function(obj,cb) {
+    var chapter = new this();
+    chapter.name = obj.name;
+    chapter.doc = obj.doc;
+    chapter.index = obj.index;
+    if (obj.section) {
+        chapter.sections.push(obj.section);
+    }
+    chapter.save(cb);
+};
+
+// middleware
+ChapterSchema.pre('save', function(next) {
+    
+    this.updateAt = new Date();
+    next();
 });
 
 mongoose.model('Chapter', ChapterSchema);

@@ -1,7 +1,3 @@
 var Doc = require('../proxy').Doc;
+var _ = require('underscore')
 var when = require('when');
-
-exports.getDoc = function(req, res, next) {
-    var docName = req.docName;
-    var page = req.page;
-};

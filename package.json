@@ -1,5 +1,5 @@
 {
-    "name": "translate",
+    "name": "application-name",
     "version": "0.0.1",
     "private": true,
     "scripts": {
@@ -13,6 +13,14 @@
         "async": "*",
         "mongoose": "~3.6.0",
         "xss": "*",
+        "passport": "latest",
+        "passport-local": "latest",
+        "passport-facebook": "latest",
+        "passport-twitter": "latest",
+        "passport-github": "latest",
+        "passport-google-oauth": "latest",
+        "passport-linkedin": "latest",
+        "imager": "latest",
 
         "blueimp-file-upload-node": "*"
     }

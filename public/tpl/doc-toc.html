@@ -1,0 +1,9 @@
+<section class="sidebar-toc grid-left" ng-controller="docCtrl">
+    <div class="doc-title">
+        <span class="doc-title-describe">{{doc.version}}</span>
+        <h4>{{doc.title}}</h4>
+    </div>
+    <a href="#" class="toc-toggle">show / hide TOC</a>
+    <div class="doc-toc" gen-parse-md="doc.toc" >
+    </div>
+</section>
