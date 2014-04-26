@@ -3,15 +3,15 @@
  */
 
 var express = require('express');
+var mongoStore = require('connect-mongo')(express);
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var ejs = require('ejs');
 var then = require('thenjs');
-var config = require('./config');
+var config = require('./config/config.js');
 var processPath = path.dirname(process.argv[1]);
 // var routes = require('./routes');
-var api = require('./api/index');
 
 var app = express();
 
@@ -25,6 +25,14 @@ app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser(config.cookie.secret));
+    // express/mongo session storage
+    app.use(express.session({
+        secret: config.name,
+        store: new mongoStore({
+            url: config.db,
+            collection : 'sessions'
+        })
+    }));
     app.use(app.router);
     app.use('/public', express.static(path.join(__dirname, 'public')));
     app.use(express.errorHandler());
@@ -34,7 +42,8 @@ app.configure(function() {
 // routes(app);
 
 // api
-api(app);
+require('./api/index')(app);
+require('./api/user')(app);
 
 then.parallel([
     function(defer) {
@@ -55,14 +64,6 @@ then.parallel([
         res.setHeader('Content-Type', 'text/html');
         res.send(index);
     });
-    app.get('/login', function(req,res) {
-        res.setHeader('Content-Type', 'text/html');
-        res.send(index);
-    });
-    app.get('/register', function(req,res) {
-        res.setHeader('Content-Type', 'text/html');
-        res.send(index);
-    });
     app.get('/home', function(req,res) {
         res.setHeader('Content-Type', 'text/html');
         res.send(home);
@@ -71,9 +72,7 @@ then.parallel([
         res.setHeader('Content-Type', 'text/html');
         res.send(search);
     });
-});
-
-    
+}); 
 
 app.locals.formatTimestamp = function(t) {
     function n2(v) {

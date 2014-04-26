@@ -7,9 +7,9 @@ var User = Models.User;
 
 var create = function(req,res) {
 	var options = {
-		userName: req.body.username,
+		username: req.body.username,
 		email: req.body.email,
-		passport: req.body.passport
+		password: req.body.password
 	};
 	var user = new User(options);
 	user.provider = 'local';
@@ -27,35 +27,65 @@ var create = function(req,res) {
 	});
 };
 var login = function(req,res) {
-	if ((req.user && req.user.error) || !req.user) {
-		res.send({
-			isLogin: false,
-			info: 'cant authored this user;'
-		});
-	} else {
-		res.send({
+	var email = req.body.logname;
+	var password = req.body.logpwd;
+	User.findOne({ email: email }, function (err, user) {
+        if (err) { return done(err) }
+        if (!user) {
+          	return res.send({
+          		error: {
+          			name: 'unkown user'
+          		},
+	          	isLogin: false
+          	});
+        }
+        if (!user.authenticate(password)) {
+          	return res.send({
+          		error: {
+          			name: 'Invalid password'
+          		},
+	          	isLogin: false
+          	});
+        }
+        req.session.userId = user.username;
+        req.session.user = user;
+        res.send({
 			isLogin: true,
-			user: user
+			user: {
+				name: user.username,
+				id: user._id
+			}
 		});
-	}
+    });
 };
 var logout = function(req,res) {
-	req.logout();
+	req.session.destroy();
 	res.send({
 		isLogin: false,
 		info: 'logout'
 	});
 };
 
-var findUser = function (req, res, next, id) {
-  User.findOne({ _id : id }).exec(function (err, user) {
-      if (err) return next(err)
-      if (!user) return next(new Error('Failed to load User ' + id))
-      req.profile = user;
-      next();
+var findUser = function (req, res) {
+	var id = req.body.id;
+  	User.findOne({ _id : id }).exec(function (err, user) {
+      	if (err) { console.log('err find')}
+      	if (!user) {
+      		return res.send({
+      			status: false,
+      			info: 'unkown user'
+      		});
+      	} else {
+      		res.send({
+      			status: true,
+      			user: user
+      		});
+      	}
     });
 }
 
-exports.authCallback = authCallback;
 exports.create = create;
-exports.user = findUser;
+exports.show = findUser;
+exports.login = login;
+exports.logout = logout;
+

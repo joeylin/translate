@@ -13,7 +13,7 @@ var UserSchema = new Schema({
         type: String,
         unique: true
     },
-    userName: {
+    username: {
         type: String,
         unique: true
     },
@@ -41,7 +41,7 @@ var UserSchema = new Schema({
     twitter: {},
     github: {},
     google: {},
-    linkedin: {}
+    linkedin: {},
     createAt: {
         type: Date,
         default: Date.now
@@ -140,7 +140,7 @@ UserSchema.methods = {
    */
 
     authenticate: function (plainText) {
-        return this.encryptPassword(plainText) === this.hashed_password;
+        return this.encryptPassword(plainText) === this.hashedPassword;
     },
 
     /**

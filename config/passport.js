@@ -18,9 +18,9 @@ module.exports = function (passport, config) {
 
   passport.deserializeUser(function(id, done) {
     User.findOne({ _id: id }, function (err, user) {
-      done(err, user)
-    })
-  })
+      done(err, user);
+    });
+  });
 
   // use local strategy
   passport.use(new LocalStrategy({
@@ -31,11 +31,12 @@ module.exports = function (passport, config) {
       User.findOne({ email: email }, function (err, user) {
         if (err) { return done(err) }
         if (!user) {
-            user = {
-              error: true
-            };
+          return done(null, false, { message: 'Unknown user' })
         }
-        return done(null, user);
+        if (!user.authenticate(password)) {
+          return done(null, false, { message: 'Invalid password' })
+        }
+        return done(null, user)
       })
     }
   ))
@@ -62,9 +63,9 @@ module.exports = function (passport, config) {
           })
         }
         else {
-          return done(err, user)
+          return done(err, user);
         }
-      })
+      });
     }
   ))
 

@@ -3,7 +3,7 @@ exports.port = 3000;
 
 // Cookie
 exports.cookie = {
-  secret: 'node',
+  secret: 'translate',
   maxAge: 3600000 * 24 * 30
 };
 

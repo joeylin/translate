@@ -1,21 +1,44 @@
 var utils = require('./utils');
 var config = require('../config');
 
-// 检查用户是否已登陆
-module.exports = function(req, res, next) {
 
-    if (!req.cookies.signin) {
-        return res.redirect('/signin?url=' + req.url);
-    }
-
-    var data = utils.decryptData(req.cookies.signin, config.signin.secret);
-    if (data && data.id) {
-        req.signinUser = {
-            id: data.id,
-            nickname: data.n
-        };
-        next();
+exports.requiresLogin = function(req, res, next) {
+    if (!req.session.userId) {
+        res.send({
+            isLogin: false,
+            info: 'no auth'
+        });
     } else {
-        res.redirect('/signin?url=' + req.url);
+        next();
     }
+};
+
+/*
+ *  User authorization routing middleware
+ */
+
+exports.user = {
+  hasAuthorization: function (req, res, next) {
+    
+  }
+};
+
+*
+ *  Article authorization routing middleware
+ */
+
+exports.article = {
+  hasAuthorization: function (req, res, next) {
+    
+  }
+};
+
+/**
+ * Comment authorization routing middleware
+ */
+
+exports.comment = {
+  hasAuthorization: function (req, res, next) {
+    
+  }
 };
