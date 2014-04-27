@@ -65,7 +65,6 @@ var logout = function(req,res) {
 		info: 'logout'
 	});
 };
-
 var findUser = function (req, res) {
 	var id = req.body.id;
   	User.findOne({ _id : id }).exec(function (err, user) {
@@ -82,7 +81,7 @@ var findUser = function (req, res) {
       		});
       	}
     });
-}
+};
 
 exports.create = create;
 exports.show = findUser;

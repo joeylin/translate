@@ -68,7 +68,6 @@ factory('restAPI', ['$resource',
             }
         });
     }
-
     function inView(element) {
         element = $(element);
 
@@ -91,10 +90,23 @@ factory('restAPI', ['$resource',
             return false;
         }
     }
-
     return {
         toView: toView,
         inView: inView
+    };
+}).factory('shake', function () {
+    return function (element) {
+        $(element).each(function() {
+            if (foreColor && foreColor!="null") {
+                $(this).css("color",foreColor); 
+            }
+            $(this).css("position","relative"); 
+            for (var x=1; x<=intShakes; x++) {
+            $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+            .animate({left:intDistance}, ((intDuration/intShakes)/2))
+            .animate({left:0}, (((intDuration/intShakes)/4)));
+            $(this).css("color",""); 
+        }
     };
 }).factory('isVisible', function () {
     return function (element) {
