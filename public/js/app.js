@@ -3,7 +3,7 @@
 window.jsGen = true;
 angular.module('jsGen', ['ngAnimate', 'jsGen.tools', 'jsGen.router', 'jsGen.filters', 'jsGen.services', 'jsGen.locale', 'jsGen.directives', 'jsGen.controllers']).
 config(['$httpProvider', 'app',
-    function ($httpProvider, app) {
+    function($httpProvider, app) {
         // global loading status
         var count = 0,
             loading = false,
@@ -12,7 +12,7 @@ config(['$httpProvider', 'app',
                 total: 0
             };
 
-        status.cancel = function () {
+        status.cancel = function() {
             count = 0;
             loading = false;
             this.count = 0;
@@ -21,12 +21,12 @@ config(['$httpProvider', 'app',
         };
 
         // global loading start
-        $httpProvider.defaults.transformRequest.push(function (data) {
+        $httpProvider.defaults.transformRequest.push(function(data) {
             count += 1;
             status.count = count;
             status.total += 1;
             if (!loading) {
-                window.setTimeout(function () {
+                window.setTimeout(function() {
                     if (!loading && count > 0) {
                         loading = true;
                         app.loading(true, status);
@@ -36,7 +36,7 @@ config(['$httpProvider', 'app',
             return data;
         });
         // global loading end
-        $httpProvider.defaults.transformResponse.push(function (data) {
+        $httpProvider.defaults.transformResponse.push(function(data) {
             count -= 1;
             status.count = count;
             if (loading && count === 0) {
@@ -45,9 +45,9 @@ config(['$httpProvider', 'app',
             return data;
         });
         // global error handling
-        $httpProvider.interceptors.push(function () {
+        $httpProvider.interceptors.push(function() {
             return {
-                response: function (res) {
+                response: function(res) {
                     var error, data = res.data;
                     if (angular.isObject(data)) {
                         app.timestamp = data.timestamp;
@@ -60,7 +60,7 @@ config(['$httpProvider', 'app',
                         return res;
                     }
                 },
-                responseError: function (res) {
+                responseError: function(res) {
                     var data = res.data || res,
                         status = res.status || '',
                         message = data.message || (angular.isObject(data) ? 'Error!' : data);
@@ -73,12 +73,12 @@ config(['$httpProvider', 'app',
     }
 ]).run(['app', '$q', '$rootScope', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
     'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store',
-    function (app, $q, $rootScope, $location, $timeout, $filter, $locale,
+    function(app, $q, $rootScope, $location, $timeout, $filter, $locale,
         getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store) {
         var unSave = {
-                stopUnload: false,
-                nextUrl: ''
-            },
+            stopUnload: false,
+            nextUrl: ''
+        },
             global = $rootScope.global = {
                 isAdmin: false,
                 isEditor: false,
@@ -135,16 +135,16 @@ config(['$httpProvider', 'app',
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
 
-        app.loading = function (value, status) {
+        app.loading = function(value, status) {
             // $rootScope.loading = status;
             $rootScope.loading.show = value;
             applyFn();
         };
-        app.validate = function (scope, turnoff) {
+        app.validate = function(scope, turnoff) {
             var collect = [],
                 error = [];
             scope.$broadcast('genTooltipValidate', collect, turnoff);
-            app.each(collect, function (x) {
+            app.each(collect, function(x) {
                 if (x.validate && x.$invalid) {
                     error.push(x);
                 }
@@ -157,11 +157,11 @@ config(['$httpProvider', 'app',
             }
             return !app.validate.errorList;
         };
-        app.checkDirty = function (tplObj, pristineObj, Obj) {
+        app.checkDirty = function(tplObj, pristineObj, Obj) {
             var data = app.union(tplObj);
             if (data && pristineObj && Obj) {
                 app.intersect(data, Obj);
-                app.each(data, function (x, key, list) {
+                app.each(data, function(x, key, list) {
                     if (angular.equals(x, pristineObj[key])) {
                         delete list[key];
                     }
@@ -173,29 +173,32 @@ config(['$httpProvider', 'app',
             }
             return unSave.stopUnload ? data : null;
         };
-        app.removeItem = function (item, key, list) {
-            return app.some(list, function (x, i) {
+        app.removeItem = function(item, key, list) {
+            return app.some(list, function(x, i) {
                 if (x[key] === item[key]) {
                     list.splice(i, 1);
                     return true;
                 }
             });
         };
-        app.checkUser = function () {
+        app.checkUser = function() {
             global.isLogin = !! global.user;
             global.isAdmin = global.user && global.user.role === 5;
             global.isEditor = global.user && global.user.role >= 4;
         };
-        app.clearUser = function () {
+        app.clearUser = function() {
             global.user = null;
             app.checkUser();
         };
-        app.checkFollow = function (user) {
+        app.checkFollow = function(user) {
             var me = global.user || {};
             user.isMe = user._id === me._id;
-            user.isFollow = !user.isMe && app.some(me.followList, function (x) {
+            user.isFollow = !user.isMe && app.some(me.followList, function(x) {
                 return x === user._id;
             });
+        };
+        app.auth = function() {
+            return global.isLogin;
         };
 
         $rootScope.loading = {
@@ -207,10 +210,10 @@ config(['$httpProvider', 'app',
         };
         $rootScope.unSaveModal = {
             confirmBtn: $locale.BTN_TEXT.confirm,
-            confirmFn: function () {
+            confirmFn: function() {
                 if (unSave.stopUnload && unSave.nextUrl) {
                     unSave.stopUnload = false;
-                    $timeout(function () {
+                    $timeout(function() {
                         window.location.href = unSave.nextUrl;
                     }, 100);
                 }
@@ -219,7 +222,7 @@ config(['$httpProvider', 'app',
             cancelBtn: $locale.BTN_TEXT.cancel,
             cancelFn: true
         };
-        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        $rootScope.$on('$locationChangeStart', function(event, next, current) {
             if (unSave.stopUnload) {
                 event.preventDefault();
                 unSave.nextUrl = next;
@@ -229,29 +232,29 @@ config(['$httpProvider', 'app',
             }
         });
 
-        $rootScope.goBack = function () {
+        $rootScope.goBack = function() {
             window.history.go(-1);
         };
-        $rootScope.logout = function () {
+        $rootScope.logout = function() {
             restAPI.user.get({
                 ID: 'logout'
-            }, function () {
+            }, function() {
                 global.user = null;
                 app.checkUser();
                 $location.path('/');
             });
         };
-        $rootScope.followMe = function (user) {
+        $rootScope.followMe = function(user) {
             restAPI.user.save({
                 ID: user._id
             }, {
                 follow: !user.isFollow
-            }, function (data) {
+            }, function(data) {
                 if (data.follow) {
                     global.user.followList.push(user._id);
                     app.toast.success($locale.USER.followed + user.name, $locale.RESPONSE.success);
                 } else {
-                    app.some(global.user.followList, function (x, i, list) {
+                    app.some(global.user.followList, function(x, i, list) {
                         if (x === user._id) {
                             list.splice(i, 1);
                             app.toast.success($locale.USER.unfollowed + user.name, $locale.RESPONSE.success);
@@ -265,7 +268,7 @@ config(['$httpProvider', 'app',
         };
 
         jqWin.resize(applyFn.bind(null, resize));
-        timing(function () { // 保证每360秒内与服务器存在连接，维持session
+        timing(function() { // 保证每360秒内与服务器存在连接，维持session
             if (Date.now() - app.timestamp - app.timeOffset >= 240000) {
                 init();
             }

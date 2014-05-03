@@ -1,8 +1,8 @@
 angular.module('jsGen.services', ['ngResource', 'ngCookies']).
 factory('restAPI', ['$resource',
-    function ($resource) {
+    function($resource) {
         return {
-        	doc: $resource('/api/doc/:DOC'),
+            doc: $resource('/api/doc/:DOC'),
             chapter: $resource('/api/chapter/:DOC/:CHAPTER'),
             user: $resource('/api/user/:ID'),
             tag: $resource('/api/tag/:ID'),
@@ -11,9 +11,9 @@ factory('restAPI', ['$resource',
         };
     }
 ]).factory('cache', ['$cacheFactory',
-    function ($cacheFactory) {
+    function($cacheFactory) {
         return {
-        	doc: $cacheFactory('doc', {
+            doc: $cacheFactory('doc', {
                 capacity: 10
             }),
             chapter: $cacheFactory('chapter', {
@@ -28,13 +28,13 @@ factory('restAPI', ['$resource',
         };
     }
 ]).factory('myConf', ['$cookieStore', 'tools',
-    function ($cookieStore, tools) {
+    function($cookieStore, tools) {
         function checkValue(value, defaultValue) {
             return tools.isNull(value) ? defaultValue : value;
         }
 
         function myCookies(name, initial) {
-            return function (value, pre, defaultValue) {
+            return function(value, pre, defaultValue) {
                 pre = tools.toStr(pre) + name;
                 defaultValue = checkValue(defaultValue, initial);
                 var result = checkValue($cookieStore.get(pre), defaultValue);
@@ -50,7 +50,7 @@ factory('restAPI', ['$resource',
             sumModel: myCookies('sumModel', false)
         };
     }
-]).factory('anchorScroll', function () {
+]).factory('anchorScroll', function() {
     function toView(element, top, height) {
         var winHeight = $(window).height();
 
@@ -61,13 +61,14 @@ factory('restAPI', ['$resource',
         }, {
             duration: 200,
             easing: 'linear',
-            complete: function () {
+            complete: function() {
                 if (!inView(element)) {
                     element[0].scrollIntoView( !! top);
                 }
             }
         });
     }
+
     function inView(element) {
         element = $(element);
 
@@ -94,28 +95,35 @@ factory('restAPI', ['$resource',
         toView: toView,
         inView: inView
     };
-}).factory('shake', function () {
-    return function (element) {
+}).factory('shake', function() {
+    return function(element, intShakes, intDistance, intDuration, foreColor) {
         $(element).each(function() {
-            if (foreColor && foreColor!="null") {
-                $(this).css("color",foreColor); 
+            if (foreColor && foreColor != "null") {
+                $(this).css("color", foreColor);
             }
-            $(this).css("position","relative"); 
-            for (var x=1; x<=intShakes; x++) {
-            $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
-            .animate({left:intDistance}, ((intDuration/intShakes)/2))
-            .animate({left:0}, (((intDuration/intShakes)/4)));
-            $(this).css("color",""); 
-        }
+            $(this).css("position", "relative");
+            for (var x = 1; x <= intShakes; x++) {
+                $(this).animate({
+                    left: (intDistance * -1)
+                }, (((intDuration / intShakes) / 4)))
+                    .animate({
+                        left: intDistance
+                    }, ((intDuration / intShakes) / 2))
+                    .animate({
+                        left: 0
+                    }, (((intDuration / intShakes) / 4)));
+                $(this).css("color", "");
+            }
+        });
     };
-}).factory('isVisible', function () {
-    return function (element) {
+}).factory('isVisible', function() {
+    return function(element) {
         var rect = element[0].getBoundingClientRect();
         return Boolean(rect.bottom - rect.top);
     };
 }).factory('applyFn', ['$rootScope',
-    function ($rootScope) {
-        return function (fn, scope) {
+    function($rootScope) {
+        return function(fn, scope) {
             fn = angular.isFunction(fn) ? fn : angular.noop;
             scope = scope && scope.$apply ? scope : $rootScope;
             fn();
@@ -125,7 +133,7 @@ factory('restAPI', ['$resource',
         };
     }
 ]).factory('timing', ['$rootScope', '$q', '$exceptionHandler',
-    function ($rootScope, $q, $exceptionHandler) {
+    function($rootScope, $q, $exceptionHandler) {
         function timing(fn, delay, times) {
             var timingId, count = 0,
                 defer = $q.defer(),
@@ -135,7 +143,7 @@ factory('restAPI', ['$resource',
             delay = parseInt(delay, 10);
             times = parseInt(times, 10);
             times = times >= 0 ? times : 0;
-            timingId = window.setInterval(function () {
+            timingId = window.setInterval(function() {
                 count += 1;
                 if (times && count >= times) {
                     window.clearInterval(timingId);
@@ -156,7 +164,7 @@ factory('restAPI', ['$resource',
             promise.$timingId = timingId;
             return promise;
         }
-        timing.cancel = function (promise) {
+        timing.cancel = function(promise) {
             if (promise && promise.$timingId) {
                 clearInterval(promise.$timingId);
                 return true;
@@ -167,20 +175,20 @@ factory('restAPI', ['$resource',
         return timing;
     }
 ]).factory('promiseGet', ['$q',
-    function ($q) {
-        return function (param, restAPI, cacheId, cache) {
+    function($q) {
+        return function(param, restAPI, cacheId, cache) {
             var result, defer = $q.defer();
 
             result = cacheId && cache && cache.get(cacheId);
             if (result) {
                 defer.resolve(result);
             } else {
-                restAPI.get(param, function (data) {
+                restAPI.get(param, function(data) {
                     if (cacheId && cache) {
                         cache.put(cacheId, data);
                     }
                     defer.resolve(data);
-                }, function (data) {
+                }, function(data) {
                     defer.reject(data.error);
                 });
             }
@@ -188,25 +196,25 @@ factory('restAPI', ['$resource',
         };
     }
 ]).factory('getChapter', ['restAPI', 'cache', 'promiseGet',
-    function (restAPI, cache, promiseGet) {
-        return function (doc,chapter) {
+    function(restAPI, cache, promiseGet) {
+        return function(doc, chapter) {
             return promiseGet({
-            	DOC: doc,
+                DOC: doc,
                 CHAPTER: chapter
             }, restAPI.chapter, doc + '/' + chapter, cache.chapter);
         };
     }
-]).factory('getDoc', ['restAPI', 'cache', 'promiseGet',
-    function (restAPI, cache, promiseGet) {
-        return function (doc) {
+]).factory('getToc', ['restAPI', 'cache', 'promiseGet',
+    function(restAPI, cache, promiseGet) {
+        return function(doc) {
             return promiseGet({
-            	DOC: doc
+                DOC: doc
             }, restAPI.doc, doc, cache.doc);
         };
     }
 ]).factory('getList', ['restAPI', 'cache', 'promiseGet',
-    function (restAPI, cache, promiseGet) {
-        return function (listType) {
+    function(restAPI, cache, promiseGet) {
+        return function(listType) {
             return promiseGet({
                 ID: listType,
                 s: 10
@@ -214,34 +222,34 @@ factory('restAPI', ['$resource',
         };
     }
 ]).factory('getArticle', ['restAPI', 'cache', 'promiseGet',
-    function (restAPI, cache, promiseGet) {
-        return function (ID) {
+    function(restAPI, cache, promiseGet) {
+        return function(ID) {
             return promiseGet({
                 ID: ID
             }, restAPI.article, ID, cache.article);
         };
     }
 ]).factory('getUser', ['restAPI', 'cache', 'promiseGet',
-    function (restAPI, cache, promiseGet) {
-        return function (ID) {
+    function(restAPI, cache, promiseGet) {
+        return function(ID) {
             return promiseGet({
                 ID: ID
             }, restAPI.user, ID, cache.user);
         };
     }
 ]).factory('getMarkdown', ['$http',
-    function ($http) {
+    function($http) {
         return $http.get('/static/md/markdown.md', {
             cache: true
         });
     }
 ]).factory('toast', ['$log', 'tools',
-    function ($log, tools) {
+    function($log, tools) {
         var toast = {},
             methods = ['info', 'error', 'success', 'warning'];
 
-        angular.forEach(methods, function (x) {
-            toast[x] = function (message, title) {
+        angular.forEach(methods, function(x) {
+            toast[x] = function(message, title) {
                 var log = $log[x] || $log.log;
                 title = tools.toStr(title);
                 log(message, title);
@@ -255,24 +263,24 @@ factory('restAPI', ['$resource',
         toast.clear = toastr.clear;
         return toast;
     }
-]).factory('pretty', function () {
+]).factory('pretty', function() {
     return prettyPrint;
-}).factory('param', function () {
+}).factory('param', function() {
     return $.param;
-}).factory('CryptoJS', function () {
+}).factory('CryptoJS', function() {
     return CryptoJS;
-}).factory('utf8', function () {
+}).factory('utf8', function() {
     return utf8;
-}).factory('store', function () {
+}).factory('store', function() {
     return store;
 }).factory('mdParse', ['tools',
-    function (tools) {
-        return function (html) {
+    function(tools) {
+        return function(html) {
             return marked(tools.toStr(html));
         };
     }
 ]).factory('sanitize', ['tools',
-    function (tools) {
+    function(tools) {
         var San = Sanitize,
             config = San.Config,
             sanitize = [
@@ -282,7 +290,7 @@ factory('restAPI', ['$resource',
                 new San(config.RELAXED)
             ];
         // level: 0, 1, 2, 3
-        return function (html, level) {
+        return function(html, level) {
             var innerDOM = document.createElement('div'),
                 outerDOM = document.createElement('div');
             level = level >= 0 ? level : 3;
@@ -292,17 +300,17 @@ factory('restAPI', ['$resource',
         };
     }
 ]).factory('mdEditor', ['mdParse', 'sanitize', 'pretty', 'tools',
-    function (mdParse, sanitize, pretty, tools) {
-        return function (idPostfix, level) {
+    function(mdParse, sanitize, pretty, tools) {
+        return function(idPostfix, level) {
             idPostfix = tools.toStr(idPostfix);
             var editor = new Markdown.Editor({
-                makeHtml: function (text) {
+                makeHtml: function(text) {
                     return sanitize(mdParse(text), level);
                 }
             }, idPostfix);
             var element = angular.element(document.getElementById('wmd-preview' + idPostfix));
-            editor.hooks.chain('onPreviewRefresh', function () {
-                angular.forEach(element.find('code'), function (value) {
+            editor.hooks.chain('onPreviewRefresh', function() {
+                angular.forEach(element.find('code'), function(value) {
                     value = angular.element(value);
                     if (!value.parent().is('pre')) {
                         value.addClass('prettyline');

@@ -30,7 +30,7 @@ app.configure(function() {
         secret: config.name,
         store: new mongoStore({
             url: config.db,
-            collection : 'sessions'
+            collection: 'sessions'
         })
     }));
     app.use(app.router);
@@ -46,33 +46,23 @@ require('./api/index')(app);
 require('./api/user')(app);
 
 then.parallel([
+
     function(defer) {
         fs.readFile(processPath + '/public/index.html', 'utf8', defer);
-    },
-    function(defer) {
-        fs.readFile(processPath + '/public/home.html', 'utf8', defer);
-    },
-    function(defer) {
-        fs.readFile(processPath + '/public/search.html', 'utf8', defer);
     }
-]).then(function(defer,result) {
+]).then(function(defer, result) {
     var index = result[0];
-    var home = result[1];
-    var search = result[2];
 
-    app.get('/:doc/:chapter', function(req,res) {
+    app.get('/:doc', function(req, res) {
         res.setHeader('Content-Type', 'text/html');
         res.send(index);
     });
-    app.get('/home', function(req,res) {
+    app.get('/:doc/:chapter', function(req, res) {
         res.setHeader('Content-Type', 'text/html');
-        res.send(home);
+        res.send(index);
     });
-    app.get('/search', function(req,res) {
-        res.setHeader('Content-Type', 'text/html');
-        res.send(search);
-    });
-}); 
+
+});
 
 app.locals.formatTimestamp = function(t) {
     function n2(v) {

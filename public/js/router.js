@@ -5,14 +5,14 @@ angular.module('jsGen.router', ['ngRoute']).
 constant('app', {
     version: Date.now()
 }).provider('getFile', ['app',
-    function (app) {
-        this.html = function (fileName) {
+    function(app) {
+        this.html = function(fileName) {
             return '/public/tpl/' + fileName + '?v=' + app.version;
         };
-        this.md = function (fileName) {
+        this.md = function(fileName) {
             return '/public/md/' + fileName + '?v=' + app.version;
         };
-        this.$get = function () {
+        this.$get = function() {
             return {
                 html: this.html,
                 md: this.md
@@ -20,23 +20,11 @@ constant('app', {
         };
     }
 ]).config(['$routeProvider', '$locationProvider', 'getFileProvider',
-    function ($routeProvider, $locationProvider, getFileProvider) {
+    function($routeProvider, $locationProvider, getFileProvider) {
         var index = {
-                templateUrl: getFileProvider.html('index.html'),
-                controller: 'indexCtrl'
-            },
-            docHome = {
-                templateUrl: getFileProvider.html('doc-home.html'),
-                controller: 'docHomeCtrl'
-            },
-            login = {
-                templateUrl: getFileProvider.html('login.html'),
-                controller: 'userLoginCtrl'
-            },
-            register = {
-                templateUrl: getFileProvider.html('register.html'),
-                controller: 'userRegisterCtrl'
-            },
+            templateUrl: getFileProvider.html('index.html'),
+            controller: 'indexCtrl'
+        },
             home = {
                 templateUrl: getFileProvider.html('user.html'),
                 controller: 'homeCtrl'
@@ -74,8 +62,12 @@ constant('app', {
                 templateUrl: getFileProvider.html('index.html'),
                 controller: 'docCtrl'
             },
+            docHome = {
+                templateUrl: getFileProvider.html('index.html'),
+                controller: 'docHomeCtrl'
+            },
             chapter = {
-                templateUrl: getFileProvider.html('chapter.html'),
+                templateUrl: getFileProvider.html('index.html'),
                 controller: 'chapterCtrl'
             };
         $routeProvider.
@@ -100,12 +92,10 @@ constant('app', {
         // when('/U:ID/:OP', user).
         // when('/A:ID', article).
         // when('/C:ID', collection).
+        when('/:doc', docHome).
         when('/:doc/:chapter', doc).
-        // when('/:doc/', docHome).
         when('/home', home).
-        when('/register', register).
-        when('/login', login).
-        when('/',home).
+        when('/', home).
         otherwise({
             redirectTo: '/'
         });
