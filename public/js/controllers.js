@@ -25,24 +25,11 @@ controller('docCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter',
             $scope.doc.chapter = data;
         });
     }
-]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$location',
-    function(app, $scope, $routeParams, getToc, getChapter, $location) {
+]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', 'getChapter', '$location',
+    function(app, $scope, $routeParams, getChapter, $location) {
         var doc = $routeParams.doc;
         var chapter = $routeParams.chapter;
         $scope.doc = {};
-        // example
-        $scope.doc.file = app.getFile.html('doc-home.html');
-        $scope.doc.name = 'Angular';
-        $scope.doc.version = 'v0.1.15';
-        getToc(doc).then(function(data) {
-            // app.global.hasDoc = true;
-            $scope.doc.name = data.name;
-            $scope.doc.version = data.version;
-            $scope.doc.file = app.getFile.html('doc-home.html');
-            $scope.doc.toc = data.toc;
-        }, function() {
-            // app.global.hasDoc = false;
-        });
         getChapter(doc, chapter).then(function(data) {
             $scope.doc.chapter = data;
         });
