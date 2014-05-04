@@ -177,10 +177,10 @@
         </nav>
 
         <div class="container-fluid">
-          <div class="row row-offcanvas row-offcanvas-left" ng-if="global.isDoc">
+          <div class="row row-offcanvas row-offcanvas-left" ng-if="global.isDoc" ng-controller="tocCtrl">
             <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <h3>{{doc.name}}</h3>
-                <div toc-parse="doc.toc" attach-class="nav nav-sidebar"></div>  
+                <h3>{{docName}}</h3>
+                <div toc-parse="toc" attach-class="nav nav-sidebar"></div>  
             </div><!--/span-->
           </div>
           <div class="col-sm-9 col-md-10 main" ng-view></div>

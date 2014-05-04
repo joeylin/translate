@@ -72,9 +72,9 @@ config(['$httpProvider', 'app',
         });
     }
 ]).run(['app', '$q', '$rootScope','$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store',
+    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store','getToc', 
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
-        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store) {
+        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc) {
         var unSave = {
                 stopUnload: false,
                 nextUrl: ''
@@ -95,7 +95,6 @@ config(['$httpProvider', 'app',
         }
 
         function init() {
-            console.log($location.$$url);
             if (/^\/doc\/\w+/.test($location.$$url)) {
                 global.isDoc = true;
             } else {
