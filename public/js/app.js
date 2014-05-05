@@ -151,6 +151,9 @@ config(['$httpProvider', 'app',
             $rootScope.loading.show = value;
             applyFn();
         };
+        app.auth = function() {
+            return global.isLogin;
+        };
         app.clearUser = function() {
             global.user = null;
         };

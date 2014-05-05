@@ -6,15 +6,21 @@
 	</button>
 </p>
 
-<h1 class="page-header">
-  <div class="lead pull-right">
-	<a href="#" class="btn btn-default" ng-show="doc.chapter.status.reading">translate</a>
-	<a href="#" class="btn btn-default" ng-show="doc.chapter.status.reading">origin</a>
-	<!-- <a href="#" class="btn btn-default">translated</a>
-	<a href="#" class="btn btn-default">back</a> -->
+<div class="">
+  <div class="lead pull-right" ng-show="status.read">
+	<a href="#" class="btn btn-default" >translate</a>
+	<a href="#" class="btn btn-default" >origin</a>
   </div>
-  {{doc.title}}
-</h1>
+  <div class="lead pull-right" ng-show="status.translate">
+	<a href="#" class="btn btn-default" >translate</a>
+	<a href="#" class="btn btn-default" >origin</a>
+  </div>
+  <div class="lead pull-right" ng-show="status.origin">
+	<a href="#" class="btn btn-default" >translate</a>
+	<a href="#" class="btn btn-default" >origin</a>
+
+  </div>
+</div>
 
 <div ts-parse-md="doc.chapter.sections" ng-if="!doc.translate"></div>
 <div ng-if="doc.translate">

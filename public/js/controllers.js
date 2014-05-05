@@ -2,7 +2,7 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('docCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter',
+controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter',
     function(app, $scope, $routeParams, getToc, getChapter) {
         var doc = $routeParams.doc;
         var chapter = $routeParams.chapter;
@@ -11,26 +11,26 @@ controller('docCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter',
             file: app.getFile.html('chapter.html'),
             translate: false
         };
+        $scope.status = {
+            read: true,
+            translate: false,
+            orgin: false
+        };
         $scope.doc.makeTranslate = function() {
             if (!app.auth()) {
                 return false;
             }
             $scope.doc.translate = !$scope.doc.translate;
+            if ($scope.doc.translate) {
+                $scope.status.read = false;
+                $scope.status.translate = true;
+            } else {
+                $scope.status.read = true;
+                $scope.status.translate = false;
+            }
         };
-        getToc(doc).then(function(data) {
-            $scope.doc.version = data.version;
-            $scope.doc.toc = data.toc;
-        });
         getChapter(doc, chapter).then(function(data) {
             $scope.doc.chapter = data;
-        });
-    }
-]).controller('tocCtrl', ['app', '$scope', 'getToc', 'getChapter',
-    function(app, $scope, getToc, getChapter) {
-        var doc = $scope.doc;
-        $scope.docName = doc;
-        getToc(doc).then(function(data) {
-            $scope.toc = data.toc;
         });
     }
 ]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', 'getChapter', '$location',

@@ -136,11 +136,6 @@
                 <input type="text" class="form-control" placeholder="Search...">
               </form> -->
               <ul class="nav navbar-nav navbar-right">
-                  <li>
-                    <form class="navbar-form navbar-right">
-                      <input type="text" class="form-control" placeholder="Search...">
-                    </form>
-                  </li>
                   <li class="dropdown" id="menuLogin" ng-if="global.isLogin">
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
                       <div class="dropdown-menu" style="padding:17px;right:12px;border-radius: 6px;">
@@ -192,11 +187,9 @@
           <div class="row row-offcanvas row-offcanvas-left" >
             <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
                 <h3><%= locals.docName %></h3>
-                <div toc-parse="doc.toc" attach-class="nav nav-sidebar">
-                </div> 
-                <%= locals.toc %> 
+                <%- locals.toc %> 
             </div><!--/span-->
-             <div class="col-sm-9 col-md-10 main" ng-view></div>
+            <div class="col-sm-9 col-md-10 main" ng-view id="main"></div>
           </div>
         </div><!--/.container-->
 
@@ -246,11 +239,23 @@
         <!-- JavaScript jQuery code from Bootply.com editor -->  
         <script type='text/javascript'>
             $(document).ready(function() {
-              $('[data-toggle=offcanvas]').click(function() {
+              $('#main').on('click','[data-toggle=offcanvas]', function() {
                 $('.row-offcanvas').toggleClass('active');
               });
             });
+            var $ul = $('#sidebar').find('ul');
+            $ul.addClass('nav nav-sidebar');
+            var chapter = '<%= locals.chapter %>';
+            $ul.find('li').each(function(key,li) {
+              var href = $(li).find('a').attr('ng-href');
+              if (href && href.match(/\/(\w+)$/)[1] === chapter ) {
+                $(li).addClass('active');
+              }
+            });
+            $ul.find('li').on('click', function() {
+              $ul.find('li').removeClass('active');
+              $(this).addClass('active');
+            });
         </script>
-        
     </body>
 </html>

@@ -40,11 +40,8 @@ constant('app', {
             };
         $routeProvider.
         when('/doc/:doc', docHome).
-        when('/doc/:doc/:chapter', doc).
-        when('/', index).
-        otherwise({
-            redirectTo: '/'
-        });
+        when('/doc/:doc/:chapter', chapter).
+        when('/', index);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }
 ]);
