@@ -71,14 +71,14 @@ config(['$httpProvider', 'app',
             };
         });
     }
-]).run(['app', '$q', '$rootScope','$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store','getToc', 
+]).run(['app', '$q', '$rootScope', '$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
+    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
         getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc) {
         var unSave = {
-                stopUnload: false,
-                nextUrl: ''
-            },
+            stopUnload: false,
+            nextUrl: ''
+        },
             global = $rootScope.global = {
                 isLogin: false,
                 info: {}
@@ -95,11 +95,19 @@ config(['$httpProvider', 'app',
         }
 
         function init() {
-            if (/^\/doc\/\w+/.test($location.$$url)) {
+            var params = $location.$$url.match(/\/(\w+)/g);
+            if (params[0] === '/doc') {
                 global.isDoc = true;
+                $rootScope.doc.name = params[1].replace('/', '');
+                getToc('node.js').then(function(data) {
+                    $rootScope.doc.toc = data.toc;
+                });
             } else {
                 global.isDoc = false;
             }
+            restAPI.user.get({}, function(data) {
+
+            });
 
             // restAPI.doc.get({}, function (data) {
             //     app.timeOffset = Date.now() - data.timestamp;
@@ -146,7 +154,7 @@ config(['$httpProvider', 'app',
         app.clearUser = function() {
             global.user = null;
         };
-
+        $rootScope.doc = {};
         $rootScope.loading = {
             show: false
         };

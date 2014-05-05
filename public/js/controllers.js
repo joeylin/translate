@@ -25,16 +25,12 @@ controller('docCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter',
             $scope.doc.chapter = data;
         });
     }
-]).controller('tocCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter',
-    function(app, $scope, $routeParams, getToc, getChapter) {
-        var doc = $routeParams.doc;
-        setTimeout(function() {
-            
-        },10);
+]).controller('tocCtrl', ['app', '$scope', 'getToc', 'getChapter',
+    function(app, $scope, getToc, getChapter) {
+        var doc = $scope.doc;
         $scope.docName = doc;
         getToc(doc).then(function(data) {
             $scope.toc = data.toc;
-            console.log($routeParams);
         });
     }
 ]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', 'getChapter', '$location',

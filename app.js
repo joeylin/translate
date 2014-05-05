@@ -44,25 +44,7 @@ app.configure(function() {
 // api
 require('./api/index')(app);
 require('./api/user')(app);
-
-then.parallel([
-
-    function(defer) {
-        fs.readFile(processPath + '/public/index.html', 'utf8', defer);
-    }
-]).then(function(defer, result) {
-    var index = result[0];
-
-    app.get('/:doc', function(req, res) {
-        res.setHeader('Content-Type', 'text/html');
-        res.send(index);
-    });
-    app.get('/:doc/:chapter', function(req, res) {
-        res.setHeader('Content-Type', 'text/html');
-        res.send(index);
-    });
-
-});
+require('./api/router')(app);
 
 app.locals.formatTimestamp = function(t) {
     function n2(v) {
