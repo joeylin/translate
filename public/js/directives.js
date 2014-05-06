@@ -106,4 +106,58 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
             }
         };
     }
+]).directive('validateWatch', [
+
+    function() {
+        return {
+            require: 'ngModel',
+            link: function(scope, ele, attrs, ctrl) {
+                if (attrs.validateWatch) {
+                    var repeatValidator = function(value) {
+                        return validate(ctrl, 'repeat', value === scope.$eval(attrs.validateWatch), value);
+                    };
+                    ctrl.$parsers.push(repeatValidator);
+                    ctrl.$formatters.push(repeatValidator);
+                }
+
+                function validate(ctrl, validatorName, validity, value) {
+                    ctrl.$setValidity(validatorName, validity);
+                    return validity ? value : undefined;
+                }
+
+            }
+        };
+    }
+]).directive('shake', [
+
+    function() {
+        return {
+            link: function(scope, ele, attrs) {
+                scope.$on('shake', function() {
+                    shake(ele, 4, 6, 700, '#CC2222');
+                });
+
+                function shake(element, intShakes, intDistance, intDuration, foreColor) {
+                    $(element).each(function() {
+                        if (foreColor && foreColor != "null") {
+                            $(this).css("color", foreColor);
+                        }
+                        $(this).css("position", "relative");
+                        for (var x = 1; x <= intShakes; x++) {
+                            $(this).animate({
+                                left: (intDistance * -1)
+                            }, (((intDuration / intShakes) / 4)))
+                                .animate({
+                                    left: intDistance
+                                }, ((intDuration / intShakes) / 2))
+                                .animate({
+                                    left: 0
+                                }, (((intDuration / intShakes) / 4)));
+                            $(this).css("color", "");
+                        }
+                    });
+                };
+            }
+        };
+    }
 ]);

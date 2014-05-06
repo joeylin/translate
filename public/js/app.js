@@ -49,12 +49,12 @@ config(['$httpProvider', 'app',
             return {
                 response: function(res) {
                     var error, data = res.data;
-                    if (angular.isObject(data)) {
+                    if (data.code === 404) {
                         app.timestamp = data.timestamp;
-                        error = !data.ack && data.error;
+                        error = data.info;
                     }
                     if (error) {
-                        app.toast.error(error.message, error.name);
+                        app.toast.error(error);
                         return app.q.reject(data);
                     } else {
                         return res;
@@ -63,7 +63,7 @@ config(['$httpProvider', 'app',
                 responseError: function(res) {
                     var data = res.data || res,
                         status = res.status || '',
-                        message = data.message || (angular.isObject(data) ? 'Error!' : data);
+                        message = data.info || (angular.isObject(data) ? 'Error!' : data);
 
                     app.toast.error(message, status);
                     return app.q.reject(data);
@@ -105,23 +105,16 @@ config(['$httpProvider', 'app',
             } else {
                 global.isDoc = false;
             }
-            restAPI.user.get({}, function(data) {
-
-            });
-
-            // restAPI.doc.get({}, function (data) {
-            //     app.timeOffset = Date.now() - data.timestamp;
-            //     data = data.data;
-            //     data.title2 = data.description;
-            //     data.info.angularjs = angular.version.full.replace(/\-build.*$/, '');
-            //     app.union(global, data);
-            //     app.version = global.info.version || '';
-            //     app.upyun = global.user && global.user.upyun;
-            //     app.checkUser();
-            // });
+            if (user) {
+                global.isLogin = true;
+                global.user = user;
+            } else {
+                app.clearUser();
+            }
         }
 
         window.jsGen = app;
+        var user = window.ts.me;
         app.q = $q;
         app.store = store;
         app.toast = toast;
@@ -156,6 +149,7 @@ config(['$httpProvider', 'app',
         };
         app.clearUser = function() {
             global.user = null;
+            global.isLogin = false;
         };
         $rootScope.doc = {};
         $rootScope.loading = {
@@ -174,17 +168,11 @@ config(['$httpProvider', 'app',
             restAPI.user.get({
                 ID: 'logout'
             }, function() {
-                global.user = null;
-                app.checkUser();
+                app.clearUser();
                 $location.path('/');
             });
         };
         jqWin.resize(applyFn.bind(null, resize));
-        timing(function() { // 保证每360秒内与服务器存在连接，维持session
-            if (Date.now() - app.timestamp - app.timeOffset >= 240000) {
-                init();
-            }
-        }, 120000);
         resize();
         init();
     }

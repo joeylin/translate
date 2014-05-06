@@ -5,81 +5,100 @@ var Section = Models.Section;
 var Translate = Models.Translate;
 var User = Models.User;
 
-var create = function(req,res) {
-	var options = {
-		username: req.body.username,
-		email: req.body.email,
-		password: req.body.password
-	};
-	var user = new User(options);
-	user.provider = 'local';
-	user.save(function(err,user) {
-		if (err) {
-			console.log('err');
-		}
-		req.login(user, function(err) {
-			if (err) { return next(err); }
-			return res.send({
-				isLogin: true,
-				user: user
-			});
-		});
-	});
-};
-var login = function(req,res) {
-	var email = req.body.logname;
-	var password = req.body.logpwd;
-	User.findOne({ email: email }, function (err, user) {
-        if (err) { return done(err) }
-        if (!user) {
-          	return res.send({
-          		error: {
-          			name: 'unkown user'
-          		},
-	          	isLogin: false
-          	});
+var create = function(req, res) {
+    var options = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+    };
+    var user = new User(options);
+    user.provider = 'local';
+    user.save(function(err, user) {
+        if (err) {
+            var message = err.errors.email.message || err.errors.username.message || err.errors.username.message || err.errors.hashedPassword.message || err.message;
+            return res.send({
+                code: 404,
+                user: null,
+                info: message
+            });
         }
-        if (!user.authenticate(password)) {
-          	return res.send({
-          		error: {
-          			name: 'Invalid password'
-          		},
-	          	isLogin: false
-          	});
-        }
-        req.session.userId = user.username;
-        req.session.user = user;
+        req.session.user = {
+            uid: user._id,
+            name: user.name,
+            display_name: user.display_name,
+            email: user.email,
+            avatar: user.avatar,
+            isActive: user.isActive
+        };
         res.send({
-			isLogin: true,
-			user: {
-				name: user.username,
-				id: user._id
-			}
-		});
+            code: 200,
+            user: req.session.user
+        });
     });
 };
-var logout = function(req,res) {
-	req.session.destroy();
-	res.send({
-		isLogin: false,
-		info: 'logout'
-	});
+var login = function(req, res) {
+    var email = req.body.logname;
+    var password = req.body.logpwd;
+    User.findOne({
+        email: email
+    }, function(err, user) {
+        if (err) {
+            console.log('xxxnone users');
+        }
+        if (!user) {
+            return res.send({
+                code: 404,
+                user: null,
+                info: 'unkown user'
+            });
+        }
+        if (!user.authenticate(password)) {
+            return res.send({
+                code: 404,
+                user: null,
+                info: 'error user or password'
+            });
+        }
+        req.session.user = {
+            uid: user._id,
+            name: user.name,
+            display_name: user.display_name,
+            email: user.email,
+            avatar: user.avatar,
+            isActive: user.isActive
+        };
+        res.send({
+            code: 200,
+            user: req.session.user
+        });
+    });
 };
-var findUser = function (req, res) {
-	var id = req.body.id;
-  	User.findOne({ _id : id }).exec(function (err, user) {
-      	if (err) { console.log('err find')}
-      	if (!user) {
-      		return res.send({
-      			status: false,
-      			info: 'unkown user'
-      		});
-      	} else {
-      		res.send({
-      			status: true,
-      			user: user
-      		});
-      	}
+var logout = function(req, res) {
+    req.session.destroy();
+    res.send({
+        code: 200,
+        user: null
+    });
+};
+var findUser = function(req, res) {
+    var id = req.body.id;
+    User.findOne({
+        _id: id
+    }).exec(function(err, user) {
+        if (err) {
+            console.log('err find');
+        }
+        if (!user) {
+            return res.send({
+                status: false,
+                info: 'unkown user'
+            });
+        } else {
+            res.send({
+                status: true,
+                user: user
+            });
+        }
     });
 };
 
@@ -87,4 +106,3 @@ exports.create = create;
 exports.show = findUser;
 exports.login = login;
 exports.logout = logout;
-

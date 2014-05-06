@@ -5,7 +5,11 @@ var crypto = require('crypto');
 var oAuthTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
 
 var UserSchema = new Schema({
-    name: {
+    display_name: {
+        type: String,
+        default: ''
+    },
+    avatar: {
         type: String,
         default: ''
     },
@@ -25,13 +29,13 @@ var UserSchema = new Schema({
         type: String,
         default: '',
     },
-    salt: { 
-        type: String, 
-        default: '' 
+    salt: {
+        type: String,
+        default: ''
     },
-    authToken: { 
-        type: String, 
-        default: '' 
+    authToken: {
+        type: String,
+        default: ''
     },
     isActive: {
         type: Boolean,
@@ -56,38 +60,35 @@ UserSchema.virtual('password').set(function(password) {
     this._password = password;
     this.salt = this.makeSalt();
     this.hashedPassword = this.encryptPassword(password);
-}).get(function() { return this._password });
+}).get(function() {
+    return this._password;
+});
 
 
 /**
  * Validations
  */
 
-var validatePresenceOf = function (value) {
-  return value && value.length;
+var validatePresenceOf = function(value) {
+    return value && value.length;
 };
-UserSchema.path('name').validate(function (name) {
-    if (this.doesNotRequireValidation()) {
-         return true;
-    }
-    return name.length;
-}, 'Name cannot be blank');
-
-UserSchema.path('email').validate(function (email) {
+UserSchema.path('email').validate(function(email) {
     if (this.doesNotRequireValidation()) {
         return true;
     }
     return email.length;
 }, 'Email cannot be blank');
 
-UserSchema.path('email').validate(function (email, fn) {
+UserSchema.path('email').validate(function(email, fn) {
+    var User = mongoose.model('User');
     if (this.doesNotRequireValidation()) {
         fn(true);
     }
-
     // Check only when it is a new user or when email field is modified
     if (this.isNew || this.isModified('email')) {
-        User.find({ email: email }).exec(function (err, users) {
+        User.find({
+            email: email
+        }).exec(function(err, users) {
             fn(!err && users.length === 0);
         });
     } else {
@@ -95,14 +96,14 @@ UserSchema.path('email').validate(function (email, fn) {
     }
 }, 'Email already exists');
 
-UserSchema.path('username').validate(function (username) {
+UserSchema.path('username').validate(function(username) {
     if (this.doesNotRequireValidation()) {
         return true;
     }
     return username.length;
 }, 'Username cannot be blank');
 
-UserSchema.path('hashedPassword').validate(function (hashedPassword) {
+UserSchema.path('hashedPassword').validate(function(hashedPassword) {
     if (this.doesNotRequireValidation()) {
         return true;
     }
@@ -118,11 +119,11 @@ UserSchema.pre('save', function(next) {
     if (!this.isNew) {
         return next();
     }
-    if (!validatePresenceOf(this.password)&& !this.doesNotRequireValidation()) {
+    if (!validatePresenceOf(this.password) && !this.doesNotRequireValidation()) {
         next(new Error('Invalid password'));
     } else {
         next();
-    }   
+    }
 });
 
 /**
@@ -131,38 +132,38 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods = {
 
-  /**
-   * Authenticate - check if the passwords are the same
-   *
-   * @param {String} plainText
-   * @return {Boolean}
-   * @api public
-   */
+    /**
+     * Authenticate - check if the passwords are the same
+     *
+     * @param {String} plainText
+     * @return {Boolean}
+     * @api public
+     */
 
-    authenticate: function (plainText) {
+    authenticate: function(plainText) {
         return this.encryptPassword(plainText) === this.hashedPassword;
     },
 
     /**
-    * Make salt
-    *
-    * @return {String}
-    * @api public
-    */
+     * Make salt
+     *
+     * @return {String}
+     * @api public
+     */
 
-    makeSalt: function () {
+    makeSalt: function() {
         return Math.round((new Date().valueOf() * Math.random())) + '';
     },
 
     /**
-    * Encrypt password
-    *
-    * @param {String} password
-    * @return {String}
-    * @api public
-    */
+     * Encrypt password
+     *
+     * @param {String} password
+     * @return {String}
+     * @api public
+     */
 
-    encryptPassword: function (password) {
+    encryptPassword: function(password) {
         if (!password) {
             return '';
         }
@@ -176,16 +177,12 @@ UserSchema.methods = {
     },
 
     /**
-    * Validation is not required if using OAuth
-    */
+     * Validation is not required if using OAuth
+     */
 
     doesNotRequireValidation: function() {
-        return ~oAuthTypes.indexOf(this.provider);
+        return~ oAuthTypes.indexOf(this.provider);
     }
 };
 
-
 mongoose.model('User', UserSchema);
-
-
-

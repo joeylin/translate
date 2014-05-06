@@ -47,41 +47,28 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         app.clearUser();
         app.rootScope.global.title2 = app.locale.USER.login;
         $scope.login = {
-            logauto: true,
-            logname: '',
-            logpwd: ''
-        };
-        $scope.reset = {
-            title: '',
-            type: ''
+            username: '',
+            password: ''
         };
 
         $scope.submit = function() {
-            if (app.validate($scope)) {
-                var data = app.union($scope.login);
-                data.logtime = Date.now() - app.timeOffset;
-                data.logpwd = app.CryptoJS.SHA256(data.logpwd).toString();
-                data.logpwd = app.CryptoJS.HmacSHA256(data.logpwd, 'jsGen').toString();
-                data.logpwd = app.CryptoJS.HmacSHA256(data.logpwd, data.logname + ':' + data.logtime).toString();
+            var data = app.union($scope.login);
+            data.logtime = Date.now() - app.timeOffset;
+            data.password = app.CryptoJS.SHA256(data.password).toString();
+            data.password = app.CryptoJS.HmacSHA256(data.password, 'jsGen').toString();
+            data.password = app.CryptoJS.HmacSHA256(data.password, data.username + ':' + data.logtime).toString();
 
-                app.restAPI.user.save({
-                    ID: 'login'
-                }, data, function(data) {
-                    app.rootScope.global.user = data.user;
-                    app.checkUser();
-                    $scope.$destroy();
-                    app.location.path('/home');
-                }, function(data) {
-                    $scope.reset.type = data.error.name;
-                    $scope.reset.title = app.locale.RESET[data.error.name];
-                });
-            }
-        };
-        $scope.clearUsername = function() {
-            $scope.login.logname = '';
-        };
-        $scope.clearPassword = function() {
-            $scope.login.logpwd = '';
+            app.restAPI.user.save({
+                ID: 'login'
+            }, data, function(data) {
+                app.rootScope.global.user = data.user;
+                app.checkUser();
+                $scope.$destroy();
+                app.location.path('/home');
+            }, function(data) {
+                $scope.reset.type = data.error.name;
+                $scope.reset.title = app.locale.RESET[data.error.name];
+            });
         };
     }
 ]).controller('userRegisterCtrl', ['app', '$scope',
@@ -93,40 +80,45 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         app.clearUser();
         global.title2 = app.locale.USER.register;
         $scope.user = {
-            name: '',
+            username: '',
             email: '',
-            passwd: '',
-            passwd2: ''
+            password: '',
+            password2: ''
         };
-
-        $scope.checkName = function(scope, model) {
-            return filter('checkName')(model.$value);
-        };
-        $scope.checkMin = function(scope, model) {
-            return lengthFn(model.$value) >= 5;
-        };
-        $scope.checkMax = function(scope, model) {
-            return lengthFn(model.$value) <= 15;
-        };
+        $scope.signup = 'Sign Up';
+        $scope.isShake = false;
         $scope.submit = function() {
             var user = $scope.user;
-            if (app.validate($scope)) {
-                var data = {
-                    name: user.name,
-                    email: user.email
-                };
-                data.passwd = app.CryptoJS.SHA256(user.passwd).toString();
-                data.passwd = app.CryptoJS.HmacSHA256(data.passwd, 'jsGen').toString();
+            $scope.signup = 'Wait...';
 
-                app.restAPI.user.save({
-                    ID: 'register'
-                }, data, function(data) {
-                    app.rootScope.global.user = data.data;
-                    app.checkUser();
-                    $scope.$destroy();
-                    app.location.path('/home');
-                });
-            }
+            var data = {
+                username: user.username,
+                email: user.email
+            };
+            data.password = app.CryptoJS.SHA256(user.password).toString();
+            data.password = app.CryptoJS.HmacSHA256(data.password, 'jsGen').toString();
+
+            app.restAPI.user.save({
+                ID: 'register'
+            }, data, function(data) {
+                app.rootScope.global.user = data.user;
+                $scope.signup = 'Sign Up';
+            }, function() {
+                $scope.$emit('shake');
+                $scope.signup = 'Sign Up';
+            });
+
         };
+    }
+]).controller('settingsCtrl', ['app', '$scope',
+    function(app, $scope) {
+        $scope.logout = function() {
+            app.restAPI.user.get({
+                ID: 'logout'
+            }, function() {
+                app.clearUser();
+            });
+        };
+
     }
 ]);

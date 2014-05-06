@@ -11,7 +11,6 @@ var ejs = require('ejs');
 var then = require('thenjs');
 var config = require('./config/config.js');
 var processPath = path.dirname(process.argv[1]);
-// var routes = require('./routes');
 
 var app = express();
 

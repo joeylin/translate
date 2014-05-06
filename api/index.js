@@ -19,6 +19,7 @@ var getDoc = function(req, res) {
         if (err) {
             console.log('err');
         }
+        result.code = 200;
         result.toc = file;
         result.name = name;
         result.version = '0.1.0';
@@ -26,6 +27,7 @@ var getDoc = function(req, res) {
         res.send(result);
     });
 };
+
 var getChapter = function(req, res) {
     var result = {};
     var name = req.params.name;
@@ -34,6 +36,7 @@ var getChapter = function(req, res) {
     if ((doc && !name) || (doc && name === "#")) {
         // this is example
         res.send({
+            code: 200,
             particpate: [{
                 user: 'joeylin',
                 percent: '10%'
@@ -47,7 +50,6 @@ var getChapter = function(req, res) {
         });
         return;
     }
-
     Chapter.find({
         name: name,
         doc: doc
@@ -67,6 +69,7 @@ var getChapter = function(req, res) {
                 next();
             });
         }, function(err) {
+            result.code = 200;
             res.send(result);
         });
     });
@@ -114,7 +117,9 @@ var saveTranslate = function(req, res) {
         }).exec(function(err, sections) {
             sections[0].translates.push(translate._id);
             sections[0].save(function(err, result) {
-                res.send(200);
+                res.send(200, {
+                    code: 200
+                });
             });
         });
     });

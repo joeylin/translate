@@ -38,14 +38,14 @@ var DocSchema = new Schema({
 
 DocSchema.virtual('full').get(function() {
     var full = [];
-    this.chapters.map(function(value,key) {
+    this.chapters.map(function(value, key) {
         full.push(value.name);
     });
     return full;
 });
 
 // methods
-DocSchema.methods.pushTag = function(tags,cb) {
+DocSchema.methods.pushTag = function(tags, cb) {
     this.tags.push(tags);
     this.save(cb);
 };
@@ -58,7 +58,7 @@ DocSchema.methods.getDocChapters = function(cb) {
 };
 
 // statics
-DocSchema.statics.getSpecDoc = function(n,m,cb) {
+DocSchema.statics.getSpecDoc = function(n, m, cb) {
     this.find().skip(n * m).limit(n).exec(callback);
 };
 DocSchema.statics.createNew = function(obj, cb) {
@@ -71,11 +71,12 @@ DocSchema.statics.createNew = function(obj, cb) {
     if (obj.tag) {
         doc.tags.push(obj.tag);
     }
+    debugger;
     doc.save(cb);
 };
 
 // middleware
-DocSchema.pre('save', function (next) {
+DocSchema.pre('save', function(next) {
     this.updateAt = new Date();
     next();
 });

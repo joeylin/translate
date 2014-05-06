@@ -1,15 +1,15 @@
 var user = require('../controllers/user');
 
 module.exports = function(app) {
-	// user signup
-	app.post('/api/user', user.create);
+    // user signup
+    app.post('/api/user/register', user.create);
 
-	// user login
-	app.post('/api/user/login',user.login);
+    // user login
+    app.post('/api/user/login', user.login);
 
-	// user logout
-	app.post('/api/user/logout',user.logout);
+    // user logout
+    app.get('/api/user/logout', user.logout);
 
-	// show user info
-	app.get('/api/user/:userId', user.show);
+    // show user info
+    app.get('/api/user/:userId', user.show);
 };
