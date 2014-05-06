@@ -45,14 +45,14 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
 ]).controller('userLoginCtrl', ['app', '$scope',
     function(app, $scope) {
         app.clearUser();
-        app.rootScope.global.title2 = app.locale.USER.login;
-        $scope.login = {
+        $scope.user = {
             username: '',
             password: ''
         };
 
         $scope.submit = function() {
-            var data = app.union($scope.login);
+            var data = app.union($scope.user);
+            $scope.login = 'Wait...';
             data.logtime = Date.now() - app.timeOffset;
             data.password = app.CryptoJS.SHA256(data.password).toString();
             data.password = app.CryptoJS.HmacSHA256(data.password, 'jsGen').toString();
@@ -62,21 +62,17 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
                 ID: 'login'
             }, data, function(data) {
                 app.rootScope.global.user = data.user;
-                app.checkUser();
-                $scope.$destroy();
-                app.location.path('/home');
+                $scope.$broadcast('toggle');
+                $scope.login = 'Login';
             }, function(data) {
-                $scope.reset.type = data.error.name;
-                $scope.reset.title = app.locale.RESET[data.error.name];
+                $scope.$emit('shake');
+                $scope.login = 'Login';
             });
         };
     }
 ]).controller('userRegisterCtrl', ['app', '$scope',
     function(app, $scope) {
-        var filter = app.filter,
-            lengthFn = filter('length'),
-            global = app.rootScope.global;
-
+        var global = app.rootScope.global;
         app.clearUser();
         global.title2 = app.locale.USER.register;
         $scope.user = {
@@ -86,7 +82,6 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             password2: ''
         };
         $scope.signup = 'Sign Up';
-        $scope.isShake = false;
         $scope.submit = function() {
             var user = $scope.user;
             $scope.signup = 'Wait...';
@@ -102,6 +97,7 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
                 ID: 'register'
             }, data, function(data) {
                 app.rootScope.global.user = data.user;
+                $scope.$emit('toggle');
                 $scope.signup = 'Sign Up';
             }, function() {
                 $scope.$emit('shake');

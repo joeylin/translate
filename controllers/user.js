@@ -7,15 +7,16 @@ var User = Models.User;
 
 var create = function(req, res) {
     var options = {
-        name: req.body.name,
+        name: req.body.username,
         email: req.body.email,
         password: req.body.password
     };
+    console.log(options);
     var user = new User(options);
     user.provider = 'local';
     user.save(function(err, user) {
         if (err) {
-            var message = err.errors.email.message || err.errors.username.message || err.errors.username.message || err.errors.hashedPassword.message || err.message;
+            var message = err.message;
             return res.send({
                 code: 404,
                 user: null,
