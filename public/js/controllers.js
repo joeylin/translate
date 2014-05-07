@@ -32,11 +32,13 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             $scope.status.read = false;
             $scope.status.translate = false;
             $scope.status.orgin = true;
+            $scope.doc.translate = false;
         };
         $scope.doc.getTranslate = function() {
             $scope.status.read = true;
             $scope.status.translate = false;
             $scope.status.orgin = false;
+            $scope.doc.translate = false;
         };
         getChapter(doc, chapter).then(function(data) {
             $scope.doc.chapter = data;
