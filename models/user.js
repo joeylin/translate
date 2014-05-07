@@ -31,7 +31,7 @@ var UserSchema = new Schema({
     },
     salt: {
         type: String,
-        default: ''
+        default: 'ts'
     },
     authToken: {
         type: String,

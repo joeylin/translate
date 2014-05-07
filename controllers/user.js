@@ -7,12 +7,12 @@ var User = Models.User;
 
 var create = function(req, res) {
     var options = {
-        name: req.body.username,
+        username: req.body.username,
         email: req.body.email,
         password: req.body.password
     };
-    console.log(options);
     var user = new User(options);
+    console.log(user);
     user.provider = 'local';
     user.save(function(err, user) {
         if (err) {
@@ -23,9 +23,10 @@ var create = function(req, res) {
                 info: message
             });
         }
+        console.log(user);
         req.session.user = {
             uid: user._id,
-            name: user.name,
+            username: user.username,
             display_name: user.display_name,
             email: user.email,
             avatar: user.avatar,
@@ -38,13 +39,14 @@ var create = function(req, res) {
     });
 };
 var login = function(req, res) {
-    var email = req.body.logname;
-    var password = req.body.logpwd;
+    var username = req.body.username;
+    var password = req.body.password;
     User.findOne({
-        email: email
+        username: username
     }, function(err, user) {
         if (err) {
             console.log('xxxnone users');
+            return false;
         }
         if (!user) {
             return res.send({
@@ -62,7 +64,7 @@ var login = function(req, res) {
         }
         req.session.user = {
             uid: user._id,
-            name: user.name,
+            username: user.username,
             display_name: user.display_name,
             email: user.email,
             avatar: user.avatar,

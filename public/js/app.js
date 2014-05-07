@@ -81,7 +81,8 @@ config(['$httpProvider', 'app',
         },
             global = $rootScope.global = {
                 isLogin: false,
-                info: {}
+                info: {},
+                components: {}
             },
             jqWin = $(window);
 
@@ -95,22 +96,13 @@ config(['$httpProvider', 'app',
         }
 
         function init() {
-            var params = $location.$$url.match(/\/(\w+)/g);
-            if (params[0] === '/doc') {
-                global.isDoc = true;
-                $rootScope.doc.name = params[1].replace('/', '');
-                getToc('node.js').then(function(data) {
-                    $rootScope.doc.toc = data.toc;
-                });
-            } else {
-                global.isDoc = false;
-            }
             if (user) {
                 global.isLogin = true;
                 global.user = user;
             } else {
                 app.clearUser();
             }
+            global.components.login = 'Login';
         }
 
         window.jsGen = app;
@@ -140,12 +132,15 @@ config(['$httpProvider', 'app',
         angular.extend(app, tools); //添加jsGen系列工具函数
 
         app.loading = function(value, status) {
-            // $rootScope.loading = status;
             $rootScope.loading.show = value;
-            applyFn();
+            // applyFn();
         };
         app.auth = function() {
             return global.isLogin;
+        };
+        app.loginUser = function(user) {
+            global.user = user;
+            global.isLogin = true;
         };
         app.clearUser = function() {
             global.user = null;
@@ -155,15 +150,6 @@ config(['$httpProvider', 'app',
         $rootScope.loading = {
             show: false
         };
-        $rootScope.$on('$locationChangeStart', function(event, next, current) {
-            if (unSave.stopUnload) {
-                event.preventDefault();
-                unSave.nextUrl = next;
-                $rootScope.unSaveModal.modal(true);
-            } else {
-                unSave.nextUrl = '';
-            }
-        });
         $rootScope.logout = function() {
             restAPI.user.get({
                 ID: 'logout'
@@ -172,8 +158,6 @@ config(['$httpProvider', 'app',
                 $location.path('/');
             });
         };
-        jqWin.resize(applyFn.bind(null, resize));
-        resize();
         init();
     }
 ]);

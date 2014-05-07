@@ -112,7 +112,7 @@
           <% if (locals.user) { %>
             ts.me = {
               uid: '<%= locals.user.uid %>',
-              name: '<%= locals.user.name %>',
+              username: '<%= locals.user.username %>',
               display_name: '<%= locals.user.display_name %>',
               email: '<%= locals.user.email %>',
               avatar: '<%= locals.user.avatar %>',
@@ -146,10 +146,10 @@
                 <input type="text" class="form-control" placeholder="Search...">
               </form> -->
               <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" dropdown-toggle >
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
+                  <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" >
+                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
                       <div class="dropdown-menu" style="padding:17px;right:12px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate> 
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
                               <label>Login</label> 
                               <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username">
                               <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password">
@@ -173,7 +173,7 @@
                   </li>
                   <li class="dropdown" id="menuUser" ng-if="global.isLogin">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                          <i class="icon-user icon-xxlarge"> </i> <span id="lblUsername"></span>
+                          <i class="icon-user icon-xxlarge"> </i> <span id="lblUsername" ng-bind="global.user.username"></span>
                           <b class="caret"></b>
                       </a>
                       <ul class="dropdown-menu" ng-controller="settingsCtrl">

@@ -8,7 +8,6 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         var chapter = $routeParams.chapter;
         $scope.doc = {
             name: $routeParams.doc,
-            file: app.getFile.html('chapter.html'),
             translate: false
         };
         $scope.status = {
@@ -29,8 +28,19 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
                 $scope.status.translate = false;
             }
         };
+        $scope.doc.getOrigin = function() {
+            $scope.status.read = false;
+            $scope.status.translate = false;
+            $scope.status.orgin = true;
+        };
+        $scope.doc.getTranslate = function() {
+            $scope.status.read = true;
+            $scope.status.translate = false;
+            $scope.status.orgin = false;
+        };
         getChapter(doc, chapter).then(function(data) {
             $scope.doc.chapter = data;
+            console.log(data);
         });
     }
 ]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', 'getChapter', '$location',
@@ -49,21 +59,21 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             username: '',
             password: ''
         };
-
         $scope.submit = function() {
-            var data = app.union($scope.user);
             $scope.login = 'Wait...';
-            data.logtime = Date.now() - app.timeOffset;
-            data.password = app.CryptoJS.SHA256(data.password).toString();
-            data.password = app.CryptoJS.HmacSHA256(data.password, 'jsGen').toString();
-            data.password = app.CryptoJS.HmacSHA256(data.password, data.username + ':' + data.logtime).toString();
+            var user = $scope.user;
+            var data = {
+                username: user.username,
+                password: user.password
+            };
 
+            data.logtime = Date.now() - app.timeOffset;
             app.restAPI.user.save({
                 ID: 'login'
             }, data, function(data) {
-                app.rootScope.global.user = data.user;
-                $scope.$broadcast('toggle');
-                $scope.login = 'Login';
+                app.loginUser(data.user);
+                $('#menuLogin').removeClass('open');
+                $scope.$destroy();
             }, function(data) {
                 $scope.$emit('shake');
                 $scope.login = 'Login';
@@ -74,7 +84,6 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
     function(app, $scope) {
         var global = app.rootScope.global;
         app.clearUser();
-        global.title2 = app.locale.USER.register;
         $scope.user = {
             username: '',
             email: '',
@@ -90,20 +99,17 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
                 username: user.username,
                 email: user.email
             };
-            data.password = app.CryptoJS.SHA256(user.password).toString();
-            data.password = app.CryptoJS.HmacSHA256(data.password, 'jsGen').toString();
-
+            data.password = user.password;
             app.restAPI.user.save({
                 ID: 'register'
             }, data, function(data) {
-                app.rootScope.global.user = data.user;
-                $scope.$emit('toggle');
+                app.loginUser(data.user);
                 $scope.signup = 'Sign Up';
+                $('#menuLogin').removeClass('open');
             }, function() {
                 $scope.$emit('shake');
                 $scope.signup = 'Sign Up';
             });
-
         };
     }
 ]).controller('settingsCtrl', ['app', '$scope',

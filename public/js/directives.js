@@ -106,7 +106,8 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
             }
         };
     }
-]).directive('validateWatch', [function() {
+]).directive('validateWatch', [
+    function() {
         return {
             require: 'ngModel',
             link: function(scope, ele, attrs, ctrl) {
@@ -126,7 +127,8 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
             }
         };
     }
-]).directive('shake', [function() {
+]).directive('shake', [
+    function() {
         return {
             link: function(scope, ele, attrs) {
                 scope.$on('shake', function() {
@@ -153,15 +155,6 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
                         }
                     });
                 };
-            }
-        };
-    }
-]).directive('dropdownToggle', [function() {
-        return {
-            link: function(scope, ele, attrs) {
-                scope.$on('toggle', function() {
-                    $(ele).children().eq(0).click();
-                });
             }
         };
     }
