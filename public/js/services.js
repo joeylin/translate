@@ -6,8 +6,7 @@ factory('restAPI', ['$resource',
             chapter: $resource('/api/chapter/:DOC/:CHAPTER'),
             user: $resource('/api/user/:ID'),
             tag: $resource('/api/tag/:ID'),
-            translate: $resource('/api/chapter/:ID/:OP'),
-            save: $resource('/api/section/:ID/translate')
+            translate: $resource('/api/chapter/:ID/:OP')
         };
     }
 ]).factory('cache', ['$cacheFactory',

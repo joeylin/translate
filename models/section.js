@@ -8,7 +8,7 @@ var SectionSchema = new Schema({
         ref: 'Chapter'
     },
     // markdown format
-    content: { 
+    content: {
         type: String
     },
     dataType: {
@@ -17,6 +17,19 @@ var SectionSchema = new Schema({
     index: {
         type: Number,
         default: 0
+    },
+    isFinished: {
+        value: {
+            type: Boolean,
+            default: false
+        },
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        date: {
+            type: Date
+        }
     },
     isTranslated: {
         type: Boolean,
@@ -40,7 +53,12 @@ SectionSchema.virtual('html').get(function() {
     var marked = require('marked');
     return marked(this.content);
 });
-
+SectionSchema.path('isFinished.value').validate(function(value) {
+    if (!this.translates.length && value) {
+        return false;
+    }
+    return true;
+}, 'translate is blank');
 // statics
 SectionSchema.statics.createNew = function(obj, cb) {
     var section = new this();
@@ -51,6 +69,20 @@ SectionSchema.statics.createNew = function(obj, cb) {
         section.translates.push(obj.translate);
     }
     section.save(cb);
+};
+
+// methods
+SectionSchema.methods.setFinished = function(userId) {
+    this.isFinished.value = true;
+    this.isFinished.user = userId;
+    this.date = new Date();
+    this.save();
+};
+SectionSchema.methods.unsetFinished = function() {
+    this.isFinished.value = false;
+    this.isFinished.user = '';
+    this.date = new Date();
+    this.save();
 };
 
 // middleware

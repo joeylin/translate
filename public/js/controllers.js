@@ -2,10 +2,18 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter',
-    function(app, $scope, $routeParams, getToc, getChapter) {
+controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$http',
+    function(app, $scope, $routeParams, getToc, getChapter, $http) {
         var doc = $routeParams.doc;
         var chapter = $routeParams.chapter;
+        var update = function(cb) {
+            getChapter(doc, chapter).then(function(data) {
+                $scope.doc.chapter = data;
+                if (typeof cb === 'function') {
+                    cb();
+                }
+            });
+        };
         $scope.doc = {
             name: $routeParams.doc,
             translate: false
@@ -15,35 +23,56 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             translate: false,
             orgin: false
         };
+        $scope.saveTitle = 'save';
         $scope.doc.makeTranslate = function() {
             if (!app.auth()) {
                 return false;
             }
-            $scope.doc.translate = !$scope.doc.translate;
-            if ($scope.doc.translate) {
-                $scope.status.read = false;
-                $scope.status.translate = true;
-            } else {
-                $scope.status.read = true;
-                $scope.status.translate = false;
-            }
+            $scope.status.read = false;
+            $scope.status.translate = true;
+            $scope.status.orgin = false;
         };
         $scope.doc.getOrigin = function() {
             $scope.status.read = false;
             $scope.status.translate = false;
             $scope.status.orgin = true;
-            $scope.doc.translate = false;
         };
-        $scope.doc.getTranslate = function() {
-            $scope.status.read = true;
-            $scope.status.translate = false;
-            $scope.status.orgin = false;
-            $scope.doc.translate = false;
+        $scope.doc.getRead = function() {
+            if ($scope.status.translate) {
+                update(function() {
+                    $scope.status.read = true;
+                    $scope.status.translate = false;
+                    $scope.status.orgin = false;
+                });
+            } else {
+                $scope.status.read = true;
+                $scope.status.translate = false;
+                $scope.status.orgin = false;
+            }
         };
-        getChapter(doc, chapter).then(function(data) {
-            $scope.doc.chapter = data;
-            console.log(data);
-        });
+        $scope.save = function(section) {
+            var url = '/api/translate/save';
+            if (section && !section.newTrans) {
+                return false;
+            }
+            if (section.isSaved) {
+                return false;
+            }
+            var data = {
+                id: section.id,
+                user: app.getUsername(),
+                content: section.newTrans
+            };
+            $http.post(url, data).success(function(data, status) {
+                section.saveTitle = 'saved';
+                section.isSaved = true;
+            });
+        };
+        $scope.change = function(section) {
+            section.isSaved = false;
+            section.saveTitle = 'save';
+        };
+        update();
     }
 ]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', 'getChapter', '$location',
     function(app, $scope, $routeParams, getChapter, $location) {

@@ -12,30 +12,40 @@
 	<a href="#" class="btn btn-default" ng-click="doc.getOrigin()">origin</a>
   </div>
   <div class="lead pull-right" ng-show="status.translate">
-	<a href="#" class="btn btn-default" ng-click="doc.getTranslate()">back</a>
+	<a href="#" class="btn btn-default" ng-click="doc.getRead()">back</a>
   </div>
   <div class="lead pull-right" ng-show="status.origin">
-	<a href="#" class="btn btn-default" ng-click="doc.getTranslate()">back</a>
+	<a href="#" class="btn btn-default" ng-click="doc.getRead()">back</a>
   </div>
 </div>
 
-<div ts-parse-md="doc.chapter.sections" ng-if="!doc.translate"></div>
-<div ng-if="doc.translate">
+<div ts-parse-md="doc.chapter.sections" ng-if="status.read"></div>
+<div ts-parse-md="doc.chapter.sections" ng-if="status.origin"></div>
+<div ng-if="status.translate">
 	<div class="content-translate" ng-repeat="section in doc.chapter.sections" sId="{{section.id}}">
 		<p>{{section.md}}</p>
-		<div class="accordion with-marker content-refer" data-role="accordion" ng-repeat="translate in section.translates">
-			<div class="accordion-frame">
-				<a href="#" class="heading collapsed">{{translate.author}} at {{translate.date}}</a>
-				<div class="content">
-					<p>{{translate.content}}</p>
+		<div ng-if="!section.isFinished.value">
+			<button>set Finishede</button>
+			<div class="accordion with-marker content-refer" data-role="accordion">
+				<div class="accordion-frame">
+					<a href="#" class="heading collapsed">{{section.translate.author}} at {{section.translate.date}}</a>
+					<div class="content">
+						<p>{{section.translate.content}}</p>
+					</div>
 				</div>
 			</div>
+			<div class="input-control textarea margin-top5">
+				<textarea ng-model="section.newTrans" ng-change="change(section)">{{section.md}}</textarea>
+			</div>
+			<div class="clearfix">
+				<button  sId="{{section.id}}" ng-click="save(section)" class="info place-right" ng-class="{saved:section.isSaved}">{{section.saveTitle}}</button>
+			</div>
 		</div>
-		<div class="input-control textarea margin-top5">
-			<textarea>{{section.md}}</textarea>
-		</div>
-		<div class="clearfix">
-			<button  sId="{{section.id}}" class="info place-right">save</button>
+		<div ng-if="section.isFinished.value">
+			<a href="#" class="heading collapsed">Finished by {{section.isFinished.user}} at {{section.isFinished.date}}</a>
+			<div class="content">
+				<p>{{section.translate.content}}</p>
+			</div>
 		</div>
 	</div>
 </div>

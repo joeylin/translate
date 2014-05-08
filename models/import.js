@@ -11,10 +11,10 @@ mongoose.connect(config.db, function(err) {
     }
 });
 
-function errorHandle(err,desc) {
-	if (err) {
-		console.log('err xxxxx',desc);
-	}
+function errorHandle(err, desc) {
+    if (err) {
+        console.log('err xxxxx', desc);
+    }
 }
 
 require('./doc');
@@ -307,40 +307,43 @@ var files = fs.readdirSync(DOC_PATH);
 
 // import translate 
 var odd = 1;
-Doc.find({name:docName}).populate('chapters').exec(function(err,doc) {
-	console.log(doc[0].chapters)
-	async.eachSeries(doc[0].chapters, function(chapter,done) {
-		var sections = chapter.sections;
-		async.eachSeries(sections,function(section,next) {
-			var translateData = {
-				content: 'this is example',
-				origin: section._id,
-				author: 'joeylin'
-			};
-			odd = odd + 1;
-			if (odd % 4 === 2) {
-				translateData.author = 'laolei';
-			}
-			if (odd % 4 === 0) {
-				translateData.author = 'leo';
-			}
-			if (odd % 4 === 3) {
-				translateData.author = 'xianzhi';
-			}
-			Translate.createNew(translateData, function(err,translate) {
-				Section.find({_id: section}).exec(function(err,sections) {
-					sections[0].translates.push(translate._id);
-					sections[0].save(function(err,result) {
-						next();
-						// console.log(result);
-					});
-				});
-			});
-		}, function(err) {
-			done();
-		});
-	}, function(err) {
-		process.exit(-1);
-	});
+Doc.find({
+    name: docName
+}).populate('chapters').exec(function(err, doc) {
+    console.log(doc[0].chapters)
+    async.eachSeries(doc[0].chapters, function(chapter, done) {
+        var sections = chapter.sections;
+        async.eachSeries(sections, function(section, next) {
+            var translateData = {
+                content: 'this is example',
+                origin: section._id,
+                user: 'joeylin'
+            };
+            odd = odd + 1;
+            if (odd % 4 === 2) {
+                translateData.user = 'laolei';
+            }
+            if (odd % 4 === 0) {
+                translateData.user = 'leo';
+            }
+            if (odd % 4 === 3) {
+                translateData.user = 'xianzhi';
+            }
+            Translate.createNew(translateData, function(err, translate) {
+                Section.find({
+                    _id: section
+                }).exec(function(err, sections) {
+                    sections[0].translates.push(translate._id);
+                    sections[0].save(function(err, result) {
+                        next();
+                        // console.log(result);
+                    });
+                });
+            });
+        }, function(err) {
+            done();
+        });
+    }, function(err) {
+        process.exit(-1);
+    });
 });
-	

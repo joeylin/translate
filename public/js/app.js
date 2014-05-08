@@ -138,6 +138,11 @@ config(['$httpProvider', 'app',
         app.auth = function() {
             return global.isLogin;
         };
+        app.getUsername = function() {
+            if (global.user && global.user.username) {
+                return global.user.username;
+            }
+        };
         app.loginUser = function(user) {
             global.user = user;
             global.isLogin = true;

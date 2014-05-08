@@ -107,6 +107,7 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
         };
     }
 ]).directive('validateWatch', [
+
     function() {
         return {
             require: 'ngModel',
@@ -128,6 +129,7 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
         };
     }
 ]).directive('shake', [
+
     function() {
         return {
             link: function(scope, ele, attrs) {

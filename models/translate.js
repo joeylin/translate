@@ -7,7 +7,7 @@ var TranslateSchema = new Schema({
     content: {
         type: String
     },
-    author: {
+    user: {
         type: String,
         ref: 'User'
     },
@@ -34,14 +34,14 @@ TranslateSchema.virtual('getStarNumber').get(function() {
 });
 
 // methods
-TranslateSchema.methods.star = function(userId,cb) {
+TranslateSchema.methods.star = function(userId, cb) {
     var index = this.starUser.indexOf(userId);
     if (index === -1) {
         this.starUser.push(userId);
     }
     this.save(cb);
 };
-TranslateSchema.methods.unstar = function(userId,cb) {
+TranslateSchema.methods.unstar = function(userId, cb) {
     var index = this.starUser.indexOf(userId);
     if (index > -1) {
         this.starUser.splice(index, 1);
@@ -62,14 +62,14 @@ TranslateSchema.statics.createNew = function(obj, cb) {
     var translate = new this();
     translate.content = obj.content;
     translate.origin = obj.origin;
-    translate.author = obj.author;
+    translate.user = obj.user;
     translate.save(cb);
 };
 
 // middleware
-TranslateSchema.pre('save', function (next) {
-  this.updateAt = new Date();
-  next();
+TranslateSchema.pre('save', function(next) {
+    this.updateAt = new Date();
+    next();
 });
 
 mongoose.model('Translate', TranslateSchema);
