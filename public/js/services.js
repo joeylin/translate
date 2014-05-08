@@ -15,9 +15,10 @@ factory('restAPI', ['$resource',
             doc: $cacheFactory('doc', {
                 capacity: 10
             }),
-            chapter: $cacheFactory('chapter', {
-                capacity: 100
-            }),
+            // waiting for better way
+            // chapter: $cacheFactory('chapter', {
+            //     capacity: 100
+            // }),
             user: $cacheFactory('user', {
                 capacity: 20
             }),

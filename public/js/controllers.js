@@ -21,7 +21,7 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         $scope.status = {
             read: true,
             translate: false,
-            orgin: false
+            origin: false
         };
         $scope.saveTitle = 'save';
         $scope.doc.makeTranslate = function() {
@@ -35,19 +35,19 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         $scope.doc.getOrigin = function() {
             $scope.status.read = false;
             $scope.status.translate = false;
-            $scope.status.orgin = true;
+            $scope.status.origin = true;
         };
         $scope.doc.getRead = function() {
             if ($scope.status.translate) {
                 update(function() {
                     $scope.status.read = true;
                     $scope.status.translate = false;
-                    $scope.status.orgin = false;
+                    $scope.status.origin = false;
                 });
             } else {
                 $scope.status.read = true;
                 $scope.status.translate = false;
-                $scope.status.orgin = false;
+                $scope.status.origin = false;
             }
         };
         $scope.save = function(section) {
@@ -60,7 +60,7 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             }
             var data = {
                 id: section.id,
-                user: app.getUsername(),
+                user: app.getUser().username,
                 content: section.newTrans
             };
             $http.post(url, data).success(function(data, status) {
@@ -71,6 +71,18 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         $scope.change = function(section) {
             section.isSaved = false;
             section.saveTitle = 'save';
+        };
+        $scope.setFinish = function(section) {
+            if (!section.isFinished.value && app.auth()) {
+                var url = '/api/section/finish';
+                var data = {
+                    id: section.id,
+                    userId: app.getUser().uid
+                };
+                $http.post(url, data).success(function(data, status) {
+                    section.isFinished.value = true;
+                });
+            }
         };
         update();
     }

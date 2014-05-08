@@ -8,7 +8,7 @@
 
 <div class="">
   <div class="lead pull-right" ng-show="status.read">
-	<a href="#" class="btn btn-default" ng-click="doc.makeTranslate()">translate</a>
+	<a href="#" class="btn btn-default" ng-show="global.isLogin" ng-click="doc.makeTranslate()">translate</a>
 	<a href="#" class="btn btn-default" ng-click="doc.getOrigin()">origin</a>
   </div>
   <div class="lead pull-right" ng-show="status.translate">
@@ -20,12 +20,12 @@
 </div>
 
 <div ts-parse-md="doc.chapter.sections" ng-if="status.read"></div>
-<div ts-parse-md="doc.chapter.sections" ng-if="status.origin"></div>
+<div ts-origin="doc.chapter.sections" ng-if="status.origin"></div>
 <div ng-if="status.translate">
 	<div class="content-translate" ng-repeat="section in doc.chapter.sections" sId="{{section.id}}">
 		<p>{{section.md}}</p>
 		<div ng-if="!section.isFinished.value">
-			<button>set Finishede</button>
+			<a href="#" ng-click="setFinish(section)">set Finished</a>
 			<div class="accordion with-marker content-refer" data-role="accordion">
 				<div class="accordion-frame">
 					<a href="#" class="heading collapsed">{{section.translate.author}} at {{section.translate.date}}</a>

@@ -160,4 +160,43 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
             }
         };
     }
+]).directive('tsOrigin', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
+    function(mdParse, sanitize, pretty, isVisible, $timeout) {
+        // <div ts-origin="document"></div>
+        // document是Markdown格式或一般文档字符串，解析成DOM后插入<div>
+        return function(scope, element, attr) {
+            var value = scope.$eval(attr.tsOrigin);
+            parseDoc(value);
+
+            function parseDoc(value) {
+                if (!angular.isDefined(value)) {
+                    return;
+                }
+                var mdContent = '';
+                value.map(function(section, key) {
+                    if (section.translate && section.translate.content) {
+                        mdContent += section.translate.content + '\n\n';
+                    } else {
+                        mdContent += section.md + '\n\n';
+                    }
+
+                });
+                var content = sanitize(mdParse(mdContent));
+                element.html(content);
+                angular.forEach(element.find('code'), function(value) {
+                    value = angular.element(value);
+                    if (!value.parent().is('pre')) {
+                        value.addClass('prettyline');
+                    }
+                });
+                element.find('pre').addClass('prettyprint'); // linenums have bug!
+                element.find('a').attr('target', function() {
+                    if (this.host !== location.host) {
+                        return '_blank';
+                    }
+                });
+                pretty();
+            }
+        };
+    }
 ]);
