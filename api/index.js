@@ -46,8 +46,7 @@ var getChapter = function(req, res) {
                     id: section._id,
                     md: section.content,
                     translate: translate,
-                    isFinished: section.isFinished,
-                    saveTitle: 'save'
+                    isFinished: section.isFinished
                 };
                 result.sections.push(sec);
                 next();

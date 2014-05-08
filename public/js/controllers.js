@@ -8,6 +8,10 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         var chapter = $routeParams.chapter;
         var update = function(cb) {
             getChapter(doc, chapter).then(function(data) {
+                data.sections.map(function(value,key) {
+                    value.saveTitle = 'save';
+                    value.newTrans = value.md;
+                });
                 $scope.doc.chapter = data;
                 if (typeof cb === 'function') {
                     cb();
