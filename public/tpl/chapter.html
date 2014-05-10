@@ -21,34 +21,42 @@
 <hr>
 <div ts-parse-md="doc.chapter.sections" ng-if="status.read"></div>
 <div ts-origin="doc.chapter.sections" ng-if="status.origin"></div>
-<div ng-if="status.translate">
+<div ng-if="status.translate" id="translateView">
 	<div class="bs-callout bs-callout-info">
 		<h4>Compiled or minified?</h4>
 		<p>Unless you plan on reading the CSS, go with minified stylesheets. It's the same code, just compacted. Minified styles use less bandwidth, which is good, especially in production environments.</p>
-		<a href="#"> show unfinished </a>
+		<a href="#"> {{transBtn.filterText}} </a>
 	</div>
-	<div class="content-translate well" ng-repeat="section in doc.chapter.sections" sId="{{section.id}}">
-		<p>{{section.md}}</p>
-		<div ng-if="!section.isFinished.value">
-			<a href="#" ng-click="setFinish(section)">set Finished</a>
-			<div class="">
-				<a href="#" class="">{{section.translate.author}} at {{section.translate.date}}</a>
-				<div class="">
+	<div class="content-translate well" ng-repeat="section in doc.chapter.sections"  sId="{{section.id}}">
+		<p class="content-translate-origin">{{section.md}}</p>
+		<div ng-if="!section.isFinished.value">	
+			<div class="translate-part">
+				<div class="translate-part-info">
+					<a href="#" class="">{{section.translate.author}}</a> translate at <a href="#" class=""> {{section.translate.createAt}} :</a>
+				</div>
+				<div class="translate-part-text">
 					<p>{{section.translate.content}}</p>
 				</div>
 			</div>
 			
-			<div class="input-control textarea margin-top5">
-				<textarea ng-model="section.newTrans" ng-change="change(section)">{{section.md}}</textarea>
+			<div class="input-control">
+				<textarea class="form-control" auto-height="section.md" ng-model="section.newTrans" ng-change="change(section)">{{section.md}}</textarea>
 			</div>
-			<div class="clearfix">
-				<button  sId="{{section.id}}" ng-click="save(section)" class="info place-right" ng-class="{saved:section.isSaved}">{{section.saveTitle}}</button>
+			<div class="clearfix" style="margin-top:10px;">
+				<div class="pull-right">
+					<button  ng-click="setFinish(section)" class="btn btn-default" >lock</button>
+					<button  sId="{{section.id}}" ng-click="save(section)" class="btn btn-default" ng-class="{saved:section.isSaved}">{{section.saveTitle}}</button>
+				</div>
 			</div>
 		</div>
 		<div ng-if="section.isFinished.value">
-			<a href="#" class="heading collapsed">Finished by {{section.isFinished.user}} at {{section.isFinished.date}}</a>
-			<div class="content">
-				<p>{{section.translate.content}}</p>
+			<div class="translate-part" style="padding-botton:0;">
+				<div class="translate-part-info">
+					<a href="#" class="">{{section.translate.author}}</a> finish at <a href="#" class=""> {{section.translate.createAt}} :</a>
+				</div>
+				<div class="translate-part-text">
+					<p>{{section.translate.content}}</p>
+				</div>
 			</div>
 		</div>
 	</div>

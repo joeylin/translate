@@ -47,12 +47,45 @@
 }
 
 /*login*/
+.dropdown-menu > li > a:hover {
+	background-color: #428bca;
+	color: #fff;
+}
 .dropdown-menu li > a {
 	color: #555;
 	line-height: 23px !important;
+}
+.dropdown-menu .fa {
+	padding-right: 8px;
 }
 .navbar .nav-user-pic {
 	width: 20px;
 	margin-right: 10px;
 	display: inline-block;
+}
+.nav.nav-sidebar > li > a {
+	padding: 7px 15px;
+}
+.nav-sidebar > .active > a:hover {
+	color: #fff;
+	background-color: #428bca;
+}
+
+/*translate*/
+.content-translate-origin {
+	font-weight: 700;
+}
+.translate-part .translate-part-info {
+	font-style: italic;
+	color: #aaa;
+}
+.translate-part .translate-part-info a {
+	font-style: normal;
+}
+.translate-part {
+	padding-bottom: 10px;
+}
+.content-translate .form-control {
+	min-height: 50px;
+	height: 100%;
 }

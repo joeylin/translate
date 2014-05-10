@@ -8,7 +8,7 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         var chapter = $routeParams.chapter;
         var update = function(cb) {
             getChapter(doc, chapter).then(function(data) {
-                data.sections.map(function(value,key) {
+                data.sections.map(function(value, key) {
                     value.saveTitle = 'save';
                     value.newTrans = value.md;
                 });
@@ -27,7 +27,6 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             translate: false,
             origin: false
         };
-        $scope.saveTitle = 'save';
         $scope.doc.makeTranslate = function() {
             if (!app.auth()) {
                 return false;
@@ -35,6 +34,11 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             $scope.status.read = false;
             $scope.status.translate = true;
             $scope.status.orgin = false;
+            setTimeout(function() {
+                $('#translateView').find('textarea').each(function(key, value) {
+                    $(value).height(value.scrollHeight);
+                });
+            }, 10);
         };
         $scope.doc.getOrigin = function() {
             $scope.status.read = false;
@@ -77,9 +81,10 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             section.saveTitle = 'save';
         };
         $scope.setFinish = function(section) {
+            var url, data;
             if (!section.isFinished.value && app.auth()) {
-                var url = '/api/section/finish';
-                var data = {
+                url = '/api/section/finish';
+                data = {
                     id: section.id,
                     userId: app.getUser().uid
                 };

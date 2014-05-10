@@ -113,10 +113,27 @@ var setFinish = function(req, res) {
         });
     });
 };
+var unfinish = function(req, res) {
+    var id = req.body.id;
+    var userId = req.body.userId;
+    Section.find({
+        _id: id
+    }, function(err, section) {
+        if (err) {
+            return false;
+        }
+        var sec = section[0];
+        sec.unsetFinished(userId);
+        res.send({
+            code: 200
+        });
+    });
+};
 
 module.exports = function(app) {
     app.get('/api/doc/:name', getDoc);
     app.get('/api/chapter/:doc/:name', getChapter);
     app.post('/api/translate/save', saveTranslate);
     app.post('/api/section/finish', setFinish);
+    app.post('/api/section/unfinish', unfinish);
 };

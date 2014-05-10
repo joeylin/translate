@@ -99,7 +99,7 @@
           /*
            *  angular.js
            */
-            input.ng-invalid {
+            input.ng-dirty.ng-invalid {
               border: 1px solid red;
             }
             input.ng-valid {
@@ -141,7 +141,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" >
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
-                      <div class="dropdown-menu" style="padding:17px;right:12px;border-radius: 6px;">
+                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
                           <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
                               <label>Login</label> 
                               <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username">
@@ -166,7 +166,7 @@
                   </li>
                   <li class="dropdown" id="menuUser" ng-if="global.isLogin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <img src="/public/imgs/user.jpg" alt="" class="nav-user-pic img-responsive">
+                            <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
                             <span id="lblUsername" ng-bind="global.user.username"></span>
                             <b class="caret"></b>
                         </a>
