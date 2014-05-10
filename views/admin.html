@@ -9,7 +9,7 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" href="/public/css/bootstrap.min.css">
         <link rel="stylesheet" href="/public/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/public/css/main.css">
+        <link rel="stylesheet" href="/public/css/admin-main.css">
 
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -96,16 +96,6 @@
             margin-top: 0;
           }
 
-          /*
-           *  angular.js
-           */
-            input.ng-dirty.ng-invalid {
-              border: 1px solid red;
-            }
-            input.ng-valid {
-              border: 1px solid green;
-            }
-
         </style>
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
@@ -135,62 +125,37 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Translate</a>
+              <a class="navbar-brand" href="#">Translate Admin</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" >
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
-                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
-                              <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username">
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password">
-                              <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
-                          </form>
-                          <br>
-                          <form class="form">
-                            <a class="signup" href="#" title="Fast and free sign up!" id="btnNewUser" data-toggle="collapse" data-target="#formRegister">New User? Sign-up..</a>
-                          </form>
-                          <form id="formRegister" class="form collapse" ng-controller="userRegisterCtrl">
-                              <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" ng-minlength=3 required ng-model="user.email">
-                              <input class="form-control" name="username" id="inputUsername" type="text" placeholder="Username" ng-minlength=3 ng-maxlength=20 title="Choose a username" required ng-model="user.username">
-                              <input class="form-control" name="password" id="inputpassword" type="password" ng-minlength=3 ng-maxlength=20 placeholder="Password" required ng-model="user.password"> 
-                              <input class="form-control" name="verify" id="inputVerify" type="password" ng-minlength=3 ng-maxlength=20 placeholder="Password (again)" validate-watch="user.password" required ng-model="user.password2">                                  
-                              <button type="button" id="btnRegister" class="btn" shake ng-click="submit()">{{signup}}</button>
-                          </form>
-                          <br>
-                          <a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                          <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>
-                      </div>
-                  </li>
-                  <li class="dropdown" id="menuUser" ng-if="global.isLogin">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+              <ul class="nav navbar-nav navbar-right" style="margin-right:0;">
+                  <li id="menuUser">
+                        <a href="#" class="dropdown-toggle">
                             <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
                             <span id="lblUsername" ng-bind="global.user.username"></span>
-                            <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu" ng-controller="settingsCtrl">
-                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                            <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
-                            <li><a href="#" ng-click="logout()"><i class="fa fa-power-off"></i> Logout</a></li>
-                        </ul>
                   </li>
-              </ul>
-              <ul class="nav navbar-nav navbar-left">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Post</a></li>
-                <li><a href="#">Group</a></li>
+                  <li><a href="#" ng-click="logout()"><i class="fa fa-power-off"></i> Logout</a></li>
               </ul>
             </div>
           </div>
         </nav>
 
         <div class="container-fluid">
-          <div class="row row-offcanvas row-offcanvas-left" >
+          <div class="row row-offcanvas row-offcanvas-left">
             <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <h3><%= locals.docName %></h3>
-                <%- locals.toc %> 
+                <ul class="nav nav-sidebar">
+                  <li class="active"><a href="#">Overview</a></li>
+                  <li><a href="#">Reports</a></li>
+                  <li><a href="#">Analytics</a></li>
+                  <li><a href="#">Export</a></li>
+                  <li><a href="">Nav item</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                  <li><a href="">Nav item again</a></li>
+                  <li><a href="">One more nav</a></li>
+                  <li><a href="">Another nav item</a></li>
+                </ul>       
             </div><!--/span-->
             <div class="col-sm-9 col-md-10 main" ng-view id="main"></div>
           </div>
@@ -239,26 +204,5 @@
         <script type='text/javascript' src="/public/js/lib/bootstrap.min.js"></script>
         <script type='text/javascript' src="/public/js/bootply.js"></script>
         
-        <!-- JavaScript jQuery code from Bootply.com editor -->  
-        <script type='text/javascript'>
-            $(document).ready(function() {
-              $('#main').on('click','[data-toggle=offcanvas]', function() {
-                $('.row-offcanvas').toggleClass('active');
-              });
-            });
-            var $ul = $('#sidebar').find('ul');
-            $ul.addClass('nav nav-sidebar');
-            var chapter = '<%= locals.chapter %>';
-            $ul.find('li').each(function(key,li) {
-              var href = $(li).find('a').attr('ng-href');
-              if (href && href.match(/\/(\w+)$/)[1] === chapter ) {
-                $(li).addClass('active');
-              }
-            });
-            $ul.find('li').on('click', function() {
-              $ul.find('li').removeClass('active');
-              $(this).addClass('active');
-            });
-        </script>
     </body>
 </html>

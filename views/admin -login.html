@@ -139,31 +139,6 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" >
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
-                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
-                              <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username">
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password">
-                              <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
-                          </form>
-                          <br>
-                          <form class="form">
-                            <a class="signup" href="#" title="Fast and free sign up!" id="btnNewUser" data-toggle="collapse" data-target="#formRegister">New User? Sign-up..</a>
-                          </form>
-                          <form id="formRegister" class="form collapse" ng-controller="userRegisterCtrl">
-                              <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" ng-minlength=3 required ng-model="user.email">
-                              <input class="form-control" name="username" id="inputUsername" type="text" placeholder="Username" ng-minlength=3 ng-maxlength=20 title="Choose a username" required ng-model="user.username">
-                              <input class="form-control" name="password" id="inputpassword" type="password" ng-minlength=3 ng-maxlength=20 placeholder="Password" required ng-model="user.password"> 
-                              <input class="form-control" name="verify" id="inputVerify" type="password" ng-minlength=3 ng-maxlength=20 placeholder="Password (again)" validate-watch="user.password" required ng-model="user.password2">                                  
-                              <button type="button" id="btnRegister" class="btn" shake ng-click="submit()">{{signup}}</button>
-                          </form>
-                          <br>
-                          <a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                          <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>
-                      </div>
-                  </li>
                   <li class="dropdown" id="menuUser" ng-if="global.isLogin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
                             <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
@@ -189,8 +164,7 @@
         <div class="container-fluid">
           <div class="row row-offcanvas row-offcanvas-left" >
             <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <h3><%= locals.docName %></h3>
-                <%- locals.toc %> 
+                
             </div><!--/span-->
             <div class="col-sm-9 col-md-10 main" ng-view id="main"></div>
           </div>

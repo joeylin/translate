@@ -19,7 +19,7 @@ module.exports = function(app) {
         var chapter = req.params.chapter;
         var DOC_PATH = path.resolve(__dirname, '../docs/' + name);
         var result = {};
-        console.log(name, DOC_PATH);
+
         fs.readFile(DOC_PATH + '/_toc.markdown', 'utf8', function(err, file) {
             if (err) {
                 console.log('err');
@@ -31,6 +31,14 @@ module.exports = function(app) {
             res.render('index');
         });
     };
+    var getAdmin = function(req, res) {
+        var user = req.params.user;
+        if (user !== req.session.user.username) {
+            return res.send('not authored');
+        }
+        res.render('admin');
+    };
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
+    app.get('/:user/admin', middleware.check_login, getAdmin);
 };
