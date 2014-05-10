@@ -5,11 +5,12 @@
         <title>Translate</title>
         <meta name="generator" content="translate" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <!-- <base href="/my-base"> -->
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/public/css/font-awesome.min.css">
         <link rel="stylesheet" href="/public/css/main.css">
+
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -137,14 +138,6 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-left">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Post</a></li>
-                <li><a href="#">Group</a></li>
-              </ul>
-              <!-- <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-              </form> -->
               <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" >
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
@@ -172,20 +165,22 @@
                       </div>
                   </li>
                   <li class="dropdown" id="menuUser" ng-if="global.isLogin">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                          <i class="icon-user icon-xxlarge"> </i> <span id="lblUsername" ng-bind="global.user.username"></span>
-                          <b class="caret"></b>
-                      </a>
-                      <ul class="dropdown-menu" ng-controller="settingsCtrl">
-                          <li><a href="/user">Dashboard</a></li>
-                          <li><a href="/new">Create New Bootply</a></li>
-                          
-                          <li><a ng-click="logout()">Logout</a></li>
-                          <li class="divider"> </li>
-                          <li><a >Community</a></li>
-                          <li><a href="/about">About</a></li>
-                      </ul>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+                            <img src="/public/imgs/user.jpg" alt="" class="nav-user-pic img-responsive">
+                            <span id="lblUsername" ng-bind="global.user.username"></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" ng-controller="settingsCtrl">
+                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
+                            <li><a href="#" ng-click="logout()"><i class="fa fa-power-off"></i> Logout</a></li>
+                        </ul>
                   </li>
+              </ul>
+              <ul class="nav navbar-nav navbar-left">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Post</a></li>
+                <li><a href="#">Group</a></li>
               </ul>
             </div>
           </div>

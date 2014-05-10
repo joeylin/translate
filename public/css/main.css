@@ -26,3 +26,33 @@
     color:#f2f2f2;
     background-color:#313146;
 }
+
+/* doc.css*/
+
+.bs-callout {
+	margin: 20px 0;
+	padding: 20px;
+	border-left: 3px solid #eee;
+}
+.bs-callout-info {
+	background-color: #f4f8fa;
+	border-color: #5bc0de;
+}
+.bs-callout-info h4 {
+	color: #5bc0de;
+}
+.bs-callout h4 {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+/*login*/
+.dropdown-menu li > a {
+	color: #555;
+	line-height: 23px !important;
+}
+.navbar .nav-user-pic {
+	width: 20px;
+	margin-right: 10px;
+	display: inline-block;
+}

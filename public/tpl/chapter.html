@@ -7,33 +7,37 @@
 </p>
 
 <div class="">
-  <div class="lead pull-right" ng-show="status.read">
-	<a href="#" class="btn btn-default" ng-show="global.isLogin" ng-click="doc.makeTranslate()">translate</a>
-	<a href="#" class="btn btn-default" ng-click="doc.getOrigin()">origin</a>
+  <div class="clearfix" ng-show="status.read">
+    <a href="#" class="btn btn-default pull-right" ng-click="doc.getOrigin()">origin</a>
+	<a href="#" class="btn btn-default pull-right" style="margin-right:5px;" ng-show="global.isLogin" ng-click="doc.makeTranslate()">translate</a>
   </div>
-  <div class="lead pull-right" ng-show="status.translate">
-	<a href="#" class="btn btn-default" ng-click="doc.getRead()">back</a>
+  <div class="clearfix" ng-show="status.translate">
+	<a href="#" class="btn btn-default pull-right" ng-click="doc.getRead()">back</a>
   </div>
-  <div class="lead pull-right" ng-show="status.origin">
-	<a href="#" class="btn btn-default" ng-click="doc.getRead()">back</a>
+  <div class="clearfix" ng-show="status.origin">
+	<a href="#" class="btn btn-default pull-right" ng-click="doc.getRead()">back</a>
   </div>
 </div>
-
+<hr>
 <div ts-parse-md="doc.chapter.sections" ng-if="status.read"></div>
 <div ts-origin="doc.chapter.sections" ng-if="status.origin"></div>
 <div ng-if="status.translate">
-	<div class="content-translate" ng-repeat="section in doc.chapter.sections" sId="{{section.id}}">
+	<div class="bs-callout bs-callout-info">
+		<h4>Compiled or minified?</h4>
+		<p>Unless you plan on reading the CSS, go with minified stylesheets. It's the same code, just compacted. Minified styles use less bandwidth, which is good, especially in production environments.</p>
+		<a href="#"> show unfinished </a>
+	</div>
+	<div class="content-translate well" ng-repeat="section in doc.chapter.sections" sId="{{section.id}}">
 		<p>{{section.md}}</p>
 		<div ng-if="!section.isFinished.value">
 			<a href="#" ng-click="setFinish(section)">set Finished</a>
-			<div class="accordion with-marker content-refer" data-role="accordion">
-				<div class="accordion-frame">
-					<a href="#" class="heading collapsed">{{section.translate.author}} at {{section.translate.date}}</a>
-					<div class="content">
-						<p>{{section.translate.content}}</p>
-					</div>
+			<div class="">
+				<a href="#" class="">{{section.translate.author}} at {{section.translate.date}}</a>
+				<div class="">
+					<p>{{section.translate.content}}</p>
 				</div>
 			</div>
+			
 			<div class="input-control textarea margin-top5">
 				<textarea ng-model="section.newTrans" ng-change="change(section)">{{section.md}}</textarea>
 			</div>
