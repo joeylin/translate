@@ -7,6 +7,10 @@ var DocSchema = new Schema({
         type: ObjectId,
         ref: 'Tag'
     }],
+    followers: [{
+        type: ObjectId,
+        ref: 'User'
+    }]
     count: [{
         user: {
             type: String
@@ -15,6 +19,10 @@ var DocSchema = new Schema({
             type: Number
         }
     }],
+    createBy: {
+        type: ObjectId,
+        ref: 'User'
+    },
     chapters: [{
         type: ObjectId,
         ref: 'Chapter'

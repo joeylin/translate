@@ -144,8 +144,8 @@
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
                           <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
                               <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username">
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password">
+                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username" ng-keydown="enter($event)">
+                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password" ng-keydown="enter($event)">
                               <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
                           </form>
                           <br>
@@ -166,8 +166,10 @@
                   </li>
                   <li class="dropdown" id="menuUser" ng-if="global.isLogin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
-                            <span id="lblUsername" ng-bind="global.user.username"></span>
+                            <!-- todo have custom user image -->
+                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
+                            <i class="fa fa-user"></i> 
+                            <span id="lblUsername" ng-bind="global.user.username" style="margin-left: 5px;"></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" ng-controller="settingsCtrl">

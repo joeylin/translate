@@ -6,8 +6,14 @@
 	</button>
 </p>
 
-<div class="">
+<div>
   <div class="clearfix" ng-show="status.read">
+  	<div class="translateBy">
+  		By: 
+  		<a href="#">{{doc.chapter.by[0]}}</a>
+  		<a href="#">{{doc.chapter.by[1]}}</a>
+  		<a href="#">{{doc.chapter.by[2]}}</a>
+  	</div>
     <a href="#" class="btn btn-default pull-right" ng-click="doc.getOrigin()">origin</a>
 	<a href="#" class="btn btn-default pull-right" style="margin-right:5px;" ng-show="global.isLogin" ng-click="doc.makeTranslate()">translate</a>
   </div>
@@ -23,16 +29,16 @@
 <div ts-origin="doc.chapter.sections" ng-if="status.origin"></div>
 <div ng-if="status.translate" id="translateView">
 	<div class="bs-callout bs-callout-info">
-		<h4>Compiled or minified?</h4>
+		<h4>Note:</h4>
 		<p>Unless you plan on reading the CSS, go with minified stylesheets. It's the same code, just compacted. Minified styles use less bandwidth, which is good, especially in production environments.</p>
 		<a href="#"> {{transBtn.filterText}} </a>
 	</div>
 	<div class="content-translate well" ng-repeat="section in doc.chapter.sections"  sId="{{section.id}}">
 		<p class="content-translate-origin">{{section.md}}</p>
 		<div ng-if="!section.isFinished.value">	
-			<div class="translate-part">
+			<div class="translate-part" ng-show="!!section.translate">
 				<div class="translate-part-info">
-					<a href="#" class="">{{section.translate.author}}</a> translate at <a href="#" class=""> {{section.translate.createAt}} :</a>
+					<a href="#" class="">{{section.translate.user}}</a> translate at <a href="#" class=""> {{section.translate.createAt}} :</a>
 				</div>
 				<div class="translate-part-text">
 					<p>{{section.translate.content}}</p>
@@ -44,7 +50,8 @@
 			</div>
 			<div class="clearfix" style="margin-top:10px;">
 				<div class="pull-right">
-					<button  ng-click="setFinish(section)" class="btn btn-default" >lock</button>
+					<!-- todo more complete function -->
+					<!-- <button  ng-click="setFinish(section)" class="btn btn-default" >lock</button> -->
 					<button  sId="{{section.id}}" ng-click="save(section)" class="btn btn-default" ng-class="{saved:section.isSaved}">{{section.saveTitle}}</button>
 				</div>
 			</div>
@@ -52,7 +59,7 @@
 		<div ng-if="section.isFinished.value">
 			<div class="translate-part" style="padding-botton:0;">
 				<div class="translate-part-info">
-					<a href="#" class="">{{section.translate.author}}</a> finish at <a href="#" class=""> {{section.translate.createAt}} :</a>
+					<a href="#" class="">{{section.translate.user}}</a> finish at <a href="#" class=""> {{section.translate.createAt}} :</a>
 				</div>
 				<div class="translate-part-text">
 					<p>{{section.translate.content}}</p>

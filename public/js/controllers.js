@@ -131,6 +131,12 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
                 $scope.login = 'Login';
             });
         };
+        $scope.enter = function(e) {
+            var key = e.keyCode || e.which;
+            if (key === 13) {
+                $scope.submit();
+            }
+        }
     }
 ]).controller('userRegisterCtrl', ['app', '$scope',
     function(app, $scope) {
@@ -163,6 +169,12 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
                 $scope.signup = 'Sign Up';
             });
         };
+        $scope.enter = function(e) {
+            var key = e.keyCode || e.which;
+            if (key === 13) {
+                $scope.submit();
+            }
+        }
     }
 ]).controller('settingsCtrl', ['app', '$scope',
     function(app, $scope) {
