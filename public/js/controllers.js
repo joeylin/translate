@@ -106,15 +106,21 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             $scope.doc.attachContent = data.attachContent;
         });
     }
-]).controller('tocCtrol', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
+]).controller('tocCtrol', ['app', '$scope', '$routeParams', '$http',
+    function(app, $scope, $routeParams, $http) {
         $scope.doc = app.tocCtrl;
         $scope.current = $scope.doc.chapter;
+        var name = $scope.doc.docName;
         $scope.setCurrent = function(index) {
             $scope.current = $scope.doc.toc[index].name;
         };
         $scope.delChapter = function(index) {
             var chapter = $scope.doc.toc[index];
+            var url = '/api/edit/doc/' + name + '/delChapter';
+            var data = {};
+            $http.post(url,data).success(function(err) {
+                $scope.doc.toc.splice(index, 1);
+            });
         };
     }
 ]).controller('userLoginCtrl', ['app', '$scope',

@@ -37,10 +37,15 @@ constant('app', {
             chapter = {
                 templateUrl: getFileProvider.html('chapter.html'),
                 controller: 'chapterCtrl'
+            },
+            addChapter = {
+                templateUrl: getFileProvider.html('addChapter.html'),
+                controller: 'addChapterCtrl'
             };
         $routeProvider.
         when('/doc/:doc', docHome).
         when('/doc/:doc/:chapter', chapter).
+        when('/doc/:doc/addChapter', addChapter).
         when('/', index).
         otherwise({
             redirectTo: '/doc/:doc'

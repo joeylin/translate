@@ -10,6 +10,7 @@ var path = require('path');
 var async = require('async');
 var marked = require('marked');
 var config = require('../config/config').config;
+var middleware = require('./middleware');
 
 var getDocToc = function(req, res) {
     var name = req.params.name;
@@ -351,26 +352,38 @@ var delChapter = function(req, res) {
     var id = req.body.id;
 
     Chapter.find({
-        doc: doc,
         _id: id
-    }, function(err, doc) {
+    }, function(err, chapter) {
+        
+    });
+    Chapter.find({
+        _id: id
+    }).remove(function(err) {
         if (err) {
             return res.send({
                 code: 404,
                 info: 'del fail'
             });
         }
-        res.send({
-            code: 200
-        });
-    })
+        Doc.find({
+            name: doc
+        }, function(err,doc) {
+            var _doc = doc[0];
+            _doc.chapters.splice(_doc.chapters.indexOf(id), 1);
+            _doc.save(function(err) {
+                res.send({
+                    code: 200
+                });
+            });
+        }); 
+    });
 };
 
 module.exports = function(app) {
     app.get('/api/doc/:name', getDocToc);
     app.get('/api/doc/:name/detail', getDocDetail);
     app.get('/api/chapter/:doc/:name', getChapter);
-    app.post('/api/translate/save', saveTranslate);
+    app.post('/api/translate/save', middleware.check_login, saveTranslate);
     app.post('/api/section/finish', setFinish);
     app.post('/api/section/unfinish', unfinish);
     app.post('/api/follow/doc/:doc/add', followDoc);
@@ -379,7 +392,7 @@ module.exports = function(app) {
     app.post('/api/edit/doc/create', createDoc);
     app.get('/api/edit/doc/:doc/checkDocName', checkDocName);
     app.post('/api/edit/doc/:doc/addChapter', addChapter);
-    app.post('/api/edit/doc/:doc/delChapter', delChapter);
+    app.post('/api/edit/doc/:doc/delChapter', ,delChapter);
 };
 
 function getComplete(userList) {

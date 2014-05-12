@@ -1,17 +1,19 @@
 var check_login = function(req, res, next) {
     if (req.session.user) {
-        res.locals.user = req.session.user;
-        res.locals.is_authorized = true;
+        next();
     } else {
-        res.locals.is_authorized = false;
+        res.send({
+        	code: 404,
+        	info: 'require login'
+        });
     }
-    next();
+    
 };
 var check_admin = function(req, res, next) {
-
+	next();
 };
 var check_auth = function(req, res, next) {
-
+	next();
 };
 exports.check_login = check_login;
 exports.check_admin = check_admin;
