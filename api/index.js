@@ -392,7 +392,7 @@ module.exports = function(app) {
     app.post('/api/edit/doc/create', createDoc);
     app.get('/api/edit/doc/:doc/checkDocName', checkDocName);
     app.post('/api/edit/doc/:doc/addChapter', addChapter);
-    app.post('/api/edit/doc/:doc/delChapter', ,delChapter);
+    app.post('/api/edit/doc/:doc/delChapter', delChapter);
 };
 
 function getComplete(userList) {
