@@ -8,11 +8,11 @@
 
 <div>
   <div class="clearfix" ng-show="status.read">
-  	<div class="translateBy">
+  	<div class="translateBy pull-left" ng-show="doc.chapter.contributors.length > 0">
   		By: 
-  		<a href="#">{{doc.chapter.by[0]}}</a>
-  		<a href="#">{{doc.chapter.by[1]}}</a>
-  		<a href="#">{{doc.chapter.by[2]}}</a>
+  		<a href="#">{{doc.chapter.contributors[0].name}}</a>
+  		<a href="#">{{doc.chapter.contributors[1].name}}</a>
+  		<a href="#">{{doc.chapter.contributors[2].name}}</a>
   	</div>
     <a href="#" class="btn btn-default pull-right" ng-click="doc.getOrigin()">origin</a>
 	<a href="#" class="btn btn-default pull-right" style="margin-right:5px;" ng-show="global.isLogin" ng-click="doc.makeTranslate()">translate</a>

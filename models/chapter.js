@@ -37,7 +37,7 @@ ChapterSchema.methods.getChapterSections = function(cb) {
     this.populate('sections').exec(cb);
 };
 // static
-ChapterSchema.statics.createNew = function(obj,cb) {
+ChapterSchema.statics.createNew = function(obj, cb) {
     var chapter = new this();
     chapter.name = obj.name;
     chapter.doc = obj.doc;
@@ -47,10 +47,14 @@ ChapterSchema.statics.createNew = function(obj,cb) {
     }
     chapter.save(cb);
 };
+ChapterSchema.statics.delById = function(id) {
+    var Doc = mongoose.model('Doc');
+
+};
 
 // middleware
 ChapterSchema.pre('save', function(next) {
-    
+
     this.updateAt = new Date();
     next();
 });

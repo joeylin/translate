@@ -20,14 +20,32 @@ module.exports = function(app) {
         var DOC_PATH = path.resolve(__dirname, '../docs/' + name);
         var result = {};
 
-        fs.readFile(DOC_PATH + '/_toc.markdown', 'utf8', function(err, file) {
-            if (err) {
-                console.log('err');
-            }
+        // fs.readFile(DOC_PATH + '/_toc.markdown', 'utf8', function(err, file) {
+        //     if (err) {
+        //         console.log('err');
+        //     }
+        //     app.locals.user = req.session.user;
+        //     app.locals.docName = name;
+        //     app.locals.chapter = chapter;
+        //     app.locals.toc = marked(file).replace(/(href)/g, 'ng-href');
+        //     res.render('index');
+        // });
+        Doc.find({
+            name: name
+        }).populate('chapters').exec(function(err, doc) {
+            var toc = [];
+            doc[0].chapters.map(function(chapter, key) {
+                var obj = {};
+                obj.name = chapter.name;
+                obj.id = chapter._id;
+                toc.push(obj);
+            });
             app.locals.user = req.session.user;
-            app.locals.docName = name;
             app.locals.chapter = chapter;
-            app.locals.toc = marked(file).replace(/(href)/g, 'ng-href');
+            app.locals.doc = {};
+            app.locals.doc.docName = name;
+            app.locals.doc.toc = toc;
+            app.locals.doc.chapter = chapter;
             res.render('index');
         });
     };
@@ -36,9 +54,9 @@ module.exports = function(app) {
         if (user !== req.session.user.username) {
             return res.send('not authored');
         }
-        res.render('admin');
+        res.render('admin.html');
     };
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
-    app.get('/:user/admin', middleware.check_login, getAdmin);
+    app.get('/user/admin', middleware.check_login, getAdmin);
 };

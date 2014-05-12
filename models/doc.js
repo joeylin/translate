@@ -10,7 +10,7 @@ var DocSchema = new Schema({
     followers: [{
         type: ObjectId,
         ref: 'User'
-    }]
+    }],
     count: [{
         user: {
             type: String
@@ -19,6 +19,10 @@ var DocSchema = new Schema({
             type: Number
         }
     }],
+    isAdd: {
+        type: Boolean,
+        default: false
+    },
     createBy: {
         type: ObjectId,
         ref: 'User'

@@ -81,6 +81,7 @@ config(['$httpProvider', 'app',
         },
             global = $rootScope.global = {
                 isLogin: false,
+                isEdit: false,
                 info: {},
                 components: {}
             },
@@ -133,7 +134,6 @@ config(['$httpProvider', 'app',
 
         app.loading = function(value, status) {
             $rootScope.loading.show = value;
-            // applyFn();
         };
         app.auth = function() {
             return global.isLogin;
@@ -153,7 +153,7 @@ config(['$httpProvider', 'app',
             global.user = null;
             global.isLogin = false;
         };
-        $rootScope.doc = {};
+        app.tocCtrl = window.ts.doc;
         $rootScope.loading = {
             show: false
         };
@@ -164,6 +164,12 @@ config(['$httpProvider', 'app',
                 app.clearUser();
                 $location.path('/');
             });
+        };
+        $rootScope.setEdit = function() {
+            global.isEdit = true;
+        };
+        $rootScope.backDoc = function() {
+            global.isEdit = false;
         };
         init();
     }

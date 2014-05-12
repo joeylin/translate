@@ -38,7 +38,7 @@ var getDocDetail = function(req, res) {
         async.eachSeries(chapters, function(chapter, done) {
             total = total + chapter.sections.length;
             async.eachSeries(chapter.sections, function(section, next) {
-                getOneTranslate(section, function(err,translate) {
+                getOneTranslate(section, function(err, translate) {
                     if (!translate) {
                         return false;
                     }
@@ -52,7 +52,7 @@ var getDocDetail = function(req, res) {
             }, function(err) {
                 done();
             });
-        })
+        });
     }, function(err) {
         for (var key in userList) {
             userList[key] = parseInt(userList[key] / total * 100);
@@ -97,6 +97,7 @@ var getChapter = function(req, res) {
             res.send(result);
         });
     });
+
     function getTopUser(chapter) {
         var sections = chapter.sections;
         var total = sections.length;
@@ -111,7 +112,7 @@ var getChapter = function(req, res) {
             } else {
                 userList[section.translate.user] += 1;
             }
-        }); 
+        });
 
         for (var key in userList) {
             userList[key] = parseInt(userList[key] / total * 100, 10);
@@ -216,12 +217,12 @@ var followDoc = function(req, res) {
             }
             if (_doc.followers.indexOf(_user._id) === -1) {
                 _doc.followers.push(_user._id);
-                    _doc.save(function(err, doc) {
+                _doc.save(function(err, doc) {
                     return res.send({
                         code: 200
                     });
                 });
-            } 
+            }
         });
     });
 };
@@ -248,7 +249,7 @@ var unfollowDoc = function(req, res) {
                     info: 'user cant find'
                 });
             }
-            _doc.followers.splice(_doc.followers.indexOf(_user._id),1);
+            _doc.followers.splice(_doc.followers.indexOf(_user._id), 1);
             _doc.save(function(err, doc) {
                 return res.send({
                     code: 200
@@ -288,7 +289,7 @@ var checkDocName = function(req, res) {
             return res.send({
                 code: 200
             });
-        } 
+        }
         res.send({
             code: 404
         });
@@ -333,15 +334,15 @@ var addChapter = function(req, res) {
             }, function(err) {
                 var index = doc[0].chapters.length;
                 chapter.index = index;
-                chapter.save(function(err,chapter) {
+                chapter.save(function(err, chapter) {
                     doc[0].chapters.push(chapter._id);
-                    doc[0].save(function(err,doc) {
+                    doc[0].save(function(err, doc) {
                         res.send({
                             code: 200
                         });
                     });
                 });
-            });    
+            });
         });
     });
 };
@@ -388,6 +389,7 @@ function getComplete(userList) {
     }
     return complete;
 }
+
 function sortObject(userList) {
     var array = [];
     for (var key in userList) {
@@ -402,6 +404,7 @@ function sortObject(userList) {
 
     return array;
 }
+
 function parseChapter(c) {
     // chapter is markdown formate
     var plist = c.split(/\r?\n\r?\n/);
@@ -491,4 +494,3 @@ function parseChapter(c) {
     }
     return plist;
 };
-

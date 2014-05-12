@@ -89,3 +89,9 @@
 	min-height: 50px;
 	height: 100%;
 }
+
+/* chapter translateBy */
+.translateBy {
+	height: 100%;
+	line-height: 34px;
+}

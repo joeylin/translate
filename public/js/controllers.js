@@ -95,14 +95,27 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
         };
         update();
     }
-]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', 'getChapter', '$location',
-    function(app, $scope, $routeParams, getChapter, $location) {
+]).controller('docHomeCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
         var doc = $routeParams.doc;
-        var chapter = $routeParams.chapter;
+        var url = '/api/doc/' + doc + '/detail';
         $scope.doc = {};
-        getChapter(doc, chapter).then(function(data) {
-            $scope.doc.chapter = data;
+        $http.get(url).success(function(err, data) {
+            $scope.doc.detail = data.detail;
+            $scope.doc.des = data.des;
+            $scope.doc.attachContent = data.attachContent;
         });
+    }
+]).controller('tocCtrol', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        $scope.doc = app.tocCtrl;
+        $scope.current = $scope.doc.chapter;
+        $scope.setCurrent = function(index) {
+            $scope.current = $scope.doc.toc[index].name;
+        };
+        $scope.delChapter = function(index) {
+            var chapter = $scope.doc.toc[index];
+        };
     }
 ]).controller('userLoginCtrl', ['app', '$scope',
     function(app, $scope) {

@@ -1,0 +1,315 @@
+
+body {
+    background-color:#fefefe;
+    color: #656565;
+    /*padding-top:43px;*/
+}
+
+/* Sticky footer styles
+--------------------------------------------------  */
+
+html,
+body {
+  height: 100%;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -60px; 
+  top:-48px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height:180px;
+  margin-top:20px;
+}
+#footer {
+  background-color:#f2f2f2;
+  color:#777;
+  padding:20px;
+}
+#footer a {
+  color:#808080;
+}
+#footer a:hover {
+  color:#666;
+  text-decoration:none;
+  margin-left:-1px;
+}
+
+@media (max-width: 767px) {
+#footer {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+}
+
+a:focus {
+    outline:0;
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Open Sans',Arial,Helvetica,Sans-Serif;
+    font-weight:300;
+}
+
+.letterpress {
+    color:#ececec;
+}
+
+h1.letterpress {
+    /*text-shadow: 0 1px 0 #ffffff;*/
+    font-size: 60px;
+    font-weight:bold;
+    letter-spacing:-2px;
+    padding-top:10px;
+    padding-bottom:5px;
+}
+
+/* bootstrap overrides */
+
+.navbar-inverse {
+    background: #242438;
+    padding-top:5px;
+    padding-bottom:3px;
+}
+
+.navbar-inverse .navbar-inner {
+    -webkit-box-shadow: 0 0 0;
+    -moz-box-shadow: 0 0 0;
+    box-shadow: 0 0 0;
+    border-width:0;
+}
+
+.navbar-inverse .nav li.dropdown>.dropdown-toggle .caret {
+    border-top-color: #f0f0f0;
+    border-bottom-color: #f0f0f0;
+    border-width: 6px;
+    margin-top: 6px;
+}
+
+.navbar a:hover {
+    text-decoration:none;
+}
+
+.navbar .brand {
+    padding-left:0;
+    padding-bottom:0;
+    padding-top:9px;
+    margin-right:0;
+    margin-left:0;
+    color: #f5f5f5;
+}
+.navbar .brand:hover {
+    text-decoration: none;
+    /*text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);*/
+}
+
+.navbar .btn {
+    background-color:#535368;
+    background-image:none;
+    border-color: transparent;
+    color: #e6e6e6;
+    text-shadow: 0 0 0;
+    box-shadow: 0 0 0;
+}
+
+.navbar .btn:hover {
+    color:#f2f2f2;
+    background-color:#313146;
+}
+
+.navbar-inverse .nav>li>a {
+    color:#e2e2e2;
+}
+
+.navbar-inverse .nav>li>a:hover,.navbar-inverse .nav>li>a:focus {
+    color:#efefef;
+    background:#353549;
+}
+
+.nav-pills .dropdown-menu {
+    margin-top:4px;    
+}
+
+@media (max-width: 979px) {
+    .navbar-inverse .nav-collapse .nav>li>a, .navbar-inverse .nav-collapse .dropdown-menu a {
+        color: #dddddd;
+    }
+}
+
+.navbar .input-append input[type=text] {
+    background-color:#313146;
+    border-color:transparent;
+    font-size:12px;
+    color:#eee;
+    border-radius:0;
+    box-shadow:0 0;
+}
+
+.navbar .input-append .btn {
+    border-radius:0;
+}
+
+.nav-tabs.nav-stacked>li>a {
+    border-width: 0;
+    border-bottom: 1px solid #eee;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.well {
+    -webkit-box-shadow:0 0 0;
+    box-shadow:0 0 0;
+}
+
+.accordion {
+    padding:0;
+    margin:0;
+}
+
+.accordion a {
+    font-size:13px;
+}
+
+.accordion a:hover {
+    text-decoration: none;
+}
+
+.accordion-group {
+    padding:0;
+    border-width:0;
+    border-bottom-width:1px;
+    border-color:#f3f3f3;
+    margin-bottom:0;
+}
+
+.accordion-heading {
+    padding-left:5px;
+    margin:0;
+    background:#ffffff;
+}
+
+.accordion-heading:hover, .accordion-group:hover {
+    background:#fdfdfd;
+}
+
+.accordion-heading span {
+    width:25px;
+}
+
+.accordion-heading i {
+  font-size:20px;
+  color:#fafafa;
+}
+
+.accordion-toggle {
+    padding:4px;
+}
+
+.accordion-inner {
+    padding:1px;
+    padding-left:4px;
+    background:#fafafa;
+}
+
+.accordion-sub {
+    border-width:0;
+    margin:1px;
+    font-size:12px;
+}
+
+.accordion-sub .accordion-heading {
+    padding:2px;
+    padding-left:5px;
+}
+
+.accordion-sub .accordion-toggle {
+    padding:3px;
+    padding-left:7px;
+}
+
+.accordion-sub .accordion-inner{
+    background: #efefef -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#efefef));
+    background: #efefef -moz-linear-gradient(top, #fff, #efefef);
+    padding:1px;
+    border:1px solid #ffffff;
+}
+
+.pull-center td:not(:first-child) {text-align:center;margin:0 auto !important;float:none !important;}
+.pull-center {text-align:center;margin:0 auto !important;float:none !important;}
+.checkbox {margin-left:4px;margin-bottom:0;margin-top:0;font-size:90%;}
+
+.btn-group {
+    padding:0 !important;
+    margin:0 !important;
+}
+.btn, .btn-inverse, .btn-success, .btn-primary {
+    border-radius: 2px;
+    background-image: none;
+}
+.btn-huge {
+    padding:12px;
+}
+
+/* bootply tweaks */
+button#btnSettings:hover + #btnSave{color:#fff;}
+.fb-like {
+    margin-left:0;
+    margin-top:9px;
+}
+.tw-btn {
+    margin-left:6px;
+    margin-top:9px;
+    margin-right:0;
+}
+
+
+.nav>li>span {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .navbar .brand {
+        padding-left:15px;
+        padding-right:7px;
+    }
+}
+
+.show-grid [class*="span"] {
+    background-color:#f2f2f2;
+    padding:2px;
+}
+
+.show-grid2 .span2 {
+    background-color:#f2f2f2;
+    padding:2px;
+    margin-bottom:2px;
+}
+
+.label {
+    font-weight: 400;
+}
+
+.badge-large,.label-large {
+    padding: 8px;
+    font-size: 108%;
+    margin-bottom: 3px;
+}
+
+.badge-large a,.label-large a {
+    color:#fff;
+}
+
+.carbonad {
+  border-width:0 !important;
+} 
+
