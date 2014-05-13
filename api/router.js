@@ -56,6 +56,10 @@ module.exports = function(app) {
         }
         res.render('admin.html');
     };
+    var getHome = function(req, res) {
+        res.render('home');
+    };
+    app.get('/doc', getHome);
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
     app.get('/user/admin', middleware.check_login, getAdmin);
