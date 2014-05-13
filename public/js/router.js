@@ -38,14 +38,19 @@ constant('app', {
                 templateUrl: getFileProvider.html('chapter.html'),
                 controller: 'chapterCtrl'
             },
+            editChapter = {
+                templateUrl: getFileProvider.html('editChapter.html'),
+                controller: 'editChapterCtrl'
+            },
             addChapter = {
-                templateUrl: getFileProvider.html('addChapter.html'),
+                templateUrl: getFileProvider.html('editChapter.html'),
                 controller: 'addChapterCtrl'
             };
         $routeProvider.
         when('/doc/:doc', docHome).
         when('/doc/:doc/:chapter', chapter).
         when('/doc/:doc/addChapter', addChapter).
+        when('/doc/:doc/:chapter/editChapter', editChapter).
         when('/', index).
         otherwise({
             redirectTo: '/doc/:doc'

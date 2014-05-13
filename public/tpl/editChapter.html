@@ -1,0 +1,10 @@
+<form ng-if="!isPreview">
+	<input autofocus="" type="text" required="" name="chapterTitle" ng-model="chapter.title" class="form-control" placeholder="标题">
+	<textarea autofocus="" rows="2" name="chapterContent" ng-model="chapter.content" class="form-control" placeholder="概要（可选项）"></textarea>
+	<div class="clearfix">
+		<button class="pull-right" ng-click="save()">save</button>
+		<button class="pull-right" ng-click="seePreview()">preview</button>
+	</div>
+</form>
+
+<div ng-if="isPreview" ts-pure-md="chapter.content"></div>

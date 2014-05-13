@@ -104,8 +104,17 @@ config(['$httpProvider', 'app',
                 app.clearUser();
             }
             global.components.login = 'Login';
+            marked.setOptions({
+                renderer: new marked.Renderer(),
+                gfm: true,
+                tables: true,
+                breaks: false,
+                pedantic: false,
+                sanitize: true,
+                smartLists: true,
+                smartypants: false
+            });
         }
-
         window.jsGen = app;
         var user = window.ts.me;
         app.q = $q;
@@ -170,6 +179,7 @@ config(['$httpProvider', 'app',
         };
         $rootScope.backDoc = function() {
             global.isEdit = false;
+            $rootScope.$emit('autoRedirect.ts');
         };
         init();
     }

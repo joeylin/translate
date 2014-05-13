@@ -121,6 +121,25 @@ var getChapter = function(req, res) {
         return sortObject(userList);
     }
 };
+var getChapterMd = function(req, res) {
+    var result = {};
+    var name = req.params.name;
+    var doc = req.params.doc;
+
+    Chapter.find({
+        name: name,
+        doc: doc
+    }).exec(function(err, chapter) {
+        result.name = chapter[0].name;
+        result.id = chapter[0]._id;
+        result.content = chapter[0].content;
+
+        res.send({
+            code: 200,
+            chapter: result
+        });
+    });
+};
 var getOneTranslate = function(id, cb) {
     Section.find({
         _id: id
@@ -354,7 +373,7 @@ var delChapter = function(req, res) {
     Chapter.find({
         _id: id
     }, function(err, chapter) {
-        
+
     });
     Chapter.find({
         _id: id
@@ -367,7 +386,7 @@ var delChapter = function(req, res) {
         }
         Doc.find({
             name: doc
-        }, function(err,doc) {
+        }, function(err, doc) {
             var _doc = doc[0];
             _doc.chapters.splice(_doc.chapters.indexOf(id), 1);
             _doc.save(function(err) {
@@ -375,14 +394,30 @@ var delChapter = function(req, res) {
                     code: 200
                 });
             });
-        }); 
+        });
     });
+};
+var editChapter = function(req, res) {
+    var id = req.body.id;
+    var content = req.body.content;
+    var name = req.body.name;
+    var doc = req.params.doc;
+
+    Chapter.find({
+        _id: id
+    }, function(err, chapter) {
+        var chp = chapter[0];
+        chp.content = content;
+        chp.name = name;
+    });
+
 };
 
 module.exports = function(app) {
     app.get('/api/doc/:name', getDocToc);
     app.get('/api/doc/:name/detail', getDocDetail);
     app.get('/api/chapter/:doc/:name', getChapter);
+    app.get('/api/chapter/:doc/:name/md', getChapterMd);
     app.post('/api/translate/save', middleware.check_login, saveTranslate);
     app.post('/api/section/finish', setFinish);
     app.post('/api/section/unfinish', unfinish);

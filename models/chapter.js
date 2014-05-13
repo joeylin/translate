@@ -6,6 +6,9 @@ var ChapterSchema = new Schema({
     name: {
         type: String
     },
+    content: {
+        type: String
+    },
     doc: {
         type: String,
         ref: 'Doc'
@@ -36,12 +39,14 @@ ChapterSchema.virtual('total').get(function() {
 ChapterSchema.methods.getChapterSections = function(cb) {
     this.populate('sections').exec(cb);
 };
+ChapterSchema.methods.partToSections = function() {};
 // static
 ChapterSchema.statics.createNew = function(obj, cb) {
     var chapter = new this();
     chapter.name = obj.name;
     chapter.doc = obj.doc;
     chapter.index = obj.index;
+    chapter.content = obj.content;
     if (obj.section) {
         chapter.sections.push(obj.section);
     }
@@ -54,7 +59,6 @@ ChapterSchema.statics.delById = function(id) {
 
 // middleware
 ChapterSchema.pre('save', function(next) {
-
     this.updateAt = new Date();
     next();
 });

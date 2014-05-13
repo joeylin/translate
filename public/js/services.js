@@ -216,12 +216,6 @@ factory('restAPI', ['$resource',
             }, restAPI.user, ID, cache.user);
         };
     }
-]).factory('getMarkdown', ['$http',
-    function($http) {
-        return $http.get('/static/md/markdown.md', {
-            cache: true
-        });
-    }
 ]).factory('toast', ['$log', 'tools',
     function($log, tools) {
         var toast = {},

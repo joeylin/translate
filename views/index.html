@@ -185,7 +185,7 @@
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Post</a></li>
                 <li><a href="#">Group</a></li>
-                <li>
+                <!-- <li>
                     <a href="/post/add"><i class="fa fa-plus"></i> Create Doc</a>
                 </li>
                 <li ng-show="!global.isEdit">
@@ -193,7 +193,7 @@
                 </li>
                 <li ng-show="global.isEdit">
                   <a href="#" ng-click="backDoc()">Back Doc</a>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -202,14 +202,14 @@
         <div class="container-fluid">
           <div class="row row-offcanvas row-offcanvas-left" >
             <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation" ng-controller="tocCtrol">
-                <h3>{{doc.docName}}</h3>
-                <ul ng-show="global.isEdit">
+                <h3 ng-bind="doc.docName"></h3>
+                <!-- <ul ng-show="global.isEdit">
                   <li><a ng-href="/doc/{{doc.docName}}/addChapter"> + add</a></li>
-                </ul>
+                </ul> -->
                 <ul class="nav nav-sidebar">
                   <li ng-repeat="chapter in doc.toc" ng-class="{active: chapter.name===current}" ng-click="setCurrent($index)">
-                    <a ng-href="/doc/{{doc.docName}}/{{chapter.name}}">{{chapter.name}}</a>
-                    <span ng-show="global.isEdit">x</span>
+                    <a ng-href="/doc/{{doc.docName}}/{{chapter.name}}" ng-bind="chapter.name"></a>
+                    <!-- <span ng-show="global.isEdit" >x</span> -->
                   </li>
                 </ul>
             </div><!--/span-->
