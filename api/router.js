@@ -59,7 +59,15 @@ module.exports = function(app) {
     var getHome = function(req, res) {
         res.render('home');
     };
+    var getSearch = function(req, res) {
+        res.render('search');
+    };
+    var getSignup = function(req, res) {
+        res.render('signup');
+    };
+    app.get('/signup', getSignup);
     app.get('/doc', getHome);
+    app.get('/doc/search', getSearch);
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
     app.get('/user/admin', middleware.check_login, getAdmin);

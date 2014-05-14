@@ -7,8 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-        <link rel="stylesheet" href="/public/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/public/css/font-awesome.min.css">
+        <!-- bootstrap 3.0.2 -->
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- font Awesome -->
+        <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/main.css">
 
         <!--[if lt IE 9]>
@@ -48,6 +52,10 @@
           }
           .pager li>a {
             border-radius: 5px;
+          }
+          .infomUs .info {
+            font-size: 19px;
+            text-align: right;
           }
 
         </style>
@@ -97,7 +105,7 @@
           </div>
           <hr>
           <div class="row">
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-3">
               <div class="thumbnail group-list">
                 <img class="thumbnail img-responsive" src="//placehold.it/600x350">
                 <div class="caption">
@@ -111,7 +119,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-3">
               <div class="thumbnail group-list">
                 <img class="thumbnail img-responsive" src="//placehold.it/600x350">
                 <div class="caption">
@@ -125,7 +133,21 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
               <div class="thumbnail group-list">
                 <img class="thumbnail img-responsive" src="//placehold.it/600x350">
                 <div class="caption">
@@ -145,17 +167,23 @@
             <li><a href="#">Previous</a></li>
             <li><a href="#">Next</a></li>
           </ul>
-
           <hr>
-          
-
-
-
-
+          <div class="infomUs clearfix">
+            <p class="col-sm-4 info">No your DOC ? Inform us:</p>
+            <form class="form-inline col-sm-8" role="form">
+              <div class="form-group">
+                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter Doc">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="your email">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+          </div>
+          <hr>
         </div>
-
         <footer>
-          <p class="pull-right">©2014 Company</p>
+          <p class="pull-right">© Found by Joeylin</p>
         </footer>
     </body>
 </html>

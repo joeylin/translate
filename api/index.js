@@ -409,6 +409,9 @@ var editChapter = function(req, res) {
         var chp = chapter[0];
         chp.content = content;
         chp.name = name;
+
+        chp.sections = parseChapter(content);
+
     });
 
 };

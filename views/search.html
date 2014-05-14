@@ -7,8 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-        <link rel="stylesheet" href="/public/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/public/css/font-awesome.min.css">
+        <!-- bootstrap 3.0.2 -->
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- font Awesome -->
+        <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/main.css">
 
         <!--[if lt IE 9]>
@@ -23,7 +27,6 @@
            * --------------------------------------------------
            */
           body {
-            padding-top: 50px;
             background-color: #f5f5f5;
           }
           footer {
@@ -31,80 +34,32 @@
             padding-right: 15px;
             background-color: #fff;
           }
-
-          /*
-           * Off Canvas
-           * --------------------------------------------------
-           */
-          @media screen and (max-width: 768px) {
-            .row-offcanvas {
-              position: relative;
-              -webkit-transition: all 0.25s ease-out;
-              -moz-transition: all 0.25s ease-out;
-              transition: all 0.25s ease-out;
-            }
-
-            .row-offcanvas-left
-            .sidebar-offcanvas {
-              left: -33%;
-            }
-
-            .row-offcanvas-left.active {
-              left: 33%;
-            }
-
-            .sidebar-offcanvas {
-              position: absolute;
-              top: 0;
-              width: 33%;
-              margin-left: 10px;
-            }
+          .group-list.thumbnail {
+            padding: 0;
           }
-
-
-          /* Sidebar navigation */
-          .nav-sidebar {
-            background-color: #f5f5f5;
-            margin-right: -15px;
-            margin-bottom: 20px;
-            margin-left: -15px;
+          .group-list .thumbnail {
+            margin-bottom: 0;
+            padding: 0;
           }
-          .nav-sidebar > li > a {
-            padding-right: 20px;
-            padding-left: 20px;
+          .group-list .caption {
+            padding: 9px 15px;
           }
-          .nav-sidebar > .active > a {
-            color: #fff;
-            background-color: #428bca;
+          .group-list h3 {
+            margin-top: 15px;
           }
-
-          /*
-           * Main content
-           */
-
-          .main {
-            padding: 20px;
-            background-color: #fff;
+          .getPraise {
+            margin-top: 10px;
           }
-          @media (min-width: 768px) {
-            .main {
-              padding-right: 40px;
-              padding-left: 40px;
-            }
+          .pager li>a {
+            border-radius: 5px;
           }
-          .main .page-header {
-            margin-top: 0;
+          .infomUs .info {
+            font-size: 19px;
+            text-align: right;
           }
-
-          /*
-           *  angular.js
-           */
-            input.ng-dirty.ng-invalid {
-              border: 1px solid red;
-            }
-            input.ng-valid {
-              border: 1px solid green;
-            }
+          .search-main .page-header {
+            margin: 0px 0 20px;
+          }
 
         </style>
         
@@ -113,7 +68,7 @@
     <!-- HTML code from Bootply.com editor -->
     
     <body>   
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -134,21 +89,99 @@
           </div>
         </nav>
 
-        <div class="container">
+        <div class="container search-main">
+          <div class="page-header">
+            <h2>search reasult :  <small> for keywords</small></h2>
+          </div>
           <div>
-            <form class="navbar-form navbar-left">
-                <div class="input-group input-group-sm" style="max-width:360px;">
-                  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-                  <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                  </div>
+            Filter by tag :
+            <span class="label label-default">Default</span>
+            <span class="label label-primary">Primary</span>
+            <span class="label label-success">Success</span>
+            <span class="label label-info">Info</span>
+            <span class="label label-warning">Warning</span>
+            <span class="label label-danger">Danger</span>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
                 </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ul class="pager">
+            <li><a href="#">Previous</a></li>
+            <li><a href="#">Next</a></li>
+          </ul>
+          <hr>
+          <div class="infomUs clearfix">
+            <p class="col-sm-4 info">No your DOC ? Inform us :</p>
+            <form class="form-inline col-sm-8" role="form">
+              <div class="form-group">
+                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter Doc">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="your email">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
             </form>
           </div>
-        </div><!--/.container-->
-
+          <hr>
+        </div>
         <footer>
-          <p class="pull-right">©2014 Company</p>
+          <p class="pull-right">© Found by Joeylin</p>
         </footer>
     </body>
 </html>
