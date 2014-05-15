@@ -25,9 +25,6 @@
            * Style tweaks
            * --------------------------------------------------
            */
-          body {
-            background-color: #f5f5f5;
-          }
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -40,13 +37,14 @@
           .bg-modena {
             background-color: #535368!important;
           }
-
+          .bg-modena.btn {
+            color: #fff;
+          }
         </style>
         
     </head>
     
-    <!-- HTML code from Bootply.com editor -->
-    
+    <!-- HTML code from Bootply.com editor -->   
     <body>   
         <nav class="navbar navbar-inverse" role="navigation">
           <div class="container">
@@ -61,43 +59,23 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown user user-menu open">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="glyphicon glyphicon-user"></i>
-                        <span>Jane Doe <i class="caret"></i></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header bg-modena">
-                            <img src="img/avatar3.png" class="img-circle" alt="User Image">
-                            <p>
-                                Jane Doe - Web Developer
-                                <small>Member since Nov. 2012</small>
-                            </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
-                            </div>
-                        </li>
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
+                  <li class="dropdown" id="menuLogin">
+                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
+                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                              <label>Login</label> 
+                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username" ng-keydown="enter($event)">
+                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password" ng-keydown="enter($event)">
+                              <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
+                          </form>
+                          <br>
+                          <form class="form">
+                            <a class="signup" href="#" title="Fast and free sign up!" id="btnNewUser" data-toggle="collapse" data-target="#formRegister">New User? Sign-up..</a>
+                          </form>
+                          <a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot username or password?</a>
+                          <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>
+                      </div>
+                  </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="#">Home</a></li>
@@ -109,32 +87,58 @@
         </nav>
         <div class="container">
           <div class="form-box" id="login-box">
-            <div class="header">Register New Membership</div>
-            <form action="../../index.html" method="post">
+            <div class="header">Register</div>
+            <form action="#" method="post">
                 <div class="body bg-gray">
                     <div class="form-group">
-                        <input type="text" name="name" class="form-control" placeholder="Full name">
+                        <input class="form-control" name="username" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
                     </div>
                     <div class="form-group">
-                        <input type="text" name="userid" class="form-control" placeholder="User ID">
+                        <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="" required="">
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password" class="form-control" placeholder="Password">
+                        <input class="form-control" name="password" id="inputpassword" type="password" placeholder="Password" required="">
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password2" class="form-control" placeholder="Retype password">
+                        <input class="form-control" name="verify" id="inputVerify" type="password" placeholder="Password (again)" required="">
                     </div>
                 </div>
                 <div class="footer">                    
-
-                    <button type="submit" class="btn bg-modena btn-block">Sign me up</button>
+                    <button type="submit" class="btn bg-modena btn-block" id="btnRegister">Sign me up</button>
                 </div>
             </form>
         </div>
-        </div>
-
         <footer>
-          <p class="pull-right">© Found by Joeylin</p>
+          <p class="pull-right text-center">© Found by Joeylin</p>
         </footer>
+        <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $('#btnRegister').click(function(){
+                $(this).text("Wait..");
+                $.ajax({
+                    url: "/signup?format=json",
+                    type: "post",
+                    data: $('#formRegister').serialize(),
+                    success: function (data) {
+                        console.log('data:'+JSON.stringify(data));
+                        if (data.status==1) {
+                            $('#btnRegister').attr("disabled","disabled");
+                            $('#formRegister').text('Thanks. You can now login using the Login form.');
+                        }
+                        else {
+                            prependAlert("#spacer",data.error);
+                            $('#btnRegister').shake(4,6,700,'#CC2222');
+                            $('#btnRegister').text("Sign Up");
+                            $('#inputEmail').focus();
+                        }
+                    },
+                    error: function (e) {
+                        $('#btnRegister').text("Sign Up");
+                        console.log('error:'+e);
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

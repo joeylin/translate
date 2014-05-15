@@ -34,7 +34,8 @@ module.exports = function(app) {
             name: name
         }).populate('chapters').exec(function(err, doc) {
             var toc = [];
-            doc[0].chapters.map(function(chapter, key) {
+            var _doc = doc[0];
+            _doc.chapters.map(function(chapter, key) {
                 var obj = {};
                 obj.name = chapter.name;
                 obj.id = chapter._id;
@@ -57,9 +58,11 @@ module.exports = function(app) {
         res.render('admin.html');
     };
     var getHome = function(req, res) {
+        app.locals.user = req.session.user;
         res.render('home');
     };
     var getSearch = function(req, res) {
+        app.locals.user = req.session.user;
         res.render('search');
     };
     var getSignup = function(req, res) {

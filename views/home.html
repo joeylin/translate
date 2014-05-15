@@ -26,9 +26,6 @@
            * Style tweaks
            * --------------------------------------------------
            */
-          body {
-            background-color: #f5f5f5;
-          }
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -77,6 +74,70 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" >
+                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
+                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                              <label>Login</label> 
+                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username" ng-keydown="enter($event)">
+                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password" ng-keydown="enter($event)">
+                              <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
+                          </form>
+                          <br>
+                          <form class="form">
+                            <a class="signup" href="#" title="Fast and free sign up!" id="btnNewUser" data-toggle="collapse" data-target="#formRegister">New User? Sign-up..</a>
+                          </form>
+                          <a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot username or password?</a>
+                          <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>
+                      </div>
+                  </li>
+                  <li class="dropdown user user-menu" id="menuUser" ng-if="global.isLogin">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+                            <!-- todo have custom user image -->
+                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
+                            <i class="fa fa-user"></i> 
+                            <span id="lblUsername" ng-bind="global.user.username" style="margin-left: 5px;"></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" ng-controller="settingsCtrl">
+                            <!-- User image -->
+                            <li class="user-header bg-modena">
+                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image">
+                                <p>
+                                    Jane Doe - Web Developer
+                                    <small>Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Praise</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- <ul class="dropdown-menu" ng-controller="settingsCtrl">
+                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
+                            <li><a href="#" ng-click="logout()"><i class="fa fa-power-off"></i> Logout</a></li>
+                        </ul> -->
+                  </li>
+              </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Post</a></li>
