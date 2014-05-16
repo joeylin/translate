@@ -70,5 +70,7 @@ module.exports = function(app) {
     app.get('/doc/search', getSearch);
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
+    // settings
+    app.get('/settings', getSetting);
     app.get('/settings/:op', getSetting);
 };

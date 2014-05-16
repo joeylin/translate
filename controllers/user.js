@@ -35,6 +35,7 @@ var create = function(req, res) {
             code: 200,
             user: req.session.user
         });
+        res.redirect('/settings');
     });
 };
 var login = function(req, res) {
