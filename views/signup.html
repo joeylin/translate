@@ -40,6 +40,12 @@
           .bg-modena.btn {
             color: #fff;
           }
+          #formSignup label.error {
+            color: red;
+          }
+          #login-box {
+            margin-bottom: 90px;
+          }
         </style>
         
     </head>
@@ -88,7 +94,7 @@
         <div class="container">
           <div class="form-box" id="login-box">
             <div class="header">Register</div>
-            <form action="#" method="post">
+            <form action="" method="post" id="formSignup">
                 <div class="body bg-gray">
                     <div class="form-group">
                         <input class="form-control" name="username" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
@@ -112,32 +118,56 @@
           <p class="pull-right text-center">© Found by Joeylin</p>
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/jquery-validate.js"></script>
         <script type="text/javascript">
-            $('#btnRegister').click(function(){
-                $(this).text("Wait..");
-                $.ajax({
-                    url: "/signup?format=json",
-                    type: "post",
-                    data: $('#formRegister').serialize(),
-                    success: function (data) {
-                        console.log('data:'+JSON.stringify(data));
-                        if (data.status==1) {
-                            $('#btnRegister').attr("disabled","disabled");
-                            $('#formRegister').text('Thanks. You can now login using the Login form.');
-                        }
-                        else {
-                            prependAlert("#spacer",data.error);
-                            $('#btnRegister').shake(4,6,700,'#CC2222');
-                            $('#btnRegister').text("Sign Up");
-                            $('#inputEmail').focus();
-                        }
+            var validator = $('#formSignup').validate({
+                onkeyup: false,
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
                     },
-                    error: function (e) {
-                        $('#btnRegister').text("Sign Up");
-                        console.log('error:'+e);
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    verify: {
+                        required: true,
+                        minlength: 5,
+                        equalTo: "#inputpassword"
                     }
-                });
+                },
+                submitHandler:function(form) {
+                    var data = {
+                        username: $('#inputUsername').val(),
+                        email: $('#inputEmail').val(),
+                        password: $('#inputpassword').val()
+                    };
+                    var errorHtml = '<label class="error" id="customError"></label>';
+                    $.ajax({
+                        url: "/api/user/register",
+                        type: "post",
+                        data: data,
+                        success: function (data) {
+                            if (data.code === 200) {
+                                $('#btnRegister').attr("disabled","disabled");
+                                $('#btnRegister').text("Sign Up");
+                            }
+                            else {
+                                $('#btnRegister').text("Sign Up");
+                                $(errorHtml).text(data.info).appendTo('.footer');
+                            }
+                        },
+                        error: function (e) {
+                            $('#btnRegister').text("Sign Up");
+                            $(errorHtml).text(data.info).appendTo('.footer');
+                        }
+                    });
+                    return false;
+                }
+            });
+            $('#inputEmail').add('#inputUsername').on('keydown', function() {
+                $('#customError').remove();
             });
         </script>
     </body>

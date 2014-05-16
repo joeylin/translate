@@ -12,7 +12,6 @@ var create = function(req, res) {
         password: req.body.password
     };
     var user = new User(options);
-    console.log(user);
     user.provider = 'local';
     user.save(function(err, user) {
         if (err) {

@@ -28,6 +28,7 @@ $(document).ready(function() {
         var follower = $('.user_follower');
         var praise = $('.user_praise');
         var connects = $('.user_connects');
+        var lblUsername = $('#lblUsername');
 
         if (!userObj) {
             username.text('');
@@ -36,7 +37,9 @@ $(document).ready(function() {
             follower.text('');
             praise.text('');
             connects.text('');
+            lblUsername.text('');
         } else {
+            lblUsername.text(userObj.username);
             username.text(userObj.username);
             createAt.text(userObj.createAt);
             avatar.src = userObj.avatar;
@@ -48,10 +51,10 @@ $(document).ready(function() {
     if (!user) {
         $('#menuLogin').show();
         $('#menuUser').hide();
-        setUser(user);
     } else {
         $('#menuLogin').hide();
         $('#menuUser').show();
+        setUser(user);
     }
     $('#btnLogin').click(function() {
         $(this).text("...");
@@ -81,8 +84,22 @@ $(document).ready(function() {
         });
     });
     $('#btnLogout').click(function() {
-        setUser(null);
-        $('#menuLogin').show();
-        $('#menuUser').hide();
+        $.ajax({
+            url: "/api/user/logout",
+            type: "get",
+            success: function(data) {
+                if (data.code == 200) {
+                    setUser(null);
+                    $('#menuLogin').show();
+                    $('#menuUser').hide();
+                }
+            }
+        });
+    });
+    $('#password').on('keydown', function(e) {
+        var key = e.keyCode || e.which;
+        if (key === 13) {
+            $('#btnLogin').click();
+        }
     });
 });

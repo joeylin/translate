@@ -222,44 +222,6 @@ controller('chapterCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapte
             }
         }
     }
-]).controller('userRegisterCtrl', ['app', '$scope',
-    function(app, $scope) {
-        var global = app.rootScope.global;
-        app.clearUser();
-        $scope.user = {
-            username: '',
-            email: '',
-            password: '',
-            password2: ''
-        };
-        $scope.signup = 'Sign Up';
-        $scope.submit = function() {
-            var user = $scope.user;
-            $scope.signup = 'Wait...';
-
-            var data = {
-                username: user.username,
-                email: user.email
-            };
-            data.password = user.password;
-            app.restAPI.user.save({
-                ID: 'register'
-            }, data, function(data) {
-                app.loginUser(data.user);
-                $scope.signup = 'Sign Up';
-                $('#menuLogin').removeClass('open');
-            }, function() {
-                $scope.$emit('shake');
-                $scope.signup = 'Sign Up';
-            });
-        };
-        $scope.enter = function(e) {
-            var key = e.keyCode || e.which;
-            if (key === 13) {
-                $scope.submit();
-            }
-        }
-    }
 ]).controller('settingsCtrl', ['app', '$scope',
     function(app, $scope) {
         $scope.logout = function() {

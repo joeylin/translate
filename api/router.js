@@ -50,12 +50,9 @@ module.exports = function(app) {
             res.render('index');
         });
     };
-    var getAdmin = function(req, res) {
-        var user = req.params.user;
-        if (user !== req.session.user.username) {
-            return res.send('not authored');
-        }
-        res.render('admin.html');
+    var getSetting = function(req, res) {
+        app.locals.user = req.session.user;
+        res.render('settings.html');
     };
     var getHome = function(req, res) {
         app.locals.user = req.session.user;
@@ -73,5 +70,5 @@ module.exports = function(app) {
     app.get('/doc/search', getSearch);
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
-    app.get('/user/admin', middleware.check_login, getAdmin);
+    app.get('/settings/:op', getSetting);
 };

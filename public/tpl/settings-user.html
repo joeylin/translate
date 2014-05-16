@@ -1,0 +1,88 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        User
+        <small>personal info</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+</section>
+<section class="content">
+    <form class="form-horizontal mar-top-20" role="form" novalidate="">
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">邮箱</label>                        
+            <div class="col-sm-6">                            
+                <input type="email" class="form-control ng-pristine ng-valid ng-valid-email" name="user_email" disabled="" placeholder="邮箱" ng-model="user.email">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">用户名</label>                        
+            <div class="col-sm-6">                            
+                <input type="text" required="" name="user_name" class="form-control" placeholder="用户名" ng-model="user.name">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">个人简介</label>                        
+            <div class="col-sm-6">                            
+                <textarea class="form-control" name="user_desc" maxlength="200" placeholder="个人简介" ng-model="user.desc"></textarea>                        
+            </div>                    
+        </div>                    
+        <div class="form-group ng-hide" ng-show="change_basic_info_form.$errors.length > 0">                        
+            <div class="col-sm-6 col-sm-offset-2">                            
+                <div class="alert alert-danger  ng-binding">                                
+                    <i class="fa fa-times-circle"></i>                             
+                </div>                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <div class="col-sm-offset-2 col-sm-10">                            
+                <button type="button" class="btn btn-success">保存</button>                        
+            </div>                    
+        </div>                
+    </form>
+    <form class="form-horizontal mar-top-20" role="form" novalidate="">
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">原密码</label>                        
+            <div class="col-sm-6">                            
+                <input type="email" class="form-control ng-pristine ng-valid ng-valid-email" name="user_email" disabled="" placeholder="邮箱" ng-model="user.email">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">新密码</label>                        
+            <div class="col-sm-6">                            
+                <input type="text" required="" name="user_name" class="form-control" placeholder="用户名" ng-model="user.name">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">再次输入</label>                        
+            <div class="col-sm-6">                            
+                <textarea class="form-control" name="user_desc" maxlength="200" placeholder="个人简介" ng-model="user.desc"></textarea>                   
+            </div>                    
+        </div>                    
+        <div class="form-group ng-hide" ng-show="change_basic_info_form.$errors.length > 0">                        
+            <div class="col-sm-6 col-sm-offset-2">                            
+                <div class="alert alert-danger  ng-binding">                                
+                    <i class="fa fa-times-circle"></i>                             
+                </div>                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <div class="col-sm-offset-2 col-sm-10">                            
+                <button type="button" class="btn btn-success">保存</button>                        
+            </div>                    
+        </div>                
+    </form>
+    <div class="tab-pane active" tab-content-transclude="tab">
+        <a  class="avatar avatar-80 mar-top-15">                    
+            <img class="img-circle">                
+        </a>                
+        <div class="input-group width-600 mar-top-15">                    
+            <input type="text" name="user_avatar" required="" class="form-control " placeholder="输入头像地址" ng-model="user.avatar.path">
+            <span class="input-group-btn">                        
+                <button class="btn btn-success" type="button">保存</button>                    
+            </span>                
+        </div>            
+    </div>
+</section>

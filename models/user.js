@@ -17,6 +17,18 @@ var UserSchema = new Schema({
         type: String,
         unique: true
     },
+    followers: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
+    followerings: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
+    connects: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
     username: {
         type: String,
         unique: true
