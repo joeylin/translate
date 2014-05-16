@@ -4,24 +4,97 @@
 angular.module('jsGen.controllers', ['ui.validate']).
 controller('settingsListCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$http',
     function(app, $scope, $routeParams, getToc, getChapter, $http) {
-        // var doc = $routeParams.doc;
-        // var chapter = $routeParams.chapter;
-        // var update = function(cb) {
-        //     getChapter(doc, chapter).then(function(data) {
-        //         data.sections.map(function(value, key) {
-        //             value.saveTitle = 'save';
-        //             value.newTrans = value.md;
-        //         });
-        //         $scope.doc.chapter = data;
-        //         if (typeof cb === 'function') {
-        //             cb();
-        //         }
-        //     });
-        // };
-        // update();
     }
 ]).controller('userCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
+        
+    }
+]).controller('userBasicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var user = app.getUser();
+        $scope.display_name = user.display_name;
+        $scope.email = user.email;
+        $scope.des = user.des;
+
+        $scope.isError = false;
+        $scope.errorMsg = '';
+
+        // btn
+        $scope.saveBtn = 'save';
+        $scope.save = function() {
+            var url = '/api/user/edit/basic';
+            var data = {
+                display_name: $scope.display_name,
+                email: $scope.email,
+                des: $scope.des
+            };
+            if ($scope.display_name === '' ||  $scope.email === '' ) {
+                $scope.isError = true;
+                $scope.errorMsg = 'cant be blank !';
+            } else {
+                $http.post(url,data).success(function(data) {
+                    $scope.saveBtn = 'isSaved';
+                    app.updateUser(data.user);
+                });
+            }
+        };
+        $scope.change = function() {
+            $scope.saveBtn = 'save';
+            $scope.isError = false;
+        };
+    }
+]).controller('userPasswordCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        $scope.originPassword = '';
+        $scope.newPassword = '';
+        $scope.repeatPassword = '';
+
+        $scope.isError = false;
+        $scope.errorMsg = '';
+
+        $scope.saveBtn = 'save';
+        $scope.save = function() {
+            var url = '/api/user/edit/password';
+            var data = {
+                originPassword: $scope.originPassword,
+                newPassword: $scope.newPassword,
+            };
+            if ($scope.newPassword !== $scope.repeatPassword) {
+                $scope.isError = true;
+                $scope.errorMsg = 'cant be blank !';
+            } else {
+                $http.post(url,data).success(function(data) {
+                    $scope.saveBtn = 'isSaved';
+                    app.updateUser(data.user);
+                });
+            }
+        };
+        $scope.change = function() {
+            $scope.saveBtn = 'save';
+            $scope.isError = false;
+        };
+    }
+]).controller('userImageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var user = app.getUser();
+        $scope.avatar = user.avatar;
+
+        // btn
+        $scope.saveBtn = 'save';
+        $scope.save = function() {
+            var url = '/api/user/edit/avatar';
+            var data = {
+                avatar: $scope.avatar
+            };
+            $http.post(url,data).success(function(data) {
+                $scope.saveBtn = 'isSaved';
+                app.updateUser(data.user);
+            });
+        };
+        $scope.change = function() {
+            $scope.saveBtn = 'save';
+            $scope.isError = false;
+        };
 
     }
 ]).controller('profileCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',

@@ -14,7 +14,8 @@ var check_admin = function(req, res, next) {
 };
 // for settings
 var check_auth = function(req, res, next) {
-    if (!req.session.user) {
+	var page = req.params.op;
+    if (!req.session.user && page !== 'login' ) {
         res.redirect('/settings/login');
     } else {
         next();

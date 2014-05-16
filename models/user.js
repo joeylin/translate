@@ -13,6 +13,10 @@ var UserSchema = new Schema({
         type: String,
         default: ''
     },
+    des: {
+        type: String,
+        default: ''
+    },
     email: {
         type: String,
         unique: true
