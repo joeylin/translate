@@ -71,6 +71,6 @@ module.exports = function(app) {
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
     // settings
-    app.get('/settings', getSetting);
-    app.get('/settings/:op', getSetting);
+    app.get('/settings', middleware.check_auth, getSetting);
+    app.get('/settings/:op', middleware.check_auth, getSetting);
 };

@@ -146,7 +146,7 @@
                   <li class="dropdown" id="menuLogin" ng-if="!global.isLogin" >
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate>
                               <label>Login</label> 
                               <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username" ng-keydown="enter($event)">
                               <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password" ng-keydown="enter($event)">

@@ -22,7 +22,6 @@ var create = function(req, res) {
                 info: message
             });
         }
-        console.log(user);
         req.session.user = {
             uid: user._id,
             username: user.username,
@@ -35,7 +34,6 @@ var create = function(req, res) {
             code: 200,
             user: req.session.user
         });
-        res.redirect('/settings');
     });
 };
 var login = function(req, res) {

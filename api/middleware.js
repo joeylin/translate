@@ -3,17 +3,22 @@ var check_login = function(req, res, next) {
         next();
     } else {
         res.send({
-        	code: 404,
-        	info: 'require login'
+            code: 404,
+            info: 'require login'
         });
     }
-    
+
 };
 var check_admin = function(req, res, next) {
-	next();
+    next();
 };
+// for settings
 var check_auth = function(req, res, next) {
-	next();
+    if (!req.session.user) {
+        res.redirect('/settings/login');
+    } else {
+        next();
+    }
 };
 exports.check_login = check_login;
 exports.check_admin = check_admin;

@@ -49,6 +49,10 @@ config(['$httpProvider', 'app',
             return {
                 response: function(res) {
                     var error, data = res.data;
+                    if (data.code === 403) {
+                        app.clearUser();
+                        app.q.reject(data);
+                    }
                     if (data.code === 404) {
                         app.timestamp = data.timestamp;
                         error = data.info;
@@ -160,7 +164,7 @@ config(['$httpProvider', 'app',
                 ID: 'logout'
             }, function() {
                 app.clearUser();
-                $location.path('/');
+                $location.path('/settings/login');
             });
         };
         $rootScope.setEdit = function() {

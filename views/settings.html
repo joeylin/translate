@@ -35,9 +35,33 @@
             background-color: #fff;
           }
 
-         .skin-blue .navbar {
+          .skin-blue .navbar {
             background-color: #222;
-         }
+          }
+          .form-box .header {
+            background-color: #535368;
+          }
+          .bg-modena {
+            background-color: #535368!important;
+          }
+          .bg-modena.btn {
+            color: #fff;
+          }
+          #formSignup label.error {
+            color: red;
+          }
+          #loginWrap {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            background-color: #000;
+            left: 0;
+            vertical-align: center;
+          }
+          #login-box {
+            display: inline-block;
+          }
 
         </style>
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
@@ -71,7 +95,7 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown user user-menu" id="menuUser">
+                  <li class="dropdown user user-menu" id="menuUser" ng-if="global.isLogin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
                             <!-- todo have custom user image -->
                             <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
@@ -154,7 +178,7 @@
           <aside class="right-side" ng-view></aside>
         </div><!--/.container-->
     <footer>
-      <p class="pull-right">©2014 Company</p>
+      <p class="pull-right">© 2014 Company</p>
     </footer>
     <div class="loading" ng-show="loading.show"></div>
     <script>
