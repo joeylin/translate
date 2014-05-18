@@ -158,7 +158,6 @@ config(['$httpProvider', 'app',
         app.updateUser = function(user) {
             global.user = user;
             global.isLogin = true;
-
         };
         app.tocCtrl = window.ts.doc;
         $rootScope.loading = {

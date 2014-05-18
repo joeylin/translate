@@ -65,12 +65,21 @@ module.exports = function(app) {
     var getSignup = function(req, res) {
         res.render('signup');
     };
+    var getProfile = function(req, res) {
+        app.locals.user = req.session.user;
+        res.render('profile');
+    };
     app.get('/signup', getSignup);
     app.get('/doc', getHome);
     app.get('/doc/search', getSearch);
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
+
     // settings
     app.get('/settings', middleware.check_auth, getSetting);
     app.get('/settings/:op', middleware.check_auth, getSetting);
+
+    // profile
+    app.get('/profile', getProfile);
+    app.get('/profile/:user', getProfile);
 };

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+        <title>Translate</title>
+        <meta name="generator" content="translate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <!-- bootstrap 3.0.2 -->
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- font Awesome -->
+        <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/public/css/main.css">
+
+        <!--[if lt IE 9]>
+          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- CSS code from translate.com editor -->
+        
+        <style type="text/css">
+            /*
+           * Style tweaks
+           * --------------------------------------------------
+           */
+          footer {
+            padding-left: 15px;
+            padding-right: 15px;
+            background-color: #fff;
+          }
+          .section {
+            margin-bottom: 20px;
+          }
+        </style>
+        <script type="text/javascript">
+          window.user = null;
+          <% if (locals.user) { %>
+            window.user = <%- JSON.stringify(locals.user) %>;
+          <% } %>
+        </script>
+        
+    </head>
+    
+    <!-- HTML code from Bootply.com editor -->
+    
+    <body>   
+        <nav class="navbar navbar-inverse" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Translate</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown" id="menuLogin" >
+                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
+                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                              <label>Login</label> 
+                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
+                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
+                              <button type="button" id="btnLogin" class="btn">Login</button>
+                          </form>
+                          <br>
+                          <form class="form">
+                            <a class="signup" href="/signup" >New User? Sign-up..</a>
+                          </form>
+                          <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
+                          <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
+                      </div>
+                  </li>
+                  <li class="dropdown user user-menu" id="menuUser">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+                            <!-- todo have custom user image -->
+                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
+                            <i class="fa fa-user"></i> 
+                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header bg-modena">
+                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <p>
+                                    <span class="user_username"> Jane Doe - Web Developer</span>
+                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_follower">10</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_praise">100</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_connects">30</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Praise</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Connects</a>
+                                </div>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                  </li>
+              </ul>
+              <ul class="nav navbar-nav navbar-left">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Post</a></li>
+                <li><a href="#">Group</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="container">
+          <div class="profile-sidebar col-md-3">
+            <div class="section">
+              <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="100%x180" style="height: 180px; width: 100%; display: block;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzEiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijg1LjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcxeDE4MDwvdGV4dD48L3N2Zz4=">
+              </a>
+              <div class="row">
+                <div class="col-xs-4 text-center">
+                    <a href="#" class="user_follower">10</a>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <a href="#" class="user_praise">100</a>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <a href="#" class="user_connects">30</a>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <a href="#">Followers</a>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <a href="#">Praise</a>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <a href="#">Connects</a>
+                </div> 
+              </div>
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Basic</div>
+              <div class="panel-body">
+                / address/work/
+              </div>
+              <div class="panel-body">
+                school/hometown/birthday/sex/name
+              </div>
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Reading List</div>
+              <div class="panel-body">
+                Panel content
+              </div>
+            </div>
+          </div>
+          <div class="profile-body col-md-9">
+            <div class="jumbotron">
+              <h1>Hello, world!</h1>
+              <p class="des">this is my des this is my des this is my des this is my des</p>
+              <p>
+                <a class="btn btn-primary btn-lg" role="button">star me</a> 
+                <a class="btn btn-primary btn-lg" role="button">fellow me</a>
+              </p>
+            </div>
+            <div class="well">
+              <div class="row">
+                <div class="section col-md-6">
+                  <h4>Social</h4>
+                  <p>my name my name my name</p>
+                  <p>my name my name my name</p>
+                  <p>my name my name my name</p>
+                </div>
+                <div class="section col-md-6">
+                  <h4>skills</h4>
+                  <p>my name my name my name</p>
+                  <p>my name my name my name</p>
+                  <p>my name my name my name</p>
+                </div>
+              </div>
+
+            </div>
+            <div class="well">
+              <h4>Experence</h4>
+              <p><strong>title</strong> my name my name my name my name my name my name my name my name my name my name my name my name my name my name my name</p>
+              <p><strong>title</strong> my name my name my name my name my name my name my name my name my name my name my name my name my name my name my name</p>
+              <p><strong>title</strong> my name my name my name my name my name my name my name my name my name my name my name my name my name my name my name</p>
+            </div>
+            <div class="well">
+              <h4>Group</h4>
+              <p>my name my name my name</p>
+            </div>
+          </div>
+          
+        </div>
+        <footer>
+          <p class="pull-right">© Founded by Joeylin</p>
+        </footer>
+        <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/bootply.js"></script>
+    </body>
+</html>

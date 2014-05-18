@@ -171,7 +171,7 @@
                         <ul class="dropdown-menu" ng-controller="settingsCtrl">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image">
+                                <img ng-src="{{global.user.avatar}}" class="img-circle" alt="User Image">
                                 <p>
                                     Jane Doe - Web Developer
                                     <small>Member since Nov. 2012</small>
@@ -179,6 +179,15 @@
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_follower">0</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_praise">0</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_connects">0</a>
+                                </div>
                                 <div class="col-xs-4 text-center">
                                     <a href="#">Followers</a>
                                 </div>
