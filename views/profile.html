@@ -34,18 +34,41 @@
           .section {
             margin-bottom: 20px;
           }
+          .well .section {
+            margin-bottom: 0;
+          }
+          .jumbotron {
+            padding-bottom: 33px;
+            padding-top: 38px;
+            padding-left: 50px;
+            padding-right: 50px;
+          }
+          .container .jumbotron {
+            border-radius: 0;
+          }
+          .jumbotron .btn {
+            width: 74px;
+          }
+          .jumbotron h1 {
+            font-size: 36px;
+            margin-top: 0;
+          }
+          .user-detail .col-md-3 {
+            text-indent: -15px;
+          }
+          .well h3 {
+            margin-top: 10px;
+          }
         </style>
         <script type="text/javascript">
           window.user = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
           <% } %>
-        </script>
-        
+        </script>       
     </head>
     
-    <!-- HTML code from Bootply.com editor -->
-    
+    <!-- HTML code from Bootply.com editor -->  
     <body>   
         <nav class="navbar navbar-inverse" role="navigation">
           <div class="container">
@@ -165,11 +188,37 @@
             <div class="panel panel-default section">
               <div class="panel-heading">Basic</div>
               <div class="panel-body">
-                / address/work/
+                <div>
+                  <strong>Sex:</strong>
+                  Male
+                </div>
+                <div>
+                  <strong>Name:</strong>
+                  LinYao
+                </div>
+                <div>
+                  <strong>Birth:</strong>
+                  1987/12/10
+                </div>
+                <div>
+                  <strong>School:</strong>
+                  BUPT
+                </div>
+                <div>
+                  <strong>Hometown:</strong>
+                  Fujian,Fuzhou
+                </div>
+                <hr>
+                <div>
+                  <strong>Address:</strong>
+                  Fuzhou, BeiJing
+                </div>
+                <div>
+                  <strong>Job:</strong>
+                  Studying
+                </div>
               </div>
-              <div class="panel-body">
-                school/hometown/birthday/sex/name
-              </div>
+
             </div>
             <div class="panel panel-default section">
               <div class="panel-heading">Reading List</div>
@@ -180,42 +229,165 @@
           </div>
           <div class="profile-body col-md-9">
             <div class="jumbotron">
-              <h1>Hello, world!</h1>
-              <p class="des">this is my des this is my des this is my des this is my des</p>
+              <h1>Joeylin</h1>
+              <p class="des">Think different</p>
               <p>
-                <a class="btn btn-primary btn-lg" role="button">star me</a> 
-                <a class="btn btn-primary btn-lg" role="button">fellow me</a>
+                <a class="btn btn-primary" role="button">star</a> 
+                <a class="btn btn-primary" role="button">follow</a>
+                <a class="btn btn-primary" role="button">connect</a>
               </p>
             </div>
-            <div class="well">
+            <div class="well user-detail">
               <div class="row">
                 <div class="section col-md-6">
                   <h4>Social</h4>
-                  <p>my name my name my name</p>
-                  <p>my name my name my name</p>
-                  <p>my name my name my name</p>
+                  <p>
+                    <div class="clearfix">
+                      <div class="col-md-3 text-left">
+                        <strong>QQ : </strong>
+                      </div>
+                      <span class="col-md-9">331547274</span>
+                    </div>
+                    <div class="clearfix">
+                      <div class="col-md-3 text-left">
+                        <strong>Phone : </strong>
+                      </div>
+                      <span class="col-md-9">18650330481</span>
+                    </div>
+                    <div class="clearfix">
+                      <div class="col-md-3 text-left">
+                        <strong>Git : </strong>
+                      </div>
+                      <span class="col-md-9"><a href="https://github.com/joeylin">https://github.com/joeylin</a></span>
+                    </div>
+                    <div class="clearfix">
+                      <div class="col-md-3 text-left">
+                        <strong>weibo : </strong>
+                      </div>
+                      <span class="col-md-9"><a href="http://weibo.com/u/2253352402">http://weibo.com/u/2253352402</a></span>
+                    </div>
+                    <div class="clearfix">
+                      <div class="col-md-3 text-left">
+                        <strong>zhihu : </strong>
+                      </div>
+                      <span class="col-md-9"><a href="http://www.zhihu.com/people/lin-yao-82">http://www.zhihu.com/people/lin-yao-82</a></span>
+                    </div>
+                  </p>
                 </div>
                 <div class="section col-md-6">
                   <h4>skills</h4>
-                  <p>my name my name my name</p>
-                  <p>my name my name my name</p>
-                  <p>my name my name my name</p>
+                  <p>skilled at CSS HTML5 AngularJS, stduy two years for js coding, knowing to use nodejs building server, follow information about network product</p>
+                  <p>Like playing basktball, Listening music, play games on spare, reading books, climbing, and coding</p>
                 </div>
               </div>
-
             </div>
             <div class="well">
               <h4>Experence</h4>
-              <p><strong>title</strong> my name my name my name my name my name my name my name my name my name my name my name my name my name my name my name</p>
-              <p><strong>title</strong> my name my name my name my name my name my name my name my name my name my name my name my name my name my name my name</p>
-              <p><strong>title</strong> my name my name my name my name my name my name my name my name my name my name my name my name my name my name my name</p>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2010.07.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> graduate at YanBian University, mayjor at Electronic </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2010.09.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> work at Foxconn in RF RD team, charged at 2G/3G WIFI device test, cooperate with apple RF team, report bug to them, help them fix issues</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2010.09.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> work at Foxconn in RF RD team, charged at 2G/3G WIFI device test, cooperate with apple RF team, report bug to them, help them fix issues</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2012.09.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> begin graduate study at BUPT</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2013.04.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> Practice at FuJian ChaoXi limited company, a start up company, charge for FrontEnd team, coding UI wedget, and study nodejs, angularjs, something about product by myself</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>Current </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> looking for Job </p>
+                </div>
+              </div>
+            </div>
+            <div class="well">
+              <h4>Work</h4>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2010.07.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> graduate at YanBian University, mayjor at Electronic </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2010.09.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> work at Foxconn in RF RD team, charged at 2G/3G WIFI device test, cooperate with apple RF team, report bug to them, help them fix issues</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2010.09.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> work at Foxconn in RF RD team, charged at 2G/3G WIFI device test, cooperate with apple RF team, report bug to them, help them fix issues</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2012.09.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> begin graduate study at BUPT</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>2013.04.01 </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> Practice at FuJian ChaoXi limited company, a start up company, charge for FrontEnd team, coding UI wedget, and study nodejs, angularjs, something about product by myself</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <strong>Current </strong>
+                </div>
+                <div class="col-md-10">
+                  <p> looking for Job </p>
+                </div>
+              </div>
             </div>
             <div class="well">
               <h4>Group</h4>
               <p>my name my name my name</p>
             </div>
-          </div>
-          
+          </div>     
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin</p>
