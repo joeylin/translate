@@ -69,6 +69,10 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('profile');
     };
+    var getCompany = function(req, res) {
+        app.locals.user = req.session.user;
+        res.render('company');
+    };
     app.get('/signup', getSignup);
     app.get('/doc', getHome);
     app.get('/doc/search', getSearch);
@@ -82,4 +86,8 @@ module.exports = function(app) {
     // profile
     app.get('/profile', getProfile);
     app.get('/profile/:user', getProfile);
+
+    // company
+    app.get('/company', getCompany);
+    app.get('/company/:user', getCompany);
 };
