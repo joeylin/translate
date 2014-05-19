@@ -73,6 +73,18 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('company');
     };
+    var getUserHome = function(req, res) {
+        app.locals.user = req.session.user;
+        res.render('user-home');
+    };
+    var getNotification = function(req, res) {
+        app.locals.user = req.session.user;
+        res.render('notification');
+    };
+    var getShare = function(req, res) {
+        app.locals.user = req.session.user;
+        res.render('share');
+    };
     app.get('/signup', getSignup);
     app.get('/doc', getHome);
     app.get('/doc/search', getSearch);
@@ -90,4 +102,14 @@ module.exports = function(app) {
     // company
     app.get('/company', getCompany);
     app.get('/company/:user', getCompany);
+
+    // home
+    app.get('/home', getUserHome);
+
+    // notification
+    app.get('/notify', middleware.check_login, getNotification);
+
+    // share
+    app.get('/share', getShare);
+    app.get('/share/:id', getShare);
 };
