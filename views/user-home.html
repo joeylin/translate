@@ -87,6 +87,18 @@
             font-weight: 700;
             font-size: 18px;
           }
+          .reply-container {
+            margin: 15px 0 0 0;
+            padding: 15px;
+            border: 1px solid #e3e3e3;
+          }
+          .reply-content {
+            margin-bottom: 5px;
+          }
+          .reply-hr {
+            margin-bottom: 8px;
+            margin-top: 8px;
+          }
 
         </style>
         <script type="text/javascript">
@@ -227,15 +239,42 @@
                         <a href="#" class="comment" >comment</a>
                       </span>
                     </div>
-                    <div class="reply-content">
-                      <div class="media">
+                    <div class="reply-container">
+                      <div class="reply-editor">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="1" placeholder="Enter ..."></textarea>
+                        </div>
+                        <div class="clearfix">
+                          <a class="btn btn-primary pull-right" role="button">submit</a>
+                        </div>
+                      </div>
+                      <hr class="reply-hr">
+                      <div class="media reply-item">
                         <a class="pull-left" href="#">
                           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 34px; height: 34px;">
                         </a>
                         <div class="media-body">
-                          <h4 class="media-heading">Joeylin</h4>
-                          <div>
-                            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                          <p class="reply-content"><span class="reply-user"><a href="#">Joeylin</a>: </span>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                          <div class="clearfix media-info">
+                            <span class="date pull-left"><a href="#">a minute ago</a></span>
+                            <span class="pull-right media-controll">
+                              <a href="#" class="comment" >reply</a>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="reply-hr">
+                      <div class="media reply-item">
+                        <a class="pull-left" href="#">
+                          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 34px; height: 34px;">
+                        </a>
+                        <div class="media-body">
+                          <p class="reply-content"><span class="reply-user"><a href="#">Joeylin</a>: </span>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                          <div class="clearfix media-info">
+                            <span class="date pull-left"><a href="#">a minute ago</a></span>
+                            <span class="pull-right media-controll">
+                              <a href="#" class="comment" >reply</a>
+                            </span>
                           </div>
                         </div>
                       </div>
