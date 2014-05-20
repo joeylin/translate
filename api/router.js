@@ -87,7 +87,7 @@ module.exports = function(app) {
     };
     var getCombineSearch = function(req, res) {
         app.locals.user = req.session.user;
-        res.render('company-search');
+        res.render('combine-search');
     };
     app.get('/signup', getSignup);
     app.get('/doc', getHome);
