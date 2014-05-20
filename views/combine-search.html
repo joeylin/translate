@@ -87,6 +87,30 @@
             font-weight: 700;
             font-size: 18px;
           }
+          .border-right:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-right: 1px solid #ddd;
+          }
+          .search-submit {
+            margin-left: 8px!important;
+          }
+          .search-options {
+            padding: 0 0 10px 0;
+            font-size: 15px;
+          }
+          .search-options a {
+            display: inline-block;
+            margin-right: 10px;
+          }
+          .search-options a.active {
+            color: rgb(51, 51, 51);
+          }
+          .search-options a.active:hover {
+            color: rgb(51, 51, 51);
+          }
 
         </style>
         <script type="text/javascript">
@@ -188,38 +212,25 @@
           </div>
         </nav>
         <div class="container">
-          <div class="profile-sidebar col-md-4">
-            <div class="panel panel-default section">
-              <div class="panel-heading">Search: </div>
-              <div class="panel-body">
-                <div>
-                  <strong>email:</strong>
-                  amazingSurge@163.com
-                </div>
-                <div>
-                  <strong>website:</strong>
-                  www.amazingSurge.com
-                </div>
+          <div class="search-bar clearfix">
+            <div class="col-md-9">
+              <div class="search-options">
+                <a href="#" class="active">All</a>
+                <a href="#">People</a>
+                <a href="#">Jobs</a>
+                <a href="#">Share</a>
+                <a href="#">Company</a>
+              </div>
+              <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search for people jobs company share ...">
+                  <span class="input-group-btn">
+                      <button class="btn btn-primary search-submit" type="button" >submit</button>
+                  </span>
               </div>
             </div>
+            
           </div>
-          <div class="profile-body col-md-8">
-            <div class="well company-about">
-              <h4>About us</h4>
-              <div>
-                <p>Our company, HUBEI (PASSION RELEASE) PASSAGES GARMENT CO., LTD. is located in the bronze capital, Daye city, Hubei province, China. It covers land area of 35,000 sqm, standardized workshops of 11,000 sqm, and potentially holds 1500 people to work, which is one of the large scale clothing enterprises in Hubei. Presently, the company has equipped with complete set of brand-new and advanced machines exclusive for manufacturing fashion and leisure clothes.</p>
-                <p>Hubei Passages Garment Co., Ltd is a joint venture runs together with Taiwanese investor mainly dealing with garments design and manufacturing, which also specializes in producing all kinds of fashion and leisure clothes. The company has cooperated with many clients both from domestic and overseas, and has obtained consistently high praise from our customers since it was set up. </p> 
-                <p>The company holds the managerial idea that ‘Quality Proves Strength, Details Reach to Success’, and tries its best to do well at any aspect from each stitch, each point of procedure of manufacturing to final inspection, packing and shipment.</p>
-                <p>We insist on the principle of development of 'High quality, Efficiency, Sincerity and Down-to-earth working approach' to provide you with excellent service of processing! We sincerely welcome you to visit our company or contact us for cooperation!</p>
-              </div>
-              <div class="clearfix">
-                <p class="pull-right">
-                  <a class="btn btn-primary" role="button">star</a> 
-                  <a class="btn btn-primary" role="button">follow</a>
-                </p>
-              </div>
-            </div>
-          </div>     
+              
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
