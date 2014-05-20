@@ -85,7 +85,7 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('share');
     };
-    var getCompanyHome = function(req, res) {
+    var getCombineSearch = function(req, res) {
         app.locals.user = req.session.user;
         res.render('company-search');
     };
@@ -104,7 +104,7 @@ module.exports = function(app) {
     app.get('/profile/:user', getProfile);
 
     // company
-    app.get('/company', getCompanyHome);
+    app.get('/company', getCompany);
     app.get('/company/:user', getCompany);
 
     // home
@@ -116,4 +116,7 @@ module.exports = function(app) {
     // share
     app.get('/share', getShare);
     app.get('/share/:id', getShare);
+
+    // search 
+    app.get('/search', getCombineSearch);
 };

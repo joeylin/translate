@@ -99,6 +99,9 @@
             margin-bottom: 8px;
             margin-top: 8px;
           }
+          .reply-editor .reply-submit {
+            margin-left: 8px!important;
+          }
 
         </style>
         <script type="text/javascript">
@@ -241,11 +244,17 @@
                     </div>
                     <div class="reply-container">
                       <div class="reply-editor">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <textarea class="form-control" rows="1" placeholder="Enter ..."></textarea>
                         </div>
                         <div class="clearfix">
                           <a class="btn btn-primary pull-right" role="button">submit</a>
+                        </div> -->
+                        <div class="input-group ">
+                            <textarea class="form-control" rows="1" placeholder="Enter ..."></textarea>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary reply-submit" type="button">submit</button>
+                            </span>
                         </div>
                       </div>
                       <hr class="reply-hr">
