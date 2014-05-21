@@ -54,13 +54,13 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('settings.html');
     };
-    var getHome = function(req, res) {
+    var getDocHome = function(req, res) {
         app.locals.user = req.session.user;
-        res.render('home');
+        res.render('doc-home');
     };
-    var getSearch = function(req, res) {
+    var getDocSearch = function(req, res) {
         app.locals.user = req.session.user;
-        res.render('search');
+        res.render('doc-search');
     };
     var getSignup = function(req, res) {
         res.render('signup');
@@ -85,13 +85,13 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('share');
     };
-    var getCombineSearch = function(req, res) {
+    var getSearch = function(req, res) {
         app.locals.user = req.session.user;
-        res.render('combine-search');
+        res.render('search');
     };
     app.get('/signup', getSignup);
-    app.get('/doc', getHome);
-    app.get('/doc/search', getSearch);
+    app.get('/doc', getDocHome);
+    app.get('/doc/search', getDocSearch);
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
 
@@ -118,5 +118,6 @@ module.exports = function(app) {
     app.get('/share/:id', getShare);
 
     // search 
-    app.get('/search', getCombineSearch);
+    app.get('/search', getSearch);
+    app.get('/search/:op', getSearch);
 };

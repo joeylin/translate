@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+        <title>Translate</title>
+        <meta name="generator" content="translate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <!-- bootstrap 3.0.2 -->
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- font Awesome -->
+        <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/public/css/main.css">
+
+        <!--[if lt IE 9]>
+          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- CSS code from translate.com editor -->
+        
+        <style type="text/css">
+            /*
+           * Style tweaks
+           * --------------------------------------------------
+           */
+          footer {
+            padding-left: 15px;
+            padding-right: 15px;
+            background-color: #fff;
+          }
+          .group-list.thumbnail {
+            padding: 0;
+          }
+          .group-list .thumbnail {
+            margin-bottom: 0;
+            padding: 0;
+          }
+          .group-list .caption {
+            padding: 9px 15px;
+          }
+          .group-list h3 {
+            margin-top: 15px;
+          }
+          .getPraise {
+            margin-top: 10px;
+          }
+          .pager li>a {
+            border-radius: 5px;
+          }
+          .infomUs .info {
+            font-size: 19px;
+            text-align: right;
+          }
+          .search-main .page-header {
+            margin: 0px 0 20px;
+          }
+
+        </style>
+        <script type="text/javascript">
+          window.user = null;
+          <% if (locals.user) { %>
+            window.user = <%- JSON.stringify(locals.user) %>;
+          <% } %>
+        </script>
+        
+    </head>
+    
+    <!-- HTML code from Bootply.com editor -->
+    
+    <body>   
+        <nav class="navbar navbar-inverse" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Translate</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown" id="menuLogin" >
+                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
+                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                              <label>Login</label> 
+                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
+                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
+                              <button type="button" id="btnLogin" class="btn">Login</button>
+                          </form>
+                          <br>
+                          <form class="form">
+                            <a class="signup" href="/signup" >New User? Sign-up..</a>
+                          </form>
+                          <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
+                          <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
+                      </div>
+                  </li>
+                  <li class="dropdown user user-menu" id="menuUser">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+                            <!-- todo have custom user image -->
+                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
+                            <i class="fa fa-user"></i> 
+                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header bg-modena">
+                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <p>
+                                    <span class="user_username"> Jane Doe - Web Developer</span>
+                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_follower">10</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_praise">100</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#" class="user_connects">30</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Praise</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Connects</a>
+                                </div>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                  </li>
+              </ul>
+              <ul class="nav navbar-nav navbar-left">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Post</a></li>
+                <li><a href="#">Group</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <div class="container search-main">
+          <div class="page-header">
+            <h2>search reasult :  <small> for keywords</small></h2>
+          </div>
+          <div>
+            Filter by tag :
+            <span class="label label-default">Default</span>
+            <span class="label label-primary">Primary</span>
+            <span class="label label-success">Success</span>
+            <span class="label label-info">Info</span>
+            <span class="label label-warning">Warning</span>
+            <span class="label label-danger">Danger</span>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail group-list">
+                <img class="thumbnail img-responsive" src="//placehold.it/600x350">
+                <div class="caption">
+                  <h3>AngularJS</h3>
+                  <p>By default, Bootstrap's thumbnails are designed to showcase linke</p>
+                  <p class="getPraise">
+                    <a href="#">Star: <span class="badge">42</span></a>
+                    <a href="#">follow: <span class="badge">42</span></a>
+                    <a href="#">join: <span class="badge">42</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ul class="pager">
+            <li><a href="#">Previous</a></li>
+            <li><a href="#">Next</a></li>
+          </ul>
+          <hr>
+          <div class="infomUs clearfix">
+            <p class="col-sm-4 info">No your DOC ? Inform us :</p>
+            <form class="form-inline col-sm-8" role="form">
+              <div class="form-group">
+                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter Doc">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="your email">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+          </div>
+          <hr>
+        </div>
+        <footer>
+          <p class="pull-right">© Found by Joeylin</p>
+        </footer>
+        <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/bootply.js"></script>
+    </body>
+</html>
