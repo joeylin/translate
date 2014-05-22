@@ -22,17 +22,17 @@ config(['$httpProvider', 'app',
 
         // global loading start
         $httpProvider.defaults.transformRequest.push(function(data) {
-            count += 1;
-            status.count = count;
-            status.total += 1;
-            if (!loading) {
-                window.setTimeout(function() {
-                    if (!loading && count > 0) {
-                        loading = true;
-                        app.loading(true, status);
-                    }
-                }, 1000); // if no response in 1000ms, begin loading
-            }
+            // count += 1;
+            // status.count = count;
+            // status.total += 1;
+            // if (!loading) {
+            //     window.setTimeout(function() {
+            //         if (!loading && count > 0) {
+            //             loading = true;
+            //             app.loading(true, status);
+            //         }
+            //     }, 1000); // if no response in 1000ms, begin loading
+            // }
             return data;
         });
         // global loading end
@@ -49,10 +49,6 @@ config(['$httpProvider', 'app',
             return {
                 response: function(res) {
                     var error, data = res.data;
-                    if (data.code === 403) {
-                        app.clearUser();
-                        app.q.reject(data);
-                    }
                     if (data.code === 404) {
                         app.timestamp = data.timestamp;
                         error = data.info;
@@ -123,7 +119,9 @@ config(['$httpProvider', 'app',
 
         $rootScope.current = {};
         $rootScope.$on('$routeChangeStart', function(event, next, current) {
-            $rootScope.current.path = next.$$route.path;
+            if (next && next.$$route) {
+                $rootScope.current.path = next.$$route.path;
+            }
         });
     }
 ]);
