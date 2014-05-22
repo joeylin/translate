@@ -78,14 +78,17 @@ config(['$httpProvider', 'app',
     'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
         getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc) {
-
-        var global = $rootScope.global = {
-            isLogin: false,
-            isEdit: false,
-            info: {},
-            components: {}
-        };
-        var jqWin = $(window);
+        var unSave = {
+            stopUnload: false,
+            nextUrl: ''
+        },
+            global = $rootScope.global = {
+                isLogin: false,
+                isEdit: false,
+                info: {},
+                components: {}
+            },
+            jqWin = $(window);
 
         function resize() {
             var viewWidth = global.viewWidth = jqWin.width();
@@ -96,7 +99,17 @@ config(['$httpProvider', 'app',
             global.isDesktop = viewWidth >= 980;
         }
 
+        function init() {
+            if (user) {
+                global.isLogin = true;
+                global.user = user;
+            } else {
+                app.clearUser();
+            }
+            global.components.login = 'Login';
+        }
         window.jsGen = app;
+        var user = window.ts.me;
         app.q = $q;
         app.store = store;
         app.toast = toast;
@@ -121,9 +134,50 @@ config(['$httpProvider', 'app',
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
 
-        $rootScope.current = {};
-        $rootScope.$on('$routeChangeStart', function(event, next, current) {
-            $rootScope.current.path = next.$$route.path;
-        });
+        app.loading = function(value, status) {
+            $rootScope.loading.show = value;
+        };
+        app.auth = function() {
+            return global.isLogin;
+        };
+        app.getUser = function() {
+            if (global.user) {
+                return global.user;
+            } else {
+                return {};
+            }
+        };
+        app.loginUser = function(user) {
+            global.user = user;
+            global.isLogin = true;
+        };
+        app.clearUser = function() {
+            global.user = null;
+            global.isLogin = false;
+        };
+        app.updateUser = function(user) {
+            global.user = user;
+            global.isLogin = true;
+        };
+        app.tocCtrl = window.ts.doc;
+        $rootScope.loading = {
+            show: false
+        };
+        $rootScope.logout = function() {
+            restAPI.user.get({
+                ID: 'logout'
+            }, function() {
+                app.clearUser();
+                $location.path('/settings/login');
+            });
+        };
+        $rootScope.setEdit = function() {
+            global.isEdit = true;
+        };
+        $rootScope.backDoc = function() {
+            global.isEdit = false;
+            $rootScope.$emit('autoRedirect.ts');
+        };
+        init();
     }
 ]);

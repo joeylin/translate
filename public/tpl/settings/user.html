@@ -1,0 +1,88 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        User
+        <small>personal info</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Settings</a></li>
+        <li class="active">User</li>
+    </ol>
+</section>
+<section class="content">
+    <form class="form-horizontal mar-top-20" role="form" novalidate="" ng-controller="userBasicCtrl">
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">邮箱</label>                        
+            <div class="col-sm-6">                            
+                <input type="email" class="form-control" name="email" placeholder="邮箱" ng-model="email" ng-change="change()">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">x用户名</label>                        
+            <div class="col-sm-6">                            
+                <input type="text" required="" name="display_name" class="form-control" placeholder="用户名" ng-model="display_name" ng-change="change()">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">个人简介</label>                        
+            <div class="col-sm-6">                            
+                <textarea class="form-control" name="des" maxlength="200" placeholder="个人简介" ng-model="des" ng-change="change()"></textarea>                        
+            </div>                    
+        </div>                    
+        <div class="form-group" ng-show="change_basic_info_form.$errors.length > 0">
+            <div class="col-sm-6 col-sm-offset-2">                            
+                <div class="alert alert-danger">                                
+                    <i class="fa fa-times-circle"></i>                             
+                </div>                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <div class="col-sm-offset-2 col-sm-10">                            
+                <button type="button" class="btn btn-success" ng-click="save()" ng-bind="saveBtn">保存</button>                        
+            </div>                    
+        </div>                
+    </form>
+    <form class="form-horizontal mar-top-20" role="form" novalidate="" ng-controller="userPasswordCtrl">
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">原密码</label>                        
+            <div class="col-sm-6">                            
+                <input type="password" class="form-control" name="user_email" placeholder="原密码" ng-model="originPassword">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">新密码</label>                        
+            <div class="col-sm-6">                            
+                <input type="password" required="" name="user_name" class="form-control" placeholder="新密码" ng-model="newPassword">                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <label class="col-sm-2 control-label">新密码</label>                        
+            <div class="col-sm-6">                            
+                <input type="password" required="" name="user_name" class="form-control" placeholder="新密码" ng-model="repeatPassword">                        
+            </div>                    
+        </div>                          
+        <div class="form-group" ng-show="change_basic_info_form.$errors.length > 0">                        
+            <div class="col-sm-6 col-sm-offset-2">                            
+                <div class="alert alert-danger">                                
+                    <i class="fa fa-times-circle"></i>                             
+                </div>                        
+            </div>                    
+        </div>                    
+        <div class="form-group">                        
+            <div class="col-sm-offset-2 col-sm-10">                            
+                <button type="button" class="btn btn-success" ng-bind="saveBtn" ng-click="save()">保存</button>                        
+            </div>                    
+        </div>                
+    </form>  
+    <div class="" ng-controller="userImageCtrl">
+        <a  class="avatar avatar-80 mar-top-15 col-sm-2">                    
+            <img class="img-circle" ng-src="{{avatar}}">                
+        </a>                
+        <div class="input-group width-600 mar-top-15 col-sm-6">                    
+            <input type="text" name="user_avatar" required="" class="form-control " placeholder="输入头像地址" ng-model="avatar">
+            <span class="input-group-btn">                        
+                <button class="btn btn-success" type="button" ng-bind="saveBtn" ng-click="save()">保存</button>                    
+            </span>                
+        </div>            
+    </div>
+</section>

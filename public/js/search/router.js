@@ -7,7 +7,7 @@ constant('app', {
 }).provider('getFile', ['app',
     function(app) {
         this.html = function(fileName) {
-            return '/public/tpl/search' + fileName + '?v=' + app.version;
+            return '/public/tpl/search/' + fileName + '?v=' + app.version;
         };
         this.$get = function() {
             return {
@@ -21,28 +21,27 @@ constant('app', {
             templateUrl: getFileProvider.html('all.html'),
             controller: 'allCtrl',
             path: 'all'
-        },
-            // custom
-            people = {
-                templateUrl: getFileProvider.html('people.html'),
-                controller: 'peopleCtrl',
-                path: 'people'
-            },
-            job = {
-                templateUrl: getFileProvider.html('job.html'),
-                controller: 'jobCtrl',
-                path: 'job'
-            },
-            company = {
-                templateUrl: getFileProvider.html('company.html'),
-                controller: 'companyCtrl',
-                path: 'company'
-            },
-            share = {
-                templateUrl: getFileProvider.html('share.html'),
-                controller: 'shareCtrl',
-                path: 'share'
-            };
+        };
+        var people = {
+            templateUrl: getFileProvider.html('people.html'),
+            controller: 'peopleCtrl',
+            path: 'people'
+        };
+        var job = {
+            templateUrl: getFileProvider.html('job.html'),
+            controller: 'jobCtrl',
+            path: 'job'
+        };
+        var company = {
+            templateUrl: getFileProvider.html('company.html'),
+            controller: 'companyCtrl',
+            path: 'company'
+        };
+        var share = {
+            templateUrl: getFileProvider.html('share.html'),
+            controller: 'shareCtrl',
+            path: 'share'
+        };
         $routeProvider.
         when('/search/all', all).
         when('/search/people', people).

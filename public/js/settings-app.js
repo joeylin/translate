@@ -178,6 +178,9 @@ config(['$httpProvider', 'app',
             global.isEdit = false;
             $rootScope.$emit('autoRedirect.ts');
         };
+        $rootScope.$on('$routeChangeSuccess', function(event, next, current) {
+            console.log(next);
+        });
         init();
     }
 ]);

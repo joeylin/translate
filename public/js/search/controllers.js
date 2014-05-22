@@ -4,114 +4,72 @@
 angular.module('jsGen.controllers', ['ui.validate']).
 controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
-
+        $scope.vm = {};
+        $scope.vm.pager = {};
+        $scope.vm.pager.current = 0;
+        $scope.vm.pager.hasLast = true;
+        $scope.vm.pager.link = function(url, params, cb) {
+            $http.get(url, {
+                params: params
+            }).success(function(data, status) {
+                cb(data);
+            });
+        };
     }
 ]).controller('allCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.originPassword = '';
-        $scope.newPassword = '';
-        $scope.repeatPassword = '';
 
-        $scope.isError = false;
-        $scope.errorMsg = '';
-
-        $scope.saveBtn = 'save';
-        $scope.save = function() {
-            var url = '/api/user/edit/password';
-            var data = {
-                originPassword: $scope.originPassword,
-                newPassword: $scope.newPassword,
-            };
-            if ($scope.newPassword !== $scope.repeatPassword) {
-                $scope.isError = true;
-                $scope.errorMsg = 'cant be blank !';
-            } else {
-                $http.post(url, data).success(function(data) {
-                    $scope.saveBtn = 'isSaved';
-                    app.updateUser(data.user);
-                });
-            }
-        };
-        $scope.change = function() {
-            $scope.saveBtn = 'save';
-            $scope.isError = false;
-        };
     }
 ]).controller('peopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.originPassword = '';
-        $scope.newPassword = '';
-        $scope.repeatPassword = '';
-
-        $scope.isError = false;
-        $scope.errorMsg = '';
-
-        $scope.saveBtn = 'save';
-        $scope.save = function() {
-            var url = '/api/user/edit/password';
-            var data = {
-                originPassword: $scope.originPassword,
-                newPassword: $scope.newPassword,
-            };
-            if ($scope.newPassword !== $scope.repeatPassword) {
-                $scope.isError = true;
-                $scope.errorMsg = 'cant be blank !';
-            } else {
-                $http.post(url, data).success(function(data) {
-                    $scope.saveBtn = 'isSaved';
-                    app.updateUser(data.user);
-                });
+        $scope.name = '';
+        $scope.keyword = '';
+        $scope.content = [];
+        var url = '/api/search/people';
+        var params = {
+            pager: 0,
+            name: $scope.name,
+            keyword: $scope.keyword
+        };
+        $scope.submit = function() {
+            params.pager = 0;
+            $http.get(url, {
+                params: params,
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.vm.pager.hasLast = data.hasLast;
+            });
+        };
+        $scope.next = function() {
+            if (!$scope.vm.pager.hasLast) {
+                return false;
             }
+            $scope.vm.pager.current += 1;
+            params.pager = $scope.vm.pager.current;
+            $scope.vm.pager.link(url, params, function(data) {
+                $scope.content = data.content;
+                $scope.vm.pager.hasLast = data.hasLast;
+            });
         };
-        $scope.change = function() {
-            $scope.saveBtn = 'save';
-            $scope.isError = false;
+        $scope.prev = function() {
+            if (!$scope.vm.pager.current) {
+                return false;
+            }
+            $scope.vm.pager.current -= 1;
+            params.pager = $scope.vm.pager.current;
+            $scope.vm.pager.link(url, params, function(data) {
+                $scope.content = data.content;
+                $scope.vm.pager.hasLast = data.hasLast;
+            });
         };
+
     }
 ]).controller('jobCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        var user = app.getUser();
-        $scope.avatar = user.avatar;
-
-        // btn
-        $scope.saveBtn = 'save';
-        $scope.save = function() {
-            var url = '/api/user/edit/avatar';
-            var data = {
-                avatar: $scope.avatar
-            };
-            $http.post(url, data).success(function(data) {
-                $scope.saveBtn = 'isSaved';
-                app.updateUser(data.user);
-            });
-        };
-        $scope.change = function() {
-            $scope.saveBtn = 'save';
-            $scope.isError = false;
-        };
 
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        var user = app.getUser();
-        $scope.avatar = user.avatar;
-
-        // btn
-        $scope.saveBtn = 'save';
-        $scope.save = function() {
-            var url = '/api/user/edit/avatar';
-            var data = {
-                avatar: $scope.avatar
-            };
-            $http.post(url, data).success(function(data) {
-                $scope.saveBtn = 'isSaved';
-                app.updateUser(data.user);
-            });
-        };
-        $scope.change = function() {
-            $scope.saveBtn = 'save';
-            $scope.isError = false;
-        };
 
     }
 ]).controller('shareCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',

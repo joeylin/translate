@@ -88,7 +88,6 @@
             font-weight: 700;
             font-size: 18px;
           }
-          
           .search-options {
             padding: 0 0 10px 0;
             font-size: 15px;
@@ -103,6 +102,21 @@
           }
           .search-options a.active:hover {
             color: rgb(51, 51, 51);
+          }
+
+          /* search page */
+          .search-people-info,
+          .search-company-info,
+          .search-job-info {
+            color: #999;
+          }
+          .search-people-relationship,
+          .search-job-date {
+            font-style: italic;
+          }
+          .search-result .panel-body {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
           }
 
         </style>
@@ -209,100 +223,15 @@
           <div class="search-bar clearfix">
             <div class="col-md-9">
               <div class="search-options">
-                <a ng-href="/search/all" ng-class="{'active':current==='all'}">All</a>
-                <a ng-href="/search/people" ng-class="{'active':current==='people'}">People</a>
-                <a ng-href="/search/job" ng-class="{'active':current==='job'}">Jobs</a>
-                <a ng-href="/search/share" ng-class="{'active':current==='share'}">Share</a>
-                <a ng-href="/search/company" ng-class="{'active':current==='company'}">Company</a>
+                <a ng-href="/search/all" ng-class="{'active':current.path==='all'}">All</a>
+                <a ng-href="/search/people" ng-class="{'active':current.path==='people'}">People</a>
+                <a ng-href="/search/job" ng-class="{'active':current.path==='job'}">Jobs</a>
+                <a ng-href="/search/share" ng-class="{'active':current.path==='share'}">Share</a>
+                <a ng-href="/search/company" ng-class="{'active':current.path==='company'}">Company</a>
               </div>
             </div>   
           </div>
-          <div class="search-view">
-            <div class="col-md-3">
-              <div class="panel">
-                <div class="panel-body">
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">name</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">location</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">keyword</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                  <div class="clearfix">
-                    <a class="btn btn-primary pull-right" role="button">submit</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-9">
-              <div class="panel">
-                <div class="panel-heading">Search for: Joeylin</div>
-                <div class="panel-body">
-                  <hr>
-                  <div class="media">
-                    <a class="pull-left" href="#">
-                      <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-                    </a>
-                    <div class="media-body">
-                      <h4 class="media-heading">Media heading</h4>
-                      <div>
-                        <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                      </div>
-                      <div class="clearfix media-info">
-                        <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                        <span class="pull-right media-controll">
-                          <a href="#" class="praise">praise</a>
-                          <a href="#" class="comment" >comment</a>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="media">
-                    <a class="pull-left" href="#">
-                      <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-                    </a>
-                    <div class="media-body">
-                      <h4 class="media-heading">Media heading</h4>
-                      <div>
-                        <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                      </div>
-                      <div class="clearfix media-info">
-                        <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                        <span class="pull-right media-controll">
-                          <a href="#" class="praise">praise</a>
-                          <a href="#" class="comment" >comment</a>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="media">
-                    <a class="pull-left" href="#">
-                      <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-                    </a>
-                    <div class="media-body">
-                      <h4 class="media-heading">Media heading</h4>
-                      <div>
-                        <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                      </div>
-                      <div class="clearfix media-info">
-                        <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                        <span class="pull-right media-controll">
-                          <a href="#" class="praise">praise</a>
-                          <a href="#" class="comment" >comment</a>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="search-view" ng-view>
           </div>    
         </div>
         <footer>
