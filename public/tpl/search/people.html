@@ -1,6 +1,6 @@
 <div class="col-md-3">
   <div class="panel">
-    <div class="panel-body">
+    <div class="panel-body" ng-show="!isFilter">
       <div class="form-group">
           <label>name</label>
           <input type="text" class="form-control" placeholder="Enter email" ng-model="name">
@@ -22,8 +22,40 @@
           <input type="text" class="form-control" placeholder="Enter School" ng-model="school">
       </div>
       <div class="clearfix">
-        <a class="pull-left search-filter" role="button">Filters</a>
+        <a class="pull-left search-filter" role="button" ng-click="showFilter()">Filters</a>
         <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
+      </div>
+    </div>
+    <div class="panel-body" ng-show="isFilter">
+      <div class="clearfix">
+        <!-- <span class="pull-left search-filter-note">click enter to filter item</span> -->
+        <a class="btn btn-primary pull-right" role="button" ng-click="hideFilter()">Back</a>
+      </div>
+      <div class="form-group">
+          <label>Past Company</label>
+          <input type="text" class="form-control" placeholder="Enter pastCompany" ng-model="pastCompany" ng-keydown="enter($event,'pastCompany',pastCompany)">
+      </div>
+      <div class="form-group">
+          <label>Current Company</label>
+          <input type="text" class="form-control" placeholder="Enter CurrentCompany" ng-model="CurrentCompany" ng-keydown="enter($event,'CurrentCompany',CurrentCompany)">
+      </div>
+      <div class="form-group">
+          <label>Industry</label>
+          <input type="text" class="form-control" placeholder="Enter skill" ng-model="industry" ng-keydown="enter($event,'industry',industry)">
+      </div>
+      <div class="form-group">
+          <label>Language</label>
+          <input type="text" class="form-control" placeholder="Enter Company" ng-model="language" ng-keydown="enter($event,'language',language)">
+      </div>
+      <div class="form-group">
+          <label>Years of Experence</label>
+          <select class="form-control" ng-model="years" ng-change="addFilter('years',years)">
+              <option>no</option>
+              <option>0-2</option>
+              <option>2-4</option>
+              <option>4-7</option>
+              <option>8+</option>
+          </select>
       </div>
     </div>
   </div>
@@ -37,7 +69,7 @@
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">Joeylin</h4>
+          <h4 class="media-heading"><a href="#">Joeylin</a></h4>
           <div class="row">
             <div class="col-md-9">
               <div>study at BUPT</div>

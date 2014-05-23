@@ -25,6 +25,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.name = '';
         $scope.keyword = '';
         $scope.content = [];
+        $scope.isFilter = false;
         var url = '/api/search/people';
         var params = {
             pager: 0,
@@ -32,7 +33,12 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             keyword: $scope.keyword
         };
         $scope.submit = function() {
-            params.pager = 0;
+            // reset the config before submit
+            var params = {
+                pager: 0,
+                name: $scope.name,
+                keyword: $scope.keyword
+            };
             $http.get(url, {
                 params: params,
             }).success(function(data) {
@@ -62,15 +68,54 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.vm.pager.hasLast = data.hasLast;
             });
         };
+        $scope.showFilter = function() {
+            $scope.isFilter = true;
+        };
+        $scope.hideFilter = function() {
+            $scope.isFilter = false;
+        };
+        var addFilter = function(key, value) {
+            params[key] = value;
+            $http.get(url, {
+                params: params,
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.vm.pager.hasLast = data.hasLast;
+            });
+        };
+        $scope.addFilter = addFilter;
+        $scope.enter = function(e, key, value) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                addFilter(key, value);
+            }
+        };
+        $scope.connect = function() {
 
+        };
+
+        // default config
+        $scope.years = '0-2';
     }
 ]).controller('jobCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-
+        $scope.isFilter = false;
+        $scope.showFilter = function() {
+            $scope.isFilter = true;
+        };
+        $scope.hideFilter = function() {
+            $scope.isFilter = false;
+        };
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-
+        $scope.isFilter = false;
+        $scope.showFilter = function() {
+            $scope.isFilter = true;
+        };
+        $scope.hideFilter = function() {
+            $scope.isFilter = false;
+        };
     }
 ]).controller('shareCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
