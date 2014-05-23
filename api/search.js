@@ -25,16 +25,19 @@ var middleware = require('./middleware');
 
 var getPeople = function(req, res) {
     var query = req.query;
-
+    console.log(query);
 };
 var getJobs = function(req, res) {
     var query = req.query;
+    console.log(query);
 };
 var getCompany = function(req, res) {
     var query = req.query;
+    console.log(query);
 };
 var getShare = function(req, res) {
     var query = req.query;
+    console.log(query);
 };
 module.exports = function(app) {
     app.get('/api/search/people', getPeople);
