@@ -41,7 +41,8 @@ app.configure(function() {
 // routes(app);
 
 // api
-require('./api/index')(app);
+require('./api/doc')(app);
+require('./api/search')(app);
 require('./api/user')(app);
 require('./api/router')(app);
 

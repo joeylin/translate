@@ -30,23 +30,29 @@
       </div>
       <div class="form-group">
           <label>Past Company</label>
-          <input type="text" class="form-control" placeholder="Enter email" ng-model="name">
+          <input type="text" class="form-control" placeholder="Enter pastCompany" ng-model="pastCompany" ng-keydown="enter($event,'pastCompany',pastCompany)">
       </div>
       <div class="form-group">
           <label>Current Company</label>
-          <input type="text" class="form-control" placeholder="Enter location" ng-model="location">
+          <input type="text" class="form-control" placeholder="Enter currentCompany" ng-model="currentCompany" ng-keydown="enter($event,'currentCompany',currentCompany)">
       </div>
       <div class="form-group">
           <label>Industry</label>
-          <input type="text" class="form-control" placeholder="Enter skill" ng-model="industry">
+          <input type="text" class="form-control" placeholder="Enter skill" ng-model="industry" ng-keydown="enter($event,'industry',industry)">
       </div>
       <div class="form-group">
           <label>Language</label>
-          <input type="text" class="form-control" placeholder="Enter Company" ng-model="language">
+          <input type="text" class="form-control" placeholder="Enter Company" ng-model="language" ng-keydown="enter($event,'language',language)">
       </div>
       <div class="form-group">
           <label>Years of Experence</label>
-          <input type="text" class="form-control" placeholder="Enter School" ng-model="school">
+          <select class="form-control" ng-model="years" ng-change="addFilter('years',years)">
+              <option>no</option>
+              <option>0-2</option>
+              <option>2-4</option>
+              <option>4-7</option>
+              <option>8+</option>
+          </select>
       </div>
     </div>
   </div>
