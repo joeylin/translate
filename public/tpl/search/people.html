@@ -2,25 +2,34 @@
   <div class="panel">
     <div class="panel-body">
       <div class="form-group">
-          <label for="exampleInputEmail1">name</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" ng-model="name">
+          <label>name</label>
+          <input type="text" class="form-control" placeholder="Enter email" ng-model="name">
       </div>
       <div class="form-group">
-          <label for="exampleInputEmail1">location</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter location" ng-model="location">
+          <label>location</label>
+          <input type="text" class="form-control" placeholder="Enter location" ng-model="location">
       </div>
       <div class="form-group">
-          <label for="exampleInputEmail1">keyword</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter keyword" ng-model="keyword">
+          <label>skill</label>
+          <input type="text" class="form-control" placeholder="Enter skill" ng-model="skill">
+      </div>
+      <div class="form-group">
+          <label>Company</label>
+          <input type="text" class="form-control" placeholder="Enter Company" ng-model="keyword">
+      </div>
+      <div class="form-group">
+          <label>School</label>
+          <input type="text" class="form-control" placeholder="Enter School" ng-model="school">
       </div>
       <div class="clearfix">
+        <a class="pull-left search-filter" role="button">Filters</a>
         <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
       </div>
     </div>
   </div>
 </div>
 <div class="col-md-9">
-  <div class="panel search-result" >
+  <div class="panel search-result">
     <div class="panel-heading">Results: 388</div>
     <div class="panel-body">
       <div class="media">
