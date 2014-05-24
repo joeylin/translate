@@ -65,7 +65,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.vm.toggleComment = function(share) {
             share.isShowComment = !share.isShowComment;
             if (share.isShowComment) {
-                var url = '/api/share/comments';
+                var url = '/api/share/' + share.id + '/comments';
                 $http.get(url).success(function(data) {
                     share.comments = data.comments; 
                 });
@@ -75,10 +75,31 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             if (share.newComment === '') {
                 return false;
             }
-            var url = '/api/share/comments'
+            var url = '/api/share/comments/add';
+            $http.post(url,{
+                shareId: share.id,
+                content: share.newComment,
+                replyTo: share.replyTo
+            }).success(function(data) {
+                share.comments.push(data.comment);
+            });
         };
         $scope.vm.delete = function(comment, share) {
-
+            var index = share.comments.indexOf(comment);
+            var url = '/api/share/comments/delete';
+            $http.post(url,{
+                shareId: share.id,
+                commentId: comment.id
+            }).success(function(data) {
+                share.comments.splice(index,1);
+            });
         };
+        $scope.vm.reply = function(comment) {
+            comment.isShowReply = !comment.isShowReply;
+            if (comment,isShowReply) {
+                comment.newReply = 'reply to' + comment.user.username;
+            }
+        };
+
     }
 ]);
