@@ -4,7 +4,6 @@
 angular.module('jsGen.tools', []).
 factory('tools', function () {
     var breaker = {};
-
     return {
         trim: trim,
         each: each,

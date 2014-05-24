@@ -170,13 +170,17 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
         };
         $scope.save = function(job) {
-            var url = '/api/jobs/save/';
+            var url = '/api/job/save/';
             $http.post(url, {
                 id: job.id,
             }).success(function(data) {
 
             });
         };
+
+        // default config
+        $scope.years = '0-2';
+        $scope.payment = '3k';
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -276,6 +280,28 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $http.get(url, {
                 params: params,
             }).success(function(data) {
+                $scope.content = data.content;
+                $scope.vm.pager.hasLast = data.hasLast;
+            });
+        };
+        $scope.next = function() {
+            if (!$scope.vm.pager.hasLast) {
+                return false;
+            }
+            $scope.vm.pager.current += 1;
+            params.pager = $scope.vm.pager.current;
+            $scope.vm.pager.link(url, params, function(data) {
+                $scope.content = data.content;
+                $scope.vm.pager.hasLast = data.hasLast;
+            });
+        };
+        $scope.prev = function() {
+            if (!$scope.vm.pager.current) {
+                return false;
+            }
+            $scope.vm.pager.current -= 1;
+            params.pager = $scope.vm.pager.current;
+            $scope.vm.pager.link(url, params, function(data) {
                 $scope.content = data.content;
                 $scope.vm.pager.hasLast = data.hasLast;
             });
