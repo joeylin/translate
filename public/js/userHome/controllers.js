@@ -100,6 +100,5 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 comment.newReply = 'reply to' + comment.user.username;
             }
         };
-
     }
 ]);
