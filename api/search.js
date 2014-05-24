@@ -5,11 +5,6 @@ var Section = Models.Section;
 var Translate = Models.Translate;
 var User = Models.User;
 
-var fs = require('fs');
-var path = require('path');
-var async = require('async');
-var marked = require('marked');
-var config = require('../config/config').config;
 var middleware = require('./middleware');
 
 // data format

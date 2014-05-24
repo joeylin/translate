@@ -39,12 +39,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current += 1;
             params.page = $scope.pager.current;
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
+            getShare();
         };
         $scope.prev = function() {
             if (!$scope.pager.current) {
@@ -52,12 +47,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current -= 1;
             params.page = $scope.pager.current;
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
+            getShare();
         }
 
         // share item && item comments
@@ -96,9 +86,12 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
         $scope.vm.reply = function(comment) {
             comment.isShowReply = !comment.isShowReply;
-            if (comment,isShowReply) {
-                comment.newReply = 'reply to' + comment.user.username;
+            if (comment.isShowReply) {
+                comment.newComment = 'reply to ' + comment.user.username + ' : ';
             }
         };
+
+        // init
+        getShare();
     }
 ]);
