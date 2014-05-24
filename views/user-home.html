@@ -107,6 +107,9 @@
           }
 
         </style>
+        <!-- for angular ng-cloak -->
+        <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
+        </style>
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.user = null;
@@ -115,8 +118,6 @@
           <% } %>
         </script>       
     </head>
-    
-    <!-- HTML code from Bootply.com editor -->  
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
           <div class="container">
@@ -199,9 +200,9 @@
                   </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/profile">profile</a></li>
-                <li><a href="/search/all">search</a></li>
+                <li><a href="/home" target="_self">Home</a></li>
+                <li><a href="/profile" target="_self">profile</a></li>
+                <li><a href="/search/all" target="_self">search</a></li>
               </ul>
             </div>
           </div>
@@ -229,7 +230,7 @@
               <div class="panel-heading">
                 <h4 class="panel-title">News</h4>
               </div>
-              <div class="panel-body">
+              <div class="panel-body" ng-cloak>
                 <div class="media" ng-repeat-start="share in content">
                   <a class="pull-left" ng-href="/profile/{{share.user.username}}" target="_self">
                     <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 64px; height: 64px;">
