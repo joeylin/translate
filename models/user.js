@@ -58,6 +58,16 @@ var UserSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
+    collects: {
+        job: [{
+            type: ObjectId,
+            ref: 'Job'
+        }],
+        share: [{
+            type: ObjectId,
+            ref: 'Share'
+        }]
+    }, 
     height: {
         type: Number
     },
@@ -87,6 +97,10 @@ var UserSchema = new Schema({
             type: String
         }
     },
+    share: [{
+        type: ObjectId,
+        ref: 'Share'
+    }],
     groups: {
         pending: [{
             type: ObjectId

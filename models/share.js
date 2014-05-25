@@ -7,6 +7,10 @@ var ShareSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
+    company: {
+        type: ObjectId,
+        ref: 'Company'
+    },
     content: {
         type: String
     },

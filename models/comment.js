@@ -7,6 +7,18 @@ var CommentSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
+    company: {
+        type: ObjectId,
+        ref: 'Company'
+    },
+    belongTo: {
+        name: {
+            type: String
+        },
+        id: {
+            type: ObjectId
+        }
+    },
     content: {
         type: String
     },

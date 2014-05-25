@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var crypto = require('crypto');
 var oAuthTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
+var async = require('async');
 
 var CompanySchema = new Schema({
     display_name: {
@@ -28,6 +29,14 @@ var CompanySchema = new Schema({
     followerings: [{
         type: ObjectId,
         ref: 'User'
+    }],
+    trends: [{
+        name: {
+            type: String
+        },
+        id: {
+            type: ObjectId
+        }
     }],
     name: {
         type: String,
@@ -190,6 +199,35 @@ CompanySchema.methods = {
 
     doesNotRequireValidation: function() {
         return~ oAuthTypes.indexOf(this.provider);
+    },
+
+    getTrends: function(cb) {
+        var trends = [];
+        async.eachSeries(this.trends, function(trend, next) {
+            if (trend.name === 'job') {
+                Job.findOne({
+                    _id: trend.id
+                }, function(err, job) {
+                    var result = {};
+                    result.name = 'job';
+                    result.job = job;
+                    trends.push(result);
+                    next();
+                });
+            } else if (trend.name === 'share') {
+                Share.findOne({
+                    _id: trend.id
+                }, function(err, share) {
+                    var result = {};
+                    result.name = 'share';
+                    result.share = share;
+                    trends.push(result);
+                    next();
+                });
+            }
+        }, function(err) {
+            cb(err, trends);
+        });
     }
 };
 

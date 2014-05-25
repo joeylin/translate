@@ -79,7 +79,7 @@ JobSchema.virtual('type').get(function() {
 // statics
 JobSchema.statics.createNew = function(obj, cb) {
     var job = new this();
-    for( var key in obj) {
+    for(var key in obj) {
         job[key] = obj[key];
     }
     job.save(cb);
