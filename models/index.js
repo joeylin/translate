@@ -8,20 +8,31 @@ mongoose.connect(config.db, function(err) {
     }
 });
 
-// models 
-require('./user');
-require('./tag');
-
+// Translate models 
 require('./doc');
 require('./chapter');
 require('./section');
 require('./translate');
 
-
-exports.User = mongoose.model('User');
-exports.TopicTag = mongoose.model('Tag');
-
 exports.Doc = mongoose.model('Doc');
 exports.Chapter = mongoose.model('Chapter');
 exports.Section = mongoose.model('Section');
 exports.Translate = mongoose.model('Translate');
+
+// social network
+require('./user');
+require('./userProfile');
+require('./company');
+require('./companyProfile');
+require('./job');
+require('./share');
+require('./comment');
+
+exports.User = mongoose.model('User');
+exports.UserProfile = mongoose.model('UserProfile');
+exports.Company = mongoose.model('Company');
+exports.CompanyProfile = mongoose.model('CompanyProfile');
+exports.Job = mongoose.model('Job');
+exports.Share = mongoose.model('Share');
+exports.Comment = mongoose.model('Comment');
+

@@ -10,10 +10,6 @@ var CommentSchema = new Schema({
     content: {
         type: String
     },
-    at: [{
-        type: ObjectId,
-        ref: 'User'
-    }],
     replyTo: {
         type: ObjectId,
         ref: 'User'

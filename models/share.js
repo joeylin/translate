@@ -10,7 +10,7 @@ var ShareSchema = new Schema({
     content: {
         type: String
     },
-    at: [{
+    likes: [{
         type: ObjectId,
         ref: 'User'
     }],
@@ -28,23 +28,26 @@ var ShareSchema = new Schema({
     }
 });
 
-ShareSchema.path('content').validate(function(value) {
-    if (!value) {
-        return false;
-    } else {
-        return true;
-    }
-}, 'content is blank');
+ShareSchema.virtual('likeCount').get(function() {
+    return this.likes.length;
+});
+
 // statics
 ShareSchema.statics.createNew = function(obj, cb) {
     var share = new this();
     share.content = obj.content;
-    share.index = obj.index;
-    share.chapter = obj.chapter;
-    if (obj.translate) {
-        share.translates.push(obj.translate);
-    }
+    share.user = obj.userId;
     share.save(cb);
+};
+
+// methods
+ShareSchema.methods.like = function(userId) {
+    this.likes.push(userId);
+    this.save();
+};
+ShareSchema.methods.unlike = function(userId) {
+    this.likes.splice(this.likes.indexOf(userId),1);
+    this.save();
 };
 
 // middleware

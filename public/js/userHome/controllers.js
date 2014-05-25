@@ -20,7 +20,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.total = data.total;
             });
         };
-        var url = '/api/user/share';
+        var url = '/api/share/user';
         var params = {
             page: 0
         };

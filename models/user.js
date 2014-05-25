@@ -29,10 +29,72 @@ var UserSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
+    contact: {
+        qq: {
+            type: Number
+        },
+        phone: {
+            type: Number
+        }
+    },
+    social: [{
+        name: {
+            type: String
+        },
+        value: {
+            type: Number
+        }
+    }],
+    school: [{
+        type: String
+    }],
+    skills: [{
+        type: String
+    }],
+    age: {
+        type: Date
+    },
     connects: [{
         type: ObjectId,
         ref: 'User'
     }],
+    height: {
+        type: Number
+    },
+    weight: {
+        type: Number
+    },
+    hometown: {
+        type: String
+    },
+    location: [{
+        type: String
+    }],
+    companys: [{
+        type: String
+    }],
+    language: [{
+        name: {
+            type: String
+        },
+        rate: Number
+    }],
+    current: {
+        location: {
+            type: String
+        },
+        status: {
+            type: String
+        }
+    },
+    groups: {
+        pending: [{
+            type: ObjectId
+        }],
+        join: [{
+            type: ObjectId
+        }] 
+    },
     username: {
         type: String,
         unique: true
@@ -55,7 +117,7 @@ var UserSchema = new Schema({
     },
     isActive: {
         type: Boolean,
-        default: true
+        default: false
     },
     facebook: {},
     twitter: {},

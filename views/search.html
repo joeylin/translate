@@ -127,6 +127,9 @@
           }
 
         </style>
+        <!-- for angular ng-cloak -->
+        <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
+        </style>
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.user = null;
@@ -150,7 +153,7 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
+              <ul class="nav navbar-nav navbar-right" ng-cloak>
                   <li class="dropdown" id="menuLogin" >
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
@@ -244,9 +247,6 @@
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
-        <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/public/js/bootply.js"></script>
         <script>
           reserveLoad(
             '/public/bower_components/jquery/jquery.js',
@@ -265,6 +265,7 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
             '/public/js/search/router.js',

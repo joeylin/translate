@@ -1,9 +1,11 @@
 var Models = require('../models');
-var Doc = Models.Doc;
-var Chapter = Models.Chapter;
-var Section = Models.Section;
-var Translate = Models.Translate;
+var Job = Models.Job;
+var Company = Models.Company;
+var CompanyProfile = Models.CompanyProfile;
 var User = Models.User;
+var UserProfile = Models.UserProfile;
+var Comment = Models.Comment;
+var Share = Models.Share;
 
 var middleware = require('./middleware');
 
@@ -75,7 +77,13 @@ var getShareByUser = function(req, res) {
         content: result
     });
 };
+var getShareById = function(req, res) {
+    var id = req.params.id;
+
+};
+
 
 module.exports = function(app) {
-    app.get('/api/user/share', getShareByUser);
+    app.get('/api/share/user', getShareByUser);
+    app.get('/api/share/id/:id', getShareById);
 };
