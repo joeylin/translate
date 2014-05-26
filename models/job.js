@@ -79,16 +79,32 @@ JobSchema.virtual('type').get(function() {
 // statics
 JobSchema.statics.createNew = function(obj, cb) {
     var job = new this();
-    for(var key in obj) {
+    for (var key in obj) {
         job[key] = obj[key];
     }
-    job.save(cb);
+    job.save(function(err, job) {
+        var Trend = mongoose.model('Trend');
+        Trend.createNew({
+            id: job._id,
+            name: 'Job',
+            userId: job.company,
+            _type: 'Company'
+        }, function(err) {
+            cb(err, job);
+        });
+    });
 };
 JobSchema.statics.delete = function(id, cb) {
     this.findOne({
         _id: id
-    }, function(err, doc) {
-        doc.remove(cb);
+    }, function(err, job) {
+        var Trend = mongoose.model('Trend');
+        Trend.findOne({
+            id: job._id
+        }, function(err, trend) {
+            trend.remove();
+            job.remove(cb);
+        });
     });
 };
 
@@ -98,7 +114,7 @@ JobSchema.methods.like = function(userId) {
     this.save();
 };
 JobSchema.methods.unLike = function(userId) {
-    this.likes.splice(this.likes.indexOf(userId),1);
+    this.likes.splice(this.likes.indexOf(userId), 1);
     this.save();
 };
 JobSchema.methods.collect = function(userId) {
@@ -106,7 +122,7 @@ JobSchema.methods.collect = function(userId) {
     this.save();
 };
 JobSchema.methods.unCollect = function(userId) {
-    this.collects.splice(this.collects.indexOf(userId),1);
+    this.collects.splice(this.collects.indexOf(userId), 1);
     this.save();
 };
 JobSchema.methods.comment = function(id) {
@@ -114,7 +130,7 @@ JobSchema.methods.comment = function(id) {
     this.save();
 };
 JobSchema.methods.unComment = function(id) {
-    this.comments.splice(this.comments.indexOf(id),1);
+    this.comments.splice(this.comments.indexOf(id), 1);
     this.save();
 };
 JobSchema.methods.pushResume = function(userId) {

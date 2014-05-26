@@ -11,13 +11,12 @@ var middleware = require('./middleware');
 
 var getShareByUser = function(req, res) {
     var user = req.session.user;
-    console.log('getShare');
-    User.find({
-        _id: uid
-    }).populate('share').exec(function(err, share) {
+    User.findOne({
+        _id: user.uid
+    }).populate('share').exec(function(err, user) {
         res.send({
             code: 200,
-            content: share
+            content: user.share
         });
     });
 };
@@ -25,7 +24,7 @@ var getShareById = function(req, res) {
     var id = req.params.id;
     Share.findOne({
         _id: id
-    }).populate('comments').exec(function(err,share) {
+    }).populate('comments').exec(function(err, share) {
         if (err) {
             return res.send({
                 code: 404,
@@ -42,9 +41,10 @@ var addShare = function(req, res) {
     var user = req.session.user;
     var share = {
         content: req.body.content,
-        user = user.uid
+        _type: 'user',
+        user: user.uid
     };
-    Share.createNew(share, function(err,data) {
+    Share.createNew(share, function(err, data) {
         User.findOne({
             _id: user.uid
         }, function(err, user) {
@@ -55,7 +55,7 @@ var addShare = function(req, res) {
                     content: data
                 });
             });
-        });         
+        });
     });
 };
 var deleteShare = function(req, res) {
@@ -73,7 +73,7 @@ var deleteShare = function(req, res) {
         } else {
             Share.findOne({
                 _id: id
-            }, function(err,share) {
+            }, function(err, share) {
                 share.remove();
                 user.share.splice(index, 1);
                 user.save(function(err) {
@@ -92,12 +92,13 @@ var addComment = function(req, res) {
     var comment = {
         content: req.body.content,
         replyTo: req.body.replyTo,
+        _type: 'user',
         user: user.uid
     };
     Comment.createNew(comment, function(err, comment) {
         Share.findOne({
             _id: shareId
-        }, function(err,share) {
+        }, function(err, share) {
             share.comments.push(comment._id);
             share.save(function(err) {
                 res.send({
@@ -106,7 +107,7 @@ var addComment = function(req, res) {
                 });
             });
         });
-    });  
+    });
 };
 var deleteComment = function(req, res) {
     var shareId = req.body.shareId;
@@ -143,7 +144,7 @@ var shareLike = function(req, res) {
     Share.findOne({
         _id: shareId
     }, function(err, share) {
-        var index = share.likes.indexOf(shareId);
+        var index = share.likes.indexOf(user.uid);
         if (index >= 0) {
             return res.send({
                 code: 404,
@@ -165,7 +166,7 @@ var shareUnlike = function(req, res) {
     Share.findOne({
         _id: shareId
     }, function(err, share) {
-        var index = share.likes.indexOf(shareId);
+        var index = share.likes.indexOf(user.uid);
         if (index < 0) {
             return res.send({
                 code: 404,
@@ -185,7 +186,7 @@ var collectShare = function(req, res) {
     var user = req.session.user;
     var shareId = req.body.shareId;
     User.findOne({
-        _id: id
+        _id: user.uid
     }, function(err, user) {
         var index = user.collects.share.indexOf(shareId);
         if (index >= 0) {
@@ -207,7 +208,7 @@ var unCollectShare = function(req, res) {
     var user = req.session.user;
     var shareId = req.body.shareId;
     User.findOne({
-        _id: id
+        _id: user.uid
     }, function(err, user) {
         var index = user.collects.share.indexOf(shareId);
         if (index < 0) {
@@ -225,18 +226,21 @@ var unCollectShare = function(req, res) {
         });
     });
 };
+var getTrends = function(req, res) {
+
+};
 module.exports = function(app) {
-    app.post('/api/share/collect', collectShare);
-    app.post('/api/share/uncollect', unCollectShare);
-    app.post('/api/share/unlike', shareUnlike);
-    app.post('/api/share/like', shareLike);
-    app.post('/api/share/delete', deleteShare);
-    app.post('/api/share/add', addShare);
-    app.post('/api/share/like', addShare);
-    app.get('/api/share/user', getShareByUser);
-    app.get('/api/share/id/:id', getShareById);
+    app.post('/api/share/user/collect', collectShare);
+    app.post('/api/share/user/uncollect', unCollectShare);
+    app.post('/api/share/user/unlike', shareUnlike);
+    app.post('/api/share/user/like', shareLike);
+    app.post('/api/share/user/delete', deleteShare);
+    app.post('/api/share/user/add', addShare);
+    app.post('/api/share/user/like', addShare);
+    app.get('/api/share/user/user', getShareByUser);
+    app.get('/api/share/user/id/:id', getShareById);
 
     // comments
-    app.post('/api/share/comments/add', addComment);
-    app.post('/api/share/comments/delete', deleteComment);
+    app.post('/api/share/user/comments/add', addComment);
+    app.post('/api/share/user/comments/delete', deleteComment);
 };

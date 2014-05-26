@@ -13,7 +13,7 @@ var UserSchema = new Schema({
         type: String,
         default: ''
     },
-    des: {
+    desc: {
         type: String,
         default: ''
     },
@@ -67,7 +67,7 @@ var UserSchema = new Schema({
             type: ObjectId,
             ref: 'Share'
         }]
-    }, 
+    },
     height: {
         type: Number
     },
@@ -107,7 +107,7 @@ var UserSchema = new Schema({
         }],
         join: [{
             type: ObjectId
-        }] 
+        }]
     },
     username: {
         type: String,

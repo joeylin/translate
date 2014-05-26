@@ -8,51 +8,52 @@ var Comment = Models.Comment;
 var Share = Models.Share;
 
 var addJob = function(req, res) {
-	var company = req.session.company;
-	var job = req.body || {};
-	var job.company = company.id;
+    var company = req.session.company;
+    var job = req.body || {};
+    job.company = company.id;
 
-	Job.createNew(job, function(err, job) {
-		Company.findOne({
-			_id: company.id
-		}, function(err,company) {
-			company.jobs.push(job._id);
-			company.save(function(err) {
-				res.send({
-					code: 200,
-					content: job
-				});
-			});
-		});
-	});
+    Job.createNew(job, function(err, job) {
+        Company.findOne({
+            _id: company.id
+        }, function(err, company) {
+            company.jobs.push(job._id);
+            company.trends.push(job._id);
+            company.save(function(err) {
+                res.send({
+                    code: 200,
+                    content: job
+                });
+            });
+        });
+    });
 };
 var deleteJob = function(req, res) {
-	var company = req.session.company;
-	var jobId = req.body.jobId
-	Company.findOne({
-		_id: company.id
-	}, function(err, company) {
-		var index = company.jobs.indexOf(jobId);
-		if (index < 0) {
-			return res.send({
-				code: 404,
-				info: 'no job'
-			});
-		}
-		company.jobs.splice(index, 1);
-		company.save(function(err) {
-			res.send({
-				code: 200,
-				info: 'success'
-			});
-		});
-	});
+    var company = req.session.company;
+    var jobId = req.body.jobId
+    Company.findOne({
+        _id: company.id
+    }, function(err, company) {
+        var index = company.jobs.indexOf(jobId);
+        if (index < 0) {
+            return res.send({
+                code: 404,
+                info: 'no job'
+            });
+        }
+        company.jobs.splice(index, 1);
+        company.save(function(err) {
+            res.send({
+                code: 200,
+                info: 'success'
+            });
+        });
+    });
 };
 var getJobById = function(req, res) {
     var id = req.params.id;
     Job.findOne({
         _id: id
-    }).populate('comments').exec(function(err,job) {
+    }).populate('comments').exec(function(err, job) {
         if (err) {
             return res.send({
                 code: 404,
@@ -77,7 +78,7 @@ var addComment = function(req, res) {
     Comment.createNew(comment, function(err, comment) {
         Job.findOne({
             _id: jobId
-        }, function(err,job) {
+        }, function(err, job) {
             job.comments.push(comment._id);
             job.save(function(err) {
                 res.send({
@@ -86,7 +87,7 @@ var addComment = function(req, res) {
                 });
             });
         });
-    });  
+    });
 };
 var deleteComment = function(req, res) {
     var jobId = req.body.jobId;
@@ -105,12 +106,12 @@ var deleteComment = function(req, res) {
             Comment.findOne({
                 _id: commentId
             }, function(err, comment) {
-            	if (comment.company != company.id) {
-            		return res.send({
-            			code: 404,
-            			info: 'no auth'
-            		});
-            	}
+                if (comment.company != company.id) {
+                    return res.send({
+                        code: 404,
+                        info: 'no auth'
+                    });
+                }
                 comment.remove();
                 job.comments.splice(index, 1);
                 job.save(function(err) {

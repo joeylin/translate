@@ -200,7 +200,6 @@ CompanySchema.methods = {
     doesNotRequireValidation: function() {
         return~ oAuthTypes.indexOf(this.provider);
     },
-
     getTrends: function(cb) {
         var trends = [];
         async.eachSeries(this.trends, function(trend, next) {
