@@ -240,6 +240,50 @@ UserSchema.methods = {
 
     doesNotRequireValidation: function() {
         return~ oAuthTypes.indexOf(this.provider);
+    },
+    connect: function(userId, relate, cb) {
+        var User = mongoose.model('User');
+        this.connects.push({
+            user: userId,
+            relate: relate
+        });
+        var id = this._id;   
+        this.save(function(err, user) {
+            User.findOne({
+                _id: userId
+            }, function(err, user) {
+                user.connects.push({
+                    user: id,
+                    relate: relate
+                });
+                user.save(function(err, user) {
+                    cb(err, user);
+                });
+            });
+        });
+    },
+    disconnect: function(userId, cb) {
+        var User = mongoose.model('User');
+        this.connects.map(function(connect, key) {
+            if (connect.user === userId) {
+                this.connects.splice(key, 1);
+            }
+        });
+        var id = this._id;
+        this.save(function(err, user) {
+            User.findOne({
+                _id: userId
+            }, function(err, user) {
+                user.connects.map(function(connect, key) {
+                    if (connect.user === id) {
+                        this.connects.splice(key, 1);
+                    }
+                });
+                user.save(function(err, user) {
+                    cb(err, user);
+                })
+            });
+        });
     }
 };
 

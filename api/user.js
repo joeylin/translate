@@ -93,7 +93,7 @@ var findUser = function(req, res) {
         }
     });
 };
-var sendConnect = function(req, res) {
+var sendNotify = function(req, res) {
     var user = req.session.user;
     var obj = {
         from: user._id,
@@ -115,6 +115,9 @@ var sendConnect = function(req, res) {
         });
     });
 };
+var sendMessage = function(req, res) {
+    
+};
 var checkConnect = function(req, res) {
     var user = req.session.user;
     var notifyId = req.body.notifyId;
@@ -129,35 +132,40 @@ var checkConnect = function(req, res) {
             });
         }
         if (value) {
-            User.find({
-                _id: {
-                    $all: [notify.from, notify.to]
-                }
-            }, function(err, users) {
-                users[0].connects.push({
-                    user: users[1],
-                    relate: notify.content
-                });
-                users[1].connects.push({
-                    user: users[0],
-                    relate: notify.content
-                });
-                users[1].notify.splice(users[1].notify.indexOf(notify), 1);
-                users[0].save();
-                users[1].save();
-                res.send({
-                    code: 200,
-                    info: 'success'
+            User.findOne({
+                _id: user._id
+            }, function(err, user) {
+                user.connect(notify.from, notify.content, function(err, user) {
+                    user.notify.splice(user.notify.indexOf(notify), 1);
+                    notify.remove();
+                    res.send({
+                        code: 200,
+                        info: 'success'
+                    });
                 });
             });
         } else {
-            users[1].notify.splice(users[1].notify.indexOf(notify), 1);
+            user.notify.splice(user.notify.indexOf(notify), 1);
             notify.remove();
             res.send({
                 code: 200,
                 info: 'success'
             })
         }
+    });
+};
+var disconnect = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        user.disconnect(id, function(err,user) {
+            res.send({
+                code: 200,
+                info: 'success'
+            });
+        });
     });
 };
 var getNotify = function(req, res) {
@@ -218,7 +226,12 @@ module.exports = function(app) {
     app.post('/api/notify/read', readNotify);
 
     // connect
-    app.post('/api/connect/send', sendConnect);
+    app.post('/api/connect/send', sendNotify);
     app.post('/api/connect/check', checkConnect);
+    app.post('/api/connect/disconnect', disconnect);
+
+    // message
+    app.post('/api/message/send', sendMessage);
+    app.post('/api/message/read', readMessage);
 
 };
