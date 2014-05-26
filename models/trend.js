@@ -10,10 +10,8 @@ var TrendSchema = new Schema({
         type: String
     },
     userId: {
-        type: ObjectId
-    },
-    _type: {
-        type: String
+        type: ObjectId,
+        ref: 'User'
     },
     createAt: {
         type: Date,
@@ -33,14 +31,6 @@ TrendSchema.path('name').validate(function(name) {
         return false;
     }
 }, 'name should be job or share');
-TrendSchema.path('_type').validate(function(type) {
-    var array = ['User', 'Company'];
-    if (array.indexOf(type) >= 0) {
-        return true;
-    } else {
-        return false;
-    }
-}, 'type should be user or company');
 
 // statics
 TrendSchema.statics.createNew = function(obj, cb) {
@@ -62,14 +52,6 @@ TrendSchema.methods.getTrend = function(cb) {
     var Model = mongoose.model(this.name);
     Model.findOne({
         _id: this.id
-    }, function(err, model) {
-        cb(err, model);
-    });
-};
-TrendSchema.methods.getUser = function(cb) {
-    var Model = mongoose.model(this._type);
-    Model.findOne({
-        _id: this.userId
     }, function(err, model) {
         cb(err, model);
     });

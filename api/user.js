@@ -1,18 +1,18 @@
 var Models = require('../models');
 var Job = Models.Job;
-var Company = Models.Company;
 var CompanyProfile = Models.CompanyProfile;
 var User = Models.User;
 var UserProfile = Models.UserProfile;
 var Comment = Models.Comment;
 var Trend = Models.Trend;
+var Notify = Models.Notify;
 var Share = Models.Share;
 
 var async = require('async');
 
 var create = function(req, res) {
     var options = {
-        username: req.body.username,
+        name: req.body.name,
         email: req.body.email,
         password: req.body.password
     };
@@ -27,16 +27,7 @@ var create = function(req, res) {
                 info: message
             });
         }
-        req.session.user = {
-            uid: user._id,
-            username: user.username,
-            display_name: user.display_name,
-            email: user.email,
-            avatar: user.avatar,
-            isActive: user.isActive,
-            des: user.des,
-            connects: _user.connects
-        };
+        req.session.user = user;
         res.send({
             code: 200,
             user: req.session.user
@@ -44,10 +35,10 @@ var create = function(req, res) {
     });
 };
 var login = function(req, res) {
-    var username = req.body.username;
+    var name = req.body.name;
     var password = req.body.password;
     User.findOne({
-        username: username
+        name: name
     }, function(err, user) {
         if (err) {
             console.log('xxxnone users');
@@ -67,16 +58,7 @@ var login = function(req, res) {
                 info: 'error user or password'
             });
         }
-        req.session.user = {
-            uid: user._id,
-            username: user.username,
-            display_name: user.display_name,
-            email: user.email,
-            avatar: user.avatar,
-            isActive: user.isActive,
-            desc: user.desc,
-            connects: _user.connects
-        };
+        req.session.user = user;
         res.send({
             code: 200,
             user: req.session.user
@@ -111,94 +93,101 @@ var findUser = function(req, res) {
         }
     });
 };
-var editBasic = function(req, res) {
+var sendConnect = function(req, res) {
     var user = req.session.user;
-    var display_name = req.body.display_name;
-    var email = req.body.email;
-    var desc = req.body.res;
-    User.find({
-        _id: user.uid
-    }, function(err, user) {
-        var _user = user[0];
-        _user.display_name = display_name;
-        _user.email = email;
-        _user.desc = desc;
-        _user.save(function(err) {
-            req.session.user = {
-                uid: _user._id,
-                username: _user.username,
-                display_name: _user.display_name,
-                email: _user.email,
-                avatar: _user.avatar,
-                isActive: _user.isActive,
-                desc: _user.desc,
-                connects: _user.connects
-            };
-            res.send({
-                code: 200,
-                user: _user
+    var obj = {
+        from: user._id,
+        to: req.body.id,
+        type: req.body.type,
+        content: req.body.content
+    };
+    Notify.createNew(obj, function(err, notify) {
+        User.findOne({
+            _id: req.body.id
+        }, function(err, user) {
+            user.notify.push(notify._id);
+            user.save(function(err) {
+                res.send({
+                    code: 200,
+                    info: 'message has sent'
+                });
             });
         });
     });
 };
-var editPassword = function(req, res) {
+var checkConnect = function(req, res) {
     var user = req.session.user;
-    var origin = req.body.originPassword;
-    var password = req.body.newPassword;
-    User.find({
-        _id: user.uid
-    }, function(err, user) {
-        var _user = user[0];
-        if (!_user.authenticate(password)) {
-            res.send({
+    var notifyId = req.body.notifyId;
+    var value = req.body.value;
+    Notify.findOne({
+        _id: notifyId
+    }, function(err, notify) {
+        if (notify.to !== user._id) {
+            return res.send({
                 code: 404,
-                info: 'wrong password !'
+                info: 'no auth'
+            });
+        }
+        if (value) {
+            User.find({
+                _id: {
+                    $all: [notify.from, notify.to]
+                }
+            }, function(err, users) {
+                users[0].connects.push({
+                    user: users[1],
+                    relate: notify.content
+                });
+                users[1].connects.push({
+                    user: users[0],
+                    relate: notify.content
+                });
+                users[1].notify.splice(users[1].notify.indexOf(notify), 1);
+                users[0].save();
+                users[1].save();
+                res.send({
+                    code: 200,
+                    info: 'success'
+                });
             });
         } else {
-            req.session.user = {
-                uid: _user._id,
-                username: _user.username,
-                display_name: _user.display_name,
-                email: _user.email,
-                avatar: _user.avatar,
-                isActive: _user.isActive,
-                desc: _user.desc,
-                connects: _user.connects
-            };
+            users[1].notify.splice(users[1].notify.indexOf(notify), 1);
+            notify.remove();
             res.send({
                 code: 200,
-                user: _user
+                info: 'success'
+            })
+        }
+    });
+};
+var getNotify = function(req, res) {
+    var user = req.session.user;
+    User.findOne({
+        _id: user.id
+    }).populate('notify').exec(function(err, user) {
+        res.send({
+            code: 200,
+            notify: user.notify
+        });
+    });
+};
+var readNotify = function(req, res) {
+    var user = req.session.user;
+    var notifyId = req.body.notifyId;
+    Notify.findOne({
+        _id: notifyId
+    }, function(err, notify) {
+        if (notify.to === user._id) {
+            notify.hasRead = true;
+            notify.save(function(err) {
+                res.send({
+                    code: 200,
+                    info: 'read'
+                });
             });
         }
     });
 };
-var editAvatar = function(req, res) {
-    var user = req.session.user;
-    var avatar = req.body.avatar;
-    User.find({
-        _id: user.uid
-    }, function(err, user) {
-        var _user = user[0];
-        _user.avatar = avatar;
-        _user.save(function(err) {
-            req.session.user = {
-                uid: _user._id,
-                username: _user.username,
-                display_name: _user.display_name,
-                email: _user.email,
-                avatar: _user.avatar,
-                isActive: _user.isActive,
-                desc: _user.desc,
-                connects: _user.connects
-            };
-            res.send({
-                code: 200,
-                user: _user
-            });
-        });
-    });
-};
-
 var getShare = function(req, res) {
     var user = req.session.user;
     var connects = user.connects;
@@ -210,20 +199,26 @@ var getShare = function(req, res) {
         createAt: {
             $lt: Date.now()
         }
-    }).sortBy('createAt').exec(function(err, share) {
+    }).sort({
+        createAt: -1
+    }).exec(function(err, share) {
 
     });
 };
 module.exports = function(app) {
     app.post('/api/user/register', create);
     app.post('/api/user/login', login);
-    app.get('/api/user/logout', logout);
-    // app.get('/api/user/:userId', show);
-
-    app.post('/api/user/edit/basic', editBasic);
-    app.post('/api/user/edit/password', editPassword);
-    app.post('/api/user/edit/avatar', editAvatar);
+    app.post('/api/user/logout', logout);
 
     // trends
     app.get('/api/user/share', getShare);
+
+    // notify
+    app.post('/api/notify/', getNotify);
+    app.post('/api/notify/read', readNotify);
+
+    // connect
+    app.post('/api/connect/send', sendConnect);
+    app.post('/api/connect/check', checkConnect);
+
 };

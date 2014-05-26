@@ -6,28 +6,26 @@ var CompanyProfileSchema = new Schema({
     desc: {
         type: String
     },
-    company: {
+    user: {
         type: ObjectId,
-        ref: 'Company',
+        ref: 'User',
         unique: true
     },
     industry: [{
         type: String
     }],
-    brief: [{
-        type: String
-    }],
     experience: [{
         type: String
     }],
-    product: [{
-        item: {
+    product: {
+        item: [{
             type: String
-        },
+        }],
         isShow: {
-            type: Boolean
+            type: Boolean,
+            default: false
         }
-    }],
+    },
     builtDate: {
         type: Date
     },
@@ -38,14 +36,15 @@ var CompanyProfileSchema = new Schema({
         type: ObjectId,
         ref: 'User',
     }],
-    items: [[{
-        item: {
-            type: String
-        },
+    items: [{
         isShow: {
-            type: Boolean
-        }
-    }]],
+            type: Boolean,
+            default: false
+        },
+        item: [{
+            type: String
+        }]
+    }],
     createAt: {
         type: Date,
         default: Date.now

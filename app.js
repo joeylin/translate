@@ -45,9 +45,7 @@ require('./api/doc')(app);
 require('./api/search')(app);
 require('./api/user')(app);
 require('./api/job')(app);
-require('./api/company')(app);
-require('./api/userShare')(app);
-require('./api/companyShare')(app);
+require('./api/share')(app);
 require('./api/router')(app);
 
 app.locals.formatTimestamp = function(t) {

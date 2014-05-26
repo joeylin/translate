@@ -11,39 +11,93 @@ var UserProfileSchema = new Schema({
         ref: 'User',
         unique: true
     },
+    contact: {
+        qq: {
+            type: Number
+        },
+        phone: {
+            type: Number
+        }
+    },
+    social: [{
+        name: {
+            type: String
+        },
+        value: {
+            type: Number
+        }
+    }],
+    school: [{
+        type: String
+    }],
     skills: [{
         type: String
     }],
+    age: {
+        type: Date
+    },
+    height: {
+        type: Number
+    },
+    weight: {
+        type: Number
+    },
+    hometown: {
+        type: String
+    },
+    location: [{
+        type: String
+    }],
+    companys: [{
+        type: String
+    }],
+    language: [{
+        name: {
+            type: String
+        },
+        rate: Number
+    }],
+    current: {
+        location: {
+            type: String
+        },
+        status: {
+            type: String
+        }
+    },
     educations: [{
         type: String
     }],
     experience: [{
         type: String
     }],
-    projects: [{
-        item: {
+    projects: {
+        item: [{
             type: String
-        },
+        }],
         isShow: {
-            type: Boolean
+            type: Boolean,
+            default: false
         }
+    },
+    works: {
+        item: [{
+            type: String
+        }],
+        isShow: {
+            type: Boolean,
+            default: false
+        }
+    },
+    items: [{
+        isShow: {
+            type: Boolean,
+            default: false
+        },
+        item: [{
+            type: String
+        }]
     }],
-    works: [{
-        item: {
-            type: String
-        },
-        isShow: {
-            type: Boolean
-        }
-    }],
-    items: [[{
-        item: {
-            type: String
-        },
-        isShow: {
-            type: Boolean
-        }
-    }]],
     createAt: {
         type: Date,
         default: Date.now

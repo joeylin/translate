@@ -17,10 +17,21 @@ var UserSchema = new Schema({
         type: String,
         default: ''
     },
+    role: {
+        type: String
+    },
     email: {
         type: String,
         unique: true
     },
+    message: [{
+        type: ObjectId,
+        ref: 'Message'
+    }],
+    notify: [{
+        type: ObjectId,
+        ref: 'Notify'
+    }],
     followers: [{
         type: ObjectId,
         ref: 'User'
@@ -29,34 +40,14 @@ var UserSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
-    contact: {
-        qq: {
-            type: Number
-        },
-        phone: {
-            type: Number
-        }
-    },
-    social: [{
-        name: {
-            type: String
-        },
-        value: {
-            type: Number
-        }
-    }],
-    school: [{
-        type: String
-    }],
-    skills: [{
-        type: String
-    }],
-    age: {
-        type: Date
-    },
     connects: [{
-        type: ObjectId,
-        ref: 'User'
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        relate: {
+            type: String
+        }
     }],
     collects: {
         job: [{
@@ -68,36 +59,11 @@ var UserSchema = new Schema({
             ref: 'Share'
         }]
     },
-    height: {
-        type: Number
-    },
-    weight: {
-        type: Number
-    },
-    hometown: {
-        type: String
-    },
-    location: [{
-        type: String
-    }],
-    companys: [{
-        type: String
-    }],
-    language: [{
-        name: {
-            type: String
-        },
-        rate: Number
-    }],
-    current: {
-        location: {
-            type: String
-        },
-        status: {
-            type: String
-        }
-    },
     share: [{
+        type: ObjectId,
+        ref: 'Share'
+    }],
+    jobs: [{
         type: ObjectId,
         ref: 'Share'
     }],
@@ -109,7 +75,7 @@ var UserSchema = new Schema({
             type: ObjectId
         }]
     },
-    username: {
+    name: {
         type: String,
         unique: true
     },
@@ -188,12 +154,12 @@ UserSchema.path('email').validate(function(email, fn) {
     }
 }, 'Email already exists');
 
-UserSchema.path('username').validate(function(username) {
+UserSchema.path('name').validate(function(name) {
     if (this.doesNotRequireValidation()) {
         return true;
     }
-    return username.length;
-}, 'Username cannot be blank');
+    return name.length;
+}, 'name cannot be blank');
 
 UserSchema.path('hashedPassword').validate(function(hashedPassword) {
     if (this.doesNotRequireValidation()) {

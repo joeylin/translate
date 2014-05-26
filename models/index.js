@@ -22,7 +22,6 @@ exports.Translate = mongoose.model('Translate');
 // social network
 require('./user');
 require('./userProfile');
-require('./company');
 require('./companyProfile');
 require('./job');
 require('./share');
@@ -31,7 +30,6 @@ require('./trend');
 
 exports.User = mongoose.model('User');
 exports.UserProfile = mongoose.model('UserProfile');
-exports.Company = mongoose.model('Company');
 exports.CompanyProfile = mongoose.model('CompanyProfile');
 exports.Job = mongoose.model('Job');
 exports.Share = mongoose.model('Share');

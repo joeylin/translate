@@ -1,6 +1,5 @@
 var Models = require('../models');
 var Job = Models.Job;
-var Company = Models.Company;
 var CompanyProfile = Models.CompanyProfile;
 var User = Models.User;
 var UserProfile = Models.UserProfile;
@@ -8,17 +7,17 @@ var Comment = Models.Comment;
 var Share = Models.Share;
 
 var addJob = function(req, res) {
-    var company = req.session.company;
+    var user = req.session.user;
     var job = req.body || {};
-    job.company = company.id;
+    job.user = user._id;
 
     Job.createNew(job, function(err, job) {
-        Company.findOne({
-            _id: company.id
-        }, function(err, company) {
-            company.jobs.push(job._id);
-            company.trends.push(job._id);
-            company.save(function(err) {
+        user.findOne({
+            _id: user._id
+        }, function(err, user) {
+            user.jobs.push(job._id);
+            user.trends.push(job._id);
+            user.save(function(err) {
                 res.send({
                     code: 200,
                     content: job
@@ -28,20 +27,20 @@ var addJob = function(req, res) {
     });
 };
 var deleteJob = function(req, res) {
-    var company = req.session.company;
-    var jobId = req.body.jobId
-    Company.findOne({
-        _id: company.id
-    }, function(err, company) {
-        var index = company.jobs.indexOf(jobId);
+    var user = req.session.user;
+    var jobId = req.body.jobId;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        var index = user.jobs.indexOf(jobId);
         if (index < 0) {
             return res.send({
                 code: 404,
                 info: 'no job'
             });
         }
-        company.jobs.splice(index, 1);
-        company.save(function(err) {
+        user.jobs.splice(index, 1);
+        user.save(function(err) {
             res.send({
                 code: 200,
                 info: 'success'
@@ -68,12 +67,12 @@ var getJobById = function(req, res) {
 };
 var addComment = function(req, res) {
     var jobId = req.body.jobId;
-    var company = req.session.company;
+    var user = req.session.user;
 
     var comment = {
         content: req.body.content,
         replyTo: req.body.replyTo,
-        company: company.id
+        user: user._id
     };
     Comment.createNew(comment, function(err, comment) {
         Job.findOne({
@@ -91,10 +90,10 @@ var addComment = function(req, res) {
 };
 var deleteComment = function(req, res) {
     var jobId = req.body.jobId;
-    var company = req.session.company;
+    var user = req.session.user;
     var commentId = req.body.commentId;
     Job.findOne({
-        _id: shareId
+        _id: jobId
     }, function(err, job) {
         var index = job.comments.indexOf(commentId);
         if (index < 0) {
@@ -106,7 +105,7 @@ var deleteComment = function(req, res) {
             Comment.findOne({
                 _id: commentId
             }, function(err, comment) {
-                if (comment.company != company.id) {
+                if (comment.user !== user._id) {
                     return res.send({
                         code: 404,
                         info: 'no auth'
@@ -126,19 +125,19 @@ var deleteComment = function(req, res) {
 };
 var jobLike = function(req, res) {
     var user = req.session.user;
-    var shareId = req.body.shareId;
-    Share.findOne({
-        _id: shareId
-    }, function(err, share) {
-        var index = share.likes.indexOf(shareId);
+    var jobId = req.body.jobId;
+    Job.findOne({
+        _id: jobId
+    }, function(err, job) {
+        var index = job.likes.indexOf(user._id);
         if (index >= 0) {
             return res.send({
                 code: 404,
                 info: 'has liked'
             });
         }
-        share.likes.push(user.uid);
-        share.save(function(err) {
+        job.likes.push(user.uid);
+        job.save(function(err) {
             res.send({
                 code: 200,
                 info: 'success'
@@ -146,21 +145,21 @@ var jobLike = function(req, res) {
         });
     });
 };
-var shareUnlike = function(req, res) {
+var jobUnlike = function(req, res) {
     var user = req.session.user;
-    var shareId = req.body.shareId;
-    Share.findOne({
-        _id: shareId
-    }, function(err, share) {
-        var index = share.likes.indexOf(shareId);
+    var jobId = req.body.jobId;
+    Job.findOne({
+        _id: jobId
+    }, function(err, job) {
+        var index = job.likes.indexOf(user._id);
         if (index < 0) {
             return res.send({
                 code: 404,
                 info: 'no liked'
             });
         }
-        share.likes.splice(index, 1);
-        share.save(function(err) {
+        job.likes.splice(index, 1);
+        job.save(function(err) {
             res.send({
                 code: 200,
                 info: 'success'
@@ -168,20 +167,20 @@ var shareUnlike = function(req, res) {
         });
     });
 };
-var collectShare = function(req, res) {
+var collectJob = function(req, res) {
     var user = req.session.user;
-    var shareId = req.body.shareId;
+    var jobId = req.body.jobId;
     User.findOne({
-        _id: id
+        _id: user._id
     }, function(err, user) {
-        var index = user.collects.share.indexOf(shareId);
+        var index = user.collects.job.indexOf(jobId);
         if (index >= 0) {
             return res.send({
                 code: 404,
                 info: 'has collected'
             });
         }
-        user.collects.share.push(shareId);
+        user.collects.job.push(jobId);
         user.save(function(err) {
             res.send({
                 code: 200,
@@ -190,20 +189,20 @@ var collectShare = function(req, res) {
         });
     });
 };
-var unCollectShare = function(req, res) {
+var unCollectJob = function(req, res) {
     var user = req.session.user;
-    var shareId = req.body.shareId;
+    var jobId = req.body.jobId;
     User.findOne({
-        _id: id
+        _id: user._id
     }, function(err, user) {
-        var index = user.collects.share.indexOf(shareId);
+        var index = user.collects.job.indexOf(jobId);
         if (index < 0) {
             return res.send({
                 code: 404,
                 info: 'never collected'
             });
         }
-        user.collects.share.splice(index, 1);
+        user.collects.job.splice(index, 1);
         user.save(function(err) {
             res.send({
                 code: 200,
@@ -213,15 +212,13 @@ var unCollectShare = function(req, res) {
     });
 };
 module.exports = function(app) {
-    app.post('/api/job/collect', collectShare);
-    app.post('/api/job/uncollect', unCollectShare);
-    app.post('/api/job/unlike', shareUnlike);
-    app.post('/api/job/like', shareLike);
-    app.post('/api/job/delete', deleteShare);
+    app.post('/api/job/collect', collectJob);
+    app.post('/api/job/uncollect', unCollectJob);
+    app.post('/api/job/unlike', jobUnlike);
+    app.post('/api/job/like', jobLike);
+    app.post('/api/job/delete', deleteJob);
     app.post('/api/job/add', addJob);
-    app.post('/api/job/like', addShare);
-    app.get('/api/job/user', getShareByUser);
-    app.get('/api/job/id/:id', getShareById);
+    app.get('/api/job/id/:id', getJobById);
 
     // comments
     app.post('/api/job/comments/add', addComment);

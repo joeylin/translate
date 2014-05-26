@@ -3,9 +3,9 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var JobSchema = new Schema({
-    company: {
+    user: {
         type: ObjectId,
-        ref: 'Company'
+        ref: 'User'
     },
     toGraduating: {
         type: Boolean,
@@ -87,8 +87,7 @@ JobSchema.statics.createNew = function(obj, cb) {
         Trend.createNew({
             id: job._id,
             name: 'Job',
-            userId: job.company,
-            _type: 'Company'
+            userId: job.user
         }, function(err) {
             cb(err, job);
         });
