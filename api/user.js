@@ -116,7 +116,10 @@ var sendNotify = function(req, res) {
     });
 };
 var sendMessage = function(req, res) {
-    
+
+};
+var readMessage = function(req, res) {
+
 };
 var checkConnect = function(req, res) {
     var user = req.session.user;
