@@ -17,39 +17,22 @@ constant('app', {
     }
 ]).config(['$routeProvider', '$locationProvider', 'getFileProvider',
     function($routeProvider, $locationProvider, getFileProvider) {
-        var all = {
-            templateUrl: getFileProvider.html('all.html'),
-            controller: 'allCtrl',
-            path: 'all'
+        var request = {
+            templateUrl: getFileProvider.html('request.html'),
+            controller: 'requestCtrl',
+            path: 'request'
         };
-        var people = {
-            templateUrl: getFileProvider.html('people.html'),
-            controller: 'peopleCtrl',
-            path: 'people'
+        var message = {
+            templateUrl: getFileProvider.html('message.html'),
+            controller: 'messageCtrl',
+            path: 'message'
         };
-        var job = {
-            templateUrl: getFileProvider.html('job.html'),
-            controller: 'jobCtrl',
-            path: 'job'
-        };
-        var company = {
-            templateUrl: getFileProvider.html('company.html'),
-            controller: 'companyCtrl',
-            path: 'company'
-        };
-        var share = {
-            templateUrl: getFileProvider.html('share.html'),
-            controller: 'shareCtrl',
-            path: 'share'
-        };
+
         $routeProvider.
-        when('/search/all', all).
-        when('/search/people', people).
-        when('/search/job', job).
-        when('/search/company', company).
-        when('/search/share', share).
+        when('/notify/request', request).
+        when('/notify/message', message).
         otherwise({
-            redirectTo: '/search/all'
+            redirectTo: '/notify/request'
         });
         $locationProvider.html5Mode(true).hashPrefix('!');
     }

@@ -120,12 +120,8 @@ var sendNotify = function(req, res) {
         });
     });
 };
-var sendMessage = function(req, res) {
-
-};
-var readMessage = function(req, res) {
-
-};
+var sendMessage = function(req, res) {};
+var readMessage = function(req, res) {};
 var checkConnect = function(req, res) {
     var user = req.session.user;
     var requestId = req.body.requestId;
@@ -179,7 +175,7 @@ var disconnect = function(req, res) {
 var getNotify = function(req, res) {
     var user = req.session.user;
     User.findOne({
-        _id: user.id
+        _id: user._id
     }).exec(function(err, user) {
         res.send({
             code: 200,
@@ -244,7 +240,7 @@ module.exports = function(app) {
     app.get('/api/user/share', middleware.check_login, getShare);
 
     // notify
-    app.post('/api/notify/', getNotify);
+    app.get('/api/notify', getNotify);
     // app.post('/api/notify/read', readRequest);
 
     // connect

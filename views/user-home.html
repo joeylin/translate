@@ -105,6 +105,9 @@
           .comment-editor .input-group-btn:last-child>.btn {
             margin-left: 8px;
           }
+          .notifications-menu .dropdown-menu {
+            width: 130px!important;
+          }
 
         </style>
         <!-- for angular ng-cloak -->
@@ -116,6 +119,7 @@
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
           <% } %>
+          console.log(user);
         </script>       
     </head>
     <body>
@@ -131,9 +135,19 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
+              <ul class="nav navbar-nav navbar-right" ng-cloak>
+                  <li class="dropdown notifications-menu user-menu" ng-controller="notifyCtrl">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                            <i class="fa fa-warning"></i> 
+                            <span class="label label-wraning">{{total}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/notify/request" target="_self">{{request}} requests</a></li>
+                            <li><a href="/notify/message">{{message}} messages</a></li>
+                        </ul>
+                  </li>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="">
                             <!-- todo have custom user image -->
                             <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
                             <i class="fa fa-user"></i> 

@@ -3,7 +3,14 @@ var Doc = Models.Doc;
 var Chapter = Models.Chapter;
 var Section = Models.Section;
 var Translate = Models.Translate;
+var Job = Models.Job;
+var CompanyProfile = Models.CompanyProfile;
 var User = Models.User;
+var UserProfile = Models.UserProfile;
+var Comment = Models.Comment;
+var Trend = Models.Trend;
+var Request = Models.Request;
+var Share = Models.Share;
 
 var fs = require('fs');
 var path = require('path');
@@ -112,6 +119,7 @@ module.exports = function(app) {
 
     // notification
     app.get('/notify', middleware.check_login, getNotify);
+    app.get('/notify/:op', middleware.check_login, getNotify);
 
     // share
     app.get('/share', getShare);

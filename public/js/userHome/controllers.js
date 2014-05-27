@@ -97,4 +97,16 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         // init
         getShare();
     }
+]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var url = '/api/notify';
+        $http.get(url).success(function(data) {
+            var request = data.notify.request.length;
+            var message = data.notify.message.length;
+
+            $scope.total = request + message;
+            $scope.request = request;
+            $scope.message = message;
+        });
+    }
 ]);
