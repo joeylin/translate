@@ -70,7 +70,7 @@
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
                           <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
                               <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.username" ng-keydown="enter($event)">
+                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.name" ng-keydown="enter($event)">
                               <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password" ng-keydown="enter($event)">
                               <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
                           </form>
@@ -93,7 +93,7 @@
             <form action="" method="post" id="formSignup">
                 <div class="body bg-gray">
                     <div class="form-group">
-                        <input class="form-control" name="username" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
+                        <input class="form-control" name="name" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
                     </div>
                     <div class="form-group">
                         <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="" required="">
@@ -135,7 +135,7 @@
                 },
                 submitHandler:function(form) {
                     var data = {
-                        username: $('#inputUsername').val(),
+                        name: $('#inputUsername').val(),
                         email: $('#inputEmail').val(),
                         password: $('#inputpassword').val()
                     };

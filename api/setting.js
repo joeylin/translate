@@ -6,6 +6,7 @@ var UserProfile = Models.UserProfile;
 var Comment = Models.Comment;
 var Trend = Models.Trend;
 var Share = Models.Share;
+var Request = Models.Request;
 
 var editBasic = function(req, res) {
     var user = req.session.user;

@@ -77,9 +77,9 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('user-home');
     };
-    var getNotification = function(req, res) {
+    var getNotify = function(req, res) {
         app.locals.user = req.session.user;
-        res.render('notification');
+        res.render('notify');
     };
     var getShare = function(req, res) {
         app.locals.user = req.session.user;
@@ -111,7 +111,7 @@ module.exports = function(app) {
     app.get('/home', getUserHome);
 
     // notification
-    app.get('/notify', middleware.check_login, getNotification);
+    app.get('/notify', middleware.check_login, getNotify);
 
     // share
     app.get('/share', getShare);

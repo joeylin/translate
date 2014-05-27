@@ -3,11 +3,10 @@
 
 angular.module('jsGen.controllers', ['ui.validate']).
 controller('settingsListCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$http',
-    function(app, $scope, $routeParams, getToc, getChapter, $http) {
-    }
+    function(app, $scope, $routeParams, getToc, getChapter, $http) {}
 ]).controller('userCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        
+
     }
 ]).controller('userBasicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -28,11 +27,11 @@ controller('settingsListCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getC
                 email: $scope.email,
                 des: $scope.des
             };
-            if ($scope.display_name === '' ||  $scope.email === '' ) {
+            if ($scope.display_name === '' || $scope.email === '') {
                 $scope.isError = true;
                 $scope.errorMsg = 'cant be blank !';
             } else {
-                $http.post(url,data).success(function(data) {
+                $http.post(url, data).success(function(data) {
                     $scope.saveBtn = 'isSaved';
                     app.updateUser(data.user);
                 });
@@ -63,7 +62,7 @@ controller('settingsListCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getC
                 $scope.isError = true;
                 $scope.errorMsg = 'cant be blank !';
             } else {
-                $http.post(url,data).success(function(data) {
+                $http.post(url, data).success(function(data) {
                     $scope.saveBtn = 'isSaved';
                     app.updateUser(data.user);
                 });
@@ -86,7 +85,7 @@ controller('settingsListCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getC
             var data = {
                 avatar: $scope.avatar
             };
-            $http.post(url,data).success(function(data) {
+            $http.post(url, data).success(function(data) {
                 $scope.saveBtn = 'isSaved';
                 app.updateUser(data.user);
             });
@@ -109,7 +108,7 @@ controller('settingsListCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getC
     function(app, $scope, $routeParams, $http, $rootScope, $location) {
         app.clearUser();
         $scope.user = {
-            username: '',
+            name: '',
             password: ''
         };
         $scope.isError = false;
@@ -117,7 +116,7 @@ controller('settingsListCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getC
             $scope.login = 'Wait...';
             var user = $scope.user;
             var data = {
-                username: user.username,
+                name: user.name,
                 password: user.password
             };
 

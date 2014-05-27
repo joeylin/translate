@@ -137,7 +137,9 @@
                             <!-- todo have custom user image -->
                             <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
                             <i class="fa fa-user"></i> 
-                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                            <span id="lblUsername" style="margin-left: 5px;">
+                              <%= locals.user.name %>
+                            </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -145,7 +147,7 @@
                             <li class="user-header bg-modena">
                                 <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> Jane Doe - Web Developer</span>
+                                    <span class="user_username"> <%= locals.user.name %></span>
                                     <small class="user_creatAt">Member since Nov. 2012</small>
                                 </p>
                             </li>
@@ -214,17 +216,17 @@
                 <h4 class="panel-title">News</h4>
               </div>
               <div class="panel-body" ng-cloak>
-                <div class="media" ng-repeat-start="share in content">
+                <div class="media" ng-repeat-start="share in shareList">
                   <a class="pull-left" ng-href="/profile/{{share.user.username}}" target="_self">
                     <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 64px; height: 64px;">
                   </a>
                   <div class="media-body">
-                    <h4 class="media-heading">{{share.user.username}}</h4>
+                    <h4 class="media-heading">{{share.user.name}}</h4>
                     <div>
                       <p>{{share.content}}</p>
                     </div>
                     <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">{{share.date}}</a></span>
+                      <span class="date pull-left"><a href="#">{{share.createAt}}</a></span>
                       <span class="pull-right media-controll">
                         <a href="#" class="praise">praise</a>
                         <a href="#" class="comment" ng-click="vm.toggleComment(share)">comment({{share.comments.length}})</a>

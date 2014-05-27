@@ -4,10 +4,8 @@ var ObjectId = Schema.ObjectId;
 
 var ShareSchema = new Schema({
     user: {
-        type: ObjectId
-    },
-    _type: {
-        type: String
+        type: ObjectId,
+        ref: 'User'
     },
     content: {
         type: String
@@ -38,15 +36,13 @@ ShareSchema.virtual('likeCount').get(function() {
 ShareSchema.statics.createNew = function(obj, cb) {
     var share = new this();
     share.content = obj.content;
-    share._type = obj._type;
     share.user = obj.userId;
     share.save(function(err, share) {
         var Trend = mongoose.model('Trend');
         Trend.createNew({
             id: share._id,
             name: 'Share',
-            userId: share.user,
-            _type: share._type
+            userId: share.user
         }, function(err) {
             cb(err, share);
         });
@@ -74,24 +70,6 @@ ShareSchema.methods.like = function(userId) {
 ShareSchema.methods.unlike = function(userId) {
     this.likes.splice(this.likes.indexOf(userId), 1);
     this.save();
-};
-ShareSchema.methods.getUser = function(cb) {
-    if (this._type === 'User') {
-        var User = mongoose.model('User');
-        User.findOne({
-            _id: this.user
-        }, function(err, user) {
-            cb(err, user);
-        });
-    }
-    if (this._type === 'Company') {
-        var Company = mongoose.model('Company');
-        Company.findOne({
-            _id: this.user
-        }, function(err, company) {
-            cb(err, company);
-        });
-    }
 };
 
 // middleware

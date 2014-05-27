@@ -5,12 +5,21 @@ var User = Models.User;
 var UserProfile = Models.UserProfile;
 var Comment = Models.Comment;
 var Share = Models.Share;
+var Request = Models.Request;
 
 var middleware = require('./middleware');
 
 var getPeople = function(req, res) {
-    var query = req.query;
-    console.log(query);
+    var name = req.query.name;
+    var re = new RegExp(name);
+    User.find({
+        name: re
+    }, function(err, users) {
+        res.send({
+            code: 200,
+            content: users
+        });
+    });
 };
 var getJobs = function(req, res) {
     var query = req.query;

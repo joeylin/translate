@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var NotifySchema = new Schema({
+var RequestSchema = new Schema({
     from: {
         type: ObjectId,
         ref: 'User'
@@ -17,9 +17,12 @@ var NotifySchema = new Schema({
     content: {
         type: String
     },
-    hasRead: {
+    hasDisposed: {
         type: Boolean,
         default: false
+    },
+    isPass: {
+        type: Boolean
     },
     createAt: {
         type: Date,
@@ -31,7 +34,7 @@ var NotifySchema = new Schema({
     }
 });
 
-NotifySchema.path('type').validate(function(type) {
+RequestSchema.path('type').validate(function(type) {
     var array = ['connect', 'message'];
     if (array.indexOf(type) >= 0) {
         return true;
@@ -41,32 +44,33 @@ NotifySchema.path('type').validate(function(type) {
 }, 'type should be connect or message');
 
 // statics
-NotifySchema.statics.createNew = function(obj, cb) {
-    var notify = new this();
-    notify.from = obj.from;
-    notify.to = obj.to;
-    notify.type = obj.type;
-    notify.content = obj.content;
-    notify.save(cb);
+RequestSchema.statics.createNew = function(obj, cb) {
+    var Request = new this();
+    Request.from = obj.from;
+    Request.to = obj.to;
+    Request.type = obj.type;
+    Request.content = obj.content;
+    Request.save(cb);
 };
-NotifySchema.statics.delete = function(id, cb) {
+RequestSchema.statics.delete = function(id, cb) {
     this.findOne({
         _id: id
-    }, function(err, notify) {
-        notify.remove(cb);
+    }, function(err, Request) {
+        Request.remove(cb);
     });
 };
 
 // methods
-TrendSchema.methods.read = function(cb) {
-    this.hasRead = true;
+RequestSchema.methods.dispose = function(value, cb) {
+    this.hasDisposed = true;
+    this.isPass = value;
     this.save(cb);
 };
 
 // middleware
-NotifySchema.pre('save', function(next) {
+RequestSchema.pre('save', function(next) {
     this.updateAt = new Date();
     next();
 });
 
-mongoose.model('Notify', NotifySchema);
+mongoose.model('Request', RequestSchema);

@@ -91,9 +91,10 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
         };
         $scope.connect = function(user) {
-            var url = '/api/user/connect/';
+            var url = '/api/connect/send';
             $http.post(url, {
-                id: user.id
+                id: user._id,
+                type: 'connect'
             }).success(function(data) {
                 user.isConnected = true;
             });

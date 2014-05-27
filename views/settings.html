@@ -70,7 +70,7 @@
           <% if (locals.user) { %>
             ts.me = {
               uid: '<%= locals.user.uid %>',
-              username: '<%= locals.user.username %>',
+              name: '<%= locals.user.name %>',
               display_name: '<%= locals.user.display_name %>',
               email: '<%= locals.user.email %>',
               avatar: '<%= locals.user.avatar %>',
@@ -100,7 +100,7 @@
                             <!-- todo have custom user image -->
                             <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
                             <i class="fa fa-user"></i> 
-                            <span id="lblUsername" ng-bind="global.user.username" style="margin-left: 5px;"></span>
+                            <span id="lblUsername" ng-bind="global.user.name" style="margin-left: 5px;"></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">

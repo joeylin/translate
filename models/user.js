@@ -11,7 +11,7 @@ var UserSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: ''
+        default: '/public/imgs/avatar.png'
     },
     desc: {
         type: String,
@@ -28,10 +28,16 @@ var UserSchema = new Schema({
         type: ObjectId,
         ref: 'Message'
     }],
-    notify: [{
-        type: ObjectId,
-        ref: 'Notify'
-    }],
+    notify: {
+        message: [{
+            type: ObjectId,
+            ref: 'Message'
+        }],
+        request: [{
+            type: ObjectId,
+            ref: 'Request'
+        }]
+    },
     followers: [{
         type: ObjectId,
         ref: 'User'
@@ -121,7 +127,13 @@ UserSchema.virtual('password').set(function(password) {
 }).get(function() {
     return this._password;
 });
-
+UserSchema.virtual('connectList').get(function() {
+    var result = [];
+    this.connects.map(function(value, key) {
+        result.push(value.user);
+    });
+    return result;
+});
 
 /**
  * Validations
@@ -241,13 +253,15 @@ UserSchema.methods = {
     doesNotRequireValidation: function() {
         return~ oAuthTypes.indexOf(this.provider);
     },
+
+    // help tool
     connect: function(userId, relate, cb) {
         var User = mongoose.model('User');
         this.connects.push({
             user: userId,
             relate: relate
         });
-        var id = this._id;   
+        var id = this._id;
         this.save(function(err, user) {
             User.findOne({
                 _id: userId
@@ -281,9 +295,19 @@ UserSchema.methods = {
                 });
                 user.save(function(err, user) {
                     cb(err, user);
-                })
+                });
             });
         });
+    },
+    dealRequest: function(request, cb) {
+        var index = this.notify.request.indexOf(request);
+        this.notify.request.splice(index, 1);
+        this.save(cb);
+    },
+    dealMessage: function(message, cb) {
+        var index = this.notify.message.indexOf(message);
+        this.notify.message.splice(index, 1);
+        this.save(cb);
     }
 };
 

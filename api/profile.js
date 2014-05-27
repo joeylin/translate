@@ -5,3 +5,4 @@ var User = Models.User;
 var UserProfile = Models.UserProfile;
 var Comment = Models.Comment;
 var Share = Models.Share;
+var Request = Models.Request;

@@ -4,8 +4,7 @@ var ObjectId = Schema.ObjectId;
 
 var CommentSchema = new Schema({
     user: {
-        type: ObjectId,
-        ref: 'User'
+        id: ObjectId
     },
     content: {
         type: String

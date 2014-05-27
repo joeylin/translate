@@ -5,6 +5,7 @@ var User = Models.User;
 var UserProfile = Models.UserProfile;
 var Comment = Models.Comment;
 var Share = Models.Share;
+var Request = Models.Request;
 
 var middleware = require('./middleware');
 
@@ -33,6 +34,32 @@ var getShareById = function(req, res) {
         res.send({
             code: 200,
             content: share
+        });
+    });
+};
+var getShareComments = function(req, res) {
+    var shareId = req.params.shareId;
+    Share.findOne({
+        _id: shareId
+    }).exec(function(err, share) {
+        if (err) {
+            return res.send({
+                code: 404,
+                info: 'cant get comments'
+            });
+        }
+        var count = share.comments.length;
+        var latest = share.comments.slice(-5);
+        Comment.find({
+            _id: {
+                $in: latest
+            }
+        }).populate('user').exec(function(err, comments) {
+            res.send({
+                code: 200,
+                comments: comments,
+                count: count
+            });
         });
     });
 };
@@ -233,17 +260,17 @@ var getTrends = function(req, res) {
 
 };
 module.exports = function(app) {
-    app.post('/api/share/collect', collectShare);
-    app.post('/api/share/uncollect', unCollectShare);
-    app.post('/api/share/unlike', shareUnlike);
-    app.post('/api/share/like', shareLike);
-    app.post('/api/share/delete', deleteShare);
-    app.post('/api/share/add', addShare);
-    app.post('/api/share/like', addShare);
-    app.get('/api/share/user', getShareByUser);
+    app.post('/api/share/collect', middleware.check_login, collectShare);
+    app.post('/api/share/uncollect', middleware.check_login, unCollectShare);
+    app.post('/api/share/unlike', middleware.check_login, shareUnlike);
+    app.post('/api/share/like', middleware.check_login, shareLike);
+    app.post('/api/share/delete', middleware.check_login, deleteShare);
+    app.post('/api/share/add', middleware.check_login, addShare);
+    app.get('/api/share/user', middleware.check_login, getShareByUser);
     app.get('/api/share/id/:id', getShareById);
+    app.get('/api/share/comments', getShareComments);
 
     // comments
-    app.post('/api/share/comments/add', addComment);
-    app.post('/api/share/comments/delete', deleteComment);
+    app.post('/api/share/comments/add', middleware.check_login, addComment);
+    app.post('/api/share/comments/delete', middleware.check_login, deleteComment);
 };

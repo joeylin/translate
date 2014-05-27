@@ -5,9 +5,10 @@ var User = Models.User;
 var UserProfile = Models.UserProfile;
 var Comment = Models.Comment;
 var Trend = Models.Trend;
-var Notify = Models.Notify;
+var Request = Models.Request;
 var Share = Models.Share;
 
+var middleware = require('./middleware');
 var async = require('async');
 
 var create = function(req, res) {
@@ -95,21 +96,25 @@ var findUser = function(req, res) {
 };
 var sendNotify = function(req, res) {
     var user = req.session.user;
+    console.log(user, req.body.type);
     var obj = {
         from: user._id,
         to: req.body.id,
         type: req.body.type,
         content: req.body.content
     };
-    Notify.createNew(obj, function(err, notify) {
+    Request.createNew(obj, function(err, request) {
+        if (err) {
+            console.log(err);
+        }
         User.findOne({
             _id: req.body.id
         }, function(err, user) {
-            user.notify.push(notify._id);
+            user.notify.request.push(request._id);
             user.save(function(err) {
                 res.send({
                     code: 200,
-                    info: 'message has sent'
+                    info: 'request has sent'
                 });
             });
         });
@@ -123,12 +128,12 @@ var readMessage = function(req, res) {
 };
 var checkConnect = function(req, res) {
     var user = req.session.user;
-    var notifyId = req.body.notifyId;
+    var requestId = req.body.requestId;
     var value = req.body.value;
-    Notify.findOne({
-        _id: notifyId
-    }, function(err, notify) {
-        if (notify.to !== user._id) {
+    Request.findOne({
+        _id: requestId
+    }, function(err, request) {
+        if (request.to !== user._id) {
             return res.send({
                 code: 404,
                 info: 'no auth'
@@ -138,22 +143,22 @@ var checkConnect = function(req, res) {
             User.findOne({
                 _id: user._id
             }, function(err, user) {
-                user.connect(notify.from, notify.content, function(err, user) {
-                    user.notify.splice(user.notify.indexOf(notify), 1);
-                    notify.remove();
-                    res.send({
-                        code: 200,
-                        info: 'success'
+                user.connect(request.from, request.content, function(err, user) {
+                    request.dispose(true, function() {
+                        res.send({
+                            code: 200,
+                            info: 'success'
+                        });
                     });
                 });
             });
         } else {
-            user.notify.splice(user.notify.indexOf(notify), 1);
-            notify.remove();
-            res.send({
-                code: 200,
-                info: 'success'
-            })
+            request.dispose(false, function() {
+                res.send({
+                    code: 200,
+                    info: 'success'
+                });
+            });
         }
     });
 };
@@ -163,7 +168,7 @@ var disconnect = function(req, res) {
     User.findOne({
         _id: user._id
     }, function(err, user) {
-        user.disconnect(id, function(err,user) {
+        user.disconnect(id, function(err, user) {
             res.send({
                 code: 200,
                 info: 'success'
@@ -175,17 +180,17 @@ var getNotify = function(req, res) {
     var user = req.session.user;
     User.findOne({
         _id: user.id
-    }).populate('notify').exec(function(err, user) {
+    }).exec(function(err, user) {
         res.send({
             code: 200,
             notify: user.notify
         });
     });
 };
-var readNotify = function(req, res) {
+var readRequest = function(req, res) {
     var user = req.session.user;
-    var notifyId = req.body.notifyId;
-    Notify.findOne({
+    var requestId = req.body.requestId;
+    Request.findOne({
         _id: notifyId
     }, function(err, notify) {
         if (notify.to === user._id) {
@@ -202,31 +207,45 @@ var readNotify = function(req, res) {
 var getShare = function(req, res) {
     var user = req.session.user;
     var connects = user.connects;
+    var page = req.params.page || 0;
+    var perPageItems = 20;
 
+    var connectList = [];
+    connects.map(function(value, key) {
+        connectList.push(value.user);
+    });
+    // todo: avoid using skip() for performance
     Share.find({
         _id: {
-            $in: connects
-        },
-        createAt: {
-            $lt: Date.now()
+            $in: connectList
         }
     }).sort({
         createAt: -1
-    }).exec(function(err, share) {
-
+    }).populate('user').skip(page * perPageItems).limit(perPageItems).exec(function(err, share) {
+        if (err) {
+            return res.send({
+                code: 404
+            });
+        }
+        res.send({
+            code: 200,
+            content: share.length ? share : [],
+            hasNext: false
+        });
     });
 };
+
 module.exports = function(app) {
     app.post('/api/user/register', create);
     app.post('/api/user/login', login);
     app.post('/api/user/logout', logout);
 
     // trends
-    app.get('/api/user/share', getShare);
+    app.get('/api/user/share', middleware.check_login, getShare);
 
     // notify
     app.post('/api/notify/', getNotify);
-    app.post('/api/notify/read', readNotify);
+    // app.post('/api/notify/read', readRequest);
 
     // connect
     app.post('/api/connect/send', sendNotify);
@@ -236,5 +255,4 @@ module.exports = function(app) {
     // message
     app.post('/api/message/send', sendMessage);
     app.post('/api/message/read', readMessage);
-
 };
