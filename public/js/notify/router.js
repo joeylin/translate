@@ -7,7 +7,7 @@ constant('app', {
 }).provider('getFile', ['app',
     function(app) {
         this.html = function(fileName) {
-            return '/public/tpl/search/' + fileName + '?v=' + app.version;
+            return '/public/tpl/notify/' + fileName + '?v=' + app.version;
         };
         this.$get = function() {
             return {

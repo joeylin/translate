@@ -255,8 +255,20 @@ UserSchema.methods = {
     },
 
     // help tool
+    hasConnected: function(userId) {
+        var result = false;
+        this.connects.map(function(connect, key) {
+            if (connect.user === userId) {
+                result = true;
+            }
+        });
+        return result;
+    },
     connect: function(userId, relate, cb) {
         var User = mongoose.model('User');
+        if (this.hasConnected(userId)) {
+            return cb({message:'hasConnected'});
+        }
         this.connects.push({
             user: userId,
             relate: relate

@@ -96,7 +96,6 @@ var findUser = function(req, res) {
 };
 var sendNotify = function(req, res) {
     var user = req.session.user;
-    console.log(user, req.body.type);
     var obj = {
         from: user._id,
         to: req.body.id,
@@ -126,36 +125,42 @@ var checkConnect = function(req, res) {
     var user = req.session.user;
     var requestId = req.body.requestId;
     var value = req.body.value;
-    Request.findOne({
-        _id: requestId
-    }, function(err, request) {
-        if (request.to !== user._id) {
-            return res.send({
-                code: 404,
-                info: 'no auth'
-            });
-        }
-        if (value) {
-            User.findOne({
-                _id: user._id
-            }, function(err, user) {
+
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        Request.findOne({
+            _id: requestId
+        }, function(err, request) {
+            if (user.hasConnected(request.from)) {
+                return res.send({
+                    code: 404,
+                    info: 'has connected'
+                });
+            }
+            if (value) {
                 user.connect(request.from, request.content, function(err, user) {
                     request.dispose(true, function() {
-                        res.send({
-                            code: 200,
-                            info: 'success'
+                        user.dealRequest(request, function(err) {
+                            res.send({
+                                code: 200,
+                                info: 'success check false'
+                            });
                         });
+                            
                     });
                 });
-            });
-        } else {
-            request.dispose(false, function() {
-                res.send({
-                    code: 200,
-                    info: 'success'
+            } else {
+                request.dispose(false, function() {
+                    user.dealRequest(request, function() {
+                        res.send({
+                            code: 200,
+                            info: 'success check true'
+                        });
+                    }); 
                 });
-            });
-        }
+            }
+        });
     });
 };
 var disconnect = function(req, res) {
@@ -180,6 +185,17 @@ var getNotify = function(req, res) {
         res.send({
             code: 200,
             notify: user.notify
+        });
+    });
+};
+var getRequest = function(req, res) {
+    var user = req.session.user;
+    Request.find({
+        to: user._id
+    }).populate('from').exec(function(err, requests) {
+        res.send({
+            code: 200,
+            requests: requests
         });
     });
 };
@@ -241,6 +257,7 @@ module.exports = function(app) {
 
     // notify
     app.get('/api/notify', getNotify);
+    app.get('/api/notify/request', getRequest);
     // app.post('/api/notify/read', readRequest);
 
     // connect

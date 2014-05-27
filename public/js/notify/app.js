@@ -85,8 +85,8 @@ config(['$httpProvider', 'app',
         });
 
         $http.get('/api/notify').success(function(data) {
-            $rootScope.current.request = data.notify.request;
-            $rootScope.current.message = data.notify.message;
+            $rootScope.current.request = data.notify.request.length;
+            $rootScope.current.message = data.notify.message.length;
         });
     }
 ]);

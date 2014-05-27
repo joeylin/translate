@@ -195,25 +195,25 @@
             </div>
           </div>
         </nav>
-        <div class="container">
-          <div class="profile-sidebar col-md-3" ng-cloak>
+        <div class="container" ng-cloak>
+          <div class="profile-sidebar col-md-3" >
             <div class="list-group notify-options">
               <a ng-href="/notify/request" class="list-group-item active" ng-class="{active: current.path === 'request'}">
-                <span class="badge pull-right">{{current.request.length}}</span>
+                <span class="badge pull-right">{{current.request}}</span>
                 Request
               </a>
               <a ng-href="/notify/message" class="list-group-item" ng-class="{active: current.path === 'message'}">
-                <span class="badge pull-right bg-yellow">{{current.message.length}}</span>
-                Reply
+                <span class="badge pull-right bg-yellow">{{current.message}}</span>
+                Message
               </a>
             </div>
           </div>
-          <div class="profile-body col-md-9" ng-controller="indexCtrl">
+          <div class="profile-body col-md-9">
             <div class="panel news">
               <div class="panel-heading">
                 <h4 class="panel-title">News</h4>
               </div>
-              <div class="panel-body" ng-cloak>
+              <div class="panel-body" ng-view>
                 
               </div>
             </div>

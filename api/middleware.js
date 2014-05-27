@@ -7,7 +7,6 @@ var check_login = function(req, res, next) {
             info: 'require login'
         });
     }
-
 };
 var check_admin = function(req, res, next) {
     next();

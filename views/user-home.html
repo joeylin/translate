@@ -152,7 +152,7 @@
                             <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
                             <i class="fa fa-user"></i> 
                             <span id="lblUsername" style="margin-left: 5px;">
-                              <%= locals.user.name %>
+                              <%= locals.user && locals.user.name %>
                             </span>
                             <b class="caret"></b>
                         </a>
@@ -161,7 +161,7 @@
                             <li class="user-header bg-modena">
                                 <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> <%= locals.user.name %></span>
+                                    <span class="user_username"> <%= locals.user && locals.user.name %></span>
                                     <small class="user_creatAt">Member since Nov. 2012</small>
                                 </p>
                             </li>
