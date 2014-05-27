@@ -39,3 +39,15 @@ module.exports = function(app) {
     app.get('/api/search/company', getCompany);
     app.get('/api/search/share', getShare);
 };
+
+// helper
+
+function setRelate(users, user) {
+    if (!user) {
+        return users;
+    }
+    users.map(function(user,key) {
+
+    });
+    return users;
+};
