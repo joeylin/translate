@@ -59,13 +59,13 @@ $(document).ready(function() {
     $('#btnLogin').click(function() {
         $(this).text("...");
         var data = {
-            username: $('#username').val(),
+            name: $('#username').val(),
             password: $('#password').val()
         };
         $.ajax({
             url: "/api/user/login",
             type: "post",
-            data: $('#formLogin').serialize(),
+            data: data,
             success: function(data) {
                 if (data.code == 200 && data.user) { //logged in
                     setUser(data.user);
@@ -88,7 +88,7 @@ $(document).ready(function() {
             url: "/api/user/logout",
             type: "get",
             success: function(data) {
-                if (data.code == 200) {
+                if (data.code === 200) {
                     setUser(null);
                     $('#menuLogin').show();
                     $('#menuUser').hide();

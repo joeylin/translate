@@ -193,10 +193,13 @@ var getRequest = function(req, res) {
     Request.find({
         to: user._id
     }).populate('from').exec(function(err, requests) {
-        res.send({
-            code: 200,
-            requests: requests
+        checkUserRequest(requests, user._id, function(err) {
+            res.send({
+                code: 200,
+                requests: requests
+            });
         });
+
     });
 };
 var readRequest = function(req, res) {
@@ -269,3 +272,21 @@ module.exports = function(app) {
     app.post('/api/message/send', sendMessage);
     app.post('/api/message/read', readMessage);
 };
+
+// check request status
+function checkUserRequest(requests, userId, cb) {
+    User.findOne({
+        _id: userId
+    }, function(err, user) {
+        var userRequsets = user.notify.request;
+        userRequsets.map(function(userRequest, key) {
+            requests.map(function(request) {
+                if (request._id === userRequest && request.hasDisposed) {
+                    var index = user.notify.request.indexOf(userRequest);
+                    user.notify.request.splice(index, 1);
+                }
+            });
+        });
+        user.save(cb);
+    });
+}
