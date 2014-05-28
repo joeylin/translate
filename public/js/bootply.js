@@ -22,7 +22,7 @@ jQuery.fn.shake = function(intShakes, intDistance, intDuration, foreColor) {
 
 $(document).ready(function() {
     var setUser = function(userObj) {
-        var username = $('.user_username');
+        var username = $('.user_name');
         var createAt = $('.user_creatAt');
         var avatar = $('.user_avatar');
         var follower = $('.user_follower');
@@ -39,8 +39,8 @@ $(document).ready(function() {
             connects.text('');
             lblUsername.text('');
         } else {
-            lblUsername.text(userObj.username);
-            username.text(userObj.username);
+            lblUsername.text(userObj.name);
+            username.text(userObj.name);
             createAt.text(userObj.createAt);
             avatar.src = userObj.avatar;
             follower.text(userObj.followers);

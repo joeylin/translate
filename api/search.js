@@ -10,6 +10,7 @@ var Request = Models.Request;
 var middleware = require('./middleware');
 
 var getPeople = function(req, res) {
+    var user = req.session.user;
     var name = req.query.name;
     var re = new RegExp(name);
     User.find({
@@ -17,7 +18,7 @@ var getPeople = function(req, res) {
     }, function(err, users) {
         res.send({
             code: 200,
-            content: users
+            content: setRelate(users, user._id)
         });
     });
 };
@@ -42,12 +43,31 @@ module.exports = function(app) {
 
 // helper
 
-function setRelate(users, user) {
-    if (!user) {
+function setRelate(users, userId) {
+    var results = [];
+    if (!userId) {
         return users;
     }
-    users.map(function(user,key) {
-
+    users.map(function(user, key) {
+        var obj = {
+            avatar: user.avatar,
+            _id: user._id,
+            name: user.name,
+            desc: user.desc
+        };
+        obj.isMe = false;
+        obj.isConnected = false;
+        if (user._id.toString() === userId) {
+            obj.isMe = true;
+            obj.isConnected = true;
+        } else {
+            user.connects.map(function(connect, key) {
+                if (connect.user.toString() === userId) {
+                    obj.isConnected = true;
+                }
+            });
+        }
+        results.push(obj);
     });
-    return users;
-};
+    return results;
+}

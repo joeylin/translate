@@ -78,6 +78,7 @@
             </div>
             <div class="col-md-2">
               <a class="btn btn-primary pull-right" role="button" ng-show="!user.isConnected" ng-click="connect(user)">connect</a>
+              <a class="btn btn-primary pull-right" role="button" ng-show="user.isMe">edit</a>
             </div>
           </div>
         </div>
@@ -95,8 +96,7 @@
               <div class="search-people-relationship"><a href="#">relationship with you</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" ng-show="!isConnected" ng-click=>connect</a>
-              <a class="btn pull-right" role="button" ng-show="isConnected">connected</a>
+              <a class="btn btn-primary pull-right" role="button" >connect</a>
             </div>
           </div>
         </div>

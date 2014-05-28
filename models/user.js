@@ -255,7 +255,7 @@ UserSchema.methods = {
     },
 
     // help tool
-    hasConnected: function(userId) {
+    checkConnected: function(userId) {
         var result = false;
         this.connects.map(function(connect, key) {
             if (connect.user === userId) {
@@ -266,8 +266,10 @@ UserSchema.methods = {
     },
     connect: function(userId, relate, cb) {
         var User = mongoose.model('User');
-        if (this.hasConnected(userId)) {
-            return cb({message:'hasConnected'});
+        if (this.checkConnected(userId)) {
+            return cb({
+                message: 'hasConnected'
+            });
         }
         this.connects.push({
             user: userId,
@@ -311,13 +313,14 @@ UserSchema.methods = {
             });
         });
     },
-    dealRequest: function(request, cb) {
-        var index = this.notify.request.indexOf(request);
+    dealRequest: function(requestId, cb) {
+        var index = this.notify.request.indexOf(requestId);
+        console.log(index, request);
         this.notify.request.splice(index, 1);
         this.save(cb);
     },
-    dealMessage: function(message, cb) {
-        var index = this.notify.message.indexOf(message);
+    dealMessage: function(messageId, cb) {
+        var index = this.notify.message.indexOf(messageId);
         this.notify.message.splice(index, 1);
         this.save(cb);
     }

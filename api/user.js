@@ -132,7 +132,7 @@ var checkConnect = function(req, res) {
         Request.findOne({
             _id: requestId
         }, function(err, request) {
-            if (user.hasConnected(request.from)) {
+            if (user.checkConnected(request.from)) {
                 return res.send({
                     code: 404,
                     info: 'has connected'
@@ -141,13 +141,13 @@ var checkConnect = function(req, res) {
             if (value) {
                 user.connect(request.from, request.content, function(err, user) {
                     request.dispose(true, function() {
-                        user.dealRequest(request, function(err) {
+                        user.dealRequest(request._id, function(err) {
                             res.send({
                                 code: 200,
                                 info: 'success check false'
                             });
                         });
-                            
+
                     });
                 });
             } else {
@@ -157,7 +157,7 @@ var checkConnect = function(req, res) {
                             code: 200,
                             info: 'success check true'
                         });
-                    }); 
+                    });
                 });
             }
         });
