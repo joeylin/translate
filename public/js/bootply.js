@@ -86,7 +86,7 @@ $(document).ready(function() {
     $('#btnLogout').click(function() {
         $.ajax({
             url: "/api/user/logout",
-            type: "get",
+            type: "post",
             success: function(data) {
                 if (data.code === 200) {
                     setUser(null);
