@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+        <title>Login</title>
+        <meta name="generator" content="translate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <!-- bootstrap 3.0.2 -->
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- font Awesome -->
+        <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
+        <!--[if lt IE 9]>
+          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- CSS code from translate.com editor -->
+        
+        <style type="text/css">
+            /*
+           * Style tweaks
+           * --------------------------------------------------
+           */
+          footer {
+            padding-left: 15px;
+            padding-right: 15px;
+            background-color: #fff;
+          }
+
+          .form-box .header {
+            background-color: #535368;
+          }
+          .bg-modena {
+            background-color: #535368!important;
+          }
+          .bg-modena.btn {
+            color: #fff;
+          }
+          #formSignup label.error {
+            color: red;
+          }
+          #login-box {
+            margin-bottom: 90px;
+          }
+          .login-menu {
+            z-index: 1000;
+            min-width: 160px;
+            padding: 5px 0;
+            list-style: none;
+            font-size: 14px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border: 1px solid rgba(0,0,0,.15);
+            border-radius: 4px;
+            -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+            box-shadow: 0 6px 12px rgba(0,0,0,.175);
+            background-clip: padding-box;
+          }
+          .form .form-control {
+            padding: 4px 6px;
+            margin-bottom: 10px;
+            margin-left: 0;
+          }
+          .form label {
+            margin-bottom: 10px;
+          }
+          .form .btn {
+            background-color: #535368;
+            background-image: none;
+            border-color: transparent;
+            color: #e6e6e6;
+            text-shadow: 0 0 0;
+            box-shadow: 0 0 0;
+          }
+          .form .btn:hover {
+            color: #f2f2f2;
+            background-color: #313146;
+          }
+        </style>
+        <script type="text/javascript">
+          window.redirectTo = null;
+          <% if (locals.redirectTo) { %>
+            window.redirectTo = <%= locals.redirectTo %>;
+          <% } %>
+        </script>     
+    </head>
+    
+    <!-- HTML code from Bootply.com editor -->   
+    <body>   
+        <nav class="navbar navbar-inverse" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Translate</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-left">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Post</a></li>
+                <li><a href="#">Group</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="container">
+          <div class="form-box" id="login-box">
+            <div class="login-menu" style="padding:17px;border-radius: 6px; display:block;">
+              <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                  <label>Login</label> 
+                  <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.name" ng-keydown="enter($event)">
+                  <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password" ng-keydown="enter($event)">
+                  <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
+              </form>
+              <br>
+              <form class="form">
+                <a class="signup" href="/signup" style="margin-bottom: 20px;display:block;">New User? Sign-up..</a>
+              </form>
+              <div>
+                <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
+              </div>
+              <div>
+                <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
+              </div>    
+          </div>
+          
+          
+              
+        </div>
+        <footer>
+          <p class="pull-right text-center">© Found by Joeylin</p>
+        </footer>
+        <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/public/js/bootply.js"></script>
+    </body>
+</html>

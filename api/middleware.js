@@ -2,10 +2,9 @@ var check_login = function(req, res, next) {
     if (req.session.user) {
         next();
     } else {
-        res.send({
-            code: 404,
-            info: 'require login'
-        });
+        var redirectTo = req.path;
+        // app.locals.redirectTo = redirectTo;
+        res.redirect('/login');
     }
 };
 var check_admin = function(req, res, next) {

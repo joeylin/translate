@@ -119,7 +119,6 @@
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
           <% } %>
-          console.log(user);
         </script>       
     </head>
     <body>
@@ -136,9 +135,9 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right" ng-cloak>
-                  <li class="dropdown notifications-menu user-menu" ng-controller="notifyCtrl">
+                  <li class="dropdown notifications-menu user-menu" ng-controller="notifyCtrl" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                            <i class="fa fa-warning"></i> 
+                            <i class="fa fa-bell"></i> 
                             <span class="label label-wraning">{{total}}</span>
                         </a>
                         <ul class="dropdown-menu">
@@ -147,13 +146,11 @@
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
                             <!-- todo have custom user image -->
                             <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
                             <i class="fa fa-user"></i> 
-                            <span id="lblUsername" style="margin-left: 5px;">
-                              <%= locals.user && locals.user.name %>
-                            </span>
+                            <span id="lblUsername" style="margin-left: 5px;"></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -161,7 +158,7 @@
                             <li class="user-header bg-modena">
                                 <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> <%= locals.user && locals.user.name %></span>
+                                    <span class="user_name"> Jane Doe - Web Developer</span>
                                     <small class="user_creatAt">Member since Nov. 2012</small>
                                 </p>
                             </li>
@@ -180,7 +177,7 @@
                                     <a href="#">Followers</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="#">share</a>
+                                    <a href="#">Praise</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
                                     <a href="#">Connects</a>
@@ -189,7 +186,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/settings" target="_self" class="btn btn-default btn-flat">Settings</a>
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
@@ -391,6 +388,7 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
             '/public/js/userHome/router.js',

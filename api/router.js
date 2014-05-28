@@ -72,6 +72,9 @@ module.exports = function(app) {
     var getSignup = function(req, res) {
         res.render('signup');
     };
+    var getLogin = function(req, res) {
+        res.render('login');
+    };
     var getProfile = function(req, res) {
         app.locals.user = req.session.user;
         res.render('profile');
@@ -97,6 +100,7 @@ module.exports = function(app) {
         res.render('search');
     };
     app.get('/signup', getSignup);
+    app.get('/login', getLogin);
     app.get('/doc', getDocHome);
     app.get('/doc/search', getDocSearch);
     app.get('/doc/:doc', getDoc);
@@ -115,7 +119,7 @@ module.exports = function(app) {
     app.get('/company/:user', getCompany);
 
     // home
-    app.get('/home', getUserHome);
+    app.get('/home', middleware.check_login, getUserHome);
 
     // notification
     app.get('/notify', middleware.check_login, getNotify);

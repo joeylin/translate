@@ -66,7 +66,7 @@
     <div class="panel-body">
       <div class="media" ng-repeat="user in content">
         <a class="pull-left" ng-href="/profile/{{user.name}}" target="_self">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" ng-src="{{user.avatar}}" style="width: 64px; height: 64px;">
+          <img class="media-object" alt="64x64" ng-src="{{user.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
           <h4 class="media-heading"><a ng-href="profile/{{user.name}}" target="_self">{{user.name}}</a></h4>

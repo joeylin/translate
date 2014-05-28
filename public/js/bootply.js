@@ -38,6 +38,7 @@ $(document).ready(function() {
             praise.text('');
             connects.text('');
             lblUsername.text('');
+            window.user = null;
         } else {
             lblUsername.text(userObj.name);
             username.text(userObj.name);
@@ -48,7 +49,7 @@ $(document).ready(function() {
             connects.text((userObj.connects && userObj.connects.length) || 0);
         }
     };
-    if (!user) {
+    if (!window.user) {
         $('#menuLogin').show();
         $('#menuUser').hide();
     } else {
@@ -60,7 +61,8 @@ $(document).ready(function() {
         $(this).text("...");
         var data = {
             name: $('#username').val(),
-            password: $('#password').val()
+            password: $('#password').val(),
+            redirectTo: window.redirectTo
         };
         $.ajax({
             url: "/api/user/login",
@@ -69,8 +71,10 @@ $(document).ready(function() {
             success: function(data) {
                 if (data.code == 200 && data.user) { //logged in
                     setUser(data.user);
+                    $('#btnLogin').text("Login");
                     $('#menuLogin').hide();
                     $('#menuUser').show();
+                    $('#menuNotify').show();
                 } else {
                     $('#btnLogin').text("Login");
                     $('#btnLogin').shake(4, 6, 700, '#CC2222');
@@ -92,6 +96,7 @@ $(document).ready(function() {
                     setUser(null);
                     $('#menuLogin').show();
                     $('#menuUser').hide();
+                    $('#menuNotify').hide();
                 }
             }
         });

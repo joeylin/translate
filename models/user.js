@@ -11,7 +11,7 @@ var UserSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: '/public/imgs/avatar.png'
+        default: '/public/imgs/avatar.jpg'
     },
     desc: {
         type: String,
@@ -315,7 +315,6 @@ UserSchema.methods = {
     },
     dealRequest: function(requestId, cb) {
         var index = this.notify.request.indexOf(requestId);
-        console.log(index, request);
         this.notify.request.splice(index, 1);
         this.save(cb);
     },
