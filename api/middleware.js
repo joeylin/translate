@@ -4,7 +4,7 @@ var check_login = function(req, res, next) {
     } else {
         var redirectTo = req.path;
         // app.locals.redirectTo = redirectTo;
-        res.redirect('/login');
+        res.redirect('/login?re=' + redirectTo);
     }
 };
 var check_admin = function(req, res, next) {

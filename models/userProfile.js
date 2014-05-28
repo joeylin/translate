@@ -6,6 +6,10 @@ var UserProfileSchema = new Schema({
     desc: {
         type: String
     },
+    name: {
+        type: String,
+        default: 'user'
+    },
     user: {
         type: ObjectId,
         ref: 'User',

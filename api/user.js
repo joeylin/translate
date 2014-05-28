@@ -38,7 +38,6 @@ var create = function(req, res) {
 var login = function(req, res) {
     var name = req.body.name;
     var password = req.body.password;
-    var redirect = req.body.redirectTo;
     User.findOne({
         name: name
     }, function(err, user) {
@@ -61,14 +60,10 @@ var login = function(req, res) {
             });
         }
         req.session.user = user;
-        if (redirect) {
-            res.redirect(redirect);
-        } else {
-            res.send({
-                code: 200,
-                user: req.session.user
-            });
-        }
+        res.send({
+            code: 200,
+            user: req.session.user
+        });
     });
 };
 var logout = function(req, res) {

@@ -57,12 +57,12 @@ $(document).ready(function() {
         $('#menuUser').show();
         setUser(user);
     }
+    var redirectTo = window.location.search.replace('?','').split('=')[1];
     $('#btnLogin').click(function() {
         $(this).text("...");
         var data = {
             name: $('#username').val(),
-            password: $('#password').val(),
-            redirectTo: window.redirectTo
+            password: $('#password').val()
         };
         $.ajax({
             url: "/api/user/login",
@@ -75,6 +75,9 @@ $(document).ready(function() {
                     $('#menuLogin').hide();
                     $('#menuUser').show();
                     $('#menuNotify').show();
+                    if (redirectTo) {
+                        window.location.href = redirectTo;
+                    }
                 } else {
                     $('#btnLogin').text("Login");
                     $('#btnLogin').shake(4, 6, 700, '#CC2222');
@@ -97,6 +100,7 @@ $(document).ready(function() {
                     $('#menuLogin').show();
                     $('#menuUser').hide();
                     $('#menuNotify').hide();
+                    window.location.href = '/login?re=/home';
                 }
             }
         });

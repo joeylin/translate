@@ -20,6 +20,9 @@ var UserSchema = new Schema({
     role: {
         type: String
     },
+    profile: {
+        type: ObjectId
+    },
     email: {
         type: String,
         unique: true
@@ -195,6 +198,32 @@ UserSchema.pre('save', function(next) {
         next();
     }
 });
+
+/**
+ * Statics
+ */
+ UserSchema.statics.getProfile = function(id, cb) {
+    this.findOne({
+        _id: id
+    }, function(err, user) {
+        if (user.role === 'user') {
+            var UserProfile = mongoose.model('UserProfile');
+            UserProfile.findOne({
+                _id: user.profile
+            }, function(err, profile) {
+                cb(err, profile);
+            });
+        }
+        if (user.role === 'company') {
+            var CompanyProfile = mongoose.model('CompanyProfile');
+            CompanyProfile.findOne({
+                _id: user.profile
+            }, function(err, profile) {
+                cb(err, profile);
+            });
+        }
+    })
+ }
 
 /**
  * Methods

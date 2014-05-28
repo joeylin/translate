@@ -6,6 +6,10 @@ var CompanyProfileSchema = new Schema({
     desc: {
         type: String
     },
+    name: {
+        type: String,
+        default: 'company'
+    },
     user: {
         type: ObjectId,
         ref: 'User',

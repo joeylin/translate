@@ -77,7 +77,15 @@ module.exports = function(app) {
     };
     var getProfile = function(req, res) {
         app.locals.user = req.session.user;
-        res.render('profile');
+        var userId = req.params.user;
+        User.getProfile(userId, function(err, profile) {
+            if (err) {
+                // here send 404 page
+                console.log(err);
+            }
+            app.locals.profile = profile;
+            res.render('profile');
+        });
     };
     var getCompany = function(req, res) {
         app.locals.user = req.session.user;
