@@ -115,6 +115,10 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('search');
     };
+    var getUserProfileSettings = function(req, res) {
+        app.locals.user = req.session.user;
+        res.render('settings-user-profile');
+    };
     app.get('/signup', getSignup);
     app.get('/login', getLogin);
     app.get('/doc', getDocHome);
@@ -123,8 +127,9 @@ module.exports = function(app) {
     app.get('/doc/:doc/:chapter', getDoc);
 
     // settings
-    app.get('/settings', middleware.check_auth, getSetting);
-    app.get('/settings/:op', middleware.check_auth, getSetting);
+    // app.get('/settings', middleware.check_auth, getSetting);
+    // app.get('/settings/:op', middleware.check_auth, getSetting);
+    app.get('/settings/profile', getUserProfileSettings);
 
     // profile
     app.get('/profile', getProfile);
