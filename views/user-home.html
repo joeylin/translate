@@ -239,7 +239,7 @@
                     <div class="clearfix media-info">
                       <span class="date pull-left"><a href="#">{{share.createAt}}</a></span>
                       <span class="pull-right media-controll">
-                        <a href="#" class="praise">praise</a>
+                        <a href="#" class="like">like</a>
                         <a href="#" class="comment" ng-click="vm.toggleComment(share)">comment({{share.comments.length}})</a>
                       </span>
                     </div>
@@ -252,11 +252,11 @@
                       </div>
                       <hr class="reply-hr" ng-repeat-start="comment in share.comments">
                       <div class="media reply-item" ng-repeat-end>
-                        <a class="pull-left" ng-href="/profile/{{comment.user.username}}" target="_self">
+                        <a class="pull-left" ng-href="/profile/{{comment.user.name}}" target="_self">
                           <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
                         </a>
                         <div class="media-body">
-                          <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.username}}</a>: </span>{{comment.content}}</p>
+                          <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
                           <div class="clearfix media-info">
                             <span class="date pull-left"><a href="#">{{comment.date}}</a></span>
                             <span class="pull-right media-controll">

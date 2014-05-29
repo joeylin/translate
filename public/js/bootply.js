@@ -57,7 +57,7 @@ $(document).ready(function() {
         $('#menuUser').show();
         setUser(user);
     }
-    var redirectTo = window.location.search.replace('?','').split('=')[1];
+    var redirectTo = window.location.search.replace('?', '').split('=')[1];
     $('#btnLogin').click(function() {
         $(this).text("...");
         var data = {
@@ -76,8 +76,9 @@ $(document).ready(function() {
                     $('#menuUser').show();
                     $('#menuNotify').show();
                     if (redirectTo) {
-                        window.location.href = redirectTo;
+                        redirectTo = '/home';
                     }
+                    window.location.href = redirectTo;
                 } else {
                     $('#btnLogin').text("Login");
                     $('#btnLogin').shake(4, 6, 700, '#CC2222');

@@ -76,15 +76,23 @@ module.exports = function(app) {
         res.render('login');
     };
     var getProfile = function(req, res) {
-        app.locals.user = req.session.user;
-        var userId = req.params.user;
-        User.getProfile(userId, function(err, profile) {
+        var id = req.params.id;
+        if (!id) {
+            return res.render('profile');
+        }
+        User.getProfile(id, function(err, profile) {
             if (err) {
                 // here send 404 page
                 console.log(err);
             }
             app.locals.profile = profile;
-            res.render('profile');
+            app.locals.user = req.session.user;
+            if (profile.name === 'user') {
+                res.render('profile');
+            }
+            if (profile.name === 'company') {
+                res.render('profile');
+            }
         });
     };
     var getCompany = function(req, res) {
@@ -120,7 +128,7 @@ module.exports = function(app) {
 
     // profile
     app.get('/profile', getProfile);
-    app.get('/profile/:user', getProfile);
+    app.get('/profile/:id', getProfile);
 
     // company
     app.get('/company', getCompany);

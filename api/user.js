@@ -7,6 +7,7 @@ var Comment = Models.Comment;
 var Trend = Models.Trend;
 var Request = Models.Request;
 var Share = Models.Share;
+var IdGenerator = Models.IdGenerator;
 
 var middleware = require('./middleware');
 var async = require('async');
@@ -15,23 +16,43 @@ var create = function(req, res) {
     var options = {
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        role: req.body.role || 'user'
     };
     var user = new User(options);
+    var profile;
+    if (options.role === 'user') {
+        profile = new UserProfile({
+            user: user._id,
+            name: 'user'
+        });
+    }
+    if (options.role === 'company') {
+        profile = new CompanyProfile({
+            user: user._id,
+            name: 'company'
+        });
+    }
     user.provider = 'local';
-    user.save(function(err, user) {
-        if (err) {
-            var message = err.message;
-            return res.send({
-                code: 404,
-                user: null,
-                info: message
+    profile.save(function(err, _profile) {
+        IdGenerator.getNewId('user', function(err, doc) {
+            user.id = doc.currentId;
+            user.profile = _profile._id;
+            user.save(function(err, user) {
+                if (err) {
+                    var message = err.message;
+                    return res.send({
+                        code: 404,
+                        user: null,
+                        info: message
+                    });
+                }
+                req.session.user = user;
+                res.send({
+                    code: 200,
+                    user: req.session.user
+                });
             });
-        }
-        req.session.user = user;
-        res.send({
-            code: 200,
-            user: req.session.user
         });
     });
 };
@@ -231,21 +252,28 @@ var getShare = function(req, res) {
     });
     // todo: avoid using skip() for performance
     Share.find({
-        _id: {
+        user: {
             $in: connectList
         }
     }).sort({
         createAt: -1
     }).populate('user').skip(page * perPageItems).limit(perPageItems).exec(function(err, share) {
-        if (err) {
-            return res.send({
-                code: 404
+        Share.find({
+            user: {
+                $in: connectList
+            }
+        }).count().exec(function(err, count) {
+            if (err) {
+                return res.send({
+                    code: 404
+                });
+            }
+            res.send({
+                code: 200,
+                content: share.length ? share : [],
+                count: count,
+                hasNext: (count - page * perPageItems) > 0 ? true : false
             });
-        }
-        res.send({
-            code: 200,
-            content: share.length ? share : [],
-            hasNext: false
         });
     });
 };

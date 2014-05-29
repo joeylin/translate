@@ -9,6 +9,9 @@ var UserSchema = new Schema({
         type: String,
         default: ''
     },
+    id: {
+        type: Number
+    },
     avatar: {
         type: String,
         default: '/public/imgs/avatar.jpg'
@@ -202,9 +205,9 @@ UserSchema.pre('save', function(next) {
 /**
  * Statics
  */
- UserSchema.statics.getProfile = function(id, cb) {
+UserSchema.statics.getProfile = function(id, cb) {
     this.findOne({
-        _id: id
+        id: id
     }, function(err, user) {
         if (user.role === 'user') {
             var UserProfile = mongoose.model('UserProfile');
@@ -222,8 +225,8 @@ UserSchema.pre('save', function(next) {
                 cb(err, profile);
             });
         }
-    })
- }
+    });
+};
 
 /**
  * Methods

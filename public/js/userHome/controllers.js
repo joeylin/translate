@@ -17,7 +17,6 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 content: $scope.newShare,
             }).success(function(data) {
                 $scope.newShare = '';
-                $scope.total = data.total;
             });
         };
         var url = '/api/user/share';
@@ -30,7 +29,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }).success(function(data) {
                 $scope.shareList = data.content;
                 $scope.pager.hasNext = data.hasNext;
-                $scope.total = data.total;
+                $scope.total = data.count;
             });
         };
         $scope.next = function() {
