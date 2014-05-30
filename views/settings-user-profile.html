@@ -77,6 +77,7 @@
           }
           .custom-box .panel-body {
             padding-left: 35px;
+            padding-right: 35px;
             padding-top: 0;
             margin-top: 15px;
           }
@@ -175,6 +176,15 @@
             margin-top: 5px;
             margin-bottom: 15px;
           }
+          .jumbotron h1 {
+            font-size: 36px;
+            margin-top: 0;
+          }
+          .header-info span, 
+          .header-info a {
+            font-size: 18px;
+            margin-bottom: 10px;
+          }
           
         </style>
         <!-- for angular ng-cloak -->
@@ -264,49 +274,15 @@
         </nav>
         <div class="container" ng-cloak>    
           <div class="profile-body col-md-9">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <h2>Basic</h2>
-                <div class="control">
-                  <a href="#">edit</a>
-                </div>
-                <div class="content">
-                  <div class="desc">
-                    <span>name</span>
-                    <span>educate</span>
-                    <span>male</span>
-                    <span>experience</span>
-                    <div>
-                      <span>phone</span>
-                      <span>email</span>
-                    </div>
-                  </div>
-                  <div class="avatar">
-                    <i class="fa fa-fw fa-user"></i>
-                  </div>
-                </div>
-                <div class="new"></div>
-              </div>
+            <div class="clearfix header-info">
+              <span class="pull-left">Last update: a minute age</span>
+              <span class="pull-right">
+                <a href="#">Preview</a>
+              </span>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <h2>Expect Jobs</h2>
-                <div class="control">
-                  <a href="#">edit</a>
-                  <a href="#">add</a>
-                </div>
-                <div class="content"></div>
-                <div class="add">
-                  <div class="add-icon">
-                    <i class="fa fa-fw fa-plus-circle"></i>
-                  </div>
-                  <div class="add-desc">
-                    <p>here is your basic info, here is your basic info, here is your basic info</p>
-                    <span>add your jobs</span>
-                  </div>
-                </div>
-                <div class="new"></div>
-              </div>
+            <div class="jumbotron">
+              <h1>Joeylin</h1>
+              <p class="des">Think different</p>
             </div>
             <div class="panel custom-box">
               <div class="panel-heading">
@@ -546,7 +522,88 @@
                   <a class="pure-btn pull-left" role="button">Cancel</a>
                 </div>
               </div>
+            </div>
+            <div class="panel custom-box">
+              <div class="panel-heading">
+                <i class="fa fa-fw fa-plus-circle pull-right"></i>
+                <h2>ZuoPin</h2>
+              </div>
+              <div class="panel-body">
+                <div class="section">
+                  <div class="change pull-right">
+                    <i class="fa fa-edit edit"></i>
+                    <i class="fa fa-times-circle delete"></i>
+                  </div>
+                  <h4>URL: <a href="#">www.github.com</a></h4>
+                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
+                </div>
+                <hr>
+                <div class="section">
+                  <div class="change pull-right">
+                    <i class="fa fa-edit edit"></i>
+                    <i class="fa fa-times-circle delete"></i>
+                  </div>
+                  <h4>URL: <a href="#">www.github.com</a></h4>
+                  <p>a multiperson cooperate translate system, makes it convenient for people who want to contribute to translate a big doc for people who English is not good .</p>
+                </div>
+              </div>
+              <div class="media">
+                <a class="pull-left add-icon" href="#">
+                  <i class="fa fa-fw fa-plus-circle"></i>
+                </a>
+                <div class="media-body">
+                  <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                  <span><a href="#"> update your works</a></span>
+                </div>
+              </div>
+              <div class="panel-body settings">
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" placeholder="Your URL">
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-8">
+                      <textarea class="form-control" rows="3" placeholder="Describe your job ..."></textarea>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
+                  <a class="pure-btn pull-left" role="button">Cancel</a>
+                </div>
+              </div>
             </div>   
+            <div class="panel custom-box">
+              <div class="panel-heading">
+                <i class="fa fa-fw fa-plus-circle pull-right"></i>
+                <h2>Describe</h2>
+              </div>
+              <div class="panel-body">
+                <div class="section">
+                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
+                </div>
+              </div>
+              <div class="media">
+                <a class="pull-left add-icon" href="#">
+                  <i class="fa fa-fw fa-plus-circle"></i>
+                </a>
+                <div class="media-body">
+                  <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                  <span><a href="#"> describe yourself</a></span>
+                </div>
+              </div>
+              <div class="panel-body settings">
+                <div class="row">
+                  <div class="form-group col-md-8">
+                      <textarea class="form-control" rows="3" placeholder="Describe yourself ..."></textarea>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
+                  <a class="pure-btn pull-left" role="button">Cancel</a>
+                </div>
+              </div>
+            </div>
           </div>  
           <div class="profile-sidebar col-md-3" >
             
