@@ -176,6 +176,18 @@
             margin-top: 5px;
             margin-bottom: 15px;
           }
+          .custom-box .social-info div {
+            font-size: 18px;
+          }
+          .custom-box .social-info .col-md-3 {
+            text-align: right;
+          }
+          .custom-box .social-info {
+            padding-top: 0;
+          }
+          .custom-box .socail-settings input {
+            margin-bottom: 15px;
+          }
           .jumbotron h1 {
             font-size: 36px;
             margin-top: 0;
@@ -184,6 +196,28 @@
           .header-info a {
             font-size: 18px;
             margin-bottom: 10px;
+          }
+          .user-header input {
+            background-color: transparent;
+            display: inline-block;
+            border: none;
+          }
+          .user-header i {
+            font-size: 18px;
+            margin-left: 15px;
+            display: none;
+          }
+          .user-header i:hover {
+            color: #367fa9;
+          }
+          .user-header h1:hover i {
+            display: inline-block;
+          }
+          .user-header p:hover i {
+            display: inline-block;
+          }
+          .displayNone {
+            display: none;
           }
           
         </style>
@@ -280,81 +314,64 @@
                 <a href="#">Preview</a>
               </span>
             </div>
-            <div class="jumbotron">
-              <h1>Joeylin</h1>
-              <p class="des">Think different</p>
+            <div class="jumbotron user-header" ng-controller="headerCtrl">
+              <h1><span ng-show="showNameContent">{{display_name}}</span> <input ng-show="showNameInput" ng-keydown="enterName($event)" ng-model="display_name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
+              <p class="desc"><span ng-show="showSignContent">{{signature}}</span> <input ng-model="signature" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
             </div>
-            <div class="panel custom-box">
+            <div class="panel custom-box" ng-controller="experienceCtrl">
               <div class="panel-heading">
-                <i class="fa fa-fw fa-plus-circle pull-right"></i>
-                <h2>works</h2>
+                <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
+                <h2>Experience</h2>
               </div>
-              <div class="panel-body">
-                <div class="section">
+              <div class="panel-body" ng-show="showContent">
+                <div class="section" ng-repeat-start="item in content">
                   <div class="change pull-right">
-                    <i class="fa fa-edit edit"></i>
-                    <i class="fa fa-times-circle delete"></i>
+                    <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
+                    <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                   </div>
-                  <h4>UI wedgets</h4>
-                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins. detail: <a href="https://github.com/joeylin?tab=repositories">git</a></p>
+                  <h4>{{item.company}}-{{item.position}} <small>{{item.startDate}}-{{item.endDate}}</small></h4>
+                  <p>{{item.desc}}</p>
                 </div>
-                <hr>
-                <div class="section">
-                  <div class="change pull-right">
-                    <i class="fa fa-edit edit"></i>
-                    <i class="fa fa-times-circle delete"></i>
-                  </div>
-                  <h4>Translate system</h4>
-                  <p>a multiperson cooperate translate system, makes it convenient for people who want to contribute to translate a big doc for people who English is not good . detail: <a href="https://github.com/joeylin/translate">git</a></p>
-                </div>
-                <hr>
-                <div class="section">
-                  <div class="change pull-right">
-                    <i class="fa fa-edit edit"></i>
-                    <i class="fa fa-times-circle delete"></i>
-                  </div>
-                  <h4>Value network</h4>
-                  <p>a social network for professional person, makes it convenient for frash to know exprienced worker, and follow them, study with them, it is value network . detail: <a href="https://github.com/joeylin/translate">git</a></p>
-                </div>
+                <hr ng-repeat-end ng-class="{displayNone: $index === $last}">
               </div>
-              <div class="media">
+              <div class="media" ng-show="showHome">
                 <a class="pull-left add-icon" href="#">
-                  <i class="fa fa-fw fa-plus-circle"></i>
+                  <i class="fa fa-fw fa-plus-circle" ng-click="add()"></i>
                 </a>
                 <div class="media-body">
                   <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                  <span><a href="#"> update your works</a></span>
+                  <span><a href="#" ng-click="add()"> update your works</a></span>
                 </div>
               </div>
-              <div class="panel-body settings">
+              <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="your company">
+                        <input type="text" class="form-control" ng-model="inputCompany" placeholder="your company">
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="your position">
+                        <input type="text" class="form-control" ng-model="inputPosition" placeholder="your position">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="start date">
+                        <input type="text" class="form-control" ng-model="inputStartDate" placeholder="start date">
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="end date">
+                        <input type="text" class="form-control" ng-model="inputEndDate" placeholder="end date">
                     </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
-                      <textarea class="form-control" rows="2" placeholder="Describe your job ..."></textarea>
+                      <textarea class="form-control" ng-model="inputDesc" rows="2" placeholder="Describe your main work ..."></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
-                  <a class="pure-btn pull-left" role="button">Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()" >Save</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()" >Cancel</a>
                 </div>
               </div>
             </div>
-            <div class="panel custom-box basic">
+            <div class="panel custom-box basic" ng-controller="basicCtrl">
               <div class="panel-heading">
                 <i class="fa fa-edit pull-right"></i>
                 <h2>Basic</h2>
@@ -420,7 +437,7 @@
                     
               </div>
             </div>
-            <div class="panel custom-box education">
+            <div class="panel custom-box education" ng-controller="educationCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right"></i>
                 <h2>Education</h2>
@@ -523,7 +540,7 @@
                 </div>
               </div>
             </div>
-            <div class="panel custom-box">
+            <div class="panel custom-box" ng-controller="worksCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right"></i>
                 <h2>ZuoPin</h2>
@@ -573,7 +590,7 @@
                 </div>
               </div>
             </div>   
-            <div class="panel custom-box">
+            <div class="panel custom-box" ng-controller="describeCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right"></i>
                 <h2>Describe</h2>
@@ -604,9 +621,61 @@
                 </div>
               </div>
             </div>
+            <div class="panel custom-box social" ng-controller="socialCtrl">
+              <div class="panel-heading">
+                <i class="fa fa-edit pull-right"></i>
+                <h2>Social</h2>
+              </div>
+              <div class="media">
+                <div class="media-body social-info">
+                  <div class="row">
+                    <div class="col-md-3">QQ:</div>
+                    <div class="col-md-9">331547274</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">weibo:</div>
+                    <div class="col-md-9"><a href="#">http://weibo.com/u/2253352402</a></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">Git:</div>
+                    <div class="col-md-9"><a href="#">https://github.com/joeylin</a></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">Zhihu:</div>
+                    <div class="col-md-9"><a href="#">http://www.zhihu.com/people/lin-yao-82</a></div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body socail-settings">        
+                <div class="row">
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" placeholder="item name">
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" placeholder="item url">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                      <input type="text" class="form-control" placeholder="item name">
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" placeholder="item url">
+                    </div>
+                    <div class="clearfix">
+                      <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
+                  <a class="pure-btn pull-left" role="button" style="margin-right: 10px;">Add</a>
+                  <a class="pure-btn pull-left" role="button">Cancel</a>
+                </div> 
+              </div>
+            </div>
           </div>  
-          <div class="profile-sidebar col-md-3" >
-            
+          <div class="profile-sidebar col-md-3">
           </div>         
         </div>
         <footer>
@@ -632,12 +701,12 @@
             '/public/js/lib/utf8.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
-            '/public/js/notify/router.js',
+            '/public/js/settingsUserProfile/router.js',
             '/public/js/services.js',
             '/public/js/filters.js',
             '/public/js/directives.js',
-            '/public/js/notify/controllers.js',
-            '/public/js/notify/app.js',
+            '/public/js/settingsUserProfile/controllers.js',
+            '/public/js/settingsUserProfile/app.js',
             function (errorUrl) {
               if (errorUrl) {
                 alert('Error loading: ' + errorUrl);
