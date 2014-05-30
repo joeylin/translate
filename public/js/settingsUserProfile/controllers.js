@@ -16,8 +16,17 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showNameContent = false;
         };
         $scope.enterName = function(e) {
+            if (!e) {
+                return set();
+            }
             var key = e.keyCode || e.which;
             if (key === 13) {
+                $scope.showNameContent = true;
+                $scope.showNameEdit = true;
+                $scope.showNameInput = false;
+            }
+
+            function set() {
                 $scope.showNameContent = true;
                 $scope.showNameEdit = true;
                 $scope.showNameInput = false;
@@ -33,8 +42,15 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showSignContent = false;
         };
         $scope.enterSign = function(e) {
+            if (!e) {
+                return set();
+            }
             var key = e.keyCode || e.which;
             if (key === 13) {
+                set();
+            }
+
+            function set() {
                 $scope.showSignContent = true;
                 $scope.showSignEdit = true;
                 $scope.showSignInput = false;
@@ -59,13 +75,25 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.inputStartDate = '';
         $scope.inputEndDate = '';
 
+        $scope.statusAdd = false;
+        $scope.statusEdit = false;
+
         $scope.add = function() {
             $scope.showSettings = true;
             $scope.showContent = false;
             $scope.showHome = false;
             $scope.showAddIcon = false;
+
+            $scope.inputCompany = '';
+            $scope.inputPosition = '';
+            $scope.inputDesc = '';
+            $scope.inputStartDate = '';
+            $scope.inputEndDate = '';
+
+            $scope.statusAdd = true;
+            $scope.statusEdit = false;
         };
-        $scope.save = function() {
+        $scope.addSave = function() {
             $scope.showSettings = false;
             $scope.showContent = true;
             $scope.showHome = false;
@@ -85,7 +113,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showSettings = false;
             $scope.showHome = false;
             $scope.showAddIcon = true;
+            reset();
         };
+        $scope.vm = {};
+        $scope.editNumber = '';
         $scope.vm.edit = function(item) {
             $scope.inputCompany = item.company;
             $scope.inputPosition = item.postion;
@@ -97,8 +128,43 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showContent = false;
             $scope.showHome = false;
             $scope.showAddIcon = false;
+
+            $scope.statusAdd = false;
+            $scope.statusEdit = true;
+
+            var index = $scope.content.indexOf(item);
+            $scope.editNumber = index;
         };
-        $scope.vm.delete = function(item) {};
+        $scope.editSave = function(item) {
+            var data = {
+                company: $scope.inputCompany,
+                postion: $scope.inputPosition,
+                desc: $scope.inputDesc,
+                startDate: $scope.inputStartDate,
+                endDate: $scope.inputEndDate
+            };
+            $scope.content[$scope.editNumber] = data;
+
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+            $scope.showAddIcon = true;
+        };
+        $scope.vm.delete = function(item) {
+            var index = $scope.content.indexOf(item);
+            $scope.content.splice(index, 1);
+            reset();
+        };
+
+        function reset() {
+            if ($scope.content.length === 0) {
+                $scope.showContent = false;
+                $scope.showSettings = false;
+                $scope.showHome = true;
+                $scope.showAddIcon = false;
+            }
+        }
+        reset();
     }
 ]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -164,39 +230,6 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('socialCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope', '$location',
     function(app, $scope, $routeParams, $http, $rootScope, $location) {
-        app.clearUser();
-        $scope.user = {
-            name: '',
-            password: ''
-        };
-        $scope.isError = false;
-        $scope.submit = function() {
-            $scope.login = 'Wait...';
-            var user = $scope.user;
-            var data = {
-                name: user.name,
-                password: user.password
-            };
 
-            data.logtime = Date.now() - app.timeOffset;
-            app.restAPI.user.save({
-                ID: 'login'
-            }, data, function(data) {
-                app.loginUser(data.user);
-                $scope.$destroy();
-                $location.path('/setings/user');
-            }, function(data) {
-                $scope.isError = true;
-            });
-        };
-        $scope.enter = function(e) {
-            var key = e.keyCode || e.which;
-            if (key === 13) {
-                $scope.submit();
-            }
-        };
-        $scope.change = function() {
-            $scope.isError = false;
-        };
     }
 ]);

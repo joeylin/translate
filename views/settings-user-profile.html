@@ -315,8 +315,8 @@
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
-              <h1><span ng-show="showNameContent">{{display_name}}</span> <input ng-show="showNameInput" ng-keydown="enterName($event)" ng-model="display_name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
-              <p class="desc"><span ng-show="showSignContent">{{signature}}</span> <input ng-model="signature" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
+              <h1><span ng-show="showNameContent">{{display_name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="display_name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
+              <p class="desc"><span ng-show="showSignContent">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
             </div>
             <div class="panel custom-box" ng-controller="experienceCtrl">
               <div class="panel-heading">
@@ -332,7 +332,7 @@
                   <h4>{{item.company}}-{{item.position}} <small>{{item.startDate}}-{{item.endDate}}</small></h4>
                   <p>{{item.desc}}</p>
                 </div>
-                <hr ng-repeat-end ng-class="{displayNone: $index === $last}">
+                <hr ng-repeat-end ng-class="{displayNone: $last}">
               </div>
               <div class="media" ng-show="showHome">
                 <a class="pull-left add-icon" href="#">
@@ -366,7 +366,8 @@
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()" >Save</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusAdd" ng-click="addSave()">Add</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusEdit" ng-click="editSave()">Save</a>
                   <a class="pure-btn pull-left" role="button" ng-click="cancel()" >Cancel</a>
                 </div>
               </div>
