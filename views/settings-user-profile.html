@@ -84,12 +84,16 @@
           .custom-box .panel-heading i {
             font-size: 26px;
             line-height: 36px;
+            display: none;
+          }
+          .custom-box:hover .panel-heading i {
+            display: block;
           }
           .custom-box .panel-heading i:hover {
             color: blue;
           }
           .custom-box .media {
-            padding: 0 15px 15px 35px;
+            padding: 0 15px 35px 35px;
           }
           .custom-box .media .add-icon {
             margin-top: 5px;
@@ -154,6 +158,12 @@
           .custom-box .basic-settings-avatar div {
             text-align: center;
             font-size: 18px;
+          }
+          .custom-box .basic-edit {
+            display: none;
+          }
+          .custom-box:hover .basic-edit {
+            display: block;
           }
           .custom-box .edu-date {
             font-size: 18px;
@@ -374,41 +384,44 @@
             </div>
             <div class="panel custom-box basic" ng-controller="basicCtrl">
               <div class="panel-heading">
-                <i class="fa fa-edit pull-right"></i>
+                <i class="fa fa-edit pull-right basic-edit" ng-show="showEditIcon" ng-click="edit()"></i>
                 <h2>Basic</h2>
               </div>
-              <div class="media">
+              <div class="media" ng-show="showContent">
                 <a class="pull-right user-avatar" href="#">
                   <i class="fa fa-fw fa-user"></i>
+                  <!-- <img ng-src="{{avatar}}"> -->
                 </a>
                 <div class="media-body user-info">
-                  <p>Joeylin | Male | Master | one year work experience</p>
-                  <p> 18650330481  331547274@qq.com</p>
+                  <p>{{name}} | {{sex}} | {{edu}} | {{year}} year work experience</p>
+                  <p> {{phone}}  {{email}}</p>
                 </div>
               </div>
-              <div class="panel-body basic-settings">
+              <div class="panel-body basic-settings" ng-show="showSettings">
                 <div class="row">
                   <div class="col-md-9 form-item">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="your company">
+                            <input type="text" class="form-control" ng-model="inputName" placeholder="your name">
                         </div>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="your position">
+                            <select class="form-control" ng-model="inputSex">
+                              <option>Male</option>
+                              <option>Female</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
+                            <select class="form-control" ng-model="inputEdu">
+                              <option>Master</option>
+                              <option>Graduate</option>
+                              <option>underGraduate</option>
+                              <option>doctor</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control">
+                            <select class="form-control" ng-model="inputYear">
                               <option>1</option>
                               <option>2</option>
                               <option>3</option>
@@ -418,34 +431,48 @@
                         </div>
                     </div>
                     <div >
-                        <input type="text" class="form-control" placeholder="your phone number">
+                        <input type="text" class="form-control" ng-model="inputPhone" placeholder="your phone number">
                     </div>
                     <div>
-                        <input type="email" class="form-control" placeholder="your email">
+                        <input type="email" class="form-control" ng-model="inputEmail" placeholder="your email">
                     </div>
                     <div class="clearfix">
-                      <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
-                      <a class="pure-btn pull-left" role="button">Cancel</a>
+                      <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
+                      <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
                     </div>
                   </div>
                   <div class="col-md-3 basic-settings-avatar">
                     <a class="pull-right user-avatar" href="#">
                       <i class="fa fa-fw fa-user"></i>
+                      <!-- <input ng-model="inputAvatar" /> -->
                     </a>
                     <div>Change</div>
                   </div>
                 </div>
-                    
               </div>
             </div>
             <div class="panel custom-box education" ng-controller="educationCtrl">
               <div class="panel-heading">
-                <i class="fa fa-fw fa-plus-circle pull-right"></i>
+                <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
                 <h2>Education</h2>
               </div>
-              <div class="panel-body edu-box">
+              <div class="panel-body edu-box" ng-show="showContent">
                 <div class="row">
-                  <div class="col-md-6 section">
+                  <div class="col-md-6 section" ng-repeat="item in content">
+                    <div class="change pull-right">
+                      <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
+                      <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
+                    </div>
+                    <span class="edu-date">{{item.startDate}}--{{item.endDate}}</span>
+                    <div class="content">
+                      <div class="edu-school"> {{item.school}}</div>
+                      <div class="edu-info">
+                        <span>{{item.academy}}</span>
+                      </div>
+                      <div class="edu-desc">{{item.desc}}</div>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-6 section">
                     <div class="change pull-right">
                       <i class="fa fa-edit edit"></i>
                       <i class="fa fa-times-circle delete"></i>
@@ -459,195 +486,169 @@
                       </div>
                       <div class="edu-desc">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</div>
                     </div>
-                  </div>
-                  <div class="col-md-6 section">
-                    <div class="change pull-right">
-                      <i class="fa fa-edit edit"></i>
-                      <i class="fa fa-times-circle delete"></i>
-                    </div>
-                    <span class="edu-date">2012--2014</span>
-                    <div class="content">
-                      <div class="edu-school"> BUPT University</div>
-                      <div class="edu-info">
-                        <span>electronic</span>
-                        <span>infomation</span>
-                      </div>
-                      <div class="edu-desc">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 section">
-                    <div class="change pull-right">
-                      <i class="fa fa-edit edit"></i>
-                      <i class="fa fa-times-circle delete"></i>
-                    </div>
-                    <span class="edu-date">2012--2014</span>
-                    <div class="content">
-                      <div class="edu-school"> BUPT University</div>
-                      <div class="edu-info">
-                        <span>electronic</span>
-                        <span>infomation</span>
-                      </div>
-                      <div class="edu-desc">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</div>
-                    </div>
-                  </div>
+                  </div> -->
+                  
                 </div>
               </div>
-              <div class="media">
+              <div class="media" ng-show="showHome">
                 <a class="pull-left add-icon" href="#">
-                  <i class="fa fa-fw fa-plus-circle"></i>
+                  <i class="fa fa-fw fa-plus-circle" ng-click="add()"></i>
                 </a>
                 <div class="media-body">
                   <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                  <span><a href="#"> update your works</a></span>
+                  <span><a href="#" ng-click="add()"> update your works</a></span>
                 </div>
               </div>
-              <div class="panel-body settings">
+              <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="your company">
+                        <input type="text" class="form-control" ng-model="inputSchool" placeholder="your School">
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="your position">
+                        <input type="text" class="form-control" ng-model="inputAcademy" placeholder="your position">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <select class="form-control">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
+                        <select class="form-control" ng-model="inputStartDate">
+                          <option>2014</option>
+                          <option>2013</option>
+                          <option>2012</option>
+                          <option>2011</option>
+                          <option>2010</option>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <select class="form-control">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
+                        <select class="form-control" ng-model="inputEndDate">
+                          <option>2014</option>
+                          <option>2013</option>
+                          <option>2012</option>
+                          <option>2011</option>
+                          <option>2010</option>
                         </select>
                     </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
-                      <textarea class="form-control" rows="2" placeholder="Describe your job ..."></textarea>
+                      <textarea class="form-control" rows="3" placeholder="Describe your job ..." ng-model="inputDesc"></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
-                  <a class="pure-btn pull-left" role="button">Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="editSave()" ng-show="statusEdit">Save</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="addSave()" ng-show="statusAdd">Add</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
                 </div>
               </div>
             </div>
             <div class="panel custom-box" ng-controller="worksCtrl">
               <div class="panel-heading">
-                <i class="fa fa-fw fa-plus-circle pull-right"></i>
+                <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
                 <h2>ZuoPin</h2>
               </div>
-              <div class="panel-body">
-                <div class="section">
+              <div class="panel-body" ng-show="showContent">
+                <div class="section" ng-repeat-start="item in content">
+                  <div class="change pull-right">
+                    <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
+                    <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
+                  </div>
+                  <h4>URL: <a href="#">{{item.url}}</a></h4>
+                  <p>{{item.desc}}</p>
+                </div>
+                <hr ng-repeat-end ng-class="{displayNone: $last}">
+                <!-- <div class="section">
                   <div class="change pull-right">
                     <i class="fa fa-edit edit"></i>
                     <i class="fa fa-times-circle delete"></i>
                   </div>
                   <h4>URL: <a href="#">www.github.com</a></h4>
                   <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
-                </div>
-                <hr>
-                <div class="section">
-                  <div class="change pull-right">
-                    <i class="fa fa-edit edit"></i>
-                    <i class="fa fa-times-circle delete"></i>
-                  </div>
-                  <h4>URL: <a href="#">www.github.com</a></h4>
-                  <p>a multiperson cooperate translate system, makes it convenient for people who want to contribute to translate a big doc for people who English is not good .</p>
-                </div>
+                </div> -->
               </div>
-              <div class="media">
+              <div class="media" ng-show="showHome">
                 <a class="pull-left add-icon" href="#">
-                  <i class="fa fa-fw fa-plus-circle"></i>
+                  <i class="fa fa-fw fa-plus-circle" ng-click="add()"></i>
                 </a>
                 <div class="media-body">
                   <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                  <span><a href="#"> update your works</a></span>
+                  <span><a href="#" ng-click="add()"> update your works</a></span>
                 </div>
               </div>
-              <div class="panel-body settings">
+              <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                     <div class="col-md-8">
-                        <input type="text" class="form-control" placeholder="Your URL">
+                        <input type="text" class="form-control" ng-model="inputUrl" placeholder="Your URL">
                     </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
-                      <textarea class="form-control" rows="3" placeholder="Describe your job ..."></textarea>
+                      <textarea class="form-control" rows="3" ng-model="inputDesc" placeholder="Describe your job ..."></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
-                  <a class="pure-btn pull-left" role="button">Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="addSave()" ng-show="statusAdd">Add</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="editSave()" ng-show="statusEdit">Save</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
                 </div>
               </div>
             </div>   
             <div class="panel custom-box" ng-controller="describeCtrl">
               <div class="panel-heading">
-                <i class="fa fa-fw fa-plus-circle pull-right"></i>
+                <i class="fa fa-edit pull-right" ng-show="showEditIcon" ng-click="edit()"></i>
                 <h2>Describe</h2>
               </div>
-              <div class="panel-body">
+              <div class="panel-body" ng-show="showContent">
                 <div class="section">
-                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
+                  <p>{{desc}}</p>
                 </div>
               </div>
-              <div class="media">
+              <div class="media" ng-show="showHome">
                 <a class="pull-left add-icon" href="#">
-                  <i class="fa fa-fw fa-plus-circle"></i>
+                  <i class="fa fa-fw fa-plus-circle" ng-click="add()"></i>
                 </a>
                 <div class="media-body">
                   <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                  <span><a href="#"> describe yourself</a></span>
+                  <span><a href="#" ng-click="add()"> describe yourself</a></span>
                 </div>
               </div>
-              <div class="panel-body settings">
+              <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                   <div class="form-group col-md-8">
-                      <textarea class="form-control" rows="3" placeholder="Describe yourself ..."></textarea>
+                      <textarea class="form-control" rows="3" ng-model="inputDesc" placeholder="Describe yourself ..."></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;">Save</a>
-                  <a class="pure-btn pull-left" role="button">Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
                 </div>
               </div>
             </div>
             <div class="panel custom-box social" ng-controller="socialCtrl">
               <div class="panel-heading">
-                <i class="fa fa-edit pull-right"></i>
+                <i class="fa fa-edit pull-right" ng-show="showEditIcon"></i>
                 <h2>Social</h2>
               </div>
-              <div class="media">
+              <div class="media" ng-show="showContent">
                 <div class="media-body social-info">
-                  <div class="row">
-                    <div class="col-md-3">QQ:</div>
-                    <div class="col-md-9">331547274</div>
+                  <div class="row" ng-repeat="item in content">
+                    <div class="col-md-3">{{item.name}}:</div>
+                    <div class="col-md-9">{{item.url}}</div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-3">weibo:</div>
-                    <div class="col-md-9"><a href="#">http://weibo.com/u/2253352402</a></div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3">Git:</div>
-                    <div class="col-md-9"><a href="#">https://github.com/joeylin</a></div>
-                  </div>
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="col-md-3">Zhihu:</div>
                     <div class="col-md-9"><a href="#">http://www.zhihu.com/people/lin-yao-82</a></div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
-              <div class="panel-body socail-settings">        
+              <div class="media" ng-show="showHome">
+                <a class="pull-left add-icon" href="#">
+                  <i class="fa fa-fw fa-plus-circle" ng-click="add()"></i>
+                </a>
+                <div class="media-body">
+                  <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                  <span><a href="#" ng-click="add()"> update your works</a></span>
+                </div>
+              </div>
+              <div class="panel-body socail-settings" ng-show="showSettings">        
                 <div class="row">
                     <div class="col-md-2">
                       <input type="text" class="form-control" placeholder="item name">

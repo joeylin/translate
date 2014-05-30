@@ -59,7 +59,98 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('educationCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
+        $scope.showAddIcon = false;
+        $scope.showContent = false;
+        $scope.showSettings = false;
+        $scope.showHome = true;
 
+        $scope.statusAdd = false;
+        $scope.statusEdit = false;
+
+        $scope.content = [];
+        var itemNumber = '';
+        $scope.add = function() {
+            $scope.showAddIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+            $scope.showHome = false;
+
+            $scope.statusAdd = true;
+            $scope.statusEdit = false;
+
+            $scope.inputSchool = '';
+            $scope.inputAcademy = '';
+            $scope.inputStartDate = '';
+            $scope.inputEndDate = '';
+            $scope.inputDesc = '';
+        };
+        $scope.cancel = function() {
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+
+            reset();
+        };
+        $scope.addSave = function() {
+            var data = {
+                school: $scope.inputSchool,
+                academy: $scope.inputAcademy,
+                startDate: $scope.inputStartDate,
+                endDate: $scope.inputEndDate,
+                desc: $scope.inputDesc
+            };
+            $scope.content.push(data);
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+        };
+        $scope.editSave = function() {
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+
+            var data = {
+                school: $scope.inputSchool,
+                academy: $scope.inputAcademy,
+                startDate: $scope.inputStartDate,
+                endDate: $scope.inputEndDate,
+                desc: $scope.inputDesc
+            };
+            $scope.content[itemNumber] = data;
+        };
+        $scope.vm = {};
+        $scope.vm.edit = function(item) {
+            itemNumber = $scope.content.indexOf(item);
+            $scope.inputSchool = item.school;
+            $scope.inputAcademy = item.academy;
+            $scope.inputStartDate = item.startDate;
+            $scope.inputEndDate = item.endDate;
+            $scope.inputDesc = item.desc;
+
+            $scope.showAddIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+            $scope.showHome = false;
+
+            $scope.statusAdd = false;
+            $scope.statusEdit = true;
+        };
+        $scope.vm.delete = function(item) {
+            var index = $scope.content.indexOf(item);
+            $scope.content.splice(index, 1);
+            reset();
+        };      
+        function reset() {
+            if ($scope.content.length === 0) {
+                $scope.showAddIcon = false;
+                $scope.showContent = false;
+                $scope.showSettings = false;
+                $scope.showHome = true;
+            }
+        }
     }
 ]).controller('experienceCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -168,65 +259,194 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.originPassword = '';
-        $scope.newPassword = '';
-        $scope.repeatPassword = '';
+        $scope.name = 'Joeylin';
+        $scope.sex = 'Male';
+        $scope.edu = 'Master';
+        $scope.year = 2;
+        $scope.phone = '18650330481';
+        $scope.email = '331547274@qq.com';
+        $scope.avatar = '';
 
-        $scope.isError = false;
-        $scope.errorMsg = '';
+        $scope.showEditIcon = true;
+        $scope.showContent = true;
+        $scope.showSettings = false;
 
-        $scope.saveBtn = 'save';
+        $scope.edit = function() {
+            $scope.showEditIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+
+            $scope.inputName = $scope.name;
+            $scope.inputSex = $scope.sex;
+            $scope.inputEdu = $scope.edu;
+            $scope.inputYear = $scope.year;
+            $scope.inputPhone = $scope.phone;
+            $scope.inputEmail = $scope.email;
+            $scope.inputAvatar = $scope.avatar;
+        };
         $scope.save = function() {
-            var url = '/api/user/edit/password';
-            var data = {
-                originPassword: $scope.originPassword,
-                newPassword: $scope.newPassword,
-            };
-            if ($scope.newPassword !== $scope.repeatPassword) {
-                $scope.isError = true;
-                $scope.errorMsg = 'cant be blank !';
-            } else {
-                $http.post(url, data).success(function(data) {
-                    $scope.saveBtn = 'isSaved';
-                    app.updateUser(data.user);
-                });
+            $scope.showEditIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+
+            setValue({
+                name: $scope.inputName,
+                sex: $scope.inputSex,
+                edu: $scope.inputEdu,
+                year: $scope.inputYear,
+                phone: $scope.inputPhone,
+                email: $scope.inputEmail,
+                avatar: $scope.inputAvatar
+            });
+        };
+        $scope.cancel = function() {
+            $scope.showEditIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+        };
+
+        function setValue(obj) {
+            if (!obj) {
+                obj = {};
             }
-        };
-        $scope.change = function() {
-            $scope.saveBtn = 'save';
-            $scope.isError = false;
-        };
+            $scope.name = obj.name || '';
+            $scope.sex = obj.sex || '';
+            $scope.edu = obj.edu || '';
+            $scope.year = obj.year || '';
+            $scope.phone = obj.phone || '';
+            $scope.email = obj.email || '';
+            $scope.avatar = obj.avatar || '';
+        }
     }
 ]).controller('userImageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        var user = app.getUser();
-        $scope.avatar = user.avatar;
-
-        // btn
-        $scope.saveBtn = 'save';
-        $scope.save = function() {
-            var url = '/api/user/edit/avatar';
-            var data = {
-                avatar: $scope.avatar
-            };
-            $http.post(url, data).success(function(data) {
-                $scope.saveBtn = 'isSaved';
-                app.updateUser(data.user);
-            });
-        };
-        $scope.change = function() {
-            $scope.saveBtn = 'save';
-            $scope.isError = false;
-        };
 
     }
 ]).controller('worksCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
+        $scope.statusAdd = false;
+        $scope.statusEdit = false;
 
+        $scope.showAddIcon = false;
+        $scope.showContent = false;
+        $scope.showSettings = false;
+        $scope.showHome = true;
+
+        $scope.content = [];
+        $scope.add = function() {
+            $scope.showAddIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+            $scope.showHome = false;
+
+            $scope.statusAdd = true;
+            $scope.statusEdit = false;
+
+            $scope.inputUrl = '';
+            $scope.inputDesc = '';
+        };
+        $scope.addSave = function() {
+            var data = {
+                url: $scope.inputUrl,
+                desc: $scope.inputDesc
+            };
+            $scope.content.push(data);
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+        };
+        $scope.cancel = function() {
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+            reset();
+        };
+        $scope.vm = {};
+        var itemNumber = '';
+        $scope.vm.edit = function(item) {
+            itemNumber = $scope.content.indexOf(item);
+            $scope.inputUrl = item.url;
+            $scope.inputDesc = item.desc;
+
+            $scope.showAddIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+            $scope.showHome = false;
+
+            $scope.statusAdd = false;
+            $scope.statusEdit = true;
+        };
+        $scope.editSave = function() {
+            var data = {
+                url: $scope.inputUrl,
+                desc: $scope.inputDesc
+            };
+            
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+
+            $scope.content[itemNumber] = data;
+        };
+        $scope.vm.delete = function(item) {
+            var index = $scope.content.indexOf(item);
+            $scope.content.splice(index, 1);
+            reset();
+        };
+        function reset() {
+            if ($scope.content.length === 0) {
+                $scope.showAddIcon = false;
+                $scope.showContent = false;
+                $scope.showSettings = false;
+                $scope.showHome = true;
+            }
+        }
     }
 ]).controller('describeCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
+        $scope.desc = '';
 
+        $scope.showEditIcon = false;
+        $scope.showContent = false;
+        $scope.showHome = true;
+        $scope.showSettings = false;
+
+        $scope.edit = function() {
+            $scope.showEditIcon = false;
+            $scope.showContent = false;
+            $scope.showHome = false;
+            $scope.showSettings = true;
+
+            $scope.inputDesc = $scope.desc;
+        };
+        $scope.save = function() {
+            $scope.showEditIcon = true;
+            $scope.showContent = true;
+            $scope.showHome = false;
+            $scope.showSettings = false;
+
+            $scope.desc = $scope.inputDesc;
+            reset();
+        };
+        $scope.add = $scope.edit;
+        $scope.cancel = function() {
+            $scope.showEditIcon = true;
+            $scope.showContent = true;
+            $scope.showHome = false;
+            $scope.showSettings = false;
+            reset();
+        };
+        function reset() {
+            if ($scope.desc === '') {
+                $scope.showEditIcon = false;
+                $scope.showContent = false;
+                $scope.showHome = true;
+                $scope.showSettings = false;
+            }
+        }
     }
 ]).controller('socialCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope', '$location',
     function(app, $scope, $routeParams, $http, $rootScope, $location) {
