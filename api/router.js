@@ -97,7 +97,7 @@ module.exports = function(app) {
     };
     var getCompany = function(req, res) {
         app.locals.user = req.session.user;
-        res.render('company');
+        res.render('settings-company-profile');
     };
     var getUserHome = function(req, res) {
         app.locals.user = req.session.user;
