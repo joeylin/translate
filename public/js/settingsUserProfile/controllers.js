@@ -457,7 +457,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
         $scope.showAddIcon = false;
         $scope.showContent = false;
-        $scope.showHome = false;
+        $scope.showHome = true;
         $scope.showSettings = false;
 
         $scope.statusAdd = false;

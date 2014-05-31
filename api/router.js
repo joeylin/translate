@@ -78,7 +78,7 @@ module.exports = function(app) {
     var getProfile = function(req, res) {
         var id = req.params.id;
         if (!id) {
-            return res.render('profile');
+            return res.render('user-profile');
         }
         User.getProfile(id, function(err, profile) {
             if (err) {
