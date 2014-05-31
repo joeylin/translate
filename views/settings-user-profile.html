@@ -624,19 +624,19 @@
             </div>
             <div class="panel custom-box social" ng-controller="socialCtrl">
               <div class="panel-heading">
-                <i class="fa fa-edit pull-right" ng-show="showEditIcon"></i>
+                <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon"></i>
                 <h2>Social</h2>
               </div>
-              <div class="media" ng-show="showContent">
-                <div class="media-body social-info">
-                  <div class="row" ng-repeat="item in content">
-                    <div class="col-md-3">{{item.name}}:</div>
-                    <div class="col-md-9">{{item.url}}</div>
+              <div class="panel-body social-info" ng-show="showContent">
+                <div class="clearfix section" ng-repeat="item in content">
+                  <div class="change pull-right">
+                    <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
+                    <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                   </div>
-                  <!-- <div class="row">
-                    <div class="col-md-3">Zhihu:</div>
-                    <div class="col-md-9"><a href="#">http://www.zhihu.com/people/lin-yao-82</a></div>
-                  </div> -->
+                  <div class="row">
+                    <div class="col-md-3">{{item.name}}:</div>
+                    <div class="col-md-6"><a href="#">{{item.url}}</a></div>
+                  </div>  
                 </div>
               </div>
               <div class="media" ng-show="showHome">

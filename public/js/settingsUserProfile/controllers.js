@@ -450,6 +450,90 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('socialCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope', '$location',
     function(app, $scope, $routeParams, $http, $rootScope, $location) {
+        $scope.content = [];
 
+        $scope.inputName = '';
+        $scope.inputId = '';
+
+        $scope.showAddIcon = false;
+        $scope.showContent = false;
+        $scope.showHome = false;
+        $scope.showSettings = false;
+
+        $scope.statusAdd = false;
+        $scope.statusEdit = false;
+
+        $scope.content = [];
+        var itemNumber = '';
+        $scope.add = function() {
+            $scope.showAddIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+            $scope.showHome = false;
+
+            $scope.statusAdd = true;
+            $scope.statusEdit = false;
+
+            $scope.inputName = '';
+            $scope.inputId = '';
+        };
+        $scope.cancel = function() {
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+
+            reset();
+        };
+        $scope.addSave = function() {
+            var data = {
+                name: $scope.inputName,
+                id: $scope.inputId
+            };
+            $scope.content.push(data);
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+        };
+        $scope.editSave = function() {
+            $scope.showAddIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+            $scope.showHome = false;
+
+            var data = {
+                name: $scope.inputName,
+                id: $scope.inputId
+            };
+            $scope.content[itemNumber] = data;
+        };
+        $scope.vm = {};
+        $scope.vm.edit = function(item) {
+            itemNumber = $scope.content.indexOf(item);
+            $scope.inputName = item.name;
+            $scope.inputId = item.id;
+
+            $scope.showAddIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+            $scope.showHome = false;
+
+            $scope.statusAdd = false;
+            $scope.statusEdit = true;
+        };
+        $scope.vm.delete = function(item) {
+            var index = $scope.content.indexOf(item);
+            $scope.content.splice(index, 1);
+            reset();
+        };      
+        function reset() {
+            if ($scope.content.length === 0) {
+                $scope.showAddIcon = false;
+                $scope.showContent = false;
+                $scope.showSettings = false;
+                $scope.showHome = true;
+            }
+        }
     }
 ]);
