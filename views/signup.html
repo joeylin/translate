@@ -21,74 +21,102 @@
         <!-- CSS code from translate.com editor -->
         
         <style type="text/css">
-            /*
-           * Style tweaks
-           * --------------------------------------------------
-           */
-          footer {
-            padding-left: 15px;
-            padding-right: 15px;
+          body {
+            background: #fff;
+          }
+          .navbar {
+            border: none;
+          }
+          .navbar .navbar-header {
+            height: 86px;
             background-color: #fff;
+            width: 252px;
           }
-
-          .form-box .header {
+          .navbar {
+            background-color: #3c8dbc;
+          }
+          .navbar .navbar-header a {
+            line-height: 56px;
+            font-size: 32px;
+            color: rgb(51, 51, 51);
+            width: 100%;
+            text-align: center;
+          }
+          .form-inline {
+            line-height: 84px;
+          }
+          .loginbtn {
             background-color: #535368;
-          }
-          .bg-modena {
-            background-color: #535368!important;
-          }
-          .bg-modena.btn {
             color: #fff;
           }
-          #formSignup label.error {
-            color: red;
+          .loginbtn:hover {
+            color: #fff;
           }
-          #login-box {
-            margin-bottom: 90px;
+          .nav-tabs-custom {
+            margin-top: 30px;
+            box-shadow: none;
           }
+
+          .signupTab .nav-tabs>li>a {
+            border: 0;
+            font-size: 18px;
+          }
+          .signupTab > .nav-tabs > li {
+            border-top: 0;
+            border-bottom: 3px solid transparent;
+          }
+          .signupTab > .nav-tabs > li.active {
+            border-bottom-color: #3c8dbc;
+          }
+          .signupTab > .nav-tabs {
+            border-bottom-color: transparent;
+          }
+          .signupTab .nav-tabs>li.active>a:hover {
+            border: 0;
+          }
+          .signupTab .tab-content {
+            margin-top: 30px;
+          }
+          .signupTab .tab-content label {
+            line-height: 37px;
+            width: 100%;
+            text-align: right;
+            font-weight: 400;
+          }
+          .signupTab .tab-pane > div {
+            margin-bottom: 15px;
+          }
+
         </style>
         
     </head>
     
     <!-- HTML code from Bootply.com editor -->   
     <body>   
-        <nav class="navbar navbar-inverse" role="navigation">
+        <nav class="navbar" role="navigation">
           <div class="container">
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown" id="menuLogin">
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin" ng-bind="global.components.login"></a>
-                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
-                              <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required ng-model="user.name" ng-keydown="enter($event)">
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required ng-model="user.password" ng-keydown="enter($event)">
-                              <button type="button" id="btnLogin" class="btn" shake ng-click="submit()">Login</button>
-                          </form>
-                          <a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                          <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>
-                      </div>
-                  </li>
-              </ul>
-              <ul class="nav navbar-nav navbar-left">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Post</a></li>
-                <li><a href="#">Group</a></li>
+                <li>
+                  <form class="form-inline" role="form">
+                    <div class="form-group">
+                      <input type="email" class="form-control" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" placeholder="Password">
+                    </div>
+                    <button type="button" id="btnLogin" class="btn loginbtn">Login</button>
+                  </form>
+                </li>
               </ul>
             </div>
           </div>
         </nav>
         <div class="container">
-          <div class="form-box" id="login-box">
+          <!-- <div class="form-box" id="login-box">
             <div class="header">Register</div>
             <form action="" method="post" id="formSignup">
                 <div class="body bg-gray">
@@ -109,6 +137,94 @@
                     <button type="submit" class="btn bg-modena btn-block" id="btnRegister">Sign me up</button>
                 </div>
             </form>
+          </div> -->
+          <div class="row">
+            <div class="col-md-4">
+              <div class="nav-tabs-custom signupTab">
+                  <ul class="nav nav-tabs">
+                      <li class="active"><a href="#tab_1" data-toggle="tab">User</a></li>
+                      <li class=""><a href="#tab_2" data-toggle="tab">Company</a></li>
+                  </ul>
+                  <div class="tab-content">
+                      <div class="tab-pane" id="tab_1">
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Email</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="" required="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Username</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="name" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Password</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="password" id="inputpassword" type="password" placeholder="Password" required="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Password</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="verify" id="inputVerify" type="password" placeholder="Password (again)" required="">
+                            </div>
+                          </div>
+                          <div class="clearfix">
+                            <button type="submit" class="btn btn-primary pull-right" id="btnRegister">Sign me up</button>
+                          </div>
+                    </div>
+                      <div class="tab-pane active" id="tab_2">
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Email</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="email" id="inputCompanyEmail" type="email" placeholder="Email" required="" required="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Company</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="name" id="inputCompanyName" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Password</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="password" id="inputCompanyPassword" type="password" placeholder="Password" required="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-3">
+                              <label>Password</label>
+                            </div>
+                            <div class="col-xs-9">
+                              <input class="form-control" name="verify" id="inputCompanyVerify" type="password" placeholder="Password (again)" required="">
+                            </div>
+                          </div>
+                          <div class="clearfix">
+                            <button type="submit" class="btn btn-primary pull-right" id="btnRegister">Sign me up</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+            </div>
+          </div>
         </div>
         <footer>
           <p class="pull-right text-center">© Found by Joeylin</p>
