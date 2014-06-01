@@ -31,9 +31,9 @@ config(['$httpProvider', 'app',
         });
     }
 ]).run(['app', '$q', '$rootScope', '$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc', '$http',
+    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
-        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc, $http) {
+        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc) {
 
         var global = $rootScope.global = {
             isLogin: false,
@@ -76,13 +76,5 @@ config(['$httpProvider', 'app',
         app.myConf = myConf;
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
-
-        $rootScope.lastUpdate = 'a minute ago'
-        $rootScope.gotoProfile = function() {
-            $rootScope.global.profile = true;
-        }
-        $rootScope.gotoAccount = function() {
-            $rootScope.global.profile = false;
-        }
     }
 ]);

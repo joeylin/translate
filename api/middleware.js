@@ -3,7 +3,9 @@ var check_login = function(req, res, next) {
         next();
     } else {
         var redirectTo = req.path;
-        // app.locals.redirectTo = redirectTo;
+        if (!redirectTo) {
+            redirectTo = '/home';
+        }
         res.redirect('/login?re=' + redirectTo);
     }
 };

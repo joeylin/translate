@@ -264,7 +264,7 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
+              <ul class="nav navbar-nav navbar-right" ng-cloak>
                   <li class="dropdown" id="menuLogin" >
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
@@ -340,12 +340,13 @@
             </div>
           </div>
         </nav>
-        <div class="container">
-          <div class="profile-body col-md-9" ng-cloak>
+        <div class="container" ng-cloak>
+          <div class="profile-body col-md-9" ng-if="global.profile">
             <div class="clearfix header-info">
-              <span class="pull-left">Last update: a minute age</span>
+              <span class="pull-left">Last update: {{lastUpdate}}</span>
               <span class="pull-right">
-                <a href="#">Preview</a>
+                <a href="#" ng-click="gotoAccount()">Account</a> |
+                <a href="#" target="_self">Preview</a>
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
@@ -363,8 +364,8 @@
                   <!-- <img ng-src="{{avatar}}"> -->
                 </a>
                 <div class="media-body user-info">
-                  <p>{{name}} | {{sex}} | {{edu}} | {{year}} year work experience</p>
-                  <p> {{phone}}  {{email}}</p>
+                  <p>{{address}} | {{industry}} | {{scale}} </p>
+                  <p>  {{current}} | <a href="#">{{page}}</a></p>
                 </div>
               </div>
               <div class="panel-body basic-settings" ng-show="showSettings">
@@ -372,10 +373,10 @@
                   <div class="col-md-9 form-item">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" class="form-control" ng-model="inputName" placeholder="your name">
+                            <input type="text" class="form-control" ng-model="inputAddress" placeholder="your address">
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputSex">
+                            <select class="form-control" ng-model="inputIndustry">
                               <option>Male</option>
                               <option>Female</option>
                             </select>
@@ -383,28 +384,27 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputEdu">
-                              <option>Master</option>
-                              <option>Graduate</option>
-                              <option>underGraduate</option>
-                              <option>doctor</option>
+                            <select class="form-control" ng-model="inputScale">
+                              <option>20</option>
+                              <option>20-50</option>
+                              <option>50-100</option>
+                              <option>100-150</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputYear">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
+                            <select class="form-control" ng-model="inputCurrent">
+                              <option>A</option>
+                              <option>B</option>
+                              <option>fuhua</option>
+                              <option>weishangshi</option>
+                              <option>yishangshi</option>
                             </select>
                         </div>
                     </div>
-                    <div >
-                        <input type="text" class="form-control" ng-model="inputPhone" placeholder="your phone number">
-                    </div>
-                    <div>
-                        <input type="email" class="form-control" ng-model="inputEmail" placeholder="your email">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" ng-model="inputPage" placeholder="your address">
+                        </div>
                     </div>
                     <div class="clearfix">
                       <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
@@ -451,6 +451,59 @@
               </div>
             </div>
           </div>
+          <div class="profile-body col-md-9" ng-if="!global.profile" >
+            <div class="clearfix header-info">
+              <span class="pull-right">
+                <a href="#" ng-click="gotoProfile()">Profile</a>
+              </span>
+            </div>
+            <div class="panel custom-box basic" ng-controller="accountCtrl">
+              <div class="panel-heading">
+                <h2>Account</h2>
+              </div>
+              <div class="panel-body basic-settings">
+                <div class="row">
+                  <div class="col-md-9 form-item">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Password</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="password" placeholder="your address">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>new Password</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="password1" placeholder="your new password">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Password again</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="password2" placeholder="your new password again">
+                        </div>
+                    </div>
+                    <div ng-show="error"><p>wrong password !</p></div>
+                    <div class="clearfix">
+                      <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
+                    </div>
+                  </div>
+                  <div class="col-md-3 basic-settings-avatar">
+                    <a class="pull-right user-avatar" href="#">
+                      <i class="fa fa-fw fa-user"></i>
+                      <!-- <input ng-model="inputAvatar" /> -->
+                    </a>
+                    <div>Change</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col-md-3"></div>     
         </div>
         <footer>
@@ -474,6 +527,7 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
             '/public/js/settingsCompanyProfile/router.js',

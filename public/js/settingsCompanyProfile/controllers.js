@@ -59,13 +59,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.name = 'Joeylin';
-        $scope.sex = 'Male';
-        $scope.edu = 'Master';
-        $scope.year = 2;
-        $scope.phone = '18650330481';
-        $scope.email = '331547274@qq.com';
-        $scope.avatar = '';
+        $scope.address = 'FuZhou';
+        $scope.industry = 'Male';
+        $scope.scale = '50-100';
+        $scope.current = 'A';
+        $scope.page = 'www.baidu.com';
 
         $scope.showEditIcon = true;
         $scope.showContent = true;
@@ -76,13 +74,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showContent = false;
             $scope.showSettings = true;
 
-            $scope.inputName = $scope.name;
-            $scope.inputSex = $scope.sex;
-            $scope.inputEdu = $scope.edu;
-            $scope.inputYear = $scope.year;
-            $scope.inputPhone = $scope.phone;
-            $scope.inputEmail = $scope.email;
-            $scope.inputAvatar = $scope.avatar;
+            $scope.inputAddress = $scope.address;
+            $scope.inputIndustry = $scope.industry;
+            $scope.inputScale = $scope.scale;
+            $scope.inputCurrent = $scope.current;
+            $scope.inputPage = $scope.page;
         };
         $scope.save = function() {
             $scope.showEditIcon = true;
@@ -90,13 +86,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showSettings = false;
 
             setValue({
-                name: $scope.inputName,
-                sex: $scope.inputSex,
-                edu: $scope.inputEdu,
-                year: $scope.inputYear,
-                phone: $scope.inputPhone,
-                email: $scope.inputEmail,
-                avatar: $scope.inputAvatar
+                address: $scope.inputAddress,
+                industry: $scope.inputIndustry,
+                scale: $scope.inputScale,
+                current: $scope.inputCurrent,
+                page: $scope.inputPage
             });
         };
         $scope.cancel = function() {
@@ -109,13 +103,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             if (!obj) {
                 obj = {};
             }
-            $scope.name = obj.name || '';
-            $scope.sex = obj.sex || '';
-            $scope.edu = obj.edu || '';
-            $scope.year = obj.year || '';
-            $scope.phone = obj.phone || '';
-            $scope.email = obj.email || '';
-            $scope.avatar = obj.avatar || '';
+            $scope.address = obj.address || '';
+            $scope.industry = obj.industry || '';
+            $scope.scale = obj.scale || '';
+            $scope.current = obj.current || '';
+            $scope.page = obj.page || '';
         }
     }
 ]).controller('describeCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
@@ -160,5 +152,18 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showSettings = false;
             }
         }
+    }
+]).controller('accountCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $http, $rootScope) {
+        $scope.password = '';
+        $scope.password1 = '';
+        $scope.password2 = '';
+
+        $scope.error = false;
+        $scope.message = '';
+
+        $scope.save = function() {
+
+        };
     }
 ]);

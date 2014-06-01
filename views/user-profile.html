@@ -260,6 +260,23 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown" id="menuLogin" >
+                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
+                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                              <label>Login</label> 
+                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
+                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
+                              <button type="button" id="btnLogin" class="btn">Login</button>
+                          </form>
+                          <br>
+                          <form class="form">
+                            <a class="signup" href="/signup" >New User? Sign-up..</a>
+                          </form>
+                          <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
+                          <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
+                      </div>
+                  </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
                             <!-- todo have custom user image -->
@@ -516,5 +533,8 @@
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
+        <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/noAuth.js"></script>
     </body>
 </html>

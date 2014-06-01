@@ -69,12 +69,16 @@ module.exports = function(app) {
         app.locals.user = req.session.user;
         res.render('doc-search');
     };
+
+    // here begin
     var getSignup = function(req, res) {
         res.render('signup');
     };
     var getLogin = function(req, res) {
         res.render('login');
     };
+
+    // public
     var getProfile = function(req, res) {
         var id = req.params.id;
         if (!id) {
@@ -86,38 +90,52 @@ module.exports = function(app) {
                 console.log(err);
             }
             app.locals.profile = profile;
-            app.locals.user = req.session.user;
+            if (req.session && req.session.user) {
+                app.locals.user = req.session.user;
+            }
             if (profile.name === 'user') {
-                res.render('profile');
+                res.render('user-profile');
             }
             if (profile.name === 'company') {
-                res.render('profile');
+                res.render('user-profile');
             }
         });
     };
-    var getCompany = function(req, res) {
-        app.locals.user = req.session.user;
-        res.render('settings-company-profile');
+    var getShare = function(req, res) {
+        if (req.session && req.session.user) {
+            app.locals.user = req.session.user;
+        }
+        res.render('share');
     };
-    var getUserHome = function(req, res) {
-        app.locals.user = req.session.user;
-        res.render('user-home');
+
+    // need login
+    var getHome = function(req, res) {
+        var user = req.session.user;
+        app.locals.user = user;
+        if (user.role === 'user') {
+            res.render('user-home');            
+        } else {
+            res.render('company-home');
+        }
     };
     var getNotify = function(req, res) {
         app.locals.user = req.session.user;
         res.render('notify');
     };
-    var getShare = function(req, res) {
-        app.locals.user = req.session.user;
-        res.render('share');
-    };
     var getSearch = function(req, res) {
         app.locals.user = req.session.user;
         res.render('search');
     };
-    var getUserProfileSettings = function(req, res) {
-        app.locals.user = req.session.user;
-        res.render('settings-user-profile');
+    var getProfileSettings = function(req, res) {
+        var user = req.session.user;
+        app.locals.user = user;
+        if (user.role === 'user') {
+            res.render('settings-user-profile');
+        } else {
+            // res.render('settings-company-profile');
+            res.render('settings-user-profile');
+        }
+        
     };
     app.get('/signup', getSignup);
     app.get('/login', getLogin);
@@ -129,18 +147,20 @@ module.exports = function(app) {
     // settings
     // app.get('/settings', middleware.check_auth, getSetting);
     // app.get('/settings/:op', middleware.check_auth, getSetting);
-    app.get('/settings/profile', getUserProfileSettings);
+    // company
+    // app.get('/company', getCompany);
+    // app.get('/company/:user', getCompany);
+    
+    // home
+    app.get('/home', middleware.check_login, getHome);
 
     // profile
     app.get('/profile', getProfile);
     app.get('/profile/:id', getProfile);
 
-    // company
-    app.get('/company', getCompany);
-    app.get('/company/:user', getCompany);
-
-    // home
-    app.get('/home', middleware.check_login, getUserHome);
+    // settings
+    app.get('/settings/profile', middleware.check_login, getProfileSettings);
+    app.get('/settings/account', middleware.check_login, getProfileSettings);
 
     // notification
     app.get('/notify', middleware.check_login, getNotify);
@@ -151,6 +171,6 @@ module.exports = function(app) {
     app.get('/share/:id', getShare);
 
     // search 
-    app.get('/search', getSearch);
-    app.get('/search/:op', getSearch);
+    app.get('/search', middleware.check_login, getSearch);
+    app.get('/search/:op', middleware.check_login, getSearch);
 };

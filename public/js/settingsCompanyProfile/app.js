@@ -76,17 +76,13 @@ config(['$httpProvider', 'app',
         app.myConf = myConf;
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
-
-        $rootScope.current = {};
-        $rootScope.$on('$routeChangeStart', function(event, next, current) {
-            if (next && next.$$route) {
-                $rootScope.current.path = next.$$route.path;
-            }
-        });
-
-        $http.get('/api/notify').success(function(data) {
-            $rootScope.current.request = data.notify.request.length;
-            $rootScope.current.message = data.notify.message.length;
-        });
+        
+        $rootScope.lastUpdate = 'a minute ago'
+        $rootScope.gotoProfile = function() {
+            $rootScope.global.profile = true;
+        }
+        $rootScope.gotoAccount = function() {
+            $rootScope.global.profile = false;
+        }
     }
 ]);

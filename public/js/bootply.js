@@ -75,7 +75,7 @@ $(document).ready(function() {
                     $('#menuLogin').hide();
                     $('#menuUser').show();
                     $('#menuNotify').show();
-                    if (redirectTo) {
+                    if (!redirectTo) {
                         redirectTo = '/home';
                     }
                     window.location.href = redirectTo;

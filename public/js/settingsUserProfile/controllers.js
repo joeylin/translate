@@ -536,4 +536,17 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             }
         }
     }
+]).controller('accountCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $http, $rootScope) {
+        $scope.password = '';
+        $scope.password1 = '';
+        $scope.password2 = '';
+
+        $scope.error = false;
+        $scope.message = '';
+
+        $scope.save = function() {
+
+        };
+    }
 ]);
