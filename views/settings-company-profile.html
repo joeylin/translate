@@ -244,9 +244,13 @@
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.user = null;
+          window.profile = null;
           window.chooseTab = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
+          <% } %>
+          <% if (locals.profile) { %>
+            window.profile = <%- JSON.stringify(locals.profile) %>;
           <% } %>
           <% if (locals.chooseTab) { %>
             window.chooseTab = '<%= locals.chooseTab %>';
@@ -272,7 +276,7 @@
                   <li class="dropdown" id="menuLogin" >
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
+                          <form id="formLogin" class="form" novalidate > 
                               <label>Login</label> 
                               <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
                               <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
@@ -351,12 +355,12 @@
             <div class="clearfix header-info">
               <span class="pull-left">Last update: {{lastUpdate}}</span>
               <span class="pull-right">
-                <a href="#" ng-click="gotoAccount()">Account</a> |
-                <a href="#" target="_self">Preview</a>
+                <a ng-href="/settings/account" ng-click="gotoAccount()">Account</a> |
+                <a ng-href="/profile/{{global.user.id}}" target="_self">Preview</a>
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
-              <h1><span ng-show="showNameContent">{{display_name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="display_name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
+              <h1><span ng-show="showNameContent">{{name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
               <p class="desc"><span ng-show="showSignContent">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
             </div>
             <div class="panel custom-box basic" ng-controller="basicCtrl">
@@ -370,8 +374,8 @@
                   <!-- <img ng-src="{{avatar}}"> -->
                 </a>
                 <div class="media-body user-info">
-                  <p>{{address}} | {{industry}} | {{scale}} </p>
-                  <p>  {{current}} | <a href="#">{{page}}</a></p>
+                  <p>{{location}} | {{industry}} | {{scale}} </p>
+                  <p>  {{phase}} | <a href="#">{{page}}</a></p>
                 </div>
               </div>
               <div class="panel-body basic-settings" ng-show="showSettings">
@@ -379,12 +383,12 @@
                   <div class="col-md-9 form-item">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" class="form-control" ng-model="inputAddress" placeholder="your address">
+                            <input type="text" class="form-control" ng-model="inputLocation" placeholder="your location">
                         </div>
                         <div class="col-md-6">
                             <select class="form-control" ng-model="inputIndustry">
-                              <option>Male</option>
-                              <option>Female</option>
+                              <option>Electronic</option>
+                              <option>Network</option>
                             </select>
                         </div>
                     </div>
@@ -398,7 +402,7 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputCurrent">
+                            <select class="form-control" ng-model="inputPhase">
                               <option>A</option>
                               <option>B</option>
                               <option>fuhua</option>
@@ -460,7 +464,7 @@
           <div class="profile-body col-md-9" ng-if="!global.profile" >
             <div class="clearfix header-info">
               <span class="pull-right">
-                <a href="#" ng-click="gotoProfile()">Profile</a>
+                <a ng-href="/settings/profile" ng-click="gotoProfile()">Profile</a>
               </span>
             </div>
             <div class="panel custom-box basic" ng-controller="accountCtrl">
@@ -475,7 +479,7 @@
                             <label>Password</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" ng-model="password" placeholder="your address">
+                            <input type="text" class="form-control" ng-model="password" placeholder="origin password">
                         </div>
                     </div>
                     <div class="row">

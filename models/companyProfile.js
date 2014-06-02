@@ -3,9 +3,6 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var CompanyProfileSchema = new Schema({
-    desc: {
-        type: String
-    },
     name: {
         type: String,
         default: 'company'
@@ -15,39 +12,17 @@ var CompanyProfileSchema = new Schema({
         ref: 'User',
         unique: true
     },
+    desc: {
+        type: String
+    },
     industry: [{
         type: String
     }],
-    experience: [{
+    product: [{
         type: String
     }],
-    product: {
-        item: [{
-            type: String
-        }],
-        isShow: {
-            type: Boolean,
-            default: false
-        }
-    },
-    builtDate: {
-        type: Date
-    },
-    location: {
-        type: String
-    },
-    members: [{
-        type: ObjectId,
-        ref: 'User',
-    }],
-    items: [{
-        isShow: {
-            type: Boolean,
-            default: false
-        },
-        item: [{
-            type: String
-        }]
+    activity: [{
+        type:String
     }],
     createAt: {
         type: Date,

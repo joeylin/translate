@@ -9,13 +9,37 @@ var Request = Models.Request;
 
 var middleware = require('./middleware');
 
+var editHeader = function(req, res) {
+	var user = req.session.user;
+	var data = req.body;
+	User.findOne({
+		_id: user._id
+	}, function(err, user) {
+		user.name = data.name;
+		user.signature = data.signature;
+		user.save(function(err) {
+			res.send({
+				code: 200
+			});
+		});
+	});
+};
 var editBasic = function(req, res) {
 	var user = req.session.user;
 	var data = req.body;
-	UserProfile.findOne({
-		_id: user.profile
-	}, function(err, profile) {
-
+	User.findOne({
+		_id: user._id
+	}, function(err, user) {
+		user.page = data.page;
+		user.industry = data.industry;
+		user.scale = data.scale;
+		user.phase = data.phase;
+		user.location = data.location;
+		user.save(function(err) {
+			res.send({
+				code: 200
+			});
+		});
 	});
 };
 var editDesc = function(req, res) {
@@ -32,20 +56,9 @@ var editDesc = function(req, res) {
 		});
 	});
 };
-var editExperience = function(req, res) {
-	var user = req.session.user;
-	var data = req.body;
-	UserProfile.findOne({
-		_id: user.profile
-	}, function(err, profile) {
-		
-	});
-}
 
 module.exports = function(app) {
-    app.post('/api/profile/basic', editBasic);
-    app.post('/api/profile/desc', editDesc);
-    app.post('/api/profile/experience', editExperience);
-    app.post('/api/profile/works', profileLike);
-    app.post('/api/profile/social', deleteprofile);
+	app.post('/api/companyProfile/header', editHeader);
+    app.post('/api/companyProfile/basic', editBasic);
+    app.post('/api/companyProfile/desc', editDesc);
 };

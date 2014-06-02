@@ -8,27 +8,6 @@ var Trend = Models.Trend;
 var Share = Models.Share;
 var Request = Models.Request;
 
-var editBasic = function(req, res) {
-    var user = req.session.user;
-    var display_name = req.body.display_name;
-    var email = req.body.email;
-    var desc = req.body.res;
-    User.find({
-        _id: user._id
-    }, function(err, user) {
-        var _user = user[0];
-        _user.display_name = display_name;
-        _user.email = email;
-        _user.desc = desc;
-        _user.save(function(err) {
-            req.session.user = _user;
-            res.send({
-                code: 200,
-                user: _user
-            });
-        });
-    });
-};
 var editPassword = function(req, res) {
     var user = req.session.user;
     var origin = req.body.originPassword;
@@ -51,28 +30,7 @@ var editPassword = function(req, res) {
         }
     });
 };
-var editAvatar = function(req, res) {
-    var user = req.session.user;
-    var avatar = req.body.avatar;
-    User.find({
-        _id: user._id
-    }, function(err, user) {
-        var _user = user[0];
-        _user.avatar = avatar;
-        _user.save(function(err) {
-            req.session.user = _user;
-            res.send({
-                code: 200,
-                user: _user
-            });
-        });
-    });
-};
 
 module.exports = function(app) {
-    // user
-    app.post('/api/user/edit/basic', editBasic);
-    app.post('/api/user/edit/password', editPassword);
-    app.post('/api/user/edit/avatar', editAvatar);
-
+    app.post('/api/user/account/password', editPassword);
 };

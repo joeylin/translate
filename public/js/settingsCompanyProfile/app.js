@@ -38,8 +38,7 @@ config(['$httpProvider', 'app',
         var global = $rootScope.global = {
             isLogin: false,
             isEdit: false,
-            info: {},
-            components: {}
+            info: {}
         };
         var jqWin = $(window);
 
@@ -76,6 +75,9 @@ config(['$httpProvider', 'app',
         app.myConf = myConf;
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
+
+        app.user = window.user;
+        app.profile = window.profile;
         
         $rootScope.lastUpdate = window.lastUpdate || 'a minute ago';
         if (window.chooseTab && window.chooseTab === 'account') {

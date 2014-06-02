@@ -12,29 +12,21 @@ var UserSchema = new Schema({
     sex: {
         type: String
     },
-    id: {
-        type: Number
-    },
-    avatar: {
-        type: String,
-        default: '/public/imgs/avatar.jpg'
-    },
-    desc: {
-        type: String,
-        default: ''
-    },
-    role: {
-        type: String
-    },
-    profile: {
-        type: ObjectId
-    },
     name: {
         type: String
+    },
+    phone: {
+        type:Number
     },
     email: {
         type: String,
         unique: true
+    },
+    degree: {
+        type: String
+    },
+    workYear: {
+        type: Number
     },
     current: {
         location: {
@@ -43,6 +35,22 @@ var UserSchema = new Schema({
         status: {
             type: String
         }
+    },
+    id: {
+        type: Number
+    },
+    avatar: {
+        type: String,
+        default: '/public/imgs/avatar.jpg'
+    },
+    signature: {
+        type: String
+    },
+    role: {
+        type: String
+    },
+    profile: {
+        type: ObjectId
     },
     message: [{
         type: ObjectId,
@@ -85,14 +93,7 @@ var UserSchema = new Schema({
             ref: 'Share'
         }]
     },
-    share: [{
-        type: ObjectId,
-        ref: 'Share'
-    }],
-    jobs: [{
-        type: ObjectId,
-        ref: 'Share'
-    }],
+    
     groups: {
         pending: [{
             type: ObjectId
@@ -101,6 +102,27 @@ var UserSchema = new Schema({
             type: ObjectId
         }]
     },
+    
+    // company 
+    phase: String,
+    industry: String,
+    scale: String,
+    location: String,
+    page: String,
+    members: [{
+        type: ObjectId,
+        ref: 'User',
+    }],
+    jobs: [{
+        type: ObjectId,
+        ref: 'Share'
+    }],
+
+    // common
+    share: [{
+        type: ObjectId,
+        ref: 'Share'
+    }],
     provider: {
         type: String,
         default: ''
@@ -224,7 +246,7 @@ UserSchema.statics.getProfile = function(id, cb) {
             UserProfile.findOne({
                 _id: user.profile
             }, function(err, profile) {
-                cb(err, profile);
+                cb(err, profile, user);
             });
         }
         if (user.role === 'company') {
@@ -232,7 +254,7 @@ UserSchema.statics.getProfile = function(id, cb) {
             CompanyProfile.findOne({
                 _id: user.profile
             }, function(err, profile) {
-                cb(err, profile);
+                cb(err, profile, user);
             });
         }
     });

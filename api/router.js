@@ -19,7 +19,6 @@ var marked = require('marked');
 var config = require('../config/config').config;
 var middleware = require('./middleware');
 
-
 module.exports = function(app) {
     var getLogin = function(req, res) {
         res.render('login');
@@ -31,15 +30,13 @@ module.exports = function(app) {
         if (!id) {
             return res.render('user-profile');
         }
-        User.getProfile(id, function(err, profile) {
+        User.getProfile(id, function(err, profile, user) {
             if (err) {
                 // here send 404 page
                 console.log(err);
             }
             app.locals.profile = profile;
-            if (req.session && req.session.user) {
-                app.locals.user = req.session.user;
-            }
+            app.locals.user = user;
             if (profile.name === 'user') {
                 res.render('user-profile');
             }
@@ -78,23 +75,30 @@ module.exports = function(app) {
     };
     var getProfileSettings = function(req, res) {
         var user = req.session.user;
-        app.locals.user = user;
-        app.locals.chooseTab = 'profile';
-        if (user.role === 'user') {
-            res.render('settings-user-profile');
-        } else {
-            res.render('settings-company-profile');
-        }
+        User.getProfile(user.id, function(err, profile, user) {
+            app.locals.user = user;
+            app.locals.profile = profile;
+            app.locals.chooseTab = 'profile';
+            if (user.role === 'user') {
+                res.render('settings-user-profile');
+            } else {
+                res.render('settings-company-profile');
+            }
+        });     
     };
     var getAccountSettings = function(req, res) {
         var user = req.session.user;
-        app.locals.user = user;
-        app.locals.chooseTab = 'account';
-        if (user.role === 'user') {
-            res.render('settings-user-profile');
-        } else {
-            res.render('settings-company-profile');
-        }
+        User.findOne({
+            _id: user._id
+        }, function(err, user) {
+            app.locals.user = user;
+            app.locals.chooseTab = 'account';
+            if (user.role === 'user') {
+                res.render('settings-user-profile');
+            } else {
+                res.render('settings-company-profile');
+            }
+        });
     };
     
     // home

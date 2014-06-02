@@ -4,8 +4,8 @@
 angular.module('jsGen.controllers', ['ui.validate']).
 controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$http',
     function(app, $scope, $routeParams, getToc, getChapter, $http) {
-        $scope.display_name = 'AmazingSurge';
-        $scope.signature = 'Think different';
+        $scope.name = app.user.name;
+        $scope.signature = app.user.signature || 'add your signature';
 
         $scope.showNameContent = true;
         $scope.showNameEdit = true;
@@ -21,15 +21,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             }
             var key = e.keyCode || e.which;
             if (key === 13) {
-                $scope.showNameContent = true;
-                $scope.showNameEdit = true;
-                $scope.showNameInput = false;
-            }
-
-            function set() {
-                $scope.showNameContent = true;
-                $scope.showNameEdit = true;
-                $scope.showNameInput = false;
+                set();
             }
         };
 
@@ -49,21 +41,27 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             if (key === 13) {
                 set();
             }
-
-            function set() {
-                $scope.showSignContent = true;
-                $scope.showSignEdit = true;
-                $scope.showSignInput = false;
-            }
         };
+        function set() {
+            var url = '/api/companyProfile/header';
+            var data = {
+                name: $scope.name,
+                signature: $scope.signature
+            };
+            $http.post(url, data).success(function(data){
+                $scope.showNameContent = true;
+                $scope.showNameEdit = true;
+                $scope.showNameInput = false;
+            });
+        }
     }
 ]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.address = 'FuZhou';
-        $scope.industry = 'Male';
-        $scope.scale = '50-100';
-        $scope.current = 'A';
-        $scope.page = 'www.baidu.com';
+        $scope.location = app.user.location || 'add company location';
+        $scope.industry = app.user.industry || 'add company industry';
+        $scope.scale = app.user.scale || 'add company scale';
+        $scope.phase = app.user.phase || 'add company phase';
+        $scope.page = app.user.page || 'add company home page';
 
         $scope.showEditIcon = true;
         $scope.showContent = true;
@@ -74,10 +72,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showContent = false;
             $scope.showSettings = true;
 
-            $scope.inputAddress = $scope.address;
+            $scope.inputLocation = $scope.location;
             $scope.inputIndustry = $scope.industry;
             $scope.inputScale = $scope.scale;
-            $scope.inputCurrent = $scope.current;
+            $scope.inputPhase = $scope.phase;
             $scope.inputPage = $scope.page;
         };
         $scope.save = function() {
@@ -86,10 +84,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showSettings = false;
 
             setValue({
-                address: $scope.inputAddress,
+                location: $scope.inputLocation,
                 industry: $scope.inputIndustry,
                 scale: $scope.inputScale,
-                current: $scope.inputCurrent,
+                phase: $scope.inputPhase,
                 page: $scope.inputPage
             });
         };
@@ -100,19 +98,19 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         };
 
         function setValue(obj) {
-            if (!obj) {
-                obj = {};
-            }
-            $scope.address = obj.address || '';
-            $scope.industry = obj.industry || '';
-            $scope.scale = obj.scale || '';
-            $scope.current = obj.current || '';
-            $scope.page = obj.page || '';
+            var url = '/api/companyProfile/basic';
+            $http.post(url, obj).success(function(data){
+                $scope.location = obj.location;
+                $scope.industry = obj.industry;
+                $scope.scale = obj.scale;
+                $scope.phase = obj.phase;
+                $scope.page = obj.page;
+            });
         }
     }
 ]).controller('describeCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
-        $scope.desc = '';
+        $scope.desc = app.profile.desc;
 
         $scope.showEditIcon = false;
         $scope.showContent = false;
@@ -128,12 +126,17 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.inputDesc = $scope.desc;
         };
         $scope.save = function() {
-            $scope.showEditIcon = true;
-            $scope.showContent = true;
-            $scope.showHome = false;
-            $scope.showSettings = false;
-
-            $scope.desc = $scope.inputDesc;
+            var url = '/api/companyProfile/header';
+            var data = {
+                desc: $scope.inputDesc
+            };
+            $http.post(url, data).success(function(data){
+                $scope.showEditIcon = true;
+                $scope.showContent = true;
+                $scope.showHome = false;
+                $scope.showSettings = false;
+                $scope.desc = $scope.inputDesc;
+            });
             reset();
         };
         $scope.add = $scope.edit;
@@ -163,7 +166,21 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.message = '';
 
         $scope.save = function() {
+            var url = '/api/user/account/password';
+            if ($scope.password1 !== $scope.password2) {
+                $scope.error = true;
+                $scope.message = 'please input the same password';
+            }
+            var data = {
+                originPassword: $scope.password,
+                newPassword: $scope.password1
+            };
+            $http.post(url,data).success(function(data) {
 
+            }).error(function(err) {
+                $scope.error = true;
+                $scope.message = err.message;
+            });
         };
     }
 ]);

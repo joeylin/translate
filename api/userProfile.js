@@ -9,13 +9,38 @@ var Request = Models.Request;
 
 var middleware = require('./middleware');
 
+var editHeader = function(req, res) {
+	var user = req.session.user;
+	var data = req.body;
+	User.findOne({
+		_id: user._id
+	}, function(err, user) {
+		user.display_name = data.display_name;
+		user.signature = data.signature;
+		user.save(function(err) {
+			res.send({
+				code: 200
+			});
+		});
+	});
+};
 var editBasic = function(req, res) {
 	var user = req.session.user;
 	var data = req.body;
-	UserProfile.findOne({
-		_id: user.profile
-	}, function(err, profile) {
-
+	User.findOne({
+		_id: user._id
+	}, function(err, user) {
+		user.name = data.name;
+		user.sex = data.sex;
+		user.degree = data.degree;
+		user.workYear = data.workYear;
+		user.phone = data.phone;
+		user.current = data.current;
+		user.save(function(err) {
+			res.send({
+				code: 200
+			});
+		});
 	});
 };
 var editDesc = function(req, res) {
@@ -94,6 +119,7 @@ var editSocial = function(req, res) {
 };
 
 module.exports = function(app) {
+	app.post('/api/userProfile/header', editHeader);
     app.post('/api/userProfile/basic', editBasic);
     app.post('/api/userProfile/desc', editDesc);
     app.post('/api/userProfile/experience', editExperience);

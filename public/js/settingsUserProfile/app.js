@@ -77,6 +77,9 @@ config(['$httpProvider', 'app',
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
 
+        app.user = window.user;
+        app.profile = window.profile;
+
         $rootScope.lastUpdate = window.lastUpdate || 'a minute ago';
         if (window.chooseTab && window.chooseTab === 'account') {
             $rootScope.global.profile = false;
