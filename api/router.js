@@ -26,17 +26,6 @@ module.exports = function(app) {
         var chapter = req.params.chapter;
         var DOC_PATH = path.resolve(__dirname, '../docs/' + name);
         var result = {};
-
-        // fs.readFile(DOC_PATH + '/_toc.markdown', 'utf8', function(err, file) {
-        //     if (err) {
-        //         console.log('err');
-        //     }
-        //     app.locals.user = req.session.user;
-        //     app.locals.docName = name;
-        //     app.locals.chapter = chapter;
-        //     app.locals.toc = marked(file).replace(/(href)/g, 'ng-href');
-        //     res.render('index');
-        // });
         Doc.find({
             name: name
         }).populate('chapters').exec(function(err, doc) {
@@ -70,12 +59,8 @@ module.exports = function(app) {
         res.render('doc-search');
     };
 
-    // here begin
-    var getSignup = function(req, res) {
-        res.render('signup');
-    };
     var getLogin = function(req, res) {
-        res.render('login');
+        res.render('signup');
     };
 
     // public
@@ -109,6 +94,9 @@ module.exports = function(app) {
     };
 
     // need login
+    var getMain = function(req, res) {
+        res.redirect('/home');
+    };
     var getHome = function(req, res) {
         var user = req.session.user;
         app.locals.user = user;
@@ -129,30 +117,35 @@ module.exports = function(app) {
     var getProfileSettings = function(req, res) {
         var user = req.session.user;
         app.locals.user = user;
+        app.locals.chooseTab = 'profile';
         if (user.role === 'user') {
             res.render('settings-user-profile');
         } else {
-            // res.render('settings-company-profile');
-            res.render('settings-user-profile');
+            res.render('settings-company-profile');
         }
-        
     };
-    app.get('/signup', getSignup);
-    app.get('/login', getLogin);
+    var getAccountSettings = function(req, res) {
+        var user = req.session.user;
+        app.locals.user = user;
+        app.locals.chooseTab = 'account';
+        if (user.role === 'user') {
+            res.render('settings-user-profile');
+        } else {
+            res.render('settings-company-profile');
+        }
+    };
+    
     app.get('/doc', getDocHome);
     app.get('/doc/search', getDocSearch);
     app.get('/doc/:doc', getDoc);
     app.get('/doc/:doc/:chapter', getDoc);
-
-    // settings
-    // app.get('/settings', middleware.check_auth, getSetting);
-    // app.get('/settings/:op', middleware.check_auth, getSetting);
-    // company
-    // app.get('/company', getCompany);
-    // app.get('/company/:user', getCompany);
     
     // home
+    app.get('/', middleware.check_login, getMain);
     app.get('/home', middleware.check_login, getHome);
+
+    // login
+    app.get('/login', getLogin);
 
     // profile
     app.get('/profile', getProfile);
@@ -160,7 +153,7 @@ module.exports = function(app) {
 
     // settings
     app.get('/settings/profile', middleware.check_login, getProfileSettings);
-    app.get('/settings/account', middleware.check_login, getProfileSettings);
+    app.get('/settings/account', middleware.check_login, getAccountSettings);
 
     // notification
     app.get('/notify', middleware.check_login, getNotify);

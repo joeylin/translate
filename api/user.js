@@ -17,6 +17,7 @@ var create = function(req, res) {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
+        sex: req.body.sex,
         role: req.body.role || 'user'
     };
     var user = new User(options);
@@ -57,10 +58,10 @@ var create = function(req, res) {
     });
 };
 var login = function(req, res) {
-    var name = req.body.name;
+    var email = req.body.email;
     var password = req.body.password;
     User.findOne({
-        name: name
+        email: email
     }, function(err, user) {
         if (err) {
             console.log('xxxnone users');

@@ -238,8 +238,12 @@
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.user = null;
+          window.chooseTab = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
+          <% } %>
+          <% if (locals.chooseTab) { %>
+            window.chooseTab = '<%= locals.chooseTab %>';
           <% } %>
         </script>       
     </head>
@@ -322,8 +326,8 @@
             <div class="clearfix header-info">
               <span class="pull-left">Last update: {{lastUpdate}}</span>
               <span class="pull-right">
-                <a href="#" ng-click="gotoAccount()">Account</a> |
-                <a href="#">Preview</a>
+                <a ng-href="/settings/account" ng-click="gotoAccount()">Account</a> |
+                <a ng-href="/profile/{{global.user.id}}" target="_self">Preview</a>
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
@@ -671,7 +675,7 @@
           <div class="profile-body col-md-9" ng-if="!global.profile" >
             <div class="clearfix header-info">
               <span class="pull-right">
-                <a href="#" ng-click="gotoProfile()">Profile</a>
+                <a ng-href="/settings/profile" ng-click="gotoProfile()">Profile</a>
               </span>
             </div>
             <div class="panel custom-box basic" ng-controller="accountCtrl">

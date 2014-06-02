@@ -101,7 +101,7 @@ $(document).ready(function() {
                     $('#menuLogin').show();
                     $('#menuUser').hide();
                     $('#menuNotify').hide();
-                    window.location.href = '/login?re=/home';
+                    window.location.href = '/login';
                 }
             }
         });

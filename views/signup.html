@@ -58,7 +58,6 @@
           .nav-tabs-custom {
             box-shadow: none;
           }
-
           .signupTab .nav-tabs>li>a {
             border: 0;
             font-size: 18px;
@@ -85,8 +84,15 @@
             text-align: right;
             font-weight: 400;
           }
-          .signupTab .tab-pane > div {
-            margin-bottom: 15px;
+          .signupTab .tab-pane form > div {
+            margin-bottom: 10px;
+          }
+          .signupTab label.error {
+            position: absolute;
+            top: -27px;
+            left: 28px;
+            color: red;
+            text-align: left; 
           }
           .signUpContainer .promoteContainer {
             padding-left: 30px;
@@ -104,8 +110,6 @@
             margin-bottom: 0;
             margin-top: 0;
           }
-
-
         </style>
         
     </head>
@@ -120,19 +124,19 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
                 <li>
-                  <form class="form-inline" role="form">
+                  <form class="form-inline" role="form" id="formLogin">
                     <div class="form-group">
-                      <input type="email" class="form-control" placeholder="Enter email">
+                      <input type="email" class="form-control" id="loginEmail" placeholder="Enter email">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" placeholder="Password">
+                      <input type="password" class="form-control" id="loginPassword" placeholder="Password">
                     </div>
                     <button type="button" id="btnLogin" class="btn btn-primary">Login</button>
                   </form>
                 </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li class="subTile">Make More Valuable</li>
+                <li class="subTile">Make Yourself Valuable</li>
               </ul>
             </div>
           </div>
@@ -147,99 +151,87 @@
                   </ul>
                   <div class="tab-content">
                       <div class="tab-pane active" id="tab_1">
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Email</label>
-                            </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="" required="">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>RealName</label>
-                            </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="name" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Password</label>
-                            </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="password" id="inputpassword" type="password" placeholder="Password" required="">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Password</label>
-                            </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="verify" id="inputVerify" type="password" placeholder="Password (again)" required="">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Sex</label>
-                            </div>
-                            <div class="col-xs-9">
-                              <div class="form-group clearfix"> 
-                                  <div class="radio pull-left" style="margin-right: 10px;">
-                                      <label>
-                                          <input type="radio" class="inputRadio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                                          Male
-                                      </label>
-                                  </div>
-                                  <div class="radio pull-left">
-                                      <label>
-                                          <input type="radio" class="inputRadio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                          Female
-                                      </label>
-                                  </div>               
+                          <form action="" method="post" id="formUser">
+                            <div class="row">
+                              <div class="col-xs-3">
+                                <label>Email</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="" required="">
                               </div>
                             </div>
-                          </div>
-                          <div class="clearfix">
-                            <button type="submit" class="btn btn-primary pull-right" id="btnRegister">Sign me up</button>
-                          </div>
+                            <div class="row">
+                              <div class="col-xs-3">
+                                <label>RealName</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <input class="form-control" name="name" id="inputName" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" required="">
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-xs-3">
+                                <label>Password</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <input class="form-control" name="password" id="inputPassword" type="password" placeholder="Password" required="">
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-xs-3">
+                                <label>Sex</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <div class="form-group clearfix"> 
+                                    <div class="radio pull-left" style="margin-right: 10px;">
+                                        <label>
+                                            <input type="radio" class="inputRadio" name="userSex" id="userSex" value="Male" checked="">
+                                            Male
+                                        </label>
+                                    </div>
+                                    <div class="radio pull-left">
+                                        <label>
+                                            <input type="radio" class="inputRadio" name="userSex" value="Female">
+                                            Female
+                                        </label>
+                                    </div>               
+                                </div>
+                              </div>
+                            </div>
+                            <div class="clearfix signupFooter">
+                                <button type="submit" class="btn btn-primary pull-right" id="btnRegister">Join Us</button>
+                            </div>
+                          </form>
                       </div>
                       <div class="tab-pane" id="tab_2">
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Email</label>
+                          <form action="" method="post" id="formCompany">
+                            <div class="row">
+                              <div class="col-xs-3">
+                                <label>Company</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <input class="form-control" name="name" id="inputCompanyName" type="text" placeholder="company name" required="">
+                              </div>
                             </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="email" id="inputCompanyEmail" type="email" placeholder="Email" required="" required="">
+                            <div class="row">
+                              <div class="col-xs-3">
+                                <label>Email</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <input class="form-control" name="email" id="inputCompanyEmail" type="email" placeholder="Email" required="">
+                              </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Company</label>
+                            <div class="row">
+                              <div class="col-xs-3">
+                                <label>Password</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <input class="form-control" name="password" id="inputCompanyPassword" type="password" placeholder="Password" required="">
+                              </div>
                             </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="name" id="inputCompanyName" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required="">
+                            <div class="clearfix signupFooter">
+                                <button type="submit" class="btn btn-primary pull-right" id="btnCompanyRegister">Build</button>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Password</label>
-                            </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="password" id="inputCompanyPassword" type="password" placeholder="Password" required="">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-3">
-                              <label>Password</label>
-                            </div>
-                            <div class="col-xs-9">
-                              <input class="form-control" name="verify" id="inputCompanyVerify" type="password" placeholder="Password (again)" required="">
-                            </div>
-                          </div>
-                          <div class="clearfix">
-                            <button type="submit" class="btn btn-primary pull-right" id="btnRegister">Sign me up</button>
-                          </div>
+                          </form> 
                       </div>
                   </div>
               </div>
@@ -260,7 +252,7 @@
         <script type="text/javascript" src="/public/js/lib/jquery-validate.js"></script>
         
         <script type="text/javascript">
-            var validator = $('#formSignup').validate({
+            $('#formUser').validate({
                 onkeyup: false,
                 rules: {
                     email: {
@@ -270,18 +262,15 @@
                     password: {
                         required: true,
                         minlength: 5
-                    },
-                    verify: {
-                        required: true,
-                        minlength: 5,
-                        equalTo: "#inputpassword"
                     }
                 },
                 submitHandler:function(form) {
                     var data = {
-                        name: $('#inputUsername').val(),
+                        name: $('#inputName').val(),
                         email: $('#inputEmail').val(),
-                        password: $('#inputpassword').val()
+                        password: $('#inputPassword').val(),
+                        sex: $('#userSex').prop('checked')? 'Male':'Female',
+                        role: 'user'
                     };
                     var errorHtml = '<label class="error" id="customError"></label>';
                     $.ajax({
@@ -292,26 +281,108 @@
                             if (data.code === 200) {
                                 $('#btnRegister').attr("disabled","disabled");
                                 $('#btnRegister').text("Sign Up");
-                                window.location.href = '/settings';
+                                window.location.href = '/settings/profile';
                             }
                             else {
                                 $('#btnRegister').text("Sign Up");
-                                $(errorHtml).text(data.info).appendTo('.footer');
+                                $(errorHtml).text(data.info).appendTo('.signupFooter');
                             }
                         },
                         error: function (e) {
                             $('#btnRegister').text("Sign Up");
-                            $(errorHtml).text(data.info).appendTo('.footer');
+                            $(errorHtml).text(data.info).appendTo('.signupFooter');
                         }
                     });
                     return false;
                 }
             });
-            $('#inputEmail').add('#inputUsername').on('keydown', function() {
+            $('#formCompany').validate({
+                onkeyup: false,
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5
+                    }
+                },
+                submitHandler:function(form) {
+                    var data = {
+                        name: $('#inputCompanyName').val(),
+                        email: $('#inputCompanyEmail').val(),
+                        password: $('#inputCompanyPassword').val(),
+                        role: 'company'
+                    };
+                    var errorHtml = '<label class="error" id="customError"></label>';
+                    $.ajax({
+                        url: "/api/user/register",
+                        type: "post",
+                        data: data,
+                        success: function (data) {
+                            if (data.code === 200) {
+                                $('#btnCompanyRegister').attr("disabled","disabled");
+                                window.location.href = '/settings/profile';
+                            }
+                            else {
+                                $(errorHtml).text(data.info).appendTo('.signupFooter');
+                            }
+                        },
+                        error: function (e) {
+                            $(errorHtml).text(data.info).appendTo('.signupFooter');
+                        }
+                    });
+                    return false;
+                }
+            }); 
+            $('#inputCompanyEmail').add('#inputCompanyName').on('keydown', function() {
+                $('#customError').remove();
+            });
+            $('#inputEmail').add('#inputName').on('keydown', function() {
                 $('#customError').remove();
             });
             $(".inputRadio").iCheck({
                 radioClass: 'iradio_minimal'
+            });
+            var redirectTo = window.location.search.replace('?', '').split('=')[1];
+            $('#btnLogin').on('click', function(e) {
+              var email = $('#loginEmail').val();
+              var password = $('#loginPassword').val();
+              if (email === '') {
+                $('#loginEmail').addClass('.error');
+                $('#loginEmail').focus();
+              }
+              if (password === '') {
+                $('#loginPassword').addClass('.error');
+                $('#loginPassword').focus();
+              }
+              var data = {
+                email: email,
+                password: password
+              };
+              $.ajax({
+                  url: "/api/user/login",
+                  type: "post",
+                  data: data,
+                  success: function (data) {
+                      if (data.code === 200) {
+                          if (redirectTo) {
+                            window.location.href = redirectTo;
+                          } else {
+                            window.location.href = '/home';
+                          }
+                      }
+                      else {
+                          $('#loginEmail').addClass('.error');
+                          $('#loginEmail').focus();
+                      }
+                  },
+                  error: function (e) {
+                      $('#loginEmail').addClass('.error');
+                      $('#loginEmail').focus();
+                  }
+              });
             });
         </script>
     </body>

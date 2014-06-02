@@ -3,10 +3,11 @@ var check_login = function(req, res, next) {
         next();
     } else {
         var redirectTo = req.path;
-        if (!redirectTo) {
-            redirectTo = '/home';
+        if (redirectTo && redirectTo !== '/') {
+            res.redirect('/login?re=' + redirectTo);
+        } else {
+            res.redirect('/login');
         }
-        res.redirect('/login?re=' + redirectTo);
     }
 };
 var check_admin = function(req, res, next) {

@@ -244,8 +244,12 @@
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.user = null;
+          window.chooseTab = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
+          <% } %>
+          <% if (locals.chooseTab) { %>
+            window.chooseTab = '<%= locals.chooseTab %>';
           <% } %>
         </script>       
     </head>

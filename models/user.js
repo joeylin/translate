@@ -9,6 +9,9 @@ var UserSchema = new Schema({
         type: String,
         default: ''
     },
+    sex: {
+        type: String
+    },
     id: {
         type: Number
     },
@@ -88,8 +91,7 @@ var UserSchema = new Schema({
         }]
     },
     name: {
-        type: String,
-        unique: true
+        type: String
     },
     provider: {
         type: String,
