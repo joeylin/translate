@@ -21,44 +21,6 @@ var middleware = require('./middleware');
 
 
 module.exports = function(app) {
-    var getDoc = function(req, res) {
-        var name = req.params.doc;
-        var chapter = req.params.chapter;
-        var DOC_PATH = path.resolve(__dirname, '../docs/' + name);
-        var result = {};
-        Doc.find({
-            name: name
-        }).populate('chapters').exec(function(err, doc) {
-            var toc = [];
-            var _doc = doc[0];
-            _doc.chapters.map(function(chapter, key) {
-                var obj = {};
-                obj.name = chapter.name;
-                obj.id = chapter._id;
-                toc.push(obj);
-            });
-            app.locals.user = req.session.user;
-            app.locals.chapter = chapter;
-            app.locals.doc = {};
-            app.locals.doc.docName = name;
-            app.locals.doc.toc = toc;
-            app.locals.doc.chapter = chapter;
-            res.render('index');
-        });
-    };
-    var getSetting = function(req, res) {
-        app.locals.user = req.session.user;
-        res.render('settings.html');
-    };
-    var getDocHome = function(req, res) {
-        app.locals.user = req.session.user;
-        res.render('doc-home');
-    };
-    var getDocSearch = function(req, res) {
-        app.locals.user = req.session.user;
-        res.render('doc-search');
-    };
-
     var getLogin = function(req, res) {
         res.render('signup');
     };
@@ -134,11 +96,6 @@ module.exports = function(app) {
             res.render('settings-company-profile');
         }
     };
-    
-    app.get('/doc', getDocHome);
-    app.get('/doc/search', getDocSearch);
-    app.get('/doc/:doc', getDoc);
-    app.get('/doc/:doc/:chapter', getDoc);
     
     // home
     app.get('/', middleware.check_login, getMain);
