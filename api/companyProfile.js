@@ -38,7 +38,7 @@ var editExperience = function(req, res) {
 	UserProfile.findOne({
 		_id: user.profile
 	}, function(err, profile) {
-
+		
 	});
 }
 

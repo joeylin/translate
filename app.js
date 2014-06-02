@@ -37,15 +37,14 @@ app.configure(function() {
     app.use(express.errorHandler());
 });
 
-// routes
-// routes(app);
-
 // api
-require('./api/doc')(app);
 require('./api/search')(app);
 require('./api/user')(app);
 require('./api/job')(app);
 require('./api/share')(app);
+require('./api/account')(app);
+require('./api/userProfile')(app);
+require('./api/companyProfile')(app);
 require('./api/router')(app);
 
 app.locals.formatTimestamp = function(t) {
