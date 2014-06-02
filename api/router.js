@@ -22,7 +22,7 @@ var middleware = require('./middleware');
 
 module.exports = function(app) {
     var getLogin = function(req, res) {
-        res.render('signup');
+        res.render('login');
     };
 
     // public
@@ -44,7 +44,7 @@ module.exports = function(app) {
                 res.render('user-profile');
             }
             if (profile.name === 'company') {
-                res.render('user-profile');
+                res.render('company-profile');
             }
         });
     };

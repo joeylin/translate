@@ -268,11 +268,11 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right" ng-cloak>
+              <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown" id="menuLogin" >
                       <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" novalidate> 
+                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
                               <label>Login</label> 
                               <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
                               <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
@@ -291,7 +291,9 @@
                             <!-- todo have custom user image -->
                             <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
                             <i class="fa fa-user"></i> 
-                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                            <span id="lblUsername" style="margin-left: 5px;">
+                              <%= locals.user && locals.user.name %>
+                            </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -299,7 +301,7 @@
                             <li class="user-header bg-modena">
                                 <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> Jane Doe - Web Developer</span>
+                                    <span class="user_username"> <%= locals.user &&locals.user.name %></span>
                                     <small class="user_creatAt">Member since Nov. 2012</small>
                                 </p>
                             </li>
@@ -318,7 +320,7 @@
                                     <a href="#">Followers</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="#">Praise</a>
+                                    <a href="#">share</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
                                     <a href="#">Connects</a>
@@ -327,7 +329,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="/settings" target="_self" class="btn btn-default btn-flat">Settings</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
@@ -337,9 +339,9 @@
                   </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/profile">profile</a></li>
-                <li><a href="/search/all">search</a></li>
+                <li><a href="/home" target="_self">Home</a></li>
+                <li><a href="/profile" target="_self">profile</a></li>
+                <li><a href="/search/all" target="_self">search</a></li>
               </ul>
             </div>
           </div>

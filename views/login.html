@@ -110,6 +110,9 @@
             margin-bottom: 0;
             margin-top: 0;
           }
+          .form-inline input.error:focus {
+            border-color: red!important;
+          }
         </style>
         
     </head>
@@ -131,7 +134,9 @@
                     <div class="form-group">
                       <input type="password" class="form-control" id="loginPassword" placeholder="Password">
                     </div>
-                    <button type="button" id="btnLogin" class="btn btn-primary">Login</button>
+                    <div class="form-group">
+                      <button type="button" id="btnLogin" class="btn btn-primary">Login</button>
+                    </div>
                   </form>
                 </li>
               </ul>
@@ -350,12 +355,14 @@
               var email = $('#loginEmail').val();
               var password = $('#loginPassword').val();
               if (email === '') {
-                $('#loginEmail').addClass('.error');
+                $('#loginEmail').addClass('error');
                 $('#loginEmail').focus();
+                return false;
               }
               if (password === '') {
-                $('#loginPassword').addClass('.error');
+                $('#loginPassword').addClass('error');
                 $('#loginPassword').focus();
+                return false;
               }
               var data = {
                 email: email,
@@ -372,17 +379,25 @@
                           } else {
                             window.location.href = '/home';
                           }
-                      }
-                      else {
-                          $('#loginEmail').addClass('.error');
+                      } else {
+                          $('#loginEmail').addClass('error');
                           $('#loginEmail').focus();
                       }
                   },
                   error: function (e) {
-                      $('#loginEmail').addClass('.error');
+                      $('#loginEmail').addClass('error');
                       $('#loginEmail').focus();
                   }
               });
+            });
+            $('#loginEmail').add('#loginPassword').on('blur', function() {
+              $(this).removeClass('error');
+            });
+            $('#loginPassword').on('keydown', function(e) {
+              var key = e.keyCode || e.which;
+              if (key === 13) {
+                  $('#btnLogin').click();
+              }
             });
         </script>
     </body>
