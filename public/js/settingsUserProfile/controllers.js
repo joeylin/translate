@@ -192,7 +192,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
             var data = {
                 company: $scope.inputCompany,
-                postion: $scope.inputPosition,
+                position: $scope.inputPosition,
                 desc: $scope.inputDesc,
                 startDate: $scope.inputStartDate,
                 endDate: $scope.inputEndDate
@@ -210,7 +210,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.editNumber = '';
         $scope.vm.edit = function(item) {
             $scope.inputCompany = item.company;
-            $scope.inputPosition = item.postion;
+            $scope.inputPosition = item.position;
             $scope.inputDesc = item.desc;
             $scope.inputStartDate = item.startDate;
             $scope.inputEndDate = item.endDate;
@@ -229,7 +229,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.editSave = function(item) {
             var data = {
                 company: $scope.inputCompany,
-                postion: $scope.inputPosition,
+                position: $scope.inputPosition,
                 desc: $scope.inputDesc,
                 startDate: $scope.inputStartDate,
                 endDate: $scope.inputEndDate

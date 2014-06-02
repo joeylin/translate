@@ -3,9 +3,6 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var UserProfileSchema = new Schema({
-    desc: {
-        type: String
-    },
     name: {
         type: String,
         default: 'user'
@@ -15,44 +12,15 @@ var UserProfileSchema = new Schema({
         ref: 'User',
         unique: true
     },
-    contact: {
-        qq: {
-            type: Number
-        },
-        phone: {
-            type: Number
-        }
-    },
-    social: [{
-        name: {
-            type: String
-        },
-        value: {
-            type: Number
-        }
-    }],
-    school: [{
-        type: String
-    }],
-    skills: [{
-        type: String
-    }],
-    age: {
-        type: Date
-    },
-    height: {
-        type: Number
-    },
-    weight: {
-        type: Number
-    },
-    hometown: {
-        type: String
-    },
+    birth: Date,
+    height: Number,
+    weight: Number,
+    hometown: String,
     location: [{
         type: String
     }],
-    companys: [{
+    desc: String,
+    skills: [{
         type: String
     }],
     language: [{
@@ -61,46 +29,29 @@ var UserProfileSchema = new Schema({
         },
         rate: Number
     }],
-    current: {
-        location: {
-            type: String
-        },
-        status: {
-            type: String
-        }
-    },
-    educations: [{
-        type: String
+    edu: [{
+        startDate: Date,
+        endDate: Date,
+        degree: String,
+        field: String,
+        school: String,
+        desc: String
     }],
     experience: [{
-        type: String
+        startDate: Date,
+        endDate: Date,
+        company: String,
+        title: String,
+        isCurrentJob: Boolean,
+        location: String
     }],
-    projects: {
-        item: [{
-            type: String
-        }],
-        isShow: {
-            type: Boolean,
-            default: false
-        }
-    },
-    works: {
-        item: [{
-            type: String
-        }],
-        isShow: {
-            type: Boolean,
-            default: false
-        }
-    },
-    items: [{
-        isShow: {
-            type: Boolean,
-            default: false
-        },
-        item: [{
-            type: String
-        }]
+    works: [{
+        url: String,
+        desc: String
+    }],
+    social: [{
+        name: String,
+        value: Number
     }],
     createAt: {
         type: Date,

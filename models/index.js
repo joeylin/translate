@@ -8,17 +8,6 @@ mongoose.connect(config.db, function(err) {
     }
 });
 
-// Translate models 
-require('./doc');
-require('./chapter');
-require('./section');
-require('./translate');
-
-exports.Doc = mongoose.model('Doc');
-exports.Chapter = mongoose.model('Chapter');
-exports.Section = mongoose.model('Section');
-exports.Translate = mongoose.model('Translate');
-
 // social network
 require('./user');
 require('./userProfile');

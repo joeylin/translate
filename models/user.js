@@ -29,9 +29,20 @@ var UserSchema = new Schema({
     profile: {
         type: ObjectId
     },
+    name: {
+        type: String
+    },
     email: {
         type: String,
         unique: true
+    },
+    current: {
+        location: {
+            type: String
+        },
+        status: {
+            type: String
+        }
     },
     message: [{
         type: ObjectId,
@@ -89,9 +100,6 @@ var UserSchema = new Schema({
         join: [{
             type: ObjectId
         }]
-    },
-    name: {
-        type: String
     },
     provider: {
         type: String,
