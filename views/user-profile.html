@@ -238,13 +238,10 @@
           .profile-sidebar .section .panel-body {
             font-size: 16px;
           }
-        </style>
-        <script type="text/javascript">
-          window.author = null;
-          <% if (locals.author) { %>
-            window.author = <%- JSON.stringify(locals.author) %>;
-          <% } %>
-        </script>       
+          .displayNone {
+            display: none;
+          }
+        </style>    
     </head>
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -260,23 +257,11 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
+                  <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>" data-toggle="dropdown" id="navLogin">Login</a>
-                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
-                              <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
-                              <button type="button" id="btnLogin" class="btn">Login</button>
-                          </form>
-                          <br>
-                          <form class="form">
-                            <a class="signup" href="/signup" >New User? Sign-up..</a>
-                          </form>
-                          <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                          <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
-                      </div>
+                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>">Login</a>
                   </li>
+                  <% } else { %>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
                             <!-- todo have custom user image -->
@@ -322,6 +307,7 @@
                             </li>
                         </ul>
                   </li>
+                  <% } %>
               </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">Home</a></li>
@@ -334,7 +320,7 @@
         <div class="container"> 
           <div class="profile-sidebar col-md-3">
             <div class="section">
-              <div class="user-header bg-modena">
+              <div class="user-header bg-modena text-center">
                   <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" style="height: 175px;">
               </div>
               <!-- Menu Body -->
@@ -369,7 +355,7 @@
           <div class="profile-body col-md-9">
             <div class="jumbotron user-header">
               <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
-              <p class="desc"><span><%= locals.user.signature %></span> </p>
+              <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
             </div>
             <div class="panel custom-box basic">
               <div class="panel-heading">
@@ -388,7 +374,7 @@
               </div>
               <div class="panel-body">
                 <div class="section">
-                  <p><%= locals.profile.desc %></p>
+                  <p><%= locals.profile.desc || 'go to edit your describe' %></p>
                 </div>
               </div>
             </div>
@@ -402,7 +388,7 @@
                       <h4><%= item.company %>-<%= item.title %> <small><%= item.startDate %>-<%= item.endDate %></small></h4>
                       <p><%= item.desc %></p>
                     </div>
-                    <hr class="<%if(key === locals.profile.experience.length){%> displayNone <%}%>">
+                    <hr class="<%if(key === locals.profile.experience.length -1){%> displayNone <%}%>">
                 <% }) %>  
                 <!-- <div class="section">
                   <h4>AamzingSurge-frontend <small>2012-2014</small></h4>
@@ -454,7 +440,7 @@
                       <h4>URL: <a href="#"><%= item.url %></a></h4>
                       <p><%= item.desc %></p>
                     </div>
-                    <hr class="<%if(key === locals.profile.works.length){%> displayNone <%}%>">
+                    <hr class="<%if(key === locals.profile.works.length -1){%> displayNone <%}%>">
                 <% }) %>  
           
                 <!-- <div class="section">
@@ -504,6 +490,5 @@
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/public/js/noAuth.js"></script>
     </body>
 </html>

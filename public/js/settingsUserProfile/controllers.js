@@ -517,7 +517,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         };
 
         function reset() {
-            if ($scope.desc === '') {
+            if (!$scope.desc) {
                 $scope.showEditIcon = false;
                 $scope.showContent = false;
                 $scope.showHome = true;

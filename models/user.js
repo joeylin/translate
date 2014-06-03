@@ -16,7 +16,7 @@ var UserSchema = new Schema({
         type: String
     },
     phone: {
-        type: Number
+        type: String
     },
     email: {
         type: String,
@@ -26,7 +26,7 @@ var UserSchema = new Schema({
         type: String
     },
     workYear: {
-        type: Number
+        type: String
     },
     current: {
         location: {

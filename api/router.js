@@ -28,7 +28,8 @@ module.exports = function(app) {
     var getProfile = function(req, res) {
         var id = req.params.id;
         if (!id) {
-            return res.render('user-profile');
+            id = req.session.user.id;
+            return res.redirect('/profile/' + id);
         }
         User.getProfile(id, function(err, profile, user) {
             if (err) {
@@ -37,6 +38,7 @@ module.exports = function(app) {
             }
             app.locals.profile = profile;
             app.locals.user = user;
+            app.locals.author = req.session.user;
             if (profile.name === 'user') {
                 res.render('user-profile');
             }

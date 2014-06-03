@@ -105,9 +105,9 @@
 
         </style>
         <script type="text/javascript">
-          window.user = null;
-          <% if (locals.user) { %>
-            window.user = <%- JSON.stringify(locals.user) %>;
+          window.author = null;
+          <% if (locals.author) { %>
+            window.author = <%- JSON.stringify(locals.author) %>;
           <% } %>
         </script>       
     </head>

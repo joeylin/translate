@@ -78,6 +78,7 @@ config(['$httpProvider', 'app',
         angular.extend(app, tools); //添加jsGen系列工具函数
 
         app.user = window.user;
+        $rootScope.global.user = window.user;
         app.profile = window.profile;
 
         $rootScope.lastUpdate = window.lastUpdate || 'a minute ago';

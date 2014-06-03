@@ -13,8 +13,8 @@ var UserProfileSchema = new Schema({
         unique: true
     },
     birth: Date,
-    height: Number,
-    weight: Number,
+    height: String,
+    weight: String,
     hometown: String,
     location: [{
         type: String
@@ -27,7 +27,7 @@ var UserProfileSchema = new Schema({
         name: {
             type: String
         },
-        rate: Number
+        rate: String
     }],
     edu: [{
         startDate: Date,
@@ -52,7 +52,7 @@ var UserProfileSchema = new Schema({
     }],
     social: [{
         name: String,
-        id: Number
+        id: String
     }],
     createAt: {
         type: Date,

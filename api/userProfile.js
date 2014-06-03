@@ -33,10 +33,17 @@ var editBasic = function(req, res) {
         user.name = data.name;
         user.sex = data.sex;
         user.degree = data.degree;
-        user.workYear = data.workYear;
+        user.workYear = parseInt(data.workYear, 10);
         user.phone = data.phone;
         user.current = data.current;
         user.save(function(err) {
+            if (err) {
+                console.log(err);
+                res.send({
+                    code: 404,
+                    info: err.message
+                });
+            }
             res.send({
                 code: 200
             });
@@ -81,6 +88,13 @@ var editExperience = function(req, res) {
             profile.experience.splice(index, 1);
         }
         profile.save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.send({
+                    code: 404,
+                    info: err.message
+                });
+            }
             res.send({
                 code: 200
             });
