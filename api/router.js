@@ -60,7 +60,7 @@ module.exports = function(app) {
         var user = req.session.user;
         app.locals.user = user;
         if (user.role === 'user') {
-            res.render('user-home');            
+            res.render('user-home');
         } else {
             res.render('company-home');
         }
@@ -84,7 +84,7 @@ module.exports = function(app) {
             } else {
                 res.render('settings-company-profile');
             }
-        });     
+        });
     };
     var getAccountSettings = function(req, res) {
         var user = req.session.user;
@@ -100,7 +100,7 @@ module.exports = function(app) {
             }
         });
     };
-    
+
     // home
     app.get('/', middleware.check_login, getMain);
     app.get('/home', middleware.check_login, getHome);

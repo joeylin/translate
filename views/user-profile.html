@@ -240,9 +240,9 @@
           }
         </style>
         <script type="text/javascript">
-          window.user = null;
-          <% if (locals.user) { %>
-            window.user = <%- JSON.stringify(locals.user) %>;
+          window.author = null;
+          <% if (locals.author) { %>
+            window.author = <%- JSON.stringify(locals.author) %>;
           <% } %>
         </script>       
     </head>
@@ -261,7 +261,7 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
+                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>" data-toggle="dropdown" id="navLogin">Login</a>
                       <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
                           <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
                               <label>Login</label> 
@@ -293,34 +293,28 @@
                                 <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
                                     <span class="user_username"> <%= locals.user &&locals.user.name %></span>
-                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                    <small class="user_creatAt">Member since <%= locals.user.creatAt %></small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_follower">10</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#" class="user_share"><%= locals.user.share.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_praise">100</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#" class="user_connects"><%= locals.user.connects.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_connects">30</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">share</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">Connects</a>
                                 </div>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/settings" target="_self" class="btn btn-default btn-flat">Settings</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Settings</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
@@ -341,26 +335,20 @@
           <div class="profile-sidebar col-md-3">
             <div class="section">
               <div class="user-header bg-modena">
-                  <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" style="height: 175px;">
+                  <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" style="height: 175px;">
               </div>
               <!-- Menu Body -->
               <div class="user-body clearfix">
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_follower">10</a>
+                  <div class="col-xs-6 text-center">
+                      <a href="#" class="user_share"><%= locals.user.share.length %></a>
                   </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_praise">100</a>
+                  <div class="col-xs-6 text-center">
+                      <a href="#" class="user_connects"><%= locals.user.connects.length %></a>
                   </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_connects">30</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
+                  <div class="col-xs-6 text-center">
                       <a href="#">share</a>
                   </div>
-                  <div class="col-xs-4 text-center">
+                  <div class="col-xs-6 text-center">
                       <a href="#">Connects</a>
                   </div>
               </div>
@@ -380,8 +368,8 @@
           </div>   
           <div class="profile-body col-md-9">
             <div class="jumbotron user-header">
-              <h1><span>Joeylin</span></h1>
-              <p class="desc"><span>Think different</span> </p>
+              <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
+              <p class="desc"><span><%= locals.user.signature %></span> </p>
             </div>
             <div class="panel custom-box basic">
               <div class="panel-heading">
@@ -389,8 +377,8 @@
               </div>
               <div class="media">
                 <div class="media-body user-info">
-                  <p>LinYao | Male | Master | one year work experience</p>
-                  <p> 18650330481  331547274@qq.com</p>
+                  <p><%= locals.user.name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> year work experience</p>
+                  <p> <%= locals.user.phone %>  <%= locals.user.email %></p>
                 </div>
               </div>
             </div>
@@ -400,7 +388,7 @@
               </div>
               <div class="panel-body">
                 <div class="section">
-                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</p>
+                  <p><%= locals.profile.desc %></p>
                 </div>
               </div>
             </div>
@@ -408,21 +396,19 @@
               <div class="panel-heading">
                 <h2>Experience</h2>
               </div>
-              <div class="panel-body">
-                <div class="section">
+              <div class="panel-body">    
+                <% locals.profile.experience.forEach(function(item,key){ %>
+                    <div class="section">
+                      <h4><%= item.company %>-<%= item.title %> <small><%= item.startDate %>-<%= item.endDate %></small></h4>
+                      <p><%= item.desc %></p>
+                    </div>
+                    <hr class="<%if(key === locals.profile.experience.length){%> displayNone <%}%>">
+                <% }) %>  
+                <!-- <div class="section">
                   <h4>AamzingSurge-frontend <small>2012-2014</small></h4>
                   <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
                 </div>
-                <hr>
-                <div class="section">
-                  <h4>AamzingSurge-frontend <small>2012-2014</small></h4>
-                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                </div>
-                <hr>
-                <div class="section">
-                  <h4>AamzingSurge-frontend <small>2012-2014</small></h4>
-                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                </div>
+                <hr> -->
               </div>
             </div>  
             <div class="panel custom-box education">
@@ -431,7 +417,20 @@
               </div>
               <div class="panel-body edu-box">
                 <div class="row">
-                  <div class="col-md-6 section">
+                  <% locals.profile.edu.forEach(function(item,key){ %>
+                    <div class="col-md-6 section">
+                      <span class="edu-date"><%= item.startDate %>--<%= item.endDate %></span>
+                      <div class="content">
+                        <div class="edu-school"> <%= item.school %></div>
+                        <div class="edu-info">
+                          <span><%= item.field %></span>
+                        </div>
+                        <div class="edu-desc"><%= item.desc %></div>
+                      </div>
+                    </div>
+                  <% }) %>
+                    
+                  <!-- <div class="col-md-6 section">
                     <span class="edu-date">2012--2014</span>
                     <div class="content">
                       <div class="edu-school"> BUPT University</div>
@@ -440,27 +439,7 @@
                       </div>
                       <div class="edu-desc">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</div>
                     </div>
-                  </div>
-                  <div class="col-md-6 section">
-                    <span class="edu-date">2012--2014</span>
-                    <div class="content">
-                      <div class="edu-school"> BUPT University</div>
-                      <div class="edu-info">
-                        <span>electronic</span>
-                      </div>
-                      <div class="edu-desc">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 section">
-                    <span class="edu-date">2012--2014</span>
-                    <div class="content">
-                      <div class="edu-school"> BUPT University</div>
-                      <div class="edu-info">
-                        <span>electronic</span>
-                      </div>
-                      <div class="edu-desc">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</div>
-                    </div>
-                  </div>
+                  </div> -->
                   
                 </div>
               </div>
@@ -470,20 +449,19 @@
                 <h2>Works</h2>
               </div>
               <div class="panel-body">
-                <div class="section">
+                <% locals.profile.works.forEach(function(item,key){ %>
+                    <div class="section">
+                      <h4>URL: <a href="#"><%= item.url %></a></h4>
+                      <p><%= item.desc %></p>
+                    </div>
+                    <hr class="<%if(key === locals.profile.works.length){%> displayNone <%}%>">
+                <% }) %>  
+          
+                <!-- <div class="section">
                   <h4>URL: <a href="#">www.github.com</a></h4>
                   <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
                 </div>
-                <hr>
-                <div class="section">
-                  <h4>URL: <a href="#">www.github.com</a></h4>
-                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
-                </div>
-                <hr>
-                <div class="section">
-                  <h4>URL: <a href="#">www.github.com</a></h4>
-                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
-                </div>
+                <hr> -->
               </div>
             </div>    
             <div class="panel custom-box social">
@@ -491,30 +469,21 @@
                 <h2>Social</h2>
               </div>
               <div class="panel-body social-info">
-                <div class="clearfix section">
-                  <div class="row">
-                    <div class="col-md-3">QQ:</div>
-                    <div class="col-md-6"><a href="#">331547274</a></div>
-                  </div>  
-                </div>
-                <div class="clearfix section">
-                  <div class="row">
-                    <div class="col-md-3">weibo:</div>
-                    <div class="col-md-6"><a href="#">www.weibo.com</a></div>
-                  </div>  
-                </div>
-                <div class="clearfix section">
-                  <div class="row">
-                    <div class="col-md-3">git:</div>
-                    <div class="col-md-6"><a href="#">www.github.com</a></div>
-                  </div>  
-                </div>
-                <div class="clearfix section">
+                <% locals.profile.social.forEach(function(item,key){ %>
+                    <div class="clearfix section">
+                      <div class="row">
+                        <div class="col-md-3"><%= item.name %>:</div>
+                        <div class="col-md-6"><a href="#"><%= item.id %></a></div>
+                      </div>  
+                    </div>
+                <% }) %>
+                    
+                <!-- <div class="clearfix section">
                   <div class="row">
                     <div class="col-md-3">zhuhu:</div>
                     <div class="col-md-6"><a href="#">www.zhihu.com</a></div>
                   </div>  
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="panel custom-box group">

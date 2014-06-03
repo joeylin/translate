@@ -69,7 +69,13 @@ var editExperience = function(req, res) {
             profile.experience.push(data);
         }
         if (type === 'edit') {
-            profile.experience[index] = data;
+            profile.experience[index].startDate = data.startDate;
+            profile.experience[index].endDate = data.endDate;
+            profile.experience[index].company = data.company;
+            profile.experience[index].title = data.title;
+            profile.experience[index].location = data.location;
+            profile.experience[index].isCurrentJob = data.isCurrentJob;
+            profile.experience[index].desc = data.desc;
         }
         if (type === 'delete') {
             profile.experience.splice(index, 1);
@@ -93,7 +99,12 @@ var editEdu = function(req, res) {
             profile.edu.push(data);
         }
         if (type === 'edit') {
-            profile.edu[index] = data;
+            profile.edu[index].startDate = data.startDate;
+            profile.edu[index].endDate = data.endDate;
+            profile.edu[index].degree = data.degree;
+            profile.edu[index].field = data.field;
+            profile.edu[index].school = data.school;
+            profile.edu[index].desc = data.desc;
         }
         if (type === 'delete') {
             profile.edu.splice(index, 1);
@@ -117,7 +128,8 @@ var editWorks = function(req, res) {
             profile.works.push(data);
         }
         if (type === 'edit') {
-            profile.works[index] = data;
+            profile.works[index].url = data.url;
+            profile.works[index].desc = data.desc;
         }
         if (type === 'delete') {
             profile.works.splice(index, 1);
@@ -141,7 +153,8 @@ var editSocial = function(req, res) {
             profile.social.push(data);
         }
         if (type === 'edit') {
-            profile.social[index] = data;
+            profile.social[index].name = data.name;
+            profile.social[index].id = data.id;
         }
         if (type === 'delete') {
             profile.social.splice(index, 1);

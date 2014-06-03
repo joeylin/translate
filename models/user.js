@@ -7,7 +7,7 @@ var oAuthTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
 var UserSchema = new Schema({
     display_name: {
         type: String,
-        default: ''
+        default: 'display name'
     },
     sex: {
         type: String
@@ -16,7 +16,7 @@ var UserSchema = new Schema({
         type: String
     },
     phone: {
-        type:Number
+        type: Number
     },
     email: {
         type: String,
@@ -93,7 +93,7 @@ var UserSchema = new Schema({
             ref: 'Share'
         }]
     },
-    
+
     groups: {
         pending: [{
             type: ObjectId
@@ -102,7 +102,7 @@ var UserSchema = new Schema({
             type: ObjectId
         }]
     },
-    
+
     // company 
     phase: String,
     industry: String,

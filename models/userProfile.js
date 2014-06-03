@@ -43,7 +43,8 @@ var UserProfileSchema = new Schema({
         company: String,
         title: String,
         isCurrentJob: Boolean,
-        location: String
+        location: String,
+        desc: String
     }],
     works: [{
         url: String,

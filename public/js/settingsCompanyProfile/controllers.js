@@ -42,13 +42,17 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 set();
             }
         };
+
         function set() {
             var url = '/api/companyProfile/header';
+            if ($scope.name === '') {
+                return false;
+            }
             var data = {
                 name: $scope.name,
                 signature: $scope.signature
             };
-            $http.post(url, data).success(function(data){
+            $http.post(url, data).success(function(data) {
                 $scope.showNameContent = true;
                 $scope.showNameEdit = true;
                 $scope.showNameInput = false;
@@ -99,7 +103,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
         function setValue(obj) {
             var url = '/api/companyProfile/basic';
-            $http.post(url, obj).success(function(data){
+            $http.post(url, obj).success(function(data) {
                 $scope.location = obj.location;
                 $scope.industry = obj.industry;
                 $scope.scale = obj.scale;
@@ -110,11 +114,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('describeCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
-        $scope.desc = app.profile.desc;
+        $scope.desc = app.profile.desc || '';
 
-        $scope.showEditIcon = false;
-        $scope.showContent = false;
-        $scope.showHome = true;
+        $scope.showEditIcon = true;
+        $scope.showContent = true;
+        $scope.showHome = false;
         $scope.showSettings = false;
 
         $scope.edit = function() {
@@ -126,11 +130,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.inputDesc = $scope.desc;
         };
         $scope.save = function() {
-            var url = '/api/companyProfile/header';
+            var url = '/api/companyProfile/desc';
             var data = {
                 desc: $scope.inputDesc
             };
-            $http.post(url, data).success(function(data){
+            $http.post(url, data).success(function(data) {
                 $scope.showEditIcon = true;
                 $scope.showContent = true;
                 $scope.showHome = false;
@@ -147,6 +151,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showSettings = false;
             reset();
         };
+
         function reset() {
             if ($scope.desc === '') {
                 $scope.showEditIcon = false;
@@ -155,6 +160,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showSettings = false;
             }
         }
+        reset();
     }
 ]).controller('accountCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
@@ -175,7 +181,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 originPassword: $scope.password,
                 newPassword: $scope.password1
             };
-            $http.post(url,data).success(function(data) {
+            $http.post(url, data).success(function(data) {
 
             }).error(function(err) {
                 $scope.error = true;

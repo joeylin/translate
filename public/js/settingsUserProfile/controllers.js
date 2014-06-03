@@ -49,7 +49,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 display_name: $scope.display_name,
                 signature: $scope.signature
             };
-            $http.post(url, data).success(function(data) {
+            $http.post(url, data).success(function() {
                 $scope.showNameContent = true;
                 $scope.showNameEdit = true;
                 $scope.showNameInput = false;
@@ -58,10 +58,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('educationCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.showAddIcon = false;
-        $scope.showContent = false;
+        $scope.showAddIcon = true;
+        $scope.showContent = true;
         $scope.showSettings = false;
-        $scope.showHome = true;
+        $scope.showHome = false;
 
         $scope.statusAdd = false;
         $scope.statusEdit = false;
@@ -78,10 +78,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.statusEdit = false;
 
             $scope.inputSchool = '';
-            $scope.inputAcademy = '';
+            $scope.inputField = '';
             $scope.inputStartDate = '';
             $scope.inputEndDate = '';
             $scope.inputDesc = '';
+            $scope.inputDegree = '';
         };
         $scope.cancel = function() {
             $scope.showAddIcon = true;
@@ -94,16 +95,17 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.addSave = function() {
             var data = {
                 school: $scope.inputSchool,
-                academy: $scope.inputAcademy,
+                field: $scope.inputField,
                 startDate: $scope.inputStartDate,
                 endDate: $scope.inputEndDate,
+                degree: $scope.inputDegree,
                 desc: $scope.inputDesc
             };
             var url = '/api/userProfile/edu';
             $http.post(url, {
                 content: data,
                 type: 'add'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content.push(data);
                 $scope.showAddIcon = true;
                 $scope.showContent = true;
@@ -114,9 +116,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.editSave = function() {
             var data = {
                 school: $scope.inputSchool,
-                academy: $scope.inputAcademy,
+                field: $scope.inputField,
                 startDate: $scope.inputStartDate,
                 endDate: $scope.inputEndDate,
+                degree: $scope.inputDegree,
                 desc: $scope.inputDesc,
             };
             var url = '/api/userProfile/edu';
@@ -124,7 +127,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 content: data,
                 index: itemNumber,
                 type: 'edit'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.showAddIcon = true;
                 $scope.showContent = true;
                 $scope.showSettings = false;
@@ -136,7 +139,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.vm.edit = function(item) {
             itemNumber = $scope.content.indexOf(item);
             $scope.inputSchool = item.school;
-            $scope.inputAcademy = item.academy;
+            $scope.inputField = item.field;
             $scope.inputStartDate = item.startDate;
             $scope.inputEndDate = item.endDate;
             $scope.inputDesc = item.desc;
@@ -156,7 +159,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $http.post(url, {
                 index: index,
                 type: 'delete'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content.splice(index, 1);
                 reset();
             });
@@ -170,6 +173,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showHome = true;
             }
         }
+        reset();
     }
 ]).controller('experienceCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -180,7 +184,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.showAddIcon = true;
 
         $scope.inputCompany = '';
-        $scope.inputPosition = '';
+        $scope.inputTitle = '';
         $scope.inputDesc = '';
         $scope.inputStartDate = '';
         $scope.inputEndDate = '';
@@ -195,10 +199,12 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showAddIcon = false;
 
             $scope.inputCompany = '';
-            $scope.inputPosition = '';
+            $scope.inputTitle = '';
             $scope.inputDesc = '';
             $scope.inputStartDate = '';
             $scope.inputEndDate = '';
+            $scope.inputIsCurrentJob = 'No';
+            $scope.inputLocation = '';
 
             $scope.statusAdd = true;
             $scope.statusEdit = false;
@@ -206,16 +212,18 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.addSave = function() {
             var data = {
                 company: $scope.inputCompany,
-                position: $scope.inputPosition,
+                title: $scope.inputTitle,
                 desc: $scope.inputDesc,
                 startDate: $scope.inputStartDate,
-                endDate: $scope.inputEndDate
+                endDate: $scope.inputEndDate,
+                location: $scope.inputLocation,
+                isCurrentJob: $scope.inputIsCurrentJob
             };
             var url = '/api/userProfile/experience';
             $http.post(url, {
                 content: data,
                 type: 'add'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content.push(data);
                 $scope.showSettings = false;
                 $scope.showContent = true;
@@ -234,10 +242,12 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.editNumber = '';
         $scope.vm.edit = function(item) {
             $scope.inputCompany = item.company;
-            $scope.inputPosition = item.position;
+            $scope.inputTitle = item.title;
             $scope.inputDesc = item.desc;
             $scope.inputStartDate = item.startDate;
             $scope.inputEndDate = item.endDate;
+            $scope.inputLocation = item.location;
+            $scope.inputIsCurrentJob = item.isCurrentJob;
 
             $scope.showSettings = true;
             $scope.showContent = false;
@@ -253,17 +263,19 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.editSave = function(item) {
             var data = {
                 company: $scope.inputCompany,
-                position: $scope.inputPosition,
+                title: $scope.inputTitle,
                 desc: $scope.inputDesc,
                 startDate: $scope.inputStartDate,
-                endDate: $scope.inputEndDate
+                endDate: $scope.inputEndDate,
+                location: $scope.inputLocation,
+                isCurrentJob: $scope.inputIsCurrentJob
             };
             var url = '/api/userProfile/experience';
             $http.post(url, {
                 content: data,
                 index: $scope.editNumber,
                 type: 'edit'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content[$scope.editNumber] = data;
                 $scope.showContent = true;
                 $scope.showSettings = false;
@@ -344,7 +356,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         function setValue(obj) {
             var data = obj;
             var url = '/api/userProfile/basic';
-            $http.post(url, obj).success(function(data) {
+            $http.post(url, obj).success(function() {
                 $scope.name = obj.name;
                 $scope.sex = obj.sex;
                 $scope.edu = obj.edu;
@@ -364,10 +376,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.statusAdd = false;
         $scope.statusEdit = false;
 
-        $scope.showAddIcon = false;
-        $scope.showContent = false;
+        $scope.showAddIcon = true;
+        $scope.showContent = true;
         $scope.showSettings = false;
-        $scope.showHome = true;
+        $scope.showHome = false;
 
         $scope.content = app.profile.works || [];
         $scope.add = function() {
@@ -392,7 +404,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $http.post(url, {
                 content: data,
                 type: 'add'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content.push(data);
                 $scope.showAddIcon = true;
                 $scope.showContent = true;
@@ -430,9 +442,9 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             var url = '/api/userProfile/works';
             $http.post(url, {
                 content: data,
-                index: $scope.itemNumber,
+                index: itemNumber,
                 type: 'edit'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.showAddIcon = true;
                 $scope.showContent = true;
                 $scope.showSettings = false;
@@ -446,7 +458,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $http.post(url, {
                 index: index,
                 type: 'delete'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content.splice(index, 1);
                 reset();
             });
@@ -460,14 +472,15 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showHome = true;
             }
         }
+        reset();
     }
 ]).controller('describeCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
         $scope.desc = app.profile.desc;
 
-        $scope.showEditIcon = false;
-        $scope.showContent = false;
-        $scope.showHome = true;
+        $scope.showEditIcon = true;
+        $scope.showContent = true;
+        $scope.showHome = false;
         $scope.showSettings = false;
 
         $scope.edit = function() {
@@ -483,7 +496,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 desc: $scope.inputDesc
             };
             var url = '/api/userProfile/desc';
-            $http.post(url, data).success(function(data) {
+            $http.post(url, data).success(function() {
                 $scope.showEditIcon = true;
                 $scope.showContent = true;
                 $scope.showHome = false;
@@ -511,6 +524,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showSettings = false;
             }
         }
+        reset();
     }
 ]).controller('socialCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope', '$location',
     function(app, $scope, $routeParams, $http, $rootScope, $location) {
@@ -519,9 +533,9 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.inputName = '';
         $scope.inputId = '';
 
-        $scope.showAddIcon = false;
-        $scope.showContent = false;
-        $scope.showHome = true;
+        $scope.showAddIcon = true;
+        $scope.showContent = true;
+        $scope.showHome = false;
         $scope.showSettings = false;
 
         $scope.statusAdd = false;
@@ -557,7 +571,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $http.post(url, {
                 content: data,
                 type: 'add'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content.push(data);
                 $scope.showAddIcon = true;
                 $scope.showContent = true;
@@ -575,7 +589,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 content: data,
                 index: itemNumber,
                 type: 'edit'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content[itemNumber] = data;
                 $scope.showAddIcon = true;
                 $scope.showContent = true;
@@ -603,7 +617,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $http.post(url, {
                 index: index,
                 type: 'delete'
-            }).success(function(data) {
+            }).success(function() {
                 $scope.content.splice(index, 1);
                 reset();
             });
@@ -617,6 +631,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showHome = true;
             }
         }
+        reset();
     }
 ]).controller('accountCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {

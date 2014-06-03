@@ -449,7 +449,7 @@
                     <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
                     <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                   </div>
-                  <h4>{{item.company}}-{{item.position}} <small>{{item.startDate}}-{{item.endDate}}</small></h4>
+                  <h4>{{item.company}}-{{item.title}} <small>{{item.startDate}}-{{item.endDate}}</small></h4>
                   <p>{{item.desc}}</p>
                 </div>
                 <hr ng-repeat-end ng-class="{displayNone: $last}">
@@ -469,7 +469,7 @@
                         <input type="text" class="form-control" ng-model="inputCompany" placeholder="your company">
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" ng-model="inputPosition" placeholder="your position">
+                        <input type="text" class="form-control" ng-model="inputTitle" placeholder="your position">
                     </div>
                 </div>
                 <div class="row">
@@ -478,6 +478,17 @@
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" ng-model="inputEndDate" placeholder="end date">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="inputLocation" placeholder="your location">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-control" ng-model="inputIsCurrentJob">
+                          <option>Yes</option>
+                          <option>No</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -506,9 +517,9 @@
                     </div>
                     <span class="edu-date">{{item.startDate}}--{{item.endDate}}</span>
                     <div class="content">
-                      <div class="edu-school"> {{item.school}}</div>
+                      <div class="edu-school">  {{item.field}}</div>
                       <div class="edu-info">
-                        <span>{{item.academy}}</span>
+                        <span>{{item.school}} | {{item.degree}}</span>
                       </div>
                       <div class="edu-desc">{{item.desc}}</div>
                     </div>
@@ -531,7 +542,7 @@
                         <input type="text" class="form-control" ng-model="inputSchool" placeholder="your School">
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" ng-model="inputAcademy" placeholder="your position">
+                        <input type="text" class="form-control" ng-model="inputField" placeholder="your position">
                     </div>
                 </div>
                 <div class="row">
@@ -553,6 +564,17 @@
                           <option>2010</option>
                         </select>
                     </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                      <select class="form-control" ng-model="inputDegree">
+                          <option>Doctor</option>
+                          <option>Master</option>
+                          <option>graduate</option>
+                          <option>underGraduate</option>
+                          <option>Middle School</option>
+                      </select>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
@@ -581,14 +603,6 @@
                   <p>{{item.desc}}</p>
                 </div>
                 <hr ng-repeat-end ng-class="{displayNone: $last}">
-                <!-- <div class="section">
-                  <div class="change pull-right">
-                    <i class="fa fa-edit edit"></i>
-                    <i class="fa fa-times-circle delete"></i>
-                  </div>
-                  <h4>URL: <a href="#">www.github.com</a></h4>
-                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
-                </div> -->
               </div>
               <div class="media" ng-show="showHome">
                 <a class="pull-left add-icon" href="#">
