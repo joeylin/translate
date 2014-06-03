@@ -51,7 +51,7 @@ var UserProfileSchema = new Schema({
     }],
     social: [{
         name: String,
-        value: Number
+        id: Number
     }],
     createAt: {
         type: Date,

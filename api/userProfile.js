@@ -10,119 +10,156 @@ var Request = Models.Request;
 var middleware = require('./middleware');
 
 var editHeader = function(req, res) {
-	var user = req.session.user;
-	var data = req.body;
-	User.findOne({
-		_id: user._id
-	}, function(err, user) {
-		user.display_name = data.display_name;
-		user.signature = data.signature;
-		user.save(function(err) {
-			res.send({
-				code: 200
-			});
-		});
-	});
+    var user = req.session.user;
+    var data = req.body;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        user.display_name = data.display_name;
+        user.signature = data.signature;
+        user.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
 };
 var editBasic = function(req, res) {
-	var user = req.session.user;
-	var data = req.body;
-	User.findOne({
-		_id: user._id
-	}, function(err, user) {
-		user.name = data.name;
-		user.sex = data.sex;
-		user.degree = data.degree;
-		user.workYear = data.workYear;
-		user.phone = data.phone;
-		user.current = data.current;
-		user.save(function(err) {
-			res.send({
-				code: 200
-			});
-		});
-	});
+    var user = req.session.user;
+    var data = req.body;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        user.name = data.name;
+        user.sex = data.sex;
+        user.degree = data.degree;
+        user.workYear = data.workYear;
+        user.phone = data.phone;
+        user.current = data.current;
+        user.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
 };
 var editDesc = function(req, res) {
-	var user = req.session.user;
-	var data = req.body.desc;
-	UserProfile.findOne({
-		_id: user.profile
-	}, function(err, profile) {
-		profile.desc = data;
-		profile.save(function(err) {
-			res.send({
-				code: 200
-			});
-		});
-	});
+    var user = req.session.user;
+    var data = req.body.desc;
+    UserProfile.findOne({
+        _id: user.profile
+    }, function(err, profile) {
+        profile.desc = data;
+        profile.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
 };
 var editExperience = function(req, res) {
-	var user = req.session.user;
-	var data = req.body.content;
-	var index = req.body.index;
-	var isAdd = req.body.isAdd;
-	UserProfile.findOne({
-		_id: user.profile
-	}, function(err, profile) {
-		if (isAdd) {
-			profile.experience.push(data);
-		} else {
-			profile.experience[index] = data;
-		}
-		profile.save(function(err) {
-			res.send({
-				code: 200
-			});
-		});
-	});
+    var user = req.session.user;
+    var data = req.body.content;
+    var index = req.body.index;
+    var type = req.body.type;
+    UserProfile.findOne({
+        _id: user.profile
+    }, function(err, profile) {
+        if (type === 'add') {
+            profile.experience.push(data);
+        }
+        if (type === 'edit') {
+            profile.experience[index] = data;
+        }
+        if (type === 'delete') {
+            profile.experience.splice(index, 1);
+        }
+        profile.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var editEdu = function(req, res) {
+    var user = req.session.user;
+    var data = req.body.content;
+    var index = req.body.index;
+    var type = req.body.type;
+    UserProfile.findOne({
+        _id: user.profile
+    }, function(err, profile) {
+        if (type === 'add') {
+            profile.edu.push(data);
+        }
+        if (type === 'edit') {
+            profile.edu[index] = data;
+        }
+        if (type === 'delete') {
+            profile.edu.splice(index, 1);
+        }
+        profile.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
 };
 var editWorks = function(req, res) {
-	var user = req.session.user;
-	var data = req.body.content;
-	var index = req.body.index;
-	var isAdd = req.body.isAdd;
-	UserProfile.findOne({
-		_id: user.profile
-	}, function(err, profile) {
-		if (isAdd) {
-			profile.works.push(data);
-		} else {
-			profile.works[index] = data;
-		}
-		profile.save(function(err) {
-			res.send({
-				code: 200
-			});
-		});
-	});
+    var user = req.session.user;
+    var data = req.body.content;
+    var index = req.body.index;
+    var type = req.body.type;
+    UserProfile.findOne({
+        _id: user.profile
+    }, function(err, profile) {
+        if (type === 'add') {
+            profile.works.push(data);
+        }
+        if (type === 'edit') {
+            profile.works[index] = data;
+        }
+        if (type === 'delete') {
+            profile.works.splice(index, 1);
+        }
+        profile.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
 };
 var editSocial = function(req, res) {
-	var user = req.session.user;
-	var data = req.body.content;
-	var index = req.body.index;
-	var isAdd = req.body.isAdd;
-	UserProfile.findOne({
-		_id: user.profile
-	}, function(err, profile) {
-		if (isAdd) {
-			profile.social.push(data);
-		} else {
-			profile.social[index] = data;
-		}
-		profile.save(function(err) {
-			res.send({
-				code: 200
-			});
-		});
-	});
+    var user = req.session.user;
+    var data = req.body.content;
+    var index = req.body.index;
+    var type = req.body.type;
+    UserProfile.findOne({
+        _id: user.profile
+    }, function(err, profile) {
+        if (type === 'add') {
+            profile.social.push(data);
+        }
+        if (type === 'edit') {
+            profile.social[index] = data;
+        }
+        if (type === 'delete') {
+            profile.social.splice(index, 1);
+        }
+        profile.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
 };
 
 module.exports = function(app) {
-	app.post('/api/userProfile/header', editHeader);
+    app.post('/api/userProfile/header', editHeader);
     app.post('/api/userProfile/basic', editBasic);
     app.post('/api/userProfile/desc', editDesc);
     app.post('/api/userProfile/experience', editExperience);
+    app.post('/api/userProfile/edu', editEdu);
     app.post('/api/userProfile/works', editWorks);
     app.post('/api/userProfile/social', editSocial);
 };
