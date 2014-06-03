@@ -85,7 +85,7 @@ JobSchema.statics.createNew = function(obj, cb) {
     job.save(function(err, job) {
         var Trend = mongoose.model('Trend');
         Trend.createNew({
-            id: job._id,
+            job: job._id,
             name: 'Job',
             userId: job.user
         }, function(err) {
@@ -124,19 +124,34 @@ JobSchema.methods.unCollect = function(userId) {
     this.collects.splice(this.collects.indexOf(userId), 1);
     this.save();
 };
-JobSchema.methods.comment = function(id) {
-    this.comments.push(id);
-    this.save();
-};
-JobSchema.methods.unComment = function(id) {
-    this.comments.splice(this.comments.indexOf(id), 1);
-    this.save();
-};
 JobSchema.methods.pushResume = function(userId) {
     this.resumes.push(userId);
     this.save();
 };
-
+JobSchema.methods.addComment = function(obj, cb) {
+    var Comment = mongoose.Model('Comment');
+    var job = this;
+    Comment.createNew(obj, function(err, comment) {
+        job.comments.push(comment._id);
+        job.save(function(err, _share) {
+            cb(err, _share);
+        });
+    });
+};
+JobSchema.methods.deleteComment = function(comment, cb) {
+    var index = this.comments.indexOf(comment);
+    this.comments.splice(index, 1);
+    this.save(function(err, job) {
+        var Comment = mongoose.Model('Comment');
+        Comment.findOne({
+            _id: comment._id
+        }, function(err, comment) {
+            comment.remove(function(err) {
+                cb(err);
+            });
+        });
+    });
+};
 
 // middleware
 JobSchema.pre('save', function(next) {

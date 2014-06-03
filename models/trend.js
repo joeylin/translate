@@ -3,8 +3,13 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var TrendSchema = new Schema({
-    id: {
-        type: ObjectId
+    share: {
+        type: ObjectId,
+        ref: 'Share'
+    },
+    job: {
+        type: ObjectId,
+        ref: 'Job'
     },
     name: {
         type: String
@@ -55,6 +60,42 @@ TrendSchema.methods.getTrend = function(cb) {
     }, function(err, model) {
         cb(err, model);
     });
+};
+TrendSchema.methods.getContent = function(cb) {
+    if (this.name === 'Share') {
+        var Share = mongoose.Model('Share');
+        Share.findOne({
+            _id: this.share
+        }, function(err, share) {
+            cb(err, share);
+        });
+    }
+    if (this.name === 'Job') {
+        var Job = mongoose.Model('Job');
+        Job.findOne({
+            _id: this.job
+        }, function(err, job) {
+            cb(err, job);
+        });
+    }
+};
+TrendSchema.methods.addComment = function(obj, cb) {
+    if (this.name === 'Share') {
+        var Share = mongoose.Model('Share');
+        Share.findOne({
+            _id: this.share
+        }, function(err, share) {
+            share.addComment(obj, cb);
+        });
+    }
+    if (this.name === 'Job') {
+        var Job = mongoose.Model('Job');
+        Job.findOne({
+            _id: this.job
+        }, function(err, job) {
+            job.addComment(obj, cb);
+        });
+    }
 };
 
 // middleware

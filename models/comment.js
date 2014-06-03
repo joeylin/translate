@@ -4,7 +4,8 @@ var ObjectId = Schema.ObjectId;
 
 var CommentSchema = new Schema({
     user: {
-        id: ObjectId
+        type: ObjectId,
+        ref: 'User'
     },
     content: {
         type: String
@@ -32,11 +33,11 @@ CommentSchema.path('content').validate(function(value) {
 }, 'content is blank');
 // statics
 CommentSchema.statics.createNew = function(obj, cb) {
-    var conment = new this();
-    conment.content = obj.content;
-    conment.user = obj.user;
-    conment.replyTo = obj.replyTo;
-    conment.save(cb);
+    var comment = new this();
+    comment.content = obj.content;
+    comment.user = obj.user;
+    comment.replyTo = obj.replyTo;
+    comment.save(cb);
 };
 
 // middleware

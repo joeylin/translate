@@ -121,24 +121,22 @@
           .profile-sidebar .user-body > div {
             padding-left: 0;
           }
-          .profile-body .summary {
-            height: 129px;
-            overflow: hidden;
+          .summary .nav {
+            height: 100%;
+            border-bottom: 0;
           }
-          .summary .summary-header {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 15px;
-            font-style: italic;
-            font-weight: 400;
-
-            border-left: 5px solid #eee;
-            padding-left: 10px;
+          .summary .nav>li>a {
+            padding: 2px 15px;
           }
-          .summary-container {
-            padding-top: 15px;
-            border: none;
-            background-color: #fff;
+          .summary .nav>li>a:hover {
+            border-color: transparent;
+          }
+          .custom-well {
+            background-color:transparent; 
+            border: 1px solid transparent; 
+            border-radius: 4px; 
+            -webkit-box-shadow: inset 0 1px 1px transparent; 
+            box-shadow: inset 0 1px 1px transparent; 
           }
 
         </style>
@@ -196,22 +194,16 @@
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#" class="user_follower">10</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_praise">100</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#" class="user_connects">30</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#">share</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Praise</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">Connects</a>
                                 </div>
                             </li>
@@ -236,11 +228,44 @@
           </div>
         </nav>
         <div class="container">
+          <div class="profile-sidebar col-md-3">
+            <div class="well">
+              <div class="user-header bg-modena clearfix">
+                  <div class="pull-left">
+                    <img src="" style="height: 85px;width: 85px">
+                  </div>
+                  <div class="pull-left">
+                    <h3>Joeylin</h3>
+                  </div>
+              </div>
+              <!-- Menu Body -->
+              <div class="user-body clearfix">
+                  <div class="col-xs-6 text-center">
+                      <a href="#" class="user_followers">10</a>
+                  </div>
+                  <div class="col-xs-6 text-center">
+                      <a href="#" class="user_connects">30</a>
+                  </div>
+                  <div class="col-xs-6 text-center">
+                      <a href="#">share</a>
+                  </div>
+                  <div class="col-xs-6 text-center">
+                      <a href="#">Connects</a>
+                  </div>
+              </div>
+
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Reading List</div>
+              <div class="panel-body">
+                Panel content
+              </div>
+            </div>
+          </div>
           <div class="profile-body col-md-9" ng-controller="indexCtrl">
             <div class="row">
-              
               <div class="col-md-9">
-                <div class="well">
+                <div class="well custom-well">
                   <div class="form-group">
                       <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="newShare"></textarea>
                   </div>
@@ -250,25 +275,14 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <div class="well summary-container">
+                <div class="well custom-well summary-container">
                   <div class="user-body summary">
-                      <span class="summary-header">Summary :</span>
-                      <div class="row">
-                        <div class="col-md-8">Jobs:</div>
-                        <div class="col-md-4" style="padding-left:0;">10</div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-8">Share:</div>
-                        <div class="col-md-4" style="padding-left:0;">100+</div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-8">Request:</div>
-                        <div class="col-md-4" style="padding-left:0;">10</div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-8">Profile:</div>
-                        <div class="col-md-4" style="padding-left:0;">10</div>
-                      </div>
+                      <ul class="nav nav-tabs nav-stacked">
+                        <li><a href="#dropdowns"><i class="icon-chevron-right"></i>Find professional</a></li>
+                        <li><a href="#buttonGroups"><i class="icon-chevron-right"></i> Discover</a></li>
+                        <li><a href="#buttonGroups"><i class="icon-chevron-right"></i> Know Company</a></li>
+                        <li><a href="#navs"><i class="icon-chevron-right"></i> Get Jobs</a></li>
+                      </ul>
                   </div>            
                 </div>          
               </div>
@@ -392,46 +406,7 @@
               </div>
             </div>
           </div>     
-          <div class="profile-sidebar col-md-3">
-            <div class="well">
-              <div class="user-header bg-modena clearfix">
-                  <div class="pull-left">
-                    <img src="" style="height: 85px;width: 85px">
-                  </div>
-                  <div class="pull-left">
-                    <h3>Joeylin</h3>
-                  </div>
-              </div>
-              <!-- Menu Body -->
-              <div class="user-body clearfix">
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_followers">10</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_praise">100</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_connects">30</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#">share</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#">Connects</a>
-                  </div>
-              </div>
-
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Reading List</div>
-              <div class="panel-body">
-                Panel content
-              </div>
-            </div>
-          </div>
+          
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>

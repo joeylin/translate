@@ -6,11 +6,11 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.pager = {
             hasNext: false,
-            current: 0
+            current: 1
         };
         $scope.shareList = [];
         $scope.newShare = '';
-        $scope.total = 0;
+        $scope.total = 1;
         $scope.submit = function() {
             var url = '/api/share/add';
             $http.post(url, {
@@ -19,11 +19,11 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.newShare = '';
             });
         };
-        var url = '/api/user/share';
+        var url = '/api/user/trend';
         var params = {
-            page: 0
+            page: 1
         };
-        var getShare = function() {
+        var getTrend = function() {
             $http.get(url, {
                 params: params,
             }).success(function(data) {
@@ -38,15 +38,15 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current += 1;
             params.page = $scope.pager.current;
-            getShare();
+            getTrend();
         };
         $scope.prev = function() {
-            if (!$scope.pager.current) {
+            if ($scope.pager.current <= 1) {
                 return false;
             }
             $scope.pager.current -= 1;
             params.page = $scope.pager.current;
-            getShare();
+            getTrend();
         };
 
         // share item && item comments
@@ -94,7 +94,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
 
         // init
-        getShare();
+        getTrend();
     }
 ]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {

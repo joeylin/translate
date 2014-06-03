@@ -40,7 +40,7 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.save(function(err, share) {
         var Trend = mongoose.model('Trend');
         Trend.createNew({
-            id: share._id,
+            share: share._id,
             name: 'Share',
             userId: share.user
         }, function(err) {
@@ -70,6 +70,30 @@ ShareSchema.methods.like = function(userId) {
 ShareSchema.methods.unlike = function(userId) {
     this.likes.splice(this.likes.indexOf(userId), 1);
     this.save();
+};
+ShareSchema.methods.addComment = function(obj, cb) {
+    var Comment = mongoose.Model('Comment');
+    var share = this;
+    Comment.createNew(obj, function(err, comment) {
+        share.comments.push(comment._id);
+        share.save(function(err, _share) {
+            cb(err, _share);
+        });
+    });
+};
+ShareSchema.methods.deleteComment = function(comment, cb) {
+    var index = this.comments.indexOf(comment);
+    this.comments.splice(index, 1);
+    this.save(function(err, share) {
+        var Comment = mongoose.Model('Comment');
+        Comment.findOne({
+            _id: comment._id
+        }, function(err, comment) {
+            comment.remove(function(err) {
+                cb(err);
+            });
+        });
+    });
 };
 
 // middleware

@@ -278,6 +278,64 @@ var getShare = function(req, res) {
         });
     });
 };
+var getTrends = function(req, res) {
+    var user = req.session.user;
+    var page = req.params.page || 0;
+    var perPageItems = 20;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        var connectList = [];
+        user.connects.map(function(value, key) {
+            connectList.push(value.user);
+        });
+        var followList = connectList.concat(user.followers).split(',');
+        Trend.find({
+            user: {
+                $in: followList
+            }
+        }).sort({
+            createAt: -1
+        }).populate('share').populate('job').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trend) {
+            Trend.find({
+                user: {
+                    $in: followList
+                }
+            }).count().exec(function(err, count) {
+                var content = [];
+                var hasNext;
+                trend.map(function(item, key) {
+                    var result = {};
+                    if (item.name === 'Share') {
+                        for (var name in item.share) {
+                            result[name] = item.share[name];
+                        }
+                        result.name = 'share';
+                        content.push(result);
+                    } else {
+                        for (var i in item.job) {
+                            result[i] = item.job[i];
+                        }
+                        result.name = 'job';
+                        content.push(result);
+                    }
+                });
+                if ((page - 1) * perPageItems + content.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                res.send({
+                    code: 200,
+                    count: count,
+                    hasNext: hasNext,
+                    content: content
+                });
+            });
+        });
+
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -286,6 +344,7 @@ module.exports = function(app) {
 
     // trends
     app.get('/api/user/share', middleware.check_login, getShare);
+    app.get('/api/user/trends', middleware.check_login, getTrends);
 
     // notify
     app.get('/api/notify', getNotify);
