@@ -7,7 +7,7 @@ constant('app', {
 }).provider('getFile', ['app',
     function(app) {
         this.html = function(fileName) {
-            return '/public/tpl/search/' + fileName + '?v=' + app.version;
+            return '/public/tpl/userHome/' + fileName + '?v=' + app.version;
         };
         this.$get = function() {
             return {
@@ -17,40 +17,25 @@ constant('app', {
     }
 ]).config(['$routeProvider', '$locationProvider', 'getFileProvider',
     function($routeProvider, $locationProvider, getFileProvider) {
-        var all = {
-            templateUrl: getFileProvider.html('all.html'),
-            controller: 'allCtrl',
-            path: 'all'
+        var news = {
+            templateUrl: getFileProvider.html('news.html'),
+            controller: 'newsCtrl',
+            path: 'news'
         };
-        var people = {
-            templateUrl: getFileProvider.html('people.html'),
-            controller: 'peopleCtrl',
-            path: 'people'
+        var request = {
+            templateUrl: getFileProvider.html('request.html'),
+            controller: 'requestCtrl',
+            path: 'request'
         };
-        var job = {
-            templateUrl: getFileProvider.html('job.html'),
-            controller: 'jobCtrl',
-            path: 'job'
-        };
-        var company = {
-            templateUrl: getFileProvider.html('company.html'),
-            controller: 'companyCtrl',
-            path: 'company'
-        };
-        var share = {
-            templateUrl: getFileProvider.html('share.html'),
-            controller: 'shareCtrl',
-            path: 'share'
+        var message = {
+            templateUrl: getFileProvider.html('message.html'),
+            controller: 'messageCtrl',
+            path: 'message'
         };
         $routeProvider.
-        when('/search/all', all).
-        when('/search/people', people).
-        when('/search/job', job).
-        when('/search/company', company).
-        when('/search/share', share).
-        otherwise({
-            redirectTo: '/search/all'
-        });
+        when('/home', news).
+        when('/request', request).
+        when('/message', message);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }
 ]);

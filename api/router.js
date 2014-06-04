@@ -60,12 +60,16 @@ module.exports = function(app) {
     };
     var getHome = function(req, res) {
         var user = req.session.user;
-        app.locals.user = user;
-        if (user.role === 'user') {
-            res.render('user-home');
-        } else {
-            res.render('company-home');
-        }
+        User.findOne({
+            _id: user._id
+        }, function(err, user) {
+            app.locals.user = user;
+            if (user.role === 'user') {
+                res.render('user-home');
+            } else {
+                res.render('company-home');
+            }
+        }); 
     };
     var getNotify = function(req, res) {
         app.locals.user = req.session.user;
@@ -106,6 +110,8 @@ module.exports = function(app) {
     // home
     app.get('/', middleware.check_login, getMain);
     app.get('/home', middleware.check_login, getHome);
+    app.get('/message', middleware.check_login, getHome);
+    app.get('/request', middleware.check_login, getHome);
 
     // login
     app.get('/login', getLogin);

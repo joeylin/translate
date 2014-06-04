@@ -124,7 +124,8 @@
             color: #555;
           }
           .summary .nav>li>a i {
-            padding-right: 5px;
+            padding-right: 21px;
+            margin-left: -3px;
           }
           .summary .nav>li.active>a {
             background-color: #f0f0f0;
@@ -149,6 +150,12 @@
           }
           .home-container .col-md-2 {
             padding-left: 0;
+          }
+          .profile-sidebar {
+            float: right;
+          }
+          .profile-body {
+            min-height: 960px;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -243,162 +250,36 @@
             <div class="well custom-well siderbar-nav">
               <div class="user-body summary">
                   <ul class="nav nav-tabs nav-stacked">
-                    <li class="active"><a href="#dropdowns"><i class="icon-chevron-right"></i>News</a></li>
-                    <li><a href="#dropdowns"><i class="icon-chevron-right"></i>Requests</a></li>
-                    <li><a href="#dropdowns"><i class="fa fa-fw fa-comments"></i>Message</a></li>
-                    <li><a href="#dropdowns"><i class="icon-chevron-right"></i>Find professional</a></li>
-                    <li><a href="#buttonGroups"><i class="icon-chevron-right"></i>Discover</a></li>
-                    <li><a href="#buttonGroups"><i class="icon-chevron-right"></i>Know Company</a></li>
-                    <li><a href="#navs"><i class="icon-chevron-right"></i>Get Jobs</a></li>
+                    <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
+                    <li ng-class="{active: current.path === 'request'}"><a ng-href="/request"><i class="fa fa-fw fa-info-circle"></i>Requests</a></li>
+                    <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li>
+                    <li><a href="/search/people" target="_self"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
+                    <li><a href="/search/share" target="_self"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
+                    <li><a href="/search/company" target="_self"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li>
+                    <li><a href="/search/job" target="_self"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
                   </ul>
               </div>            
             </div>
           </div>
-          <div class="profile-body col-md-7" ng-controller="indexCtrl">
-            <div class="well custom-well">
-              <div class="form-group">
-                  <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="newShare"></textarea>
-              </div>
-              <div class="clearfix">
-                <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
-              </div>
-            </div>
-            <div class="panel news">
-              <div class="panel-heading">
-                <h4 class="panel-title">News</h4>
-              </div>
-              <div class="panel-body" ng-cloak>
-                <div class="media" ng-repeat-start="share in shareList">
-                  <a class="pull-left" ng-href="/profile/{{share.user.username}}" target="_self">
-                    <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
-                  </a>
-                  <div class="media-body">
-                    <h4 class="media-heading">{{share.user.name}}</h4>
-                    <div>
-                      <p>{{share.content}}</p>
-                    </div>
-                    <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">{{share.createAt}}</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="like">like</a>
-                        <a href="#" class="comment" ng-click="vm.toggleComment(share)">comment({{share.comments.length}})</a>
-                      </span>
-                    </div>
-                    <div class="reply-container" ng-show="share.isShowComment">
-                      <div class="input-group comment-editor">
-                          <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="share.newComment"></textarea>
-                          <span class="input-group-btn">
-                              <button class="btn btn-primary reply-submit" type="button" ng-click="vm.submitComment(share)">submit</button>
-                          </span>
-                      </div>
-                      <hr class="reply-hr" ng-repeat-start="comment in share.comments">
-                      <div class="media reply-item" ng-repeat-end>
-                        <a class="pull-left" ng-href="/profile/{{comment.user.name}}" target="_self">
-                          <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
-                        </a>
-                        <div class="media-body">
-                          <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
-                          <div class="clearfix media-info">
-                            <span class="date pull-left"><a href="#">{{comment.date}}</a></span>
-                            <span class="pull-right media-controll">
-                              <a href="#" class="comment" ng-show="comment.user.username === vm.username" ng-click="vm.delete(comment, share)">delete</a>
-                              <a href="#" class="comment" ng-click="vm.reply(comment)">reply</a>
-                            </span>
-                          </div>
-                          <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
-                              <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
-                              <span class="input-group-btn">
-                                  <button class="btn btn-primary" type="button" ng-click="vm.submitComment(comment)">submit</button>
-                              </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr ng-repeat-end>
-                <div class="media">
-                  <a class="pull-left" href="#">
-                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 50px; height: 50px;">
-                  </a>
-                  <div class="media-body">
-                    <h4 class="media-heading">Media heading</h4>
-                    <div>
-                      <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                    </div>
-                    <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="praise">praise</a>
-                        <a href="#" class="comment" >comment</a>
-                      </span>
-                    </div>
-                    <div class="reply-container">
-                      <div class="input-group comment-editor">
-                          <textarea class="form-control" rows="1" placeholder="Enter ..."></textarea>
-                          <span class="input-group-btn">
-                              <button class="btn btn-primary" type="button">submit</button>
-                          </span>
-                      </div>
-                      <hr class="reply-hr">
-                      <div class="media reply-item">
-                        <a class="pull-left" href="#">
-                          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 34px; height: 34px;">
-                        </a>
-                        <div class="media-body">
-                          <p class="reply-content"><span class="reply-user"><a href="#">Joeylin</a>: </span>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                          <div class="clearfix media-info">
-                            <span class="date pull-left"><a href="#">a minute ago</a></span>
-                            <span class="pull-right media-controll">
-                              <a href="#" class="comment" >reply</a>
-                            </span>
-                          </div>
-                          <div class="input-group comment-editor comment-editor-inline">
-                              <textarea class="form-control" rows="1" placeholder="Enter ..."></textarea>
-                              <span class="input-group-btn">
-                                  <button class="btn btn-primary" type="button">submit</button>
-                              </span>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="reply-hr">
-                      <div class="media reply-item">
-                        <a class="pull-left" href="#">
-                          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 34px; height: 34px;">
-                        </a>
-                        <div class="media-body">
-                          <p class="reply-content"><span class="reply-user"><a href="#">Joeylin</a>: </span>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                          <div class="clearfix media-info">
-                            <span class="date pull-left"><a href="#">a minute ago</a></span>
-                            <span class="pull-right media-controll">
-                              <a href="#" class="comment" >reply</a>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="profile-body col-md-7" ng-view>
           </div> 
           <div class="profile-sidebar col-md-3">
             <div class="well">
               <div class="user-header bg-modena clearfix">
                   <div class="pull-left">
-                    <img src="" style="height: 85px;width: 85px">
+                    <img src="<%= locals.user.avatar %>" style="height: 85px;width: 85px">
                   </div>
                   <div class="pull-left">
-                    <h3>Joeylin</h3>
+                    <h3><%= locals.user.display_name %></h3>
                   </div>
               </div>
               <!-- Menu Body -->
               <div class="user-body clearfix">
                   <div class="col-xs-6 text-center">
-                      <a href="#" class="user_followers">10</a>
+                      <a href="#" class="user_followers"><%= locals.user.followers.length %></a>
                   </div>
                   <div class="col-xs-6 text-center">
-                      <a href="#" class="user_connects">30</a>
+                      <a href="#" class="user_connects"><%= locals.user.connects.length %></a>
                   </div>
                   <div class="col-xs-6 text-center">
                       <a href="#">share</a>

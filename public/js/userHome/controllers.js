@@ -2,7 +2,7 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
+controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.pager = {
             hasNext: false,
@@ -97,6 +97,51 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         getTrend();
     }
 ]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var url = '/api/notify';
+        $http.get(url).success(function(data) {
+            var request = data.notify.request.length;
+            var message = data.notify.message.length;
+
+            $scope.total = request + message;
+            $scope.request = request;
+            $scope.message = message;
+        });
+    }
+]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        $scope.requests = [];
+        var checkUrl = '/api/connect/check';
+        var dispose = function() {
+            $rootScope.current.request -= 1;
+        };
+        $scope.vm = {};
+        $scope.vm.accept = function(request) {
+            var params = {
+                value: true,
+                requestId: request._id
+            };
+            $http.post(checkUrl, params).success(function(data) {
+                request.hasDisposed = true;
+                dispose();
+            });
+        };
+        $scope.vm.reject = function(request) {
+            var params = {
+                value: false,
+                requestId: request._id
+            };
+            $http.post(checkUrl, params).success(function(data) {
+                request.hasDisposed = true;
+                dispose();
+            });
+        };
+        var url = '/api/notify/request';
+        $http.get(url).success(function(data) {
+            $scope.requests = data.requests;
+        });
+    }
+]).controller('messageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
         var url = '/api/notify';
         $http.get(url).success(function(data) {

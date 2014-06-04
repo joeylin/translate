@@ -280,7 +280,7 @@ var getShare = function(req, res) {
 };
 var getTrends = function(req, res) {
     var user = req.session.user;
-    var page = req.params.page || 0;
+    var page = req.params.page || 1;
     var perPageItems = 20;
     User.findOne({
         _id: user._id
@@ -289,7 +289,7 @@ var getTrends = function(req, res) {
         user.connects.map(function(value, key) {
             connectList.push(value.user);
         });
-        var followList = connectList.concat(user.followers).split(',');
+        var followList = connectList.concat(user.followers);
         Trend.find({
             user: {
                 $in: followList
@@ -297,6 +297,11 @@ var getTrends = function(req, res) {
         }).sort({
             createAt: -1
         }).populate('share').populate('job').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trend) {
+            if (err) {
+                return res.send({
+                    code: 404
+                });
+            }
             Trend.find({
                 user: {
                     $in: followList
@@ -344,7 +349,7 @@ module.exports = function(app) {
 
     // trends
     app.get('/api/user/share', middleware.check_login, getShare);
-    app.get('/api/user/trends', middleware.check_login, getTrends);
+    app.get('/api/user/trend', middleware.check_login, getTrends);
 
     // notify
     app.get('/api/notify', getNotify);
