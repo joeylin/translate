@@ -64,13 +64,16 @@ RequestSchema.statics.delete = function(id, cb) {
 RequestSchema.methods.dispose = function(value, userId, cb) {
     var User = mongoose.model('User');
     var id = this._id;
+    console.log(id);
+
     this.hasDisposed = true;
     this.isPass = value;
     this.save(function(err) {
         User.findOne({
             _id: userId
         }, function(err, user) {
-            var index = user.requests.indexOf(id);
+            console.log(user);
+            var index = user.request.indexOf(id);
             user.requests.splice(index, 1);
 
             // ensure multi-requests form one person to be disposed at the same time

@@ -33,6 +33,8 @@ controller('requestCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         var url = '/api/notify/request';
         $http.get(url).success(function(data) {
             $scope.requests = data.requests;
+        }).error(function(err) {
+            console.log();
         });
     }
 ]).controller('messageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',

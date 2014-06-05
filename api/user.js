@@ -250,12 +250,10 @@ var getRequest = function(req, res) {
     Request.find({
         to: user._id
     }).populate('from').exec(function(err, requests) {
-        checkUserRequest(requests, user._id, function(err) {
-            console.log(requests);
-            res.send({
-                code: 200,
-                requests: requests
-            });
+        console.log(requests);
+        res.send({
+            code: 200,
+            requests: requests
         });
     });
 };
