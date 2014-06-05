@@ -56,16 +56,10 @@ var UserSchema = new Schema({
         type: ObjectId,
         ref: 'Message'
     }],
-    notify: {
-        message: [{
-            type: ObjectId,
-            ref: 'Message'
-        }],
-        request: [{
-            type: ObjectId,
-            ref: 'Request'
-        }]
-    },
+    request: [{
+        type: ObjectId,
+        ref: 'Request'
+    }],
     followers: [{
         type: ObjectId,
         ref: 'User'
@@ -344,11 +338,17 @@ UserSchema.methods = {
             User.findOne({
                 _id: userId
             }, function(err, user) {
+                if (err) {
+                    console.log(err);
+                }
                 user.connects.push({
                     user: id,
                     relate: relate
                 });
                 user.save(function(err, user) {
+                    if (err) {
+                        console.log(err);
+                    }
                     cb(err, user);
                 });
             });
@@ -376,16 +376,6 @@ UserSchema.methods = {
                 });
             });
         });
-    },
-    dealRequest: function(requestId, cb) {
-        var index = this.notify.request.indexOf(requestId);
-        this.notify.request.splice(index, 1);
-        this.save(cb);
-    },
-    dealMessage: function(messageId, cb) {
-        var index = this.notify.message.indexOf(messageId);
-        this.notify.message.splice(index, 1);
-        this.save(cb);
     }
 };
 

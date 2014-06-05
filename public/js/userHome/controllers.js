@@ -108,8 +108,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $scope.message = message;
         });
     }
-]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
+]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.requests = [];
         var checkUrl = '/api/connect/check';
         var dispose = function() {

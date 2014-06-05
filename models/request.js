@@ -61,10 +61,43 @@ RequestSchema.statics.delete = function(id, cb) {
 };
 
 // methods
-RequestSchema.methods.dispose = function(value, cb) {
+RequestSchema.methods.dispose = function(value, userId, cb) {
+    var User = mongoose.model('User');
+    var id = this._id;
     this.hasDisposed = true;
     this.isPass = value;
-    this.save(cb);
+    this.save(function(err) {
+        User.findOne({
+            _id: userId
+        }, function(err, user) {
+            var index = user.requests.indexOf(id);
+            user.requests.splice(index, 1);
+
+            // ensure multi-requests form one person to be disposed at the same time
+            var async = require('async');
+            async.eachSeries(user.requests, function(request, next) {
+                if (request.from === userId) {
+                    var Request = mongoose.model('Request');
+                    Request.findOne({
+                        _id: request._id
+                    }, function(err, request) {
+                        request.hasDisposed = true;
+                        request.isPass = true;
+                        request.save(function(err) {
+                            next();
+                        });
+                    });
+                } else {
+                    next();
+                }
+            }, function(err) {
+                cb(err);
+            });
+            user.save(function(err, user) {
+                cb(err, user);
+            });
+        });
+    });
 };
 
 // middleware

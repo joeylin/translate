@@ -131,7 +131,7 @@ var sendNotify = function(req, res) {
         User.findOne({
             _id: req.body.id
         }, function(err, user) {
-            user.notify.request.push(request._id);
+            user.request.push(request._id);
             user.save(function(err) {
                 res.send({
                     code: 200,
@@ -162,23 +162,30 @@ var checkConnect = function(req, res) {
             }
             if (value) {
                 user.connect(request.from, request.content, function(err, user) {
-                    request.dispose(true, function() {
-                        user.dealRequest(request._id, function(err) {
-                            res.send({
-                                code: 200,
-                                info: 'success check false'
-                            });
+                    if (err) {
+                        res.send({
+                            code: 404,
+                            info: 'fail connect'
                         });
-
+                    }
+                    request.dispose(true, user._id, function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        res.send({
+                            code: 200,
+                            info: 'check false'
+                        });
                     });
                 });
             } else {
-                request.dispose(false, function() {
-                    user.dealRequest(request, function() {
-                        res.send({
-                            code: 200,
-                            info: 'success check true'
-                        });
+                request.dispose(false, user._id, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    res.send({
+                        code: 200,
+                        info: 'check true'
                     });
                 });
             }
@@ -203,10 +210,38 @@ var getNotify = function(req, res) {
     var user = req.session.user;
     User.findOne({
         _id: user._id
-    }).exec(function(err, user) {
-        res.send({
-            code: 200,
-            notify: user.notify
+    }).populate('Request').populate('Message').exec(function(err, user) {
+        var userRequest = user.request;
+        var outDateResquests = [];
+        console.log(user.request);
+        userRequest.map(function(request, key) {
+            if (request.hasDisposed) {
+                outDateResquests.push(key);
+            }
+        });
+        outDateResquests.map(function(value) {
+            user.request.splice(value, 1);
+        });
+        console.log(user.request);
+        var userMessage = user.message;
+        var outDateMessage = [];
+        userMessage.map(function(message, key) {
+            if (message.hasRead) {
+                outDateMessage.push(key);
+            }
+        });
+        outDateMessage.map(function(value) {
+            user.message.splice(value, 1);
+        });
+        user.save(function(err, user) {
+            console.log(user.request);
+            res.send({
+                code: 200,
+                notify: {
+                    request: user.request.length,
+                    message: user.message.length
+                }
+            });
         });
     });
 };
@@ -216,12 +251,12 @@ var getRequest = function(req, res) {
         to: user._id
     }).populate('from').exec(function(err, requests) {
         checkUserRequest(requests, user._id, function(err) {
+            console.log(requests);
             res.send({
                 code: 200,
                 requests: requests
             });
         });
-
     });
 };
 var readRequest = function(req, res) {
@@ -338,7 +373,6 @@ var getTrends = function(req, res) {
                 });
             });
         });
-
     });
 };
 
@@ -370,16 +404,29 @@ module.exports = function(app) {
 function checkUserRequest(requests, userId, cb) {
     User.findOne({
         _id: userId
-    }, function(err, user) {
-        var userRequsets = user.notify.request;
-        userRequsets.map(function(userRequest, key) {
-            requests.map(function(request) {
-                if (request._id === userRequest && request.hasDisposed) {
-                    var index = user.notify.request.indexOf(userRequest);
-                    user.notify.request.splice(index, 1);
-                }
-            });
+    }).exec(function(err, user) {
+        requests.map(function(request) {
+
         });
-        user.save(cb);
+    });
+}
+
+function checkSameTypeRequest(userId, requests, cb) {
+    async.eachSeries(requests, function(request, next) {
+        if (request.from === userId) {
+            Request.findOne({
+                _id: request._id
+            }, function(err, request) {
+                request.hasDisposed = true;
+                request.isPass = true;
+                request.save(function(err) {
+                    next();
+                });
+            });
+        } else {
+            next();
+        }
+    }, function(err) {
+        cb(err);
     });
 }

@@ -31,9 +31,9 @@ config(['$httpProvider', 'app',
         });
     }
 ]).run(['app', '$q', '$rootScope', '$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc','$http',
+    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc', '$http',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
-        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc,$http) {
+        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc, $http) {
 
         var global = $rootScope.global = {
             isLogin: false,
@@ -77,7 +77,7 @@ config(['$httpProvider', 'app',
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
         app.user = window.user;
-        
+
         $rootScope.current = {};
         $rootScope.global.user = window.user;
         $rootScope.$on('$routeChangeStart', function(event, next, current) {
@@ -86,8 +86,8 @@ config(['$httpProvider', 'app',
             }
         });
         $http.get('/api/notify').success(function(data) {
-            $rootScope.current.request = data.notify.request.length;
-            $rootScope.current.message = data.notify.message.length;
+            $rootScope.current.request = data.notify.request;
+            $rootScope.current.message = data.notify.message;
         });
     }
 ]);
