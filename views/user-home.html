@@ -153,6 +153,7 @@
           }
           .profile-sidebar {
             float: right;
+            padding-left: 0;
           }
           .profile-body {
             min-height: 960px;
@@ -183,14 +184,14 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right" ng-cloak>
-                  <li class="dropdown notifications-menu user-menu" ng-controller="notifyCtrl" id="menuNotify">
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{total}}</span>
+                            <span class="label label-wraning">{{current.request + current.message}}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/notify/request" target="_self">{{request}} requests</a></li>
-                            <li><a href="/notify/message">{{message}} messages</a></li>
+                            <li><a href="/notify/request" target="_self">{{current.request}} requests</a></li>
+                            <li><a href="/notify/message">{{current.message}} messages</a></li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
@@ -253,50 +254,18 @@
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
                     <li ng-class="{active: current.path === 'request'}"><a ng-href="/request"><i class="fa fa-fw fa-info-circle"></i>Requests</a></li>
                     <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li>
-                    <li><a href="/search/people" target="_self"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
-                    <li><a href="/search/share" target="_self"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
-                    <li><a href="/search/company" target="_self"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li>
-                    <li><a href="/search/job" target="_self"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
+                    <li ng-class="{active: current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
+                    <li ng-class="{active: current.path === 'share'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
+                    <li ng-class="{active: current.path === 'company'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li>
+                    <li ng-class="{active: current.path === 'job'}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
                   </ul>
               </div>            
             </div>
           </div>
-          <div class="profile-body col-md-7" ng-view>
-          </div> 
-          <div class="profile-sidebar col-md-3">
-            <div class="well">
-              <div class="user-header bg-modena clearfix">
-                  <div class="pull-left">
-                    <img src="<%= locals.user.avatar %>" style="height: 85px;width: 85px">
-                  </div>
-                  <div class="pull-left">
-                    <h3><%= locals.user.display_name %></h3>
-                  </div>
-              </div>
-              <!-- Menu Body -->
-              <div class="user-body clearfix">
-                  <div class="col-xs-6 text-center">
-                      <a href="#" class="user_followers"><%= locals.user.followers.length %></a>
-                  </div>
-                  <div class="col-xs-6 text-center">
-                      <a href="#" class="user_connects"><%= locals.user.connects.length %></a>
-                  </div>
-                  <div class="col-xs-6 text-center">
-                      <a href="#">share</a>
-                  </div>
-                  <div class="col-xs-6 text-center">
-                      <a href="#">Connects</a>
-                  </div>
-              </div>
-
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Reading List</div>
-              <div class="panel-body">
-                Panel content
-              </div>
-            </div>
-          </div>    
+          <div class="col-md-10" style="padding-left:0;">
+            <div class="row" ng-view ng-cloak></div>
+          </div>
+            
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>

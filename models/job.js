@@ -82,14 +82,18 @@ JobSchema.statics.createNew = function(obj, cb) {
     for (var key in obj) {
         job[key] = obj[key];
     }
-    job.save(function(err, job) {
-        var Trend = mongoose.model('Trend');
-        Trend.createNew({
-            job: job._id,
-            name: 'Job',
-            userId: job.user
-        }, function(err) {
-            cb(err, job);
+    var IdGenerator = mongoose.model('IdGenerator');
+    IdGenerator.getNewId('job', function(err, doc) {
+        job.id = doc.currentId;
+        job.save(function(err, job) {
+            var Trend = mongoose.model('Trend');
+            Trend.createNew({
+                job: job._id,
+                name: 'Job',
+                userId: job.user
+            }, function(err) {
+                cb(err, job);
+            });
         });
     });
 };

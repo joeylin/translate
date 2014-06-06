@@ -278,41 +278,51 @@ var getTrends = function(req, res) {
         });
         var followList = connectList.concat(user.followers);
         var array = [];
-        followList.map(function(value,key) {
+        followList.map(function(value, key) {
             array.push(value.toString());
         });
         Trend.find({
-            user: {
-                $in: followList
+            userId: {
+                $in: array
             }
         }).sort({
             createAt: -1
-        }).populate('share').populate('job').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trend) {
-            if (err) {
-                return res.send({
-                    code: 404
-                });
-            }
+        }).populate('share').populate('job').populate('userId').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
             Trend.find({
-                user: {
-                    $in: followList
+                userId: {
+                    $in: array
                 }
             }).count().exec(function(err, count) {
                 var content = [];
                 var hasNext;
-                trend.map(function(item, key) {
+                trends.map(function(item, key) {
                     var result = {};
                     if (item.name === 'Share') {
-                        for (var name in item.share) {
-                            result[name] = item.share[name];
-                        }
                         result.name = 'share';
+                        result._id = item.share._id;
+                        result.comments = item.share.comments;
+                        result.content = item.share.content;
+                        result.createAt = item.share.createAt;
+                        result.id = item.share.id;
+                        result.user = {
+                            name: item.userId.name,
+                            avatar: item.userId.avatar,
+                            id: item.userId.id
+                        };
+                        result.liked = false;
+                        item.share.likes.map(function(like) {
+                            if (like.toString() == user._id.toString()) {
+                                result.liked = true;
+                            }
+                        });
+                        result.likes = item.share.likes.length;
                         content.push(result);
                     } else {
+                        // todo later
+                        result.name = 'job';
                         for (var i in item.job) {
                             result[i] = item.job[i];
                         }
-                        result.name = 'job';
                         content.push(result);
                     }
                 });

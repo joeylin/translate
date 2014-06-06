@@ -69,7 +69,7 @@ module.exports = function(app) {
             } else {
                 res.render('company-home');
             }
-        }); 
+        });
     };
     var getNotify = function(req, res) {
         app.locals.user = req.session.user;
@@ -112,6 +112,10 @@ module.exports = function(app) {
     app.get('/home', middleware.check_login, getHome);
     app.get('/message', middleware.check_login, getHome);
     app.get('/request', middleware.check_login, getHome);
+    app.get('/company', middleware.check_login, getHome);
+    app.get('/share', middleware.check_login, getHome);
+    app.get('/job', middleware.check_login, getHome);
+    app.get('/people', middleware.check_login, getHome);
 
     // login
     app.get('/login', getLogin);

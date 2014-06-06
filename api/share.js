@@ -38,22 +38,25 @@ var getShareById = function(req, res) {
     });
 };
 var getShareComments = function(req, res) {
-    var shareId = req.params.shareId;
+    var shareId = req.query.shareId;
     Share.findOne({
         _id: shareId
     }).exec(function(err, share) {
-        if (err) {
+        if (err || !share) {
             return res.send({
                 code: 404,
                 info: 'cant get comments'
             });
         }
+        console.log(share);
         var count = share.comments.length;
-        var latest = share.comments.slice(-5);
+        var latest = share.comments.slice(-15);
         Comment.find({
             _id: {
                 $in: latest
             }
+        }).sort({
+            createAt: -1
         }).populate('user').exec(function(err, comments) {
             res.send({
                 code: 200,
@@ -70,50 +73,28 @@ var addShare = function(req, res) {
         userId: user._id
     };
     Share.createNew(share, function(err, data) {
-        User.findOne({
-            _id: user._id
-        }, function(err, user) {
-            user.share.push(data._id);
-            user.save(function() {
-                res.send({
-                    code: 200,
-                    content: data
-                });
-            });
+        res.send({
+            code: 200,
+            content: data
         });
     });
 };
 var deleteShare = function(req, res) {
     var user = req.session.user;
     var id = req.body.id;
-    User.findOne({
-        _id: user._id
-    }, function(err, user) {
-        var index = user.share.indexOf(id);
-        if (index < 0) {
-            return res.send({
-                code: 404,
-                info: 'no auth'
-            });
-        } else {
-            Share.findOne({
-                _id: id
-            }, function(err, share) {
-                share.remove();
-                user.share.splice(index, 1);
-                user.save(function(err) {
-                    res.send({
-                        code: 200
-                    });
-                });
-            });
-        }
+    Share.findOne({
+        _id: id,
+        user: user._id
+    }, function(err) {
+        res.send({
+            code: 200,
+            info: 'delete success'
+        });
     });
 };
 var addComment = function(req, res) {
     var shareId = req.body.shareId;
     var user = req.session.user;
-
     var comment = {
         content: req.body.content,
         replyTo: req.body.replyTo,
@@ -127,7 +108,10 @@ var addComment = function(req, res) {
             share.save(function(err) {
                 res.send({
                     code: 200,
-                    content: comment
+                    content: {
+                        createAt: comment.createAt.toDateString(),
+                        _id: comment._id
+                    }
                 });
             });
         });
@@ -136,11 +120,10 @@ var addComment = function(req, res) {
 var deleteComment = function(req, res) {
     var shareId = req.body.shareId;
     var user = req.session.user;
-    var commentId = req.body.commentId;
+    var index = req.body.commentIndex;
     Share.findOne({
         _id: shareId
     }, function(err, share) {
-        var index = share.comments.indexOf(commentId);
         if (index < 0) {
             return res.send({
                 code: 404,
@@ -148,22 +131,24 @@ var deleteComment = function(req, res) {
             });
         } else {
             Comment.findOne({
-                _id: commentId
+                _id: share.comments[index]
             }, function(err, comment) {
-                if (comment.user !== user._id) {
+                // only comment author or share author can delete comment
+                if (comment.user.toString() == user._id || share.user.toString() == user._id) {
+                    comment.remove();
+                    share.comments.splice(index, 1);
+                    share.save(function(err) {
+                        res.send({
+                            code: 200,
+                            info: 'success'
+                        });
+                    });
+                } else {
                     return res.send({
                         code: 404,
                         info: 'no auth'
                     });
                 }
-                comment.remove();
-                share.comments.splice(index, 1);
-                share.save(function(err) {
-                    res.send({
-                        code: 200,
-                        info: 'success'
-                    });
-                });
             });
         }
     });
@@ -174,7 +159,12 @@ var shareLike = function(req, res) {
     Share.findOne({
         _id: shareId
     }, function(err, share) {
-        var index = share.likes.indexOf(user._id);
+        var index = -1;
+        share.likes.map(function(like, key) {
+            if (like.toString() == user._id) {
+                index = key;
+            }
+        });
         if (index >= 0) {
             return res.send({
                 code: 404,
@@ -196,7 +186,12 @@ var shareUnlike = function(req, res) {
     Share.findOne({
         _id: shareId
     }, function(err, share) {
-        var index = share.likes.indexOf(user._id);
+        var index = -1;
+        share.likes.map(function(like, key) {
+            if (like.toString() == user._id) {
+                index = key;
+            }
+        });
         if (index < 0) {
             return res.send({
                 code: 404,
@@ -256,9 +251,7 @@ var unCollectShare = function(req, res) {
         });
     });
 };
-var getTrends = function(req, res) {
 
-};
 module.exports = function(app) {
     app.post('/api/share/collect', middleware.check_login, collectShare);
     app.post('/api/share/uncollect', middleware.check_login, unCollectShare);

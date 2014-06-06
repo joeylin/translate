@@ -1,0 +1,180 @@
+<div class="profile-body col-md-9">
+  <div class="panel search-result">
+    <div class="panel-heading">Results: 1568</div>
+    <div class="panel-body">
+      <div class="media" ng-repeat="job in content">
+        <a class="pull-left" ng-href="/api/company/{{job.company.name}}" target="_self">
+          <img class="media-object" alt="64x64" ng-src="{{job.company.avatar}}" style="width: 64px; height: 64px;">
+        </a>
+        <div class="media-body">
+          <h4 class="media-heading">{{job.company.name}}</h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>{{job.desc}}</div>
+              <div> <strong>Payment</strong>: {{job.payment}}</div>
+              <div> <strong>Skills</strong>: {{job.skills}}</div>
+              <div class="search-job-location"><strong>location</strong>: {{job.location}}</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at {{job.date}} </a>
+                <span> views: {{job.views}}</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="pull-right">
+                <a class="btn btn-primary" role="button" ng-href="/api/job/{{job.id}}" target="_self">View</a>
+                <a class="btn btn-primary" role="button" ng-click="save()" ng-show="!isSaved">Save</a>
+                <a class="btn btn-default" role="button" ng-click="save()" ng-show="isSaved">Saved</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="media">
+        <a class="pull-left" href="#">
+          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+        </a>
+        <div class="media-body">
+          <h4 class="media-heading">AmazingSurge</h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> views: 1000</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="pull-right">
+                <a class="btn btn-primary" role="button">View</a>
+                <a class="btn btn-primary" role="button">Save</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="media">
+        <a class="pull-left" href="#">
+          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+        </a>
+        <div class="media-body">
+          <h4 class="media-heading">SmashMagzine</h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> views: 1000</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="pull-right">
+                <a class="btn btn-primary" role="button">View</a>
+                <a class="btn btn-primary" role="button">Save</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="media">
+        <a class="pull-left" href="#">
+          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+        </a>
+        <div class="media-body">
+          <h4 class="media-heading">CssTrick</h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> views: 1000</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="pull-right">
+                <a class="btn btn-primary" role="button">View</a>
+                <a class="btn btn-primary" role="button">Save</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div>
+        <ul class="pager">
+          <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>
+          <li ng-class="{'disabled': $scope.vm.pager.hasLast}" ng-click="next()"><a href="#">Next</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="profile-sidebar col-md-3">
+  <div class="panel">
+    <div class="panel-body" ng-show="!isFilter">
+      <div class="form-group">
+          <label>keyword</label>
+          <input type="text" class="form-control" placeholder="Enter keyword">
+      </div>
+      <div class="form-group">
+          <label>location</label>
+          <input type="text" class="form-control" placeholder="Enter location">
+      </div>
+      <div class="form-group">
+          <label>payment</label>
+          <select class="form-control" ng-model="payment">
+              <option>3k</option>
+              <option>3k-7k</option>
+              <option>7k-14k</option>
+              <option>14k-24k</option>
+              <option>24k+</option>
+          </select>
+      </div>
+      <div class="clearfix">
+        <a class="pull-left search-filter" role="button" ng-click="showFilter()">Filters</a>
+        <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
+      </div>
+    </div>
+    <div class="panel-body" ng-show="isFilter">
+      <div class="clearfix">
+        <a class="btn btn-primary pull-right" role="button" ng-click="hideFilter()">Back</a>
+      </div>
+      <div class="form-group">
+          <label>Past Company</label>
+          <input type="text" class="form-control" placeholder="Enter pastCompany" ng-model="pastCompany" ng-keydown="enter($event,'pastCompany',pastCompany)">
+      </div>
+      <div class="form-group">
+          <label>Current Company</label>
+          <input type="text" class="form-control" placeholder="Enter currentCompany" ng-model="currentCompany" ng-keydown="enter($event,'currentCompany',currentCompany)">
+      </div>
+      <div class="form-group">
+          <label>Industry</label>
+          <input type="text" class="form-control" placeholder="Enter skill" ng-model="industry" ng-keydown="enter($event,'industry',industry)">
+      </div>
+      <div class="form-group">
+          <label>Language</label>
+          <input type="text" class="form-control" placeholder="Enter Company" ng-model="language" ng-keydown="enter($event,'language',language)">
+      </div>
+      <div class="form-group">
+          <label>Years of Experence</label>
+          <select class="form-control" ng-model="years" ng-change="addFilter('years',years)">
+              <option>no</option>
+              <option>0-2</option>
+              <option>2-4</option>
+              <option>4-7</option>
+              <option>8+</option>
+          </select>
+      </div>
+    </div>
+  </div>
+</div>

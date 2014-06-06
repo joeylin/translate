@@ -7,6 +7,9 @@ var ShareSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
+    id: {
+        type: Number
+    },
     content: {
         type: String
     },
@@ -37,14 +40,18 @@ ShareSchema.statics.createNew = function(obj, cb) {
     var share = new this();
     share.content = obj.content;
     share.user = obj.userId;
-    share.save(function(err, share) {
-        var Trend = mongoose.model('Trend');
-        Trend.createNew({
-            share: share._id,
-            name: 'Share',
-            userId: share.user
-        }, function(err) {
-            cb(err, share);
+    var IdGenerator = mongoose.model('IdGenerator');
+    IdGenerator.getNewId('share', function(err, doc) {
+        share.id = doc.currentId;
+        share.save(function(err, share) {
+            var Trend = mongoose.model('Trend');
+            Trend.createNew({
+                share: share._id,
+                name: 'Share',
+                userId: share.user
+            }, function(err) {
+                cb(err, share);
+            });
         });
     });
 };

@@ -22,6 +22,26 @@ constant('app', {
             controller: 'newsCtrl',
             path: 'news'
         };
+        var people = {
+            templateUrl: getFileProvider.html('people.html'),
+            controller: 'peopleCtrl',
+            path: 'people'
+        };
+        var share = {
+            templateUrl: getFileProvider.html('share.html'),
+            controller: 'shareCtrl',
+            path: 'share'
+        };
+        var job = {
+            templateUrl: getFileProvider.html('job.html'),
+            controller: 'jobCtrl',
+            path: 'job'
+        };
+        var company = {
+            templateUrl: getFileProvider.html('company.html'),
+            controller: 'companyCtrl',
+            path: 'company'
+        };
         var request = {
             templateUrl: getFileProvider.html('request.html'),
             controller: 'requestCtrl',
@@ -34,6 +54,10 @@ constant('app', {
         };
         $routeProvider.
         when('/home', news).
+        when('/people', people).
+        when('/share', share).
+        when('/job', job).
+        when('/company', company).
         when('/request', request).
         when('/message', message);
         $locationProvider.html5Mode(true).hashPrefix('!');

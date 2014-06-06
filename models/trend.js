@@ -40,8 +40,10 @@ TrendSchema.path('name').validate(function(name) {
 // statics
 TrendSchema.statics.createNew = function(obj, cb) {
     var trend = new this();
-    trend.id = obj.id;
+    trend.userId = obj.userId;
     trend.name = obj.name;
+    trend.share = obj.share;
+    trend.job = obj.job;
     trend.save(cb);
 };
 TrendSchema.statics.delete = function(id, cb) {
