@@ -16,10 +16,12 @@ var getPeople = function(req, res) {
     User.find({
         name: re
     }, function(err, users) {
-        res.send({
-            code: 200,
-            content: setRelate(users, user._id)
-        });
+        setRelate(users, user._id, function(results) {
+            res.send({
+                code: 200,
+                content: results
+            });
+        }); 
     });
 };
 var getJobs = function(req, res) {
@@ -42,32 +44,35 @@ module.exports = function(app) {
 };
 
 // helper
-
-function setRelate(users, userId) {
+function setRelate(users, meId, cb) {
     var results = [];
-    if (!userId) {
+    if (!meId) {
         return users;
     }
-    users.map(function(user, key) {
-        var obj = {
-            avatar: user.avatar,
-            _id: user._id,
-            name: user.name,
-            desc: user.desc
-        };
-        obj.isMe = false;
-        obj.isConnected = false;
-        if (user._id.toString() === userId) {
-            obj.isMe = true;
-            obj.isConnected = true;
-        } else {
-            user.connects.map(function(connect, key) {
-                if (connect.user.toString() === userId) {
-                    obj.isConnected = true;
-                }
-            });
-        }
-        results.push(obj);
+    User.findOne({
+        _id: meId
+    }, function(err, me) {
+        users.map(function(user, key) {
+            var obj = {
+                avatar: user.avatar,
+                _id: user._id,
+                name: user.name,
+                desc: user.desc
+            };
+            obj.isMe = false;
+            obj.isConnected = false;
+            if (user._id.toString() === meId) {
+                obj.isMe = true;
+                obj.isConnected = true;
+            } else {
+                me.connects.map(function(connect, key) {
+                    if (connect.user.toString() === user._id.toString()) {
+                        obj.isConnected = true;
+                    }
+                });
+            }
+            results.push(obj);
+        });
+        cb(results);
     });
-    return results;
 }

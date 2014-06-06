@@ -52,14 +52,6 @@ var UserSchema = new Schema({
     profile: {
         type: ObjectId
     },
-    message: [{
-        type: ObjectId,
-        ref: 'Message'
-    }],
-    request: [{
-        type: ObjectId,
-        ref: 'Request'
-    }],
     followers: [{
         type: ObjectId,
         ref: 'User'
@@ -316,8 +308,9 @@ UserSchema.methods = {
     checkConnected: function(userId) {
         var result = false;
         this.connects.map(function(connect, key) {
-            if (connect.user === userId) {
+            if (connect.user.toString() === userId.toString()) {
                 result = true;
+                return false;
             }
         });
         return result;
@@ -357,7 +350,7 @@ UserSchema.methods = {
     disconnect: function(userId, cb) {
         var User = mongoose.model('User');
         this.connects.map(function(connect, key) {
-            if (connect.user === userId) {
+            if (connect.user.toString() === userId.toString()) {
                 this.connects.splice(key, 1);
             }
         });

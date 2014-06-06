@@ -14,7 +14,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.submit = function() {
             var url = '/api/share/add';
             $http.post(url, {
-                content: $scope.newShare,
+                content: $scope.newShare
             }).success(function(data) {
                 $scope.newShare = '';
             });
@@ -100,8 +100,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
         var url = '/api/notify';
         $http.get(url).success(function(data) {
-            var request = data.notify.request.length;
-            var message = data.notify.message.length;
+            var request = data.notify.request;
+            var message = data.notify.message;
 
             $scope.total = request + message;
             $scope.request = request;

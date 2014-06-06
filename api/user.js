@@ -128,16 +128,9 @@ var sendNotify = function(req, res) {
         if (err) {
             console.log(err);
         }
-        User.findOne({
-            _id: req.body.id
-        }, function(err, user) {
-            user.request.push(request._id);
-            user.save(function(err) {
-                res.send({
-                    code: 200,
-                    info: 'request has sent'
-                });
-            });
+        res.send({
+            code: 200,
+            info: 'request has sent'
         });
     });
 };
@@ -162,30 +155,32 @@ var checkConnect = function(req, res) {
             }
             if (value) {
                 user.connect(request.from, request.content, function(err, user) {
+
                     if (err) {
                         res.send({
                             code: 404,
                             info: 'fail connect'
                         });
                     }
-                    request.dispose(true, user._id, function(err) {
+                    request.dispose(true, function(err) {
+                        console.log(value)
                         if (err) {
                             console.log(err);
                         }
                         res.send({
                             code: 200,
-                            info: 'check false'
+                            info: 'check true'
                         });
                     });
                 });
             } else {
-                request.dispose(false, user._id, function(err) {
+                request.dispose(false, function(err) {
                     if (err) {
                         console.log(err);
                     }
                     res.send({
                         code: 200,
-                        info: 'check true'
+                        info: 'check false'
                     });
                 });
             }
@@ -208,40 +203,16 @@ var disconnect = function(req, res) {
 };
 var getNotify = function(req, res) {
     var user = req.session.user;
-    User.findOne({
-        _id: user._id
-    }).populate('Request').populate('Message').exec(function(err, user) {
-        var userRequest = user.request;
-        var outDateResquests = [];
-        console.log(user.request);
-        userRequest.map(function(request, key) {
-            if (request.hasDisposed) {
-                outDateResquests.push(key);
+    Request.find({
+        to: user._id,
+        hasDisposed: false
+    }, function(err, request) {
+        res.send({
+            code: 200,
+            notify: {
+                request: request.length,
+                message: 0
             }
-        });
-        outDateResquests.map(function(value) {
-            user.request.splice(value, 1);
-        });
-        console.log(user.request);
-        var userMessage = user.message;
-        var outDateMessage = [];
-        userMessage.map(function(message, key) {
-            if (message.hasRead) {
-                outDateMessage.push(key);
-            }
-        });
-        outDateMessage.map(function(value) {
-            user.message.splice(value, 1);
-        });
-        user.save(function(err, user) {
-            console.log(user.request);
-            res.send({
-                code: 200,
-                notify: {
-                    request: user.request.length,
-                    message: user.message.length
-                }
-            });
         });
     });
 };
@@ -255,23 +226,6 @@ var getRequest = function(req, res) {
             code: 200,
             requests: requests
         });
-    });
-};
-var readRequest = function(req, res) {
-    var user = req.session.user;
-    var requestId = req.body.requestId;
-    Request.findOne({
-        _id: notifyId
-    }, function(err, notify) {
-        if (notify.to === user._id) {
-            notify.hasRead = true;
-            notify.save(function(err) {
-                res.send({
-                    code: 200,
-                    info: 'read'
-                });
-            });
-        }
     });
 };
 var getShare = function(req, res) {
@@ -323,6 +277,10 @@ var getTrends = function(req, res) {
             connectList.push(value.user);
         });
         var followList = connectList.concat(user.followers);
+        var array = [];
+        followList.map(function(value,key) {
+            array.push(value.toString());
+        });
         Trend.find({
             user: {
                 $in: followList

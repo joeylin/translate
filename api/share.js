@@ -67,7 +67,7 @@ var addShare = function(req, res) {
     var user = req.session.user;
     var share = {
         content: req.body.content,
-        user: user._id
+        userId: user._id
     };
     Share.createNew(share, function(err, data) {
         User.findOne({

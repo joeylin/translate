@@ -61,43 +61,27 @@ RequestSchema.statics.delete = function(id, cb) {
 };
 
 // methods
-RequestSchema.methods.dispose = function(value, userId, cb) {
+RequestSchema.methods.dispose = function(value, cb) {
     var User = mongoose.model('User');
-    var id = this._id;
-    console.log(id);
-
+    var from = this.from;
+    var to = this.to;
     this.hasDisposed = true;
     this.isPass = value;
     this.save(function(err) {
-        User.findOne({
-            _id: userId
-        }, function(err, user) {
-            console.log(user);
-            var index = user.request.indexOf(id);
-            user.requests.splice(index, 1);
-
-            // ensure multi-requests form one person to be disposed at the same time
+        var Request = mongoose.model('Request');
+        Request.find({
+            from: from,
+            to: to
+        }, function(err, requests) {
             var async = require('async');
-            async.eachSeries(user.requests, function(request, next) {
-                if (request.from === userId) {
-                    var Request = mongoose.model('Request');
-                    Request.findOne({
-                        _id: request._id
-                    }, function(err, request) {
-                        request.hasDisposed = true;
-                        request.isPass = true;
-                        request.save(function(err) {
-                            next();
-                        });
-                    });
-                } else {
+            async.eachSeries(requests, function(request, next) {
+                request.hasDisposed = true;
+                request.isPass = value;
+                request.save(function(err) {
                     next();
-                }
+                });
             }, function(err) {
                 cb(err);
-            });
-            user.save(function(err, user) {
-                cb(err, user);
             });
         });
     });
