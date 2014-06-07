@@ -103,6 +103,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                     date: data.content.createAt
                 };
                 share.comments.unshift(comment);
+                share.newComment = '';
             });
         };
         $scope.vm.delete = function(comment, share) {

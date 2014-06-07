@@ -263,6 +263,34 @@
             </div>
           </div>
           <div class="col-md-10" style="padding-left:0;">
+            <div class="nav-tabs-custom" ng-show="current.path === 'people'" ng-cloak>
+              <ul class="nav nav-tabs pull-left">
+                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Professional</li>
+                  <li ng-class="{active: current.path === 'people'}"><a ng-href="/people">Find</a></li>
+                  <li ng-class="{active: current.path === 'peopleManage'}"><a ng-href="/peopleManage">Manage</a></li>
+              </ul>
+            </div>
+            <div class="nav-tabs-custom" ng-show="current.path === 'share'" ng-cloak>
+              <ul class="nav nav-tabs pull-left">
+                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Discover</li>
+                  <li ng-class="{active: current.path === 'share'}"><a ng-href="/share">Find</a></li>
+                  <li ng-class="{active: current.path === 'shareManage'}"><a ng-href="/shareManage">My Share</a></li>
+              </ul>
+            </div>
+            <div class="nav-tabs-custom" ng-show="current.path === 'company'" ng-cloak>
+              <ul class="nav nav-tabs pull-left">
+                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Company</li>
+                  <li ng-class="{active: current.path === 'company'}"><a ng-href="/company">Find</a></li>
+                  <li ng-class="{active: current.path === 'companyManage'}"><a ng-href="/companyManage">My Follow</a></li>
+              </ul>
+            </div>
+            <div class="nav-tabs-custom" ng-show="current.path === 'job'" ng-cloak>
+              <ul class="nav nav-tabs pull-left">
+                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Job</li>
+                  <li ng-class="{active: current.path === 'job'}"><a ng-href="/job">Find</a></li>
+                  <li ng-class="{active: current.path === 'jobManage'}"><a ng-href="/jobManage">My Share</a></li>
+              </ul>
+            </div>
             <div class="row" ng-view ng-cloak></div>
           </div>
             
