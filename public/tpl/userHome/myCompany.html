@@ -3,7 +3,7 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4>All Connects</h4>
+          <h4>All Follows</h4>
         </div>
         <div class="col-md-4 pull-right">
           <input type="text" class="form-control" placeholder="search by name">
@@ -11,21 +11,21 @@
       </div>
     </div>
     <div class="panel-body">
-      <div class="media" ng-repeat="user in content">
-        <a class="pull-left" ng-href="/profile/{{user.name}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{user.avatar}}" style="width: 64px; height: 64px;">
+      <div class="media" ng-repeat="company in content">
+        <a class="pull-left" ng-href="/company/{{company.name}}">
+          <img class="media-object" alt="64x64" ng-src="{{company.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading"><a ng-href="profile/{{user.name}}" target="_self">{{user.name}}</a></h4>
+          <h4 class="media-heading">{{company.name}}</h4>
           <div class="row">
             <div class="col-md-9">
-              <div>{{user.desc}}</div>
-              <div class="search-people-info">{{user.info}}</div>
-              <div class="search-people-relationship"><a href="#">{{user.similar}}</a></div>
+              <div>{{company.industry}}</div>
+              <div class="search-company-info">{{company.info}}</div>
+              <div class="search-company-relationship"><a href="#">{{company.similar}}</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" ng-show="!user.isConnected" ng-click="connect(user)">connect</a>
-              <a class="btn btn-primary pull-right" role="button" ng-show="user.isMe">edit</a>
+              <a class="btn btn-primary pull-right" role="button" ng-show="!isFollowed">Follow</a>
+              <a class="btn btn-default pull-right" role="button" ng-show="isFollowed">Followed</a>
             </div>
           </div>
         </div>
@@ -35,21 +35,15 @@
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading"><a href="#">Joeylin</a></h4>
+          <h4 class="media-heading">AmazingSurge</h4>
           <div class="row">
             <div class="col-md-9">
-              <div class="search-people-signature">Think different</div>
-              <div>BUPT Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
-              </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
+              <div>Computer Software</div>
+              <div class="search-company-info">China - Internet</div>
+              <div class="search-company-relationship"><a href="#">Find Friends</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-default pull-right" role="button" >remove</a>
+              <a class="btn btn-default pull-right" role="button">unfollow</a>
             </div>
           </div>
         </div>
@@ -60,21 +54,15 @@
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading"><a href="#">LaoLei</a></h4>
+          <h4 class="media-heading">SamshMagzing</h4>
           <div class="row">
             <div class="col-md-9">
-              <div class="search-people-signature">Dream makes people great</div>
-              <div>BUPT Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
-              </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
+              <div>Computer Software</div>
+              <div class="search-company-info">China - Internet</div>
+              <div class="search-company-relationship"><a href="#">Find Friends</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-default pull-right" role="button" >remove</a>
+              <a class="btn btn-default pull-right" role="button">unfollow</a>
             </div>
           </div>
         </div>
@@ -85,21 +73,15 @@
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading"><a href="#">Leoylin</a></h4>
+          <h4 class="media-heading">Snapchat</h4>
           <div class="row">
             <div class="col-md-9">
-              <div class="search-people-signature">Think different</div>
-              <div>YanBian University Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
-              </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
+              <div>Computer Software</div>
+              <div class="search-company-info">China - Internet</div>
+              <div class="search-company-relationship"><a href="#">Find Friends</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-default pull-right" role="button" >remove</a>
+              <a class="btn btn-default pull-right" role="button">unfollow</a>
             </div>
           </div>
         </div>
@@ -117,19 +99,19 @@
 <div class="profile-sidebar col-md-3">
   <div class="panel">
     <div class="panel-body">
-      <div class="people-sort-title">SortBy relation</div>
+      <div class="people-sort-title">SortBy industry</div>
       <ul class="people-sort-list">
-        <li><a href="#">Your Fellows (10)</a></li>
-        <li><a href="#">Your Classmate (15)</a></li>
-        <li><a href="#">Your Firends (20)</a></li>
-        <li><a href="#">Same interest (11)</a></li>
+        <li><a href="#">Internet (10)</a></li>
+        <li><a href="#">Electronic (15)</a></li>
+        <li><a href="#">Sale (20)</a></li>
+        <li><a href="#">House (11)</a></li>
       </ul>
-      <div class="people-sort-title">SortBy Position</div>
+      <div class="people-sort-title">SortBy location</div>
       <ul class="people-sort-list">
-        <li><a href="#">Product Manager (23)</a></li>
-        <li><a href="#">FrontEnd developer (31)</a></li>
-        <li><a href="#">Server developer (10)</a></li>
-        <li><a href="#">Sale Man (11)</a></li>
+        <li><a href="#">Beijing (10)</a></li>
+        <li><a href="#">Fuzhou (15)</a></li>
+        <li><a href="#">ShenZhen (20)</a></li>
+        <li><a href="#">GuangZhou (11)</a></li>
       </ul>
     </div>
   </div>

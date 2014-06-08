@@ -515,7 +515,46 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('myPeopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        
+        $scope.title = 'All Connects';
+        $scope.relations = [];
+        $scope.postions = [];
+        $scope.content = [];
+
+        $scope.searchByName = function() {
+            if ($scope.inputName === '') {
+                return false;
+            }
+            var url = '/api/user/connects';
+            var params = {
+                name: $scope.inputName
+            };
+            $scope.title = 'Search By ' + $scope.inputName;
+            $http.get(url, params).success(function(data) {
+                $scope.content = data.content;
+            });
+        };
+
+        $scope.vm = {};
+        $scope.vm.select = function(item) {
+            var url = '/api/user/connects';
+            var params = {
+                filter: item.name
+            };
+            $scope.title = item.name;
+            $http(url,params).success(function(data) {
+                $scope.content = data.content;
+            }); 
+        };
+        $scope.vm.remove = function(connect) {
+            var url = '/api/user/disconnect';
+            var params = {
+                connectId: connect._id
+            };
+            $http.post(url,params).success(function(data) {
+                var index = $scope.content.indexOf(connect);
+                $scope.connect.splice(index,1);
+            });
+        };
     }
 ]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
