@@ -564,4 +564,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         
     }
+]).controller('mySendingCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        
+    }
 ]);

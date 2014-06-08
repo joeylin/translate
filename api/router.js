@@ -120,6 +120,7 @@ module.exports = function(app) {
     app.get('/myCompany', middleware.check_login, getHome);
     app.get('/myShare', middleware.check_login, getHome);
     app.get('/myJob', middleware.check_login, getHome);
+    app.get('/mySending', middleware.check_login, getHome);
 
     // login
     app.get('/login', getLogin);

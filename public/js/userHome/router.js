@@ -72,6 +72,11 @@ constant('app', {
             controller: 'myCompanyCtrl',
             path: 'myCompany'
         };
+        var mySending = {
+            templateUrl: getFileProvider.html('mySending.html'),
+            controller: 'mySendingCtrl',
+            path: 'mySending'
+        };
         $routeProvider.
         when('/home', news).
         when('/people', people).
@@ -82,6 +87,7 @@ constant('app', {
         when('/myShare', myShare).
         when('/myJob', myJob).
         when('/myCompany', myCompany).
+        when('/mySending', mySending).
         when('/request', request).
         when('/message', message);
         $locationProvider.html5Mode(true).hashPrefix('!');
