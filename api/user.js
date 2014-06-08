@@ -267,7 +267,7 @@ var getShare = function(req, res) {
 };
 var getTrends = function(req, res) {
     var user = req.session.user;
-    var page = req.params.page || 1;
+    var page = req.query.page || 1;
     var perPageItems = 20;
     User.findOne({
         _id: user._id
@@ -302,7 +302,7 @@ var getTrends = function(req, res) {
                         result._id = item.share._id;
                         result.comments = item.share.comments;
                         result.content = item.share.content;
-                        result.createAt = item.share.createAt;
+                        result.createAt = item.share.createAt.toLocaleDateString();
                         result.id = item.share.id;
                         result.user = {
                             name: item.userId.name,
@@ -341,6 +341,75 @@ var getTrends = function(req, res) {
         });
     });
 };
+var getConnects = function(req, res) {
+    var userId = req.query.userId;
+    User.findOne({
+        _id: userId
+    }).populate('connects').exec(function(err, user) {
+        var results = [];
+        user.connects.map(function(connect) {
+            var result = {
+                _id: connect._id,
+                name: connect.name,
+                id: connect.id,
+                avatar: connect.avatar
+            };
+            results.push(result);
+        });
+        res.send({
+            code: 200,
+            content: results
+        });
+    });
+};
+var getMyShare = function(req, res) {
+    var userId = req.query.userId;
+    Share.find({
+        user: userId
+    }, function(err, shares) {
+        var results = [];
+        shares.map(function(share) {
+            var result = {
+                _id: share._id,
+                content: share.content,
+                likes: share.likes.length,
+                id: share.id,
+                comments: share.comments.length,
+                createAt: share.createAt.toLocaleDateString()
+            };
+            results.push(result);
+        });
+        res.send({
+            code: 200,
+            content: results
+        });
+    });
+};
+var getMyFollow = function(req, res) {
+    var userId = req.query.userId;
+    User.findOne({
+        _id: userId
+    }).populate('followers').exec(function(err, user) {
+        var results = [];
+        user.followers.map(function(follower) {
+            var result = {
+                id: follower.id,
+                _id: follower._id,
+                avatar: follower.avatar,
+                name: follower.name,
+                phase: follower.phase,
+                industry: follower.industry,
+                scale: follower.scale,
+                location: follower.location
+            };
+            results.push(result);
+        });
+        res.send({
+            code: 200,
+            content: resultes
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -350,6 +419,7 @@ module.exports = function(app) {
     // trends
     app.get('/api/user/share', middleware.check_login, getShare);
     app.get('/api/user/trend', middleware.check_login, getTrends);
+    app.get('/api/user/myShare', middleware.check_login, getMyShare);
 
     // notify
     app.get('/api/notify', getNotify);
@@ -360,6 +430,7 @@ module.exports = function(app) {
     app.post('/api/connect/send', sendNotify);
     app.post('/api/connect/check', checkConnect);
     app.post('/api/connect/disconnect', disconnect);
+    app.get('/api/connects', getConnects);
 
     // message
     app.post('/api/message/send', sendMessage);

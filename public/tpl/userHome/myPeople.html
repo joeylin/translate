@@ -40,7 +40,7 @@
               <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" >connect</a>
+              <a class="btn btn-default pull-right" role="button" >remove</a>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
               <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" >connect</a>
+              <a class="btn btn-default pull-right" role="button" >remove</a>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
               <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" >connect</a>
+              <a class="btn btn-default pull-right" role="button" >remove</a>
             </div>
           </div>
         </div>
@@ -107,63 +107,21 @@
 </div>
 <div class="profile-sidebar col-md-3">
   <div class="panel">
-    <div class="panel-body" ng-show="!isFilter">
-      <div class="form-group">
-          <label>name</label>
-          <input type="text" class="form-control" placeholder="Enter email" ng-model="name">
-      </div>
-      <div class="form-group">
-          <label>location</label>
-          <input type="text" class="form-control" placeholder="Enter location" ng-model="location">
-      </div>
-      <div class="form-group">
-          <label>skill</label>
-          <input type="text" class="form-control" placeholder="Enter skill" ng-model="skill">
-      </div>
-      <div class="form-group">
-          <label>Company</label>
-          <input type="text" class="form-control" placeholder="Enter Company" ng-model="keyword">
-      </div>
-      <div class="form-group">
-          <label>School</label>
-          <input type="text" class="form-control" placeholder="Enter School" ng-model="school">
-      </div>
-      <div class="clearfix">
-        <a class="pull-left search-filter" role="button" ng-click="showFilter()">Filters</a>
-        <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
-      </div>
-    </div>
-    <div class="panel-body" ng-show="isFilter">
-      <div class="clearfix">
-        <!-- <span class="pull-left search-filter-note">click enter to filter item</span> -->
-        <a class="btn btn-primary pull-right" role="button" ng-click="hideFilter()">Back</a>
-      </div>
-      <div class="form-group">
-          <label>Past Company</label>
-          <input type="text" class="form-control" placeholder="Enter pastCompany" ng-model="pastCompany" ng-keydown="enter($event,'pastCompany',pastCompany)">
-      </div>
-      <div class="form-group">
-          <label>Current Company</label>
-          <input type="text" class="form-control" placeholder="Enter CurrentCompany" ng-model="CurrentCompany" ng-keydown="enter($event,'CurrentCompany',CurrentCompany)">
-      </div>
-      <div class="form-group">
-          <label>Industry</label>
-          <input type="text" class="form-control" placeholder="Enter skill" ng-model="industry" ng-keydown="enter($event,'industry',industry)">
-      </div>
-      <div class="form-group">
-          <label>Language</label>
-          <input type="text" class="form-control" placeholder="Enter Company" ng-model="language" ng-keydown="enter($event,'language',language)">
-      </div>
-      <div class="form-group">
-          <label>Years of Experence</label>
-          <select class="form-control" ng-model="years" ng-change="addFilter('years',years)">
-              <option>no</option>
-              <option>0-2</option>
-              <option>2-4</option>
-              <option>4-7</option>
-              <option>8+</option>
-          </select>
-      </div>
+    <div class="panel-body">
+      <div>SortBy relation</div>
+      <ul class="nav nav-tabs nav-stacked">
+        <li>Your Fellows</li>
+        <li>Your Classmate</li>
+        <li>Your Firends</li>
+        <li>Same interest</li>
+      </ul>
+      <div>SortBy Position</div>
+      <ul class="nav nav-tabs nav-stacked">
+        <li>Product Manager</li>
+        <li>FrontEnd developer</li>
+        <li>Server developer</li>
+        <li>Sale Man</li>
+      </ul>
     </div>
   </div>
 </div>

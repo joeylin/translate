@@ -12,6 +12,9 @@ var UserSchema = new Schema({
     sex: {
         type: String
     },
+    school: {
+        type: String
+    },
     name: {
         type: String
     },

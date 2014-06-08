@@ -66,8 +66,14 @@
           .media-info .date {
             font-style: italic;
           }
-          .media-info .media-controll {
+          .media-info .media-control {
             padding-right: 16px;
+          }
+          .media-info .media-control .like {
+            margin-right: 10px;
+          }
+          .media-info .media-control .liked i {
+            color: rgb(51, 51, 51);
           }
           .pager li>a {
             border-radius: 3px;
@@ -96,6 +102,8 @@
           }
           .comment-editor .input-group-btn:last-child >.btn {
             margin-left: 8px;
+            border-bottom-left-radius: 3px;
+            border-top-left-radius: 3px;
           }
           .notifications-menu .dropdown-menu {
             width: 130px!important;
@@ -158,6 +166,37 @@
           .profile-body {
             min-height: 960px;
           }
+          .btn-primary.default {
+            background-color: #fafafa;
+            color: #666;
+            border-color: #ddd;
+            border-bottom-color: #ddd;
+          }
+          .btn-primary.default:hover {
+            background-color: #fafafa;
+            color: #666;
+          }
+          .share-success >i {
+            color: #5cb85c;
+            font-size: 30px;
+          }
+          .share-success >span {
+            line-height: 30px;
+            font-size: 18px;
+            color: #999;
+          }
+          .share-success {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -50px;
+            margin-top: -15px;
+            display: none;
+          }
+          .search-people-relationship {
+            color: #999;
+            font-style: italic;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -195,29 +234,28 @@
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- todo have custom user image -->
-                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
-                            <i class="fa fa-user"></i> 
+                            <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
                             <span id="lblUsername" style="margin-left: 5px;"></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <img ng-src="{{global.user.avatar}}" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_name"> Jane Doe - Web Developer</span>
-                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                    <span>{{global.user.name}}</span>
+                                    <small>Member since Nov. 2012</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" class="user_follower">10</a>
+                                    <a href="#">{{global.user.share.length}}</a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" class="user_connects">30</a>
+                                    <a href="#">{{global.user.connects.length}}</a>
                                 </div>
                                 <div class="col-xs-6 text-center">
                                     <a href="#">share</a>
@@ -254,41 +292,41 @@
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
                     <li ng-class="{active: current.path === 'request'}"><a ng-href="/request"><i class="fa fa-fw fa-info-circle"></i>Requests</a></li>
                     <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li>
-                    <li ng-class="{active: current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
-                    <li ng-class="{active: current.path === 'share'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
-                    <li ng-class="{active: current.path === 'company'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li>
-                    <li ng-class="{active: current.path === 'job'}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
+                    <li ng-class="{active: current.path === 'people' || current.path === 'myPeople'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
+                    <li ng-class="{active: current.path === 'share' || current.path === 'myShare'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
+                    <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li>
+                    <li ng-class="{active: current.path === 'job' || current.path === 'myJob'}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
                   </ul>
               </div>            
             </div>
           </div>
           <div class="col-md-10" style="padding-left:0;">
-            <div class="nav-tabs-custom" ng-show="current.path === 'people'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'people' || current.path === 'myPeople'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Professional</li>
                   <li ng-class="{active: current.path === 'people'}"><a ng-href="/people">Find</a></li>
-                  <li ng-class="{active: current.path === 'peopleManage'}"><a ng-href="/peopleManage">Manage</a></li>
+                  <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople">Manage</a></li>
               </ul>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'share'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'share' || current.path === 'myShare'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Discover</li>
                   <li ng-class="{active: current.path === 'share'}"><a ng-href="/share">Find</a></li>
-                  <li ng-class="{active: current.path === 'shareManage'}"><a ng-href="/shareManage">My Share</a></li>
+                  <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare">My Share</a></li>
               </ul>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'company'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'company' || current.path === 'myCompany'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Company</li>
                   <li ng-class="{active: current.path === 'company'}"><a ng-href="/company">Find</a></li>
-                  <li ng-class="{active: current.path === 'companyManage'}"><a ng-href="/companyManage">My Follow</a></li>
+                  <li ng-class="{active: current.path === 'myCompany'}"><a ng-href="/myCompany">My Follow</a></li>
               </ul>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'job'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'job' || current.path === 'myJob'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Job</li>
                   <li ng-class="{active: current.path === 'job'}"><a ng-href="/job">Find</a></li>
-                  <li ng-class="{active: current.path === 'jobManage'}"><a ng-href="/jobManage">My Share</a></li>
+                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Job</a></li>
               </ul>
             </div>
             <div class="row" ng-view ng-cloak></div>

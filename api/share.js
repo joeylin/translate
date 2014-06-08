@@ -58,9 +58,23 @@ var getShareComments = function(req, res) {
         }).sort({
             createAt: -1
         }).populate('user').exec(function(err, comments) {
+            var results = [];
+            comments.map(function(comment) {
+                var result = {
+                    content: comment.content,
+                    date: comment.createAt.toLocaleDateString(),
+                    user: {
+                        name: comment.user.name,
+                        id: comment.user.id,
+                        _id: comment.user._id,
+                        avatar: comment.user.avatar
+                    }
+                };
+                results.push(result);
+            });
             res.send({
                 code: 200,
-                comments: comments,
+                comments: results,
                 count: count
             });
         });
@@ -75,7 +89,10 @@ var addShare = function(req, res) {
     Share.createNew(share, function(err, data) {
         res.send({
             code: 200,
-            content: data
+            content: {
+                createAt: data.createAt.toLocaleDateString(),
+                _id: data._id
+            }
         });
     });
 };

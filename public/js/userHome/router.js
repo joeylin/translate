@@ -52,12 +52,36 @@ constant('app', {
             controller: 'messageCtrl',
             path: 'message'
         };
+        var myPeople = {
+            templateUrl: getFileProvider.html('myPeople.html'),
+            controller: 'myPeopleCtrl',
+            path: 'myPeople'
+        };
+        var myShare = {
+            templateUrl: getFileProvider.html('myShare.html'),
+            controller: 'myShareCtrl',
+            path: 'myShare'
+        };
+        var myJob = {
+            templateUrl: getFileProvider.html('myJob.html'),
+            controller: 'myJobCtrl',
+            path: 'myJob'
+        };
+        var myCompany = {
+            templateUrl: getFileProvider.html('myCompany.html'),
+            controller: 'myCompanyCtrl',
+            path: 'myCompany'
+        };
         $routeProvider.
         when('/home', news).
         when('/people', people).
         when('/share', share).
         when('/job', job).
         when('/company', company).
+        when('/myPeople', myPeople).
+        when('/myShare', myShare).
+        when('/myJob', myJob).
+        when('/myCompany', myCompany).
         when('/request', request).
         when('/message', message);
         $locationProvider.html5Mode(true).hashPrefix('!');

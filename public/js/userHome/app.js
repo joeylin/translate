@@ -76,8 +76,8 @@ config(['$httpProvider', 'app',
         app.myConf = myConf;
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
-        app.user = window.user;
 
+        app.user = window.user;
         $rootScope.current = {};
         $rootScope.global.user = window.user;
         $rootScope.$on('$routeChangeStart', function(event, next, current) {

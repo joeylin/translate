@@ -13,11 +13,28 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.total = 1;
         $scope.submit = function() {
             var url = '/api/share/add';
+            if ($scope.newShare === '') {
+                return false;
+            }
             $http.post(url, {
                 content: $scope.newShare
             }).success(function(data) {
+                var share = {
+                    user: app.user,
+                    comments: [],
+                    likes: 0,
+                    content: $scope.newShare,
+                    liked: false,
+                    _id: data.content._id,
+                    createAt: data.content.createAt
+                };
+                $scope.shareList.unshift(share);
                 $scope.newShare = '';
             });
+            $('#submit-success').css({display:'block'});
+            setTimeout(function() {
+                $('#submit-success').css({display:'none'});
+            },1000);
         };
         var url = '/api/user/trend';
         var params = {
@@ -491,5 +508,21 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 
         // default config
         $scope.years = '0-2';
+    }
+]).controller('myCompanyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        
+    }
+]).controller('myPeopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        
+    }
+]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        
+    }
+]).controller('myJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        
     }
 ]);

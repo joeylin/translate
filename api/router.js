@@ -116,6 +116,10 @@ module.exports = function(app) {
     app.get('/share', middleware.check_login, getHome);
     app.get('/job', middleware.check_login, getHome);
     app.get('/people', middleware.check_login, getHome);
+    app.get('/myPeople', middleware.check_login, getHome);
+    app.get('/myCompany', middleware.check_login, getHome);
+    app.get('/myShare', middleware.check_login, getHome);
+    app.get('/myJob', middleware.check_login, getHome);
 
     // login
     app.get('/login', getLogin);
