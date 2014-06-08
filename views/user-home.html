@@ -214,6 +214,42 @@
             font-size: 14px;
             line-height: 18px;
           }
+          .timeline-v {
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 0;
+            padding: 0;
+            list-style: none;
+          }
+          .timeline-v:before {
+            content: '';
+            position: absolute;
+            top: 13px;
+            left: 0;
+            height: 5px;
+            width: 100%;
+            background: #ddd;
+            border: 1px solid #eee;
+            margin: 0;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+          }
+          .timeline-v > li {
+            position: relative;
+            display: inline-block;
+          }
+          .timeline-v > li > .fa{
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            width: 30px;
+            height: 30px;
+            font-size: 15px;
+            line-height: 30px;
+            color: #666;
+            background: #eee;
+            border-radius: 50%;
+            text-align: center;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
