@@ -6,13 +6,13 @@
           <h4>All Follows</h4>
         </div>
         <div class="col-md-4 pull-right">
-          <input type="text" class="form-control" placeholder="search by name">
+          <input type="text" class="form-control" placeholder="search by name" ng-model="name" ng-keydown="enter($event)">
         </div>
       </div>
     </div>
     <div class="panel-body">
       <div class="media" ng-repeat="company in content">
-        <a class="pull-left" ng-href="/company/{{company.name}}">
+        <a class="pull-left" ng-href="/company/{{company.id}}">
           <img class="media-object" alt="64x64" ng-src="{{company.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
@@ -24,8 +24,7 @@
               <div class="search-company-relationship"><a href="#">{{company.similar}}</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" ng-show="!isFollowed">Follow</a>
-              <a class="btn btn-default pull-right" role="button" ng-show="isFollowed">Followed</a>
+              <a class="btn btn-default pull-right" role="button" ng-click="vm.unFollow(company)">Followed</a>
             </div>
           </div>
         </div>
@@ -62,7 +61,7 @@
               <div class="search-company-relationship"><a href="#">Find Friends</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-default pull-right" role="button">unfollow</a>
+              <a class="btn btn-default pull-right" role="button" >unfollow</a>
             </div>
           </div>
         </div>

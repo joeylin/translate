@@ -239,6 +239,13 @@
             position: relative;
             display: inline-block;
           }
+          .timeline-v > .active .post,
+          .timeline-v > .active .reading, 
+          .timeline-v > .active .interview,
+          .timeline-v > .active .offer {
+            background-color: #0073b7;
+            color: #fff;
+          }
           .timeline-v > li > .fa{
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
             width: 30px;
@@ -249,6 +256,19 @@
             background: #eee;
             border-radius: 50%;
             text-align: center;
+          }
+          .timeline-v > .fail > .post,
+          .timeline-v > .fail > .reading,
+          .timeline-v > .fail > .interview,
+          .timeline-v > .fail > .offer {
+            background-color: #f4543c;
+            color: #fff;
+          }
+          .timeline-v > li > .reading {
+            margin-left: -30%;
+          }
+          .timeline-v > li > .interview {
+            margin-right: -23%;
           }
         </style>
         <!-- for angular ng-cloak -->

@@ -90,35 +90,31 @@
 </div>
 <div class="profile-sidebar col-md-3">
   <div class="panel">
-    <div class="panel-body" ng-show="!isFilter">
+    <div class="panel-body">
       <div class="form-group">
           <label>name</label>
-          <input type="text" class="form-control"  placeholder="Enter name" ng-model="name">
+          <input type="text" class="form-control"  placeholder="Enter name" ng-model="name" ng-keydown="enter($event,'name',name)">
       </div>
       <div class="form-group">
           <label>location</label>
-          <input type="text" class="form-control"  placeholder="Enter location" ng-model="location">
+          <input type="text" class="form-control"  placeholder="Enter location" ng-model="location" ng-keydown="enter($event,'location',location)">
       </div>
       <div class="form-group">
-          <label>keyword</label>
-          <input type="text" class="form-control"  placeholder="Enter keyword" ng-model="keyword">
+          <label>industry</label>
+          <input type="text" class="form-control"  placeholder="Enter industry" ng-model="industry" ng-keydown="enter($event,'industry',industry)">
+      </div>
+      <div class="form-group">
+          <label>Phase</label>
+          <select class="form-control" ng-model="phase" ng-change="addFilter('phase',phase)">
+              <option>all</option>
+              <option>startups</option>
+              <option>growing</option>
+              <option>mature</option>
+              <option>quoted</option>
+          </select>
       </div>
       <div class="clearfix">      
-        <a class="pull-left search-filter" role="button" ng-click="showFilter()">Filters</a>
         <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
-      </div>
-    </div>
-    <div class="panel-body" ng-show="isFilter">
-      <div class="clearfix">
-        <a class="btn btn-primary pull-right" role="button" ng-click="hideFilter()">Back</a>
-      </div>
-      <div class="form-group">
-          <label>Past Company</label>
-          <input type="text" class="form-control" placeholder="Enter pastCompany" ng-model="pastCompany" ng-keydown="enter($event,'pastCompany',pastCompany)">
-      </div>
-      <div class="form-group">
-          <label>Current Company</label>
-          <input type="text" class="form-control" placeholder="Enter currentCompany" ng-model="currentCompany" ng-keydown="enter($event,'currentCompany',currentCompany)">
       </div>
     </div>
   </div>

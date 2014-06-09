@@ -106,6 +106,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 ]).controller('jobCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
         $scope.isFilter = false;
+        $scope.vm = {};
         var url = '/api/search/jobs';
         var params = {
             pager: 0,

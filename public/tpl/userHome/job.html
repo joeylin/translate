@@ -130,30 +130,66 @@
     <div class="panel-body" ng-show="!isFilter">
       <div class="form-group">
           <label>keyword</label>
-          <input type="text" class="form-control" placeholder="Enter keyword">
-      </div>
+          <input type="text" class="form-control" placeholder="Enter keyword" ng-model="keyword" ng-keydown="enter($event,'keyword',keyword)">
+      </div>   
       <div class="form-group">
           <label>location</label>
-          <input type="text" class="form-control" placeholder="Enter location">
+          <input type="text" class="form-control" ng-model="location" placeholder="Enter location" ng-keydown="enter($event,'location',location)">
       </div>
       <div class="form-group">
           <label>payment</label>
-          <select class="form-control" ng-model="payment">
-              <option>3k</option>
-              <option>3k-7k</option>
-              <option>7k-14k</option>
-              <option>14k-24k</option>
-              <option>24k+</option>
+          <select class="form-control" ng-model="payment" ng-change="addFilter('payment',payment)">
+              <option>all</option>
+              <option>below 2k</option>
+              <option>2k-5k</option>
+              <option>5k-10k</option>
+              <option>10k-15k</option>
+              <option>15k-25k</option>
+              <option>25k-50k</option>
+              <option>above 50k</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label>Type</label>
+          <select class="form-control" ng-model="type" ng-change="addFilter('type',type)">
+              <option>all</option>
+              <option>part-time</option>
+              <option>full-time</option>
+              <option>intern</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label>Degree</label>
+          <select class="form-control" ng-model="degree" ng-change="addFilter('degree',degree)">
+              <option>noLimit</option>
+              <option>diploma</option>
+              <option>bachelor</option>
+              <option>master</option>
+              <option>doctor</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label>Years of Experence</label>
+          <select class="form-control" ng-model="years" ng-change="addFilter('years',years)">
+              <option>noLimit</option>
+              <option>graduating</option>
+              <option>below 1</option>
+              <option>1-3</option>
+              <option>3-5</option>
+              <option>5-10</option>
+              <option>10+</option>
           </select>
       </div>
       <div class="clearfix">
-        <a class="pull-left search-filter" role="button" ng-click="showFilter()">Filters</a>
         <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
       </div>
+      <!-- <div class="clearfix">
+        <a class="pull-right search-filter" role="button" ng-click="showFilter()">Filters</a>
+      </div> -->
     </div>
-    <div class="panel-body" ng-show="isFilter">
+    <!-- <div class="panel-body" ng-show="isFilter">
       <div class="clearfix">
-        <a class="btn btn-primary pull-right" role="button" ng-click="hideFilter()">Back</a>
+        <a class="btn btn-primary pull-right btn-sm" role="button" ng-click="hideFilter()">Back</a>
       </div>
       <div class="form-group">
           <label>Past Company</label>
@@ -171,16 +207,6 @@
           <label>Language</label>
           <input type="text" class="form-control" placeholder="Enter Company" ng-model="language" ng-keydown="enter($event,'language',language)">
       </div>
-      <div class="form-group">
-          <label>Years of Experence</label>
-          <select class="form-control" ng-model="years" ng-change="addFilter('years',years)">
-              <option>no</option>
-              <option>0-2</option>
-              <option>2-4</option>
-              <option>4-7</option>
-              <option>8+</option>
-          </select>
-      </div>
-    </div>
+    </div> -->
   </div>
 </div>

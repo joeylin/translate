@@ -31,10 +31,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.shareList.unshift(share);
                 $scope.newShare = '';
             });
-            $('#submit-success').css({display:'block'});
+            $('#submit-success').css({
+                display: 'block'
+            });
             setTimeout(function() {
-                $('#submit-success').css({display:'none'});
-            },1000);
+                $('#submit-success').css({
+                    display: 'none'
+                });
+            }, 1000);
         };
         var url = '/api/user/trend';
         var params = {
@@ -244,18 +248,18 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.next = function() {
-            if (!$scope.vm.pager.hasLast) {
+            if (!$scope.vm.pager.hasNext) {
                 return false;
             }
             $scope.vm.pager.current += 1;
             params.pager = $scope.vm.pager.current;
             $scope.vm.pager.link(url, params, function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.vm.pager.hasNext = data.hasNext;
             });
         };
         $scope.prev = function() {
@@ -266,7 +270,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             params.pager = $scope.vm.pager.current;
             $scope.vm.pager.link(url, params, function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.vm.pager.hasNext = data.hasNext;
             });
         };
         $scope.showFilter = function() {
@@ -281,7 +285,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.vm.pager.hasNext = data.hasNext;
             });
         };
         $scope.addFilter = addFilter;
@@ -351,62 +355,65 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('jobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.isFilter = false;
         var url = '/api/search/jobs';
+        $scope.content = [];
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
         var params = {
-            pager: 0,
-            name: $scope.name,
+            pager: 1,
+            payment: $scope.payment,
+            degree: $scope.degree,
+            years: $scope.years,
+            type: $scope.type,
+            location: $scope.location,
             keyword: $scope.keyword
         };
         $scope.submit = function() {
             // reset the config before submit
-            var params = {
-                pager: 0,
-                name: $scope.name,
-                keyword: $scope.keyword
-            };
+            params.pager = 1;
             $http.get(url, {
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.vm.pager.hasNext = data.hasNext;
             });
         };
         $scope.next = function() {
-            if (!$scope.vm.pager.hasLast) {
+            if (!$scope.pager.hasNext) {
                 return false;
             }
-            $scope.vm.pager.current += 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current += 1;
+            params.pager = $scope.pager.current;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.prev = function() {
-            if (!$scope.vm.pager.current) {
+            if ($scope.pager.current <= 1) {
                 return false;
             }
-            $scope.vm.pager.current -= 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current -= 1;
+            params.pager = $scope.pager.current;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
-        };
-        $scope.showFilter = function() {
-            $scope.isFilter = true;
-        };
-        $scope.hideFilter = function() {
-            $scope.isFilter = false;
         };
         var addFilter = function(key, value) {
             params[key] = value;
+            params.pager = 0;
             $http.get(url, {
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.addFilter = addFilter;
@@ -419,69 +426,64 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.save = function(job) {
             var url = '/api/job/save/';
             $http.post(url, {
-                id: job.id,
+                _id: job._id,
             }).success(function(data) {
 
             });
         };
 
         // default config
-        $scope.years = '0-2';
-        $scope.payment = '3k';
+        $scope.years = 'noLimit';
+        $scope.degree = 'noLimit';
+        $scope.payment = 'all';
+        $scope.type = 'all';
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.name = '';
-        $scope.keyword = '';
         $scope.content = [];
-        $scope.isFilter = false;
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
         var url = '/api/search/company';
         var params = {
-            pager: 0,
+            pager: 1,
+            location: $scope.location,
             name: $scope.name,
-            keyword: $scope.keyword
+            industry: $scope.industry,
+            phase: $scope.phase
         };
         $scope.submit = function() {
             // reset the config before submit
-            var params = {
-                pager: 0,
-                name: $scope.name,
-                keyword: $scope.keyword
-            };
+            params.pager = 1;
             $http.get(url, {
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.next = function() {
-            if (!$scope.vm.pager.hasLast) {
+            if (!$scope.pager.hasNext) {
                 return false;
             }
-            $scope.vm.pager.current += 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current += 1;
+            params.pager = $scope.pager.current;
+            $scope.pager.link(url, params, function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.prev = function() {
-            if (!$scope.vm.pager.current) {
+            if ($scope.pager.current <= 1) {
                 return false;
             }
-            $scope.vm.pager.current -= 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current -= 1;
+            params.pager = $scope.pager.current;
+            $scope.pager.link(url, params, function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
-        };
-        $scope.showFilter = function() {
-            $scope.isFilter = true;
-        };
-        $scope.hideFilter = function() {
-            $scope.isFilter = false;
         };
         var addFilter = function(key, value) {
             params[key] = value;
@@ -489,7 +491,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.addFilter = addFilter;
@@ -499,19 +501,100 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 addFilter(key, value);
             }
         };
-        $scope.connect = function(user) {
-            var url = '/api/user/connect/' + user.id;
-            $http.get(url).success(function(data) {
-                user.isConnected = true;
+        $scope.follow = function(user) {
+            var url = '/api/user/follow';
+            var params = {
+                userId: user._id
+            };
+            $http.post(url, params).success(function(data) {
+                user.isFollowed = true;
             });
         };
 
         // default config
-        $scope.years = '0-2';
+        $scope.phase = 'all';
     }
 ]).controller('myCompanyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        
+        var url = '/api/user/companys';
+        $scope.content = [];
+        $scope.industry = [];
+        $scope.location = [];
+        $scope.name = '';
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
+        var params = {
+            pager: 1
+        };
+        $scope.next = function() {
+            if (!$scope.pager.hasNext) {
+                return false;
+            }
+            $scope.pager.current += 1;
+            params.pager = $scope.pager.current;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.pager.hasNext = data.hasNext;
+            });
+        };
+        $scope.prev = function() {
+            if ($scope.pager.current <= 1) {
+                return false;
+            }
+            $scope.pager.current -= 1;
+            params.pager = $scope.pager.current;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.pager.hasNext = data.hasNext;
+            });
+        };
+        $scope.enter = function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                $scope.searchByName();
+            }
+        };
+        $scope.searchByName = function() {
+            if ($scope.name === '') {
+                return false;
+            }
+            params.name = $scope.name;
+            params.pager = 1;
+            $http.get(url, {
+                params: params,
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.pager.hasNext = data.hasNext;
+            });
+        };
+        $scope.vm = {};
+        $scope.vm.classify = function(key, value) {
+            params.type = 'classify';
+            params.name = key;
+            params.value = value;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.pager.hasNext = data.hasNext;
+            });
+        };
+        $scope.vm.unFollow = function(company) {
+            var url = '/api/user/unFollow';
+            var params = {
+                userId: company._id
+            };
+            $http.post(url, params).success(function(data) {
+                var index = $scope.content.indexOf(company);
+                $scope.content.splice(index, 1);
+            });
+        };
     }
 ]).controller('myPeopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
@@ -541,31 +624,60 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 filter: item.name
             };
             $scope.title = item.name;
-            $http(url,params).success(function(data) {
+            $http(url, params).success(function(data) {
                 $scope.content = data.content;
-            }); 
+            });
         };
         $scope.vm.remove = function(connect) {
             var url = '/api/user/disconnect';
             var params = {
                 connectId: connect._id
             };
-            $http.post(url,params).success(function(data) {
+            $http.post(url, params).success(function(data) {
                 var index = $scope.content.indexOf(connect);
-                $scope.connect.splice(index,1);
+                $scope.connect.splice(index, 1);
             });
         };
     }
 ]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        
+
     }
 ]).controller('myJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        
+        var url = '/api/user/jobs';
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
+        var params = {
+            pager: 0
+        };
+        $scope.next = function() {
+            if (!$scope.pager.hasNext) {
+                return false;
+            }
+            $scope.pager.current += 1;
+            params.pager = $scope.pager.current;
+            $scope.pager.link(url, params, function(data) {
+                $scope.content = data.content;
+                $scope.pager.hasNext = data.hasNext;
+            });
+        };
+        $scope.prev = function() {
+            if ($scope.pager.current <= 1) {
+                return false;
+            }
+            $scope.pager.current -= 1;
+            params.pager = $scope.pager.current;
+            $scope.pager.link(url, params, function(data) {
+                $scope.content = data.content;
+                $scope.pager.hasNext = data.hasNext;
+            });
+        };
     }
 ]).controller('mySendingCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        
+
     }
 ]);
