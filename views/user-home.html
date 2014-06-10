@@ -270,6 +270,27 @@
           .timeline-v > li > .interview {
             margin-right: -23%;
           }
+          .sending.popover {
+            display: none;
+            width: 470px;
+            max-width: 530px;
+            max-height: 76px;
+            top: inherit;
+            left: 18px;
+            bottom: 44px;
+          }
+          .sending.popover.post >.arrow {
+            margin-left: -224px;
+          }
+          .sending.popover.reading >.arrow {
+            margin-left: -103px;
+          }
+          .sending.popover.interview >.arrow {
+            margin-left: 35px;
+          }
+          .sending.popover.offer >.arrow {
+            margin-left: 183px;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -400,7 +421,7 @@
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Job</li>
                   <li ng-class="{active: current.path === 'job'}"><a ng-href="/job">Find</a></li>
-                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Job</a></li>
+                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Collects</a></li>
               </ul>
             </div>
             <div class="row" ng-view ng-cloak></div>

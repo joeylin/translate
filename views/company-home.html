@@ -26,6 +26,9 @@
            * Style tweaks
            * --------------------------------------------------
            */
+          .home-container {
+            padding-top: 19px;
+          }
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -53,9 +56,6 @@
             font-size: 36px;
             margin-top: 0;
           }
-          .user-detail .col-md-3 {
-            text-indent: -15px;
-          }
           .well h3 {
             margin-top: 10px;
           }
@@ -63,19 +63,17 @@
             margin-bottom: 20px;
             font-weight: 700;
           }
-          .company-about .btn {
-            margin-top: 10px;
-            margin-bottom: 0;
-          }
-          .style-flat h5 {
-            font-weight: 700;
-            margin-bottom: 0px;
-          }
           .media-info .date {
             font-style: italic;
           }
-          .media-info .media-controll {
+          .media-info .media-control {
             padding-right: 16px;
+          }
+          .media-info .media-control .like {
+            margin-right: 10px;
+          }
+          .media-info .media-control .liked i {
+            color: rgb(51, 51, 51);
           }
           .pager li>a {
             border-radius: 3px;
@@ -104,6 +102,8 @@
           }
           .comment-editor .input-group-btn:last-child >.btn {
             margin-left: 8px;
+            border-bottom-left-radius: 3px;
+            border-top-left-radius: 3px;
           }
           .notifications-menu .dropdown-menu {
             width: 130px!important;
@@ -121,26 +121,176 @@
           .profile-sidebar .user-body > div {
             padding-left: 0;
           }
-          .profile-body .summary {
-            height: 129px;
-            overflow: hidden;
+          .summary .nav {
+            height: 100%;
+            border-bottom: 0;
+            padding-top: 5px;
+            padding-bottom: 5px;
           }
-          .summary .summary-header {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 15px;
-            font-style: italic;
-            font-weight: 400;
-
-            border-left: 5px solid #eee;
-            padding-left: 10px;
+          .summary .nav>li>a {
+            padding: 6px 15px;
+            color: #555;
           }
-          .summary-container {
-            padding-top: 15px;
-            border: none;
+          .summary .nav>li>a i {
+            padding-right: 21px;
+            margin-left: -3px;
+          }
+          .summary .nav>li.active>a {
+            background-color: #f0f0f0;
+            border: 0;
+            font-weight: 700;
+          }
+          .summary .nav>li>a:hover {
+            border-color: transparent;
+          }
+          .custom-well {
+            background-color:transparent; 
+            border: 1px solid transparent; 
+            border-radius: 4px; 
+            -webkit-box-shadow: inset 0 1px 1px transparent; 
+            box-shadow: inset 0 1px 1px transparent; 
+            padding: 0;
+          }
+          .siderbar-nav {
+            border: 1px solid #e3e3e3;
             background-color: #fff;
+            border-radius: 0;
           }
-
+          .home-container .col-md-2 {
+            padding-left: 0;
+          }
+          .profile-sidebar {
+            float: right;
+            padding-left: 0;
+          }
+          .profile-body {
+            min-height: 960px;
+          }
+          .btn-primary.default {
+            background-color: #fafafa;
+            color: #666;
+            border-color: #ddd;
+            border-bottom-color: #ddd;
+          }
+          .btn-primary.default:hover {
+            background-color: #fafafa;
+            color: #666;
+          }
+          .share-success >i {
+            color: #5cb85c;
+            font-size: 30px;
+          }
+          .share-success >span {
+            line-height: 30px;
+            font-size: 18px;
+            color: #999;
+          }
+          .share-success {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -50px;
+            margin-top: -15px;
+            display: none;
+          }
+          .search-people-relationship {
+            color: #999;
+            font-style: italic;
+          }
+          .people-sort-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+          }
+          .people-sort-list {
+            padding-left: 20px;
+          }
+          .custom-heading {
+            border-bottom: 1px solid #eee;
+          }
+          .custom-heading input {
+            margin-top: 3px;
+          }
+          .myShare .media-heading i {
+            font-size: 14px;
+            line-height: 18px;
+          }
+          .timeline-v {
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 0;
+            padding: 0;
+            list-style: none;
+          }
+          .timeline-v:before {
+            content: '';
+            position: absolute;
+            top: 13px;
+            left: 0;
+            height: 5px;
+            width: 100%;
+            background: #ddd;
+            border: 1px solid #eee;
+            margin: 0;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+          }
+          .timeline-v > li {
+            position: relative;
+            display: inline-block;
+          }
+          .timeline-v > .active .post,
+          .timeline-v > .active .reading, 
+          .timeline-v > .active .interview,
+          .timeline-v > .active .offer {
+            background-color: #0073b7;
+            color: #fff;
+          }
+          .timeline-v > li > .fa{
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            width: 30px;
+            height: 30px;
+            font-size: 15px;
+            line-height: 30px;
+            color: #666;
+            background: #eee;
+            border-radius: 50%;
+            text-align: center;
+          }
+          .timeline-v > .fail > .post,
+          .timeline-v > .fail > .reading,
+          .timeline-v > .fail > .interview,
+          .timeline-v > .fail > .offer {
+            background-color: #f4543c;
+            color: #fff;
+          }
+          .timeline-v > li > .reading {
+            margin-left: -30%;
+          }
+          .timeline-v > li > .interview {
+            margin-right: -23%;
+          }
+          .sending.popover {
+            display: none;
+            width: 470px;
+            max-width: 530px;
+            max-height: 76px;
+            top: inherit;
+            left: 18px;
+            bottom: 44px;
+          }
+          .sending.popover.post >.arrow {
+            margin-left: -224px;
+          }
+          .sending.popover.reading >.arrow {
+            margin-left: -103px;
+          }
+          .sending.popover.interview >.arrow {
+            margin-left: 35px;
+          }
+          .sending.popover.offer >.arrow {
+            margin-left: 183px;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -167,51 +317,44 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right" ng-cloak>
-                  <li class="dropdown notifications-menu user-menu" ng-controller="notifyCtrl" id="menuNotify">
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{total}}</span>
+                            <span class="label label-wraning">{{current.request + current.message}}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/notify/request" target="_self">{{request}} requests</a></li>
-                            <li><a href="/notify/message">{{message}} messages</a></li>
+                            <li><a href="/notify/request" target="_self">{{current.request}} requests</a></li>
+                            <li><a href="/notify/message">{{current.message}} messages</a></li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- todo have custom user image -->
-                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
-                            <i class="fa fa-user"></i> 
+                            <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
                             <span id="lblUsername" style="margin-left: 5px;"></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <img ng-src="{{global.user.avatar}}" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_name"> Jane Doe - Web Developer</span>
-                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                    <span>{{global.user.name}}</span>
+                                    <small>Member since Nov. 2012</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_follower">10</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#">{{global.user.share.length}}</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_praise">100</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#">{{global.user.connects.length}}</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_connects">30</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#">share</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Praise</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">Connects</a>
                                 </div>
                             </li>
@@ -235,201 +378,21 @@
             </div>
           </div>
         </nav>
-        <div class="container">
-          <div class="profile-body col-md-9" ng-controller="indexCtrl">
-            <div class="row"> 
-              <div class="col-md-9">
-                <div class="well">
-                  <div class="form-group">
-                      <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="newShare"></textarea>
-                  </div>
-                  <div class="clearfix">
-                    <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="well summary-container">
-                  <div class="user-body summary">
-                      <span class="summary-header">Summary :</span>
-                      <div class="row">
-                        <div class="col-md-8">Jobs:</div>
-                        <div class="col-md-4" style="padding-left:0;">10</div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-8">Share:</div>
-                        <div class="col-md-4" style="padding-left:0;">100+</div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-8">Request:</div>
-                        <div class="col-md-4" style="padding-left:0;">10</div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-8">Profile:</div>
-                        <div class="col-md-4" style="padding-left:0;">10</div>
-                      </div>
-                  </div>            
-                </div>          
+        <div class="container home-container">
+          <div class="col-md-2">
+            <div class="well custom-well siderbar-nav">
+              <div class="user-body summary">
+                  <ul class="nav nav-tabs nav-stacked">
+                    <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
+                    <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending"><i class="fa fa-fw fa-rocket"></i>My Post</a></li>
+                    <li ng-class="{active: current.path === 'request'}"><a ng-href="/request"><i class="fa fa-fw fa-info-circle"></i>My Resume</a></li>
+                    <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>My follow</a></li>
+                  </ul>
               </div>
             </div>
-            <div class="panel news">
-              <div class="panel-heading">
-                <h4 class="panel-title">News</h4>
-              </div>
-              <div class="panel-body" ng-cloak>
-                <div class="media" ng-repeat-start="share in shareList">
-                  <a class="pull-left" ng-href="/profile/{{share.user.username}}" target="_self">
-                    <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 64px; height: 64px;">
-                  </a>
-                  <div class="media-body">
-                    <h4 class="media-heading">{{share.user.name}}</h4>
-                    <div>
-                      <p>{{share.content}}</p>
-                    </div>
-                    <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">{{share.createAt}}</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="like">like</a>
-                        <a href="#" class="comment" ng-click="vm.toggleComment(share)">comment({{share.comments.length}})</a>
-                      </span>
-                    </div>
-                    <div class="reply-container" ng-show="share.isShowComment">
-                      <div class="input-group comment-editor">
-                          <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="share.newComment"></textarea>
-                          <span class="input-group-btn">
-                              <button class="btn btn-primary reply-submit" type="button" ng-click="vm.submitComment(share)">submit</button>
-                          </span>
-                      </div>
-                      <hr class="reply-hr" ng-repeat-start="comment in share.comments">
-                      <div class="media reply-item" ng-repeat-end>
-                        <a class="pull-left" ng-href="/profile/{{comment.user.name}}" target="_self">
-                          <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
-                        </a>
-                        <div class="media-body">
-                          <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
-                          <div class="clearfix media-info">
-                            <span class="date pull-left"><a href="#">{{comment.date}}</a></span>
-                            <span class="pull-right media-controll">
-                              <a href="#" class="comment" ng-show="comment.user.username === vm.username" ng-click="vm.delete(comment, share)">delete</a>
-                              <a href="#" class="comment" ng-click="vm.reply(comment)">reply</a>
-                            </span>
-                          </div>
-                          <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
-                              <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
-                              <span class="input-group-btn">
-                                  <button class="btn btn-primary" type="button" ng-click="vm.submitComment(comment)">submit</button>
-                              </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr ng-repeat-end>
-                <div class="media">
-                  <a class="pull-left" href="#">
-                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-                  </a>
-                  <div class="media-body">
-                    <h4 class="media-heading">Media heading</h4>
-                    <div>
-                      <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                    </div>
-                    <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="praise">praise</a>
-                        <a href="#" class="comment" >comment</a>
-                      </span>
-                    </div>
-                    <div class="reply-container">
-                      <div class="input-group comment-editor">
-                          <textarea class="form-control" rows="1" placeholder="Enter ..."></textarea>
-                          <span class="input-group-btn">
-                              <button class="btn btn-primary" type="button">submit</button>
-                          </span>
-                      </div>
-                      <hr class="reply-hr">
-                      <div class="media reply-item">
-                        <a class="pull-left" href="#">
-                          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 34px; height: 34px;">
-                        </a>
-                        <div class="media-body">
-                          <p class="reply-content"><span class="reply-user"><a href="#">Joeylin</a>: </span>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                          <div class="clearfix media-info">
-                            <span class="date pull-left"><a href="#">a minute ago</a></span>
-                            <span class="pull-right media-controll">
-                              <a href="#" class="comment" >reply</a>
-                            </span>
-                          </div>
-                          <div class="input-group comment-editor comment-editor-inline">
-                              <textarea class="form-control" rows="1" placeholder="Enter ..."></textarea>
-                              <span class="input-group-btn">
-                                  <button class="btn btn-primary" type="button">submit</button>
-                              </span>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="reply-hr">
-                      <div class="media reply-item">
-                        <a class="pull-left" href="#">
-                          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 34px; height: 34px;">
-                        </a>
-                        <div class="media-body">
-                          <p class="reply-content"><span class="reply-user"><a href="#">Joeylin</a>: </span>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                          <div class="clearfix media-info">
-                            <span class="date pull-left"><a href="#">a minute ago</a></span>
-                            <span class="pull-right media-controll">
-                              <a href="#" class="comment" >reply</a>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>     
-          <div class="profile-sidebar col-md-3">
-            <div class="well">
-              <div class="user-header bg-modena clearfix">
-                  <div class="pull-left">
-                    <img src="" style="height: 85px;width: 85px">
-                  </div>
-                  <div class="pull-left">
-                    <h3>Smash</h3>
-                  </div>
-              </div>
-              <!-- Menu Body -->
-              <div class="user-body clearfix">
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_followers">10</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_praise">100</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#" class="user_connects">30</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#">share</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                      <a href="#">Jobs</a>
-                  </div>
-              </div>
-
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Reading List</div>
-              <div class="panel-body">
-                Panel content
-              </div>
-            </div>
+          </div>
+          <div class="col-md-10" style="padding-left:0;">
+            <div class="row" ng-view ng-cloak></div>
           </div>
         </div>
         <footer>

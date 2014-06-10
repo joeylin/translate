@@ -113,3 +113,57 @@ $(document).ready(function() {
         }
     });
 });
+(function($) {
+    var TsTooltip = $.dropdown = function(element, options) {
+        var template = '<div class="popover top sending">' +
+            '<div class="arrow"></div>' +
+            '<div class="popover-content"> ' +
+            '<p></p>' +
+            '</div>' +
+            '</div>';
+        var $container = $(template);
+        var timeout;
+        $(element).find('i').on('mouseenter', function() {
+            clearTimeout(timeout);
+            var check = $(this).parents('li').hasClass('active') || $(this).parents('li').hasClass('fail');
+            if (!check) {
+                $container.css({
+                    display: 'none'
+                });
+                return false;
+            }
+            var className = $(this).data('tag');
+            var content = $(this).data('content');
+            $container.removeClass('post offer interview reading');
+            $container.addClass(className);
+            $container.find('.popover-content').text(content);
+            $container.css({
+                display: 'block'
+            });
+            return false;
+        }).on('mouseleave', function() {
+            timeout = setTimeout(function() {
+                $container.css({
+                    display: 'none'
+                });
+            }, 400);
+        });
+        $container.on('mouseenter', function() {
+            clearTimeout(timeout);
+        }).on('mouseleave', function() {
+            timeout = setTimeout(function() {
+                $container.css({
+                    display: 'none'
+                });
+            }, 400);
+        });
+        $(element).after($container);
+    };
+    $.fn.tsTooltip = function(options) {
+        return this.each(function() {
+            if (!$.data(this, 'TsTooltip')) {
+                $.data(this, 'TsTooltip', new TsTooltip(this, options));
+            }
+        });
+    };
+}(jQuery));

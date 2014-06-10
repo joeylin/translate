@@ -7,53 +7,28 @@
           <img class="media-object" alt="64x64" ng-src="{{job.company.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">{{job.company.name}}</h4>
+          <h4 class="media-heading">{{job.name}}</h4>
           <div class="row">
             <div class="col-md-9">
-              <div>{{job.desc}}</div>
-              <div> <strong>Payment</strong>: {{job.payment}}</div>
-              <div> <strong>Skills</strong>: {{job.skills}}</div>
-              <div class="search-job-location"><strong>location</strong>: {{job.location}}</div>
+              <div>{{job.desc}}({{job.location}})</div>
               <div>
-                <a href="#" class="search-job-date">Posted at {{job.date}} </a>
-                <span> views: {{job.views}}</span>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button" ng-href="/api/job/{{job.id}}" target="_self">View</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading">AmazingSurge</h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer(FuZhou)</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
+                <a href="#" class="search-job-date">{{job.date}}</a>
+                <span> Views: {{job.views}}</span>
+                <span> Join: {{job.join}}</span>
               </div>
               <div class="resume-process">
-                <ul class="timeline-v row">
+                <ul class="timeline-v row tsTooltip">
                   <li class="active col-md-3">
-                    <i class="fa fa-envelope post"></i>
+                    <i class="fa fa-envelope post" data-tag="post" data-content=""></i>
                   </li>
-                  <li class="col-md-3 text-center">
-                    <i class="fa fa-fw fa-eye reading"></i>
+                  <li class="active col-md-3 text-center">
+                    <i class="fa fa-fw fa-eye reading" data-tag="reading" data-content="check at 2 mins ago ."></i>
                   </li>
-                  <li class="col-md-3 text-center">
-                    <i class="fa fa-user interview"></i>
+                  <li class="active col-md-3 text-center">
+                    <i class="fa fa-user interview" data-tag="interview" data-content="check at 2 hours age. address: Fuzhou jinanqu hualin lu 18hao , longfulou 1505"></i>
                   </li>
-                  <li class="fail col-md-3 text-right" style="padding-right:0;">
-                    <i class="fa fa-fw fa-check-circle offer"></i>
+                  <li class="active col-md-3 text-right" style="padding-right:0;">
+                    <i class="fa fa-fw fa-check-circle offer" data-tag="offer" data-content="checked now. congratulations !"></i>
                   </li>
                 </ul>
               </div>
@@ -76,25 +51,25 @@
           <h4 class="media-heading">SmashMagzine</h4>
           <div class="row">
             <div class="col-md-9">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer(FuZhou)</div>
+              <div>Ask for nodejs developer, code review, write document, communicate with customer(FuZhou | shixi)</div>
               <div>
                 <a href="#" class="search-job-date">Posted at 2 hours ago </a>
                 <span> Views: 1000</span>
                 <span> Join: 53</span>
               </div>
               <div class="resume-process">
-                <ul class="timeline-v row">
+                <ul class="timeline-v row tsTooltip">
                   <li class="active col-md-3">
-                    <i class="fa fa-envelope post"></i>
+                    <i class="fa fa-envelope post" data-tag="post" data-content="post at 2 days ago."></i>
                   </li>
-                  <li class="col-md-3 text-center">
-                    <i class="fa fa-fw fa-eye reading"></i>
+                  <li class="active col-md-3 text-center">
+                    <i class="fa fa-fw fa-eye reading" data-tag="reading" data-content="check at 2 mins ago ."></i>
                   </li>
-                  <li class="col-md-3 text-center">
-                    <i class="fa fa-user interview"></i>
+                  <li class="active col-md-3 text-center">
+                    <i class="fa fa-user interview" data-tag="interview" data-content="check at 2 hours age. address: Fuzhou jinanqu hualin lu 18hao , longfulou 1505"></i>
                   </li>
-                  <li class="fail col-md-3 text-right" style="padding-right:0;">
-                    <i class="fa fa-fw fa-check-circle offer"></i>
+                  <li class="active col-md-3 text-right" style="padding-right:0;">
+                    <i class="fa fa-fw fa-check-circle offer" data-tag="offer" data-content="checked now. congratulations !"></i>
                   </li>
                 </ul>
               </div>
@@ -123,18 +98,58 @@
                 <span> Join: 53</span>
               </div>
               <div class="resume-process">
-                <ul class="timeline-v row">
+                <ul class="timeline-v row tsTooltip">
                   <li class="active col-md-3">
-                    <i class="fa fa-envelope post"></i>
+                    <i class="fa fa-envelope post" data-tag="post" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."></i>
                   </li>
-                  <li class="col-md-3 text-center">
-                    <i class="fa fa-fw fa-eye reading"></i>
+                  <li class="active col-md-3 text-center">
+                    <i class="fa fa-fw fa-eye reading" data-tag="reading" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."></i>
                   </li>
-                  <li class="col-md-3 text-center">
-                    <i class="fa fa-user interview"></i>
+                  <li class="active col-md-3 text-center">
+                    <i class="fa fa-user interview" data-tag="interview" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."></i>
                   </li>
                   <li class="fail col-md-3 text-right" style="padding-right:0;">
-                    <i class="fa fa-fw fa-check-circle offer"></i>
+                    <i class="fa fa-fw fa-check-circle offer" data-tag="offer" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."></i>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="pull-right">
+                <a class="btn btn-default" role="button">Give up</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="media">
+        <a class="pull-left" href="#">
+          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+        </a>
+        <div class="media-body">
+          <h4 class="media-heading">CssTrick</h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer(FuZhou)</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> Views: 1000</span>
+                <span> Join: 53</span>
+              </div>
+              <div class="resume-process">
+                <ul class="timeline-v row tsTooltip">
+                  <li class="active col-md-3">
+                    <i class="fa fa-envelope post" data-tag="post" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."></i>
+                  </li>
+                  <li class="active col-md-3 text-center">
+                    <i class="fa fa-fw fa-eye reading" data-tag="reading" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."></i>
+                  </li>
+                  <li class="fail col-md-3 text-center">
+                    <i class="fa fa-user interview" data-tag="interview" data-content="Sorry you rejected."></i>
+                  </li>
+                  <li class="col-md-3 text-right" style="padding-right:0;">
+                    <i class="fa fa-fw fa-check-circle offer" data-tag="offer" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."></i>
                   </li>
                 </ul>
               </div>
