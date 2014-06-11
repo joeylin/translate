@@ -2,7 +2,7 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
+controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.pager = {
             hasNext: false,
@@ -106,6 +106,80 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $scope.total = request + message;
             $scope.request = request;
             $scope.message = message;
+        });
+    }
+]).controller('myPostCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var url = '/api/notify';
+        $http.get(url).success(function(data) {
+            var request = data.notify.request.length;
+            var message = data.notify.message.length;
+
+            $scope.total = request + message;
+            $scope.request = request;
+            $scope.message = message;
+        });
+    }
+]).controller('myJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var url = '/api/notify';
+        $http.get(url).success(function(data) {
+            var request = data.notify.request.length;
+            var message = data.notify.message.length;
+
+            $scope.total = request + message;
+            $scope.request = request;
+            $scope.message = message;
+        });
+    }
+]).controller('jobManageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var url = '/api/notify';
+        $http.get(url).success(function(data) {
+            var request = data.notify.request.length;
+            var message = data.notify.message.length;
+
+            $scope.total = request + message;
+            $scope.request = request;
+            $scope.message = message;
+        });
+    }
+]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var url = '/api/notify';
+        $http.get(url).success(function(data) {
+            var request = data.notify.request.length;
+            var message = data.notify.message.length;
+
+            $scope.total = request + message;
+            $scope.request = request;
+            $scope.message = message;
+        });
+    }
+]).controller('newPostCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var editor = new Simditor({
+            textarea: $('#post-editor'),
+            placeholder: 'Enter content',
+            pasteImage: true,
+            toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent'],
+            defaultImage: '/public/js/lib/simditor-1.0.3/images/image.png',
+            upload: location.search === '?upload' ? {
+                url: '/upload'
+            } : false
+        });
+    }
+]).controller('newJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        var editor = new Simditor({
+            textarea: $('#job-editor'),
+            placeholder: 'Enter content',
+            pasteImage: true,
+            toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent'],
+            defaultImage: '/public/js/lib/simditor-1.0.3/images/image.png',
+            upload: location.search === '?upload' ? {
+                url: '/upload'
+            } : false
         });
     }
 ]);

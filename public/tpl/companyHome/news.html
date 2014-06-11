@@ -1,0 +1,110 @@
+<div class="profile-body col-md-9">
+  <div class="well custom-well">
+    <div class="form-group" style="position:relative;">
+        <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="newShare"></textarea>
+        <div class="share-success" id="submit-success">
+          <i class="fa fa-fw fa-check-circle"></i>
+          <span>success !</span>
+        </div>
+    </div>
+    <div class="clearfix">
+      <a class="btn btn-primary pull-right" role="button" ng-click="submit()" ng-class="{'default': newShare === ''}">submit</a>
+    </div>
+  </div>
+  <div class="panel news">
+    <div class="panel-heading">
+      <h4 class="panel-title">News</h4>
+    </div>
+    <div class="panel-body" ng-cloak>
+      <div class="media" ng-repeat-start="share in shareList">
+        <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
+          <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
+        </a>
+        <div class="media-body">
+          <h4 class="media-heading">{{share.user.name}}</h4>
+          <div>
+            <p>{{share.content}}</p>
+          </div>
+          <div class="clearfix media-info">
+            <span class="date pull-left"><a href="#">{{share.createAt}}</a></span>
+            <span class="pull-right media-control">
+              <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(share)"></i>({{share.likes}})</a>
+              <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.comments.length}})</a>
+            </span>
+          </div>
+          <div class="reply-container" ng-show="share.isShowComment">
+            <div class="input-group comment-editor">
+                <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="share.newComment"></textarea>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary reply-submit" type="button" ng-click="vm.submitComment(share)">submit</button>
+                </span>
+            </div>
+            <hr class="reply-hr" ng-repeat-start="comment in share.comments">
+            <div class="media reply-item" ng-repeat-end>
+              <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
+                <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
+              </a>
+              <div class="media-body">
+                <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
+                <div class="clearfix media-info">
+                  <span class="date pull-left"><a href="#">{{comment.date}}</a></span>
+                  <span class="pull-right media-control">
+                    <a href="#" class="comment" ng-show="comment.user.name === global.user.name || global.user.name === share.user.name" ng-click="vm.delete(comment, share)"><i class="fa fa-fw fa-trash-o"></i></a>
+                    <a href="#" class="comment" ng-click="vm.reply(comment)">reply</a>
+                  </span>
+                </div>
+                <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
+                    <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="vm.submitInlineComment(comment,share)">submit</button>
+                    </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr ng-repeat-end>
+      <div ng-show="shareList.length > 0">
+        <ul class="pager">
+          <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
+          <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>  
+</div>
+<div class="profile-sidebar col-md-3">
+  <div class="well">
+    <div class="user-header bg-modena clearfix">
+        <div class="pull-left">
+          <img ng-src="{{global.user.avatar}}" style="height: 85px;width: 85px">
+        </div>
+        <div class="pull-left">
+          <h3>{{global.user.name}}</h3>
+        </div>
+    </div>
+    <!-- Menu Body -->
+    <div class="user-body clearfix">
+        <div class="col-xs-6 text-center">
+            <a href="#" class="user_followers">{{global.user.share.length}}</a>
+        </div>
+        <div class="col-xs-6 text-center">
+            <a href="#" class="user_connects">{{global.user.connects.length}}</a>
+        </div>
+        <div class="col-xs-6 text-center">
+            <a href="#">share</a>
+        </div>
+        <div class="col-xs-6 text-center">
+            <a href="#">Connects</a>
+        </div>
+    </div>
+
+  </div>
+  <div class="panel panel-default section">
+    <div class="panel-heading">Reading List</div>
+    <div class="panel-body">
+      Panel content
+    </div>
+  </div>
+</div>

@@ -19,8 +19,12 @@
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
+        <!-- editor -->
+        <link media="all" rel="stylesheet" type="text/css" href="/public/js/lib/simditor-1.0.3/styles/font-awesome.css" />
+        <link media="all" rel="stylesheet" type="text/css" href="/public/js/lib/simditor-1.0.3/styles/simditor.css" />
+
+
         <!-- CSS code from translate.com editor -->
-        
         <style type="text/css">
             /*
            * Style tweaks
@@ -156,7 +160,7 @@
             background-color: #fff;
             border-radius: 0;
           }
-          .home-container .col-md-2 {
+          .home-container > .col-md-2 {
             padding-left: 0;
           }
           .profile-sidebar {
@@ -291,6 +295,24 @@
           .sending.popover.offer >.arrow {
             margin-left: 183px;
           }
+
+          /* company style*/
+          .nav-tabs-custom > .publish-btn {
+            margin-bottom: 15px;
+          }
+          .newJob .panel-body label {
+            line-height: 35px;
+          }
+          /* overwrite editor style */
+          .simditor .simditor-toolbar > ul > li > .toolbar-item {
+            width: 37px;
+          }
+          .simditor {
+            border: 1px solid #ccc;
+          }
+          .simditor:focus {
+            border-color: #3c8dbc !important;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -383,15 +405,23 @@
             <div class="well custom-well siderbar-nav">
               <div class="user-body summary">
                   <ul class="nav nav-tabs nav-stacked">
-                    <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
-                    <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending"><i class="fa fa-fw fa-rocket"></i>My Post</a></li>
-                    <li ng-class="{active: current.path === 'request'}"><a ng-href="/request"><i class="fa fa-fw fa-info-circle"></i>My Resume</a></li>
-                    <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>My follow</a></li>
+                    <li ng-class="{active: current.path === 'news' || current.path === 'newJob' || current.path === 'newPost'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
+                    <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob"><i class="fa fa-fw fa-rocket"></i>My Job</a></li>
+                    <li ng-class="{active: current.path === 'myPost'}"><a ng-href="/myPost"><i class="fa fa-fw fa-info-circle"></i>My Post</a></li>
+                    <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-envelope-o"></i>My Share</a></li>
                   </ul>
               </div>
             </div>
           </div>
           <div class="col-md-10" style="padding-left:0;">
+            <div class="nav-tabs-custom" ng-show="current.path === 'news' || current.path === 'newJob' || current.path === 'newPost'" ng-cloak>
+              <ul class="nav nav-tabs pull-left publish-btn">
+                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Publish</li>
+                  <li ng-class="{active: current.path === 'news'}"><a ng-href="/home">Share</a></li>
+                  <li ng-class="{active: current.path === 'newJob'}"><a ng-href="/jobs/new">Job</a></li>
+                  <li ng-class="{active: current.path === 'newPost'}"><a ng-href="/posts/new">Post</a></li>
+              </ul>
+            </div>
             <div class="row" ng-view ng-cloak></div>
           </div>
         </div>
@@ -409,6 +439,7 @@
             '/public/bower_components/angular-route/angular-route.js',
             '/public/bower_components/marked/lib/marked.js',
             '/public/bower_components/toastr/toastr.js',
+            '/public/js/lib/simditor-1.0.3/scripts/js/simditor-all.min.js',
             '/public/js/lib/angular-locale_zh-cn.js',
             '/public/js/lib/angular-ui.js',
             '/public/js/lib/bootstrap.min.js',

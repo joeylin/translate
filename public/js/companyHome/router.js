@@ -7,7 +7,7 @@ constant('app', {
 }).provider('getFile', ['app',
     function(app) {
         this.html = function(fileName) {
-            return '/public/tpl/search/' + fileName + '?v=' + app.version;
+            return '/public/tpl/companyHome/' + fileName + '?v=' + app.version;
         };
         this.$get = function() {
             return {
@@ -17,40 +17,49 @@ constant('app', {
     }
 ]).config(['$routeProvider', '$locationProvider', 'getFileProvider',
     function($routeProvider, $locationProvider, getFileProvider) {
-        var all = {
-            templateUrl: getFileProvider.html('all.html'),
-            controller: 'allCtrl',
-            path: 'all'
+        var news = {
+            templateUrl: getFileProvider.html('news.html'),
+            controller: 'newsCtrl',
+            path: 'news'
         };
-        var people = {
-            templateUrl: getFileProvider.html('people.html'),
-            controller: 'peopleCtrl',
-            path: 'people'
+        var myPost = {
+            templateUrl: getFileProvider.html('myPost.html'),
+            controller: 'myPostCtrl',
+            path: 'myPost'
         };
-        var job = {
-            templateUrl: getFileProvider.html('job.html'),
-            controller: 'jobCtrl',
-            path: 'job'
+        var myJob = {
+            templateUrl: getFileProvider.html('myJob.html'),
+            controller: 'myJobCtrl',
+            path: 'myJob'
         };
-        var company = {
-            templateUrl: getFileProvider.html('company.html'),
-            controller: 'companyCtrl',
-            path: 'company'
+        var jobManage = {
+            templateUrl: getFileProvider.html('jobManage.html'),
+            controller: 'jobManageCtrl',
+            path: 'jobManage'
         };
-        var share = {
-            templateUrl: getFileProvider.html('share.html'),
-            controller: 'shareCtrl',
-            path: 'share'
+        var myShare = {
+            templateUrl: getFileProvider.html('myShare.html'),
+            controller: 'myShareCtrl',
+            path: 'myShare'
+        };
+        var newPost = {
+            templateUrl: getFileProvider.html('newPost.html'),
+            controller: 'newPostCtrl',
+            path: 'newPost'
+        };
+        var newJob = {
+            templateUrl: getFileProvider.html('newJob.html'),
+            controller: 'newJobCtrl',
+            path: 'newJob'
         };
         $routeProvider.
-        when('/search/all', all).
-        when('/search/people', people).
-        when('/search/job', job).
-        when('/search/company', company).
-        when('/search/share', share).
-        otherwise({
-            redirectTo: '/search/all'
-        });
+        when('/home', news).
+        when('/myPost', myPost).
+        when('/myJob', myJob).
+        when('/myJob/manage', jobManage).
+        when('/myShare', myShare).
+        when('/posts/new', newPost).
+        when('/jobs/new', newJob);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }
 ]);
