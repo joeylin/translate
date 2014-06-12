@@ -313,6 +313,9 @@
           .simditor:focus {
             border-color: #3c8dbc !important;
           }
+          .inline-padding {
+            padding-right: 10px;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -405,10 +408,8 @@
             <div class="well custom-well siderbar-nav">
               <div class="user-body summary">
                   <ul class="nav nav-tabs nav-stacked">
-                    <li ng-class="{active: current.path === 'news' || current.path === 'newJob' || current.path === 'newPost'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
-                    <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob"><i class="fa fa-fw fa-rocket"></i>My Job</a></li>
-                    <li ng-class="{active: current.path === 'myPost'}"><a ng-href="/myPost"><i class="fa fa-fw fa-info-circle"></i>My Post</a></li>
-                    <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-envelope-o"></i>My Share</a></li>
+                    <li ng-class="{active: current.path === 'news' || current.path === 'newJob' || current.path === 'newPost'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>Home</a></li>
+                    <li ng-class="{active: current.path === 'notify'}"><a ng-href="/notify"><i class="fa fa-fw fa-envelope-o"></i>Notify</a></li>
                   </ul>
               </div>
             </div>

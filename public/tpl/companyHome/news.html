@@ -13,7 +13,13 @@
   </div>
   <div class="panel news">
     <div class="panel-heading">
-      <h4 class="panel-title">News</h4>
+      <div class="pull-right">
+        <span class="inline-padding">Filter by : </span>
+        <a href="#" class="inline-padding">Post</a>
+        <a href="#" class="inline-padding">Share</a>
+        <a href="#" class="inline-padding">Job</a>
+      </div>
+      <h4 class="panel-title">My Acitvity</h4>
     </div>
     <div class="panel-body" ng-cloak>
       <div class="media" ng-repeat-start="share in shareList">
@@ -65,7 +71,60 @@
         </div>
       </div>
       <hr ng-repeat-end>
-      <div ng-show="shareList.length > 0">
+      <div class="media">
+        <div class="media-body">
+          <h4 class="media-heading">Post</h4>
+          <div>
+            <p>
+              English Teacher
+              Responsibility:
+              ---Conduct English teaching according to the British education system.
+              Requirements:
+              ---University degree and above in English or normal English.
+              ---Eager to learn and open-minded and creative.
+              ---Deep understanding and respect for different cultures.
+              (We warmly welcome recent graduates to apply for this position.)
+            </p>
+          </div>
+          <div class="clearfix media-info">
+            <span class="date pull-left"><a href="#">2014/05/18</a></span>
+            <span class="pull-right media-controll">
+              <a href="#" class="delete inline-padding">Delete</a>
+              <a href="#" class="praise inline-padding">Praise</a>
+              <a href="#" class="comment" >comment</a>
+            </span>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="media">
+        <div class="media-body">
+          <h4 class="media-heading">Recruitment</h4>
+          <div>
+            <p>
+              English Teacher
+              Responsibility:
+              ---Conduct English teaching according to the British education system.
+              Requirements:
+              ---University degree and above in English or normal English.
+              ---Eager to learn and open-minded and creative.
+              ---Deep understanding and respect for different cultures.
+              (We warmly welcome recent graduates to apply for this position.)
+            </p>
+          </div>
+          <div class="clearfix media-info">
+            <span class="date pull-left"><a href="#">2014/05/18</a></span>
+            <span class="pull-right media-controll">
+              <a href="#" class="delete inline-padding">Delete</a>
+              <a href="#" class="praise inline-padding">Praise</a>
+              <a href="#" class="comment" >comment</a>
+            </span>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <!-- <div ng-show="shareList.length > 0"> -->
+      <div>
         <ul class="pager">
           <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
           <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
@@ -99,7 +158,6 @@
             <a href="#">Connects</a>
         </div>
     </div>
-
   </div>
   <div class="panel panel-default section">
     <div class="panel-heading">Reading List</div>

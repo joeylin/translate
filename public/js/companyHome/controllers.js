@@ -108,43 +108,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $scope.message = message;
         });
     }
-]).controller('myPostCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
-        var url = '/api/notify';
-        $http.get(url).success(function(data) {
-            var request = data.notify.request.length;
-            var message = data.notify.message.length;
-
-            $scope.total = request + message;
-            $scope.request = request;
-            $scope.message = message;
-        });
-    }
-]).controller('myJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
-        var url = '/api/notify';
-        $http.get(url).success(function(data) {
-            var request = data.notify.request.length;
-            var message = data.notify.message.length;
-
-            $scope.total = request + message;
-            $scope.request = request;
-            $scope.message = message;
-        });
-    }
 ]).controller('jobManageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
-        var url = '/api/notify';
-        $http.get(url).success(function(data) {
-            var request = data.notify.request.length;
-            var message = data.notify.message.length;
-
-            $scope.total = request + message;
-            $scope.request = request;
-            $scope.message = message;
-        });
-    }
-]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
         var url = '/api/notify';
         $http.get(url).success(function(data) {
