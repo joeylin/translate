@@ -8,7 +8,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             hasNext: false,
             current: 0
         };
-        $scope.shareList = [];
+        $scope.itemList = [];
         $scope.newShare = '';
         $scope.total = 0;
         $scope.submit = function() {
@@ -23,7 +23,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         var params = {
             page: 0
         };
-        var getShare = function() {
+        var getTrends = function() {
             $http.get(url, {
                 params: params,
             }).success(function(data) {
@@ -38,7 +38,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current += 1;
             params.page = $scope.pager.current;
-            getShare();
+            getTrends();
         };
         $scope.prev = function() {
             if (!$scope.pager.current) {
@@ -46,7 +46,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current -= 1;
             params.page = $scope.pager.current;
-            getShare();
+            getTrends();
         };
 
         // share item && item comments
@@ -94,7 +94,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
 
         // init
-        getShare();
+        getTrends();
     }
 ]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -135,15 +135,39 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('newJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        var editor = new Simditor({
-            textarea: $('#job-editor'),
-            placeholder: 'Enter content',
-            pasteImage: true,
-            toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent'],
-            defaultImage: '/public/js/lib/simditor-1.0.3/images/image.png',
-            upload: location.search === '?upload' ? {
-                url: '/upload'
-            } : false
-        });
+        $scope.type = 'full-time';
+        $scope.paymentStart = '';
+        $scope.paymentEnd = '';
+        $scope.degree = 'noLimit';
+        $scope.position = '';
+        $scope.summary = '';
+        $scope.detail = '';
+        $scope.workYears = 'noLimit';
+
+        $scope.showBlankError = false;
+        $scope.submit = function() {
+            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.summary === '' || $scope.detail === '';
+            if (check) {
+                $scope.showBlankError = true;
+                return false;
+            }
+            var url = '/api/job/add';
+            var data = {
+                type: $scope.type,
+                paymentStart: $scope.paymentStart,
+                paymentEnd: $scope.paymentEnd,
+                degree: $scope.degree,
+                position: $scope.position,
+                summary: $scope.summary,
+                detail: $scope.detail,
+                workYears: $scope.workYears
+            };
+            $http.post(url, data).success(function(data) {
+                $location.path('/home');
+            });
+        };
+        $scope.change = function() {
+            $scope.showBlankError = false;
+        };
     }
 ]);

@@ -3,18 +3,27 @@
     <div class="panel-body" ng-cloak>
       <div class="row">
         <div class="col-md-2">
-          <label>Title :</label>
+          <label>Position :</label>
         </div>
         <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Enter Title" >
+          <input type="text" class="form-control" placeholder="Enter position" ng-model="position" >
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>department :</label>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Enter department" ng-model="department">
+        </div>
+      </div>
+      <hr >
       <div class="row">
         <div class="col-md-2">
           <label>Type :</label>
         </div>
         <div class="col-md-6">
-          <select class="form-control">
+          <select class="form-control" ng-model="type">
               <option>part-time</option>
               <option>full-time</option>
               <option>intern</option>
@@ -23,10 +32,28 @@
       </div>
       <div class="row">
         <div class="col-md-2">
+          <label>Payment :</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Enter Title" ng-model="paymentStart">
+        </div>
+        <div class="pull-left" style="line-height: 34px;">
+          to
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Enter Title" ng-model="paymentEnd" >
+        </div>
+        <div class="pull-left" style="line-height: 34px;">
+          ( k, only number )
+        </div>
+      </div>
+      <hr >
+      <div class="row">
+        <div class="col-md-2">
           <label>Degree :</label>
         </div>
         <div class="col-md-6">
-          <select class="form-control">
+          <select class="form-control" ng-model="degree">
               <option>noLimit</option>
               <option>diploma</option>
               <option>bachelor</option>
@@ -37,26 +64,10 @@
       </div>
       <div class="row">
         <div class="col-md-2">
-          <label>Payment :</label>
-        </div>
-        <div class="col-md-6">
-          <select class="form-control">
-              <option>below 2k</option>
-              <option>2k-5k</option>
-              <option>5k-10k</option>
-              <option>10k-15k</option>
-              <option>15k-25k</option>
-              <option>25k-50k</option>
-              <option>above 50k</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-2">
           <label>Experience :</label>
         </div>
         <div class="col-md-6">
-          <select class="form-control">
+          <select class="form-control" ng-model="workYears">
               <option>noLimit</option>
               <option>graduating</option>
               <option>below 1</option>
@@ -67,20 +78,18 @@
           </select>
         </div>
       </div>
+      <hr >
       <div>
-        <label>Summary:</label>
-        <textarea class="form-control" rows="3" placeholder="Enter detail..." ng-model="newShare"></textarea>
+        <label>Summary :</label>
+        <textarea class="form-control" rows="3" placeholder="Enter detail..." ng-model="summary"></textarea>
       </div>
       <div class="form-group" style="position:relative;margin-top: 15px;">
         <label>Detail:</label>
-        <textarea class="form-control" rows="15" placeholder="Enter detail..." ng-model="newShare"></textarea>
-        <div class="share-success" id="submit-success">
-          <i class="fa fa-fw fa-check-circle"></i>
-          <span>success !</span>
-        </div>
+        <textarea class="form-control" rows="15" placeholder="Enter detail..." ng-model="detail"></textarea>
       </div>
     <div class="clearfix">
-      <a class="btn btn-primary pull-right" role="button" ng-click="submit()" ng-class="{'default': newShare === ''}">submit</a>
+      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
+      <span class="pull-right color-red" ng-show="showBlankError" style="color:red; padding-right: 15px; line-height: 35px;">pls complete form</span>
     </div>
     </div>
   </div>  

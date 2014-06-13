@@ -11,13 +11,11 @@ var addJob = function(req, res) {
     var user = req.session.user;
     var job = req.body || {};
     job.user = user._id;
-
     Job.createNew(job, function(err, job) {
-        user.findOne({
+        User.findOne({
             _id: user._id
         }, function(err, user) {
             user.jobs.push(job._id);
-            user.trends.push(job._id);
             user.save(function(err) {
                 res.send({
                     code: 200,
@@ -40,11 +38,15 @@ var deleteJob = function(req, res) {
                 info: 'no job'
             });
         }
-        user.jobs.splice(index, 1);
-        user.save(function(err) {
-            res.send({
-                code: 200,
-                info: 'success'
+        Job.delete({
+            _id: jobId
+        }, function(err) {
+            user.jobs.splice(index, 1);
+            user.save(function(err) {
+                res.send({
+                    code: 200,
+                    info: 'success'
+                });
             });
         });
     });

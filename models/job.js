@@ -7,36 +7,36 @@ var JobSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
-    toGraduating: {
-        type: Boolean,
-        default: false
-    },
-    toGraduated: {
-        type: Boolean,
-        default: false
-    },
-    payment: {
+    type: {
         type: String
     },
-    experience: {
+    position: {
         type: String
     },
-    locations: [{
-        type: String
-    }],
-    skills: [{
-        type: String
-    }],
-    desc: {
+    department: {
         type: String
     },
-    content: {
+    paymentStart: {
         type: String
     },
-    collects: [{
-        type: ObjectId,
-        ref: 'User'
-    }],
+    paymentEnd: {
+        type: String
+    },
+    workYears: {
+        type: String
+    },
+    degree: {
+        type: String
+    },
+    location: {
+        type: String
+    },
+    summary: {
+        type: String
+    },
+    detail: {
+        type: String
+    },
     likes: [{
         type: ObjectId,
         ref: 'User'
@@ -49,6 +49,10 @@ var JobSchema = new Schema({
         type: ObjectId,
         ref: 'Comment'
     }],
+    is_delete: {
+        type: Boolean,
+        default: false
+    },
     createAt: {
         type: Date,
         default: Date.now
@@ -68,13 +72,7 @@ JobSchema.virtual('collectCount').get(function() {
 JobSchema.virtual('resumeCount').get(function() {
     return this.collects.length;
 });
-JobSchema.virtual('type').get(function() {
-    if (this.toGraduating && !this.toGraduated) {
-        return 'campus';
-    } else if (this.toGraduated) {
-        return 'society';
-    }
-});
+
 
 // statics
 JobSchema.statics.createNew = function(obj, cb) {
@@ -106,7 +104,8 @@ JobSchema.statics.delete = function(id, cb) {
             id: job._id
         }, function(err, trend) {
             trend.remove();
-            job.remove(cb);
+            job.is_delete = true;
+            job.save(cb);
         });
     });
 };

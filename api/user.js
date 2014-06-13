@@ -410,6 +410,75 @@ var getMyFollow = function(req, res) {
         });
     });
 };
+var getMyActive = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 20;
+    Trend.find({
+        userId: user._id
+    }).sort({
+        createAt: -1
+    }).populate('share').populate('job').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
+        Trend.find({
+            userId: user._id
+        }).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            trends.map(function(item, key) {
+                var result = {};
+                if (item.name === 'Share') {
+                    result.name = 'share';
+                    result._id = item.share._id;
+                    result.comments = item.share.comments;
+                    result.content = item.share.content;
+                    result.createAt = item.share.createAt.toLocaleDateString();
+                    result.id = item.share.id;
+                    result.liked = false;
+                    item.share.likes.map(function(like) {
+                        if (like.toString() == user._id.toString()) {
+                            result.liked = true;
+                        }
+                    });
+                    result.likes = item.share.likes.length;
+                    content.push(result);
+                } else {
+                    // todo later
+                    result.name = 'job';
+                    result._id = item.job._id;
+                    result.comments = item.job.comments;
+                    result.id = item.job.id;
+                    result.createAt = item.share.createAt.toLocaleDateString();
+                    result.type = item.job.type;
+                    result.paymentStart = item.job.paymentStart;
+                    result.paymentEnd = item.job.paymentEnd;
+                    result.degree = item.job.degree;
+                    result.position = item.job.position;
+                    result.workYears = item.job.workYears;
+                    result.summary = item.job.summary;
+                    result.detail = item.job.detail;
+                    result.liked = false;
+                    item.job.likes.map(function(like) {
+                        if (like.toString() == user._id.toString()) {
+                            result.liked = true;
+                        }
+                    });
+                    content.push(result);
+                }
+            });
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);

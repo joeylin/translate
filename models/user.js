@@ -104,7 +104,7 @@ var UserSchema = new Schema({
     }],
     jobs: [{
         type: ObjectId,
-        ref: 'Share'
+        ref: 'Job'
     }],
 
     // common
