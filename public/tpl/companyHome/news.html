@@ -22,30 +22,40 @@
       <h4 class="panel-title">My Acitvity</h4>
     </div>
     <div class="panel-body" ng-cloak>
-      <div class="media" ng-repeat-start="share in shareList">
-        <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
-        </a>
+      <div class="media" ng-repeat-start="item in itemList">
         <div class="media-body">
-          <h4 class="media-heading">{{share.user.name}}</h4>
-          <div>
-            <p>{{share.content}}</p>
+          <div ng-show="item.type === 'share'">
+            <p>{{item.content}}</p>
+          </div>
+          <div ng-show="itemtype === 'job'">
+            <div class="job-desc">
+              {{item.desc}}
+              <a href="#">more >></a>
+            </div>
+            <div class="job-detail">
+              <div><span>type:</span>{{item.type}}</div>
+              <div><span>payment:</span>{{item.payment}}</div>
+              <div><span>Number:</span>{{item.number}}</div>
+              <div><span>education:</span>{{item.edu}}</div>
+              <div><span>experience:</span>{{item.workYears}}</div>
+              <div><span>location:</span>{{item.location}}</div>
+            </div>
           </div>
           <div class="clearfix media-info">
-            <span class="date pull-left"><a href="#">{{share.createAt}}</a></span>
+            <span class="date pull-left"><a href="#">{{item.createAt}}</a></span>
             <span class="pull-right media-control">
-              <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(share)"></i>({{share.likes}})</a>
-              <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.comments.length}})</a>
+              <a href="#" class="like" ng-class="{liked:item.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(item)"></i>({{item.likes}})</a>
+              <a href="#" class="comment" ng-click="vm.toggleComment(item)"><i class="fa fa-fw fa-comments"></i>({{item.comments.length}})</a>
             </span>
           </div>
-          <div class="reply-container" ng-show="share.isShowComment">
+          <div class="reply-container" ng-show="item.isShowComment">
             <div class="input-group comment-editor">
-                <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="share.newComment"></textarea>
+                <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="item.newComment"></textarea>
                 <span class="input-group-btn">
-                    <button class="btn btn-primary reply-submit" type="button" ng-click="vm.submitComment(share)">submit</button>
+                    <button class="btn btn-primary reply-submit" type="button" ng-click="vm.submitComment(item)">submit</button>
                 </span>
             </div>
-            <hr class="reply-hr" ng-repeat-start="comment in share.comments">
+            <hr class="reply-hr" ng-repeat-start="comment in item.comments">
             <div class="media reply-item" ng-repeat-end>
               <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
                 <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
@@ -55,14 +65,14 @@
                 <div class="clearfix media-info">
                   <span class="date pull-left"><a href="#">{{comment.date}}</a></span>
                   <span class="pull-right media-control">
-                    <a href="#" class="comment" ng-show="comment.user.name === global.user.name || global.user.name === share.user.name" ng-click="vm.delete(comment, share)"><i class="fa fa-fw fa-trash-o"></i></a>
+                    <a href="#" class="comment" ng-show="comment.user.name === global.user.name || global.user.name === item.user.name" ng-click="vm.delete(comment, item)"><i class="fa fa-fw fa-trash-o"></i></a>
                     <a href="#" class="comment" ng-click="vm.reply(comment)">reply</a>
                   </span>
                 </div>
                 <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
                     <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button" ng-click="vm.submitInlineComment(comment,share)">submit</button>
+                        <button class="btn btn-primary" type="button" ng-click="vm.submitInlineComment(comment,item)">submit</button>
                     </span>
                 </div>
               </div>
@@ -73,7 +83,6 @@
       <hr ng-repeat-end>
       <div class="media">
         <div class="media-body">
-          <h4 class="media-heading">Post</h4>
           <div>
             <p>
               English Teacher
@@ -83,6 +92,7 @@
               ---University degree and above in English or normal English.
               ---Eager to learn and open-minded and creative.
               ---Deep understanding and respect for different cultures.
+              <a href="www.baidu.com" class="inline-link">baidu</a>
               (We warmly welcome recent graduates to apply for this position.)
             </p>
           </div>
@@ -99,18 +109,23 @@
       <hr>
       <div class="media">
         <div class="media-body">
-          <h4 class="media-heading">Recruitment</h4>
           <div>
-            <p>
+            <div class="job-desc">
               English Teacher
               Responsibility:
               ---Conduct English teaching according to the British education system.
               Requirements:
               ---University degree and above in English or normal English.
-              ---Eager to learn and open-minded and creative.
-              ---Deep understanding and respect for different cultures.
-              (We warmly welcome recent graduates to apply for this position.)
-            </p>
+              <a href="#">more >></a>
+            </div>
+            <div class="job-detail">
+              <div><span>type:</span>intern</div>
+              <div><span>payment:</span>10k-20k</div>
+              <div><span>Number:</span>8-10</div>
+              <div><span>education:</span>master</div>
+              <div><span>experience:</span>2-3</div>
+              <div><span>location:</span>Fuzhou</div>
+            </div>
           </div>
           <div class="clearfix media-info">
             <span class="date pull-left"><a href="#">2014/05/18</a></span>

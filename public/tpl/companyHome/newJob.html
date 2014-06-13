@@ -67,13 +67,18 @@
           </select>
         </div>
       </div>
+      <div>
+        <label>Summary:</label>
+        <textarea class="form-control" rows="3" placeholder="Enter detail..." ng-model="newShare"></textarea>
+      </div>
       <div class="form-group" style="position:relative;margin-top: 15px;">
-        <textarea class="form-control" rows="15" placeholder="Enter detail..." ng-model="newShare" id="job-editor"></textarea>
+        <label>Detail:</label>
+        <textarea class="form-control" rows="15" placeholder="Enter detail..." ng-model="newShare"></textarea>
         <div class="share-success" id="submit-success">
           <i class="fa fa-fw fa-check-circle"></i>
           <span>success !</span>
         </div>
-    </div>
+      </div>
     <div class="clearfix">
       <a class="btn btn-primary pull-right" role="button" ng-click="submit()" ng-class="{'default': newShare === ''}">submit</a>
     </div>
