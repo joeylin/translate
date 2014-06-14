@@ -24,12 +24,12 @@
     <div class="panel-body" ng-cloak>
       <div class="media" ng-repeat-start="item in itemList">
         <div class="media-body">
-          <div ng-show="item.type === 'share'">
+          <div ng-show="item.name === 'share'">
             <p>{{item.content}}</p>
           </div>
-          <div ng-show="itemtype === 'job'">
-            <div class="job-desc">
-              {{item.desc}}
+          <div ng-show="item.name === 'job'">
+            <div class="job-summary">
+              {{item.summary}}
               <a href="#">more >></a>
             </div>
             <div class="job-detail">

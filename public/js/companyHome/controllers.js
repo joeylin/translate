@@ -24,6 +24,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             page: 0
         };
         var getTrends = function() {
+            var url = '/api/user/trend';
             $http.get(url, {
                 params: params,
             }).success(function(data) {

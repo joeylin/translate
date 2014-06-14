@@ -14,6 +14,10 @@ var CommentSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
+    is_delete: {
+        type: Boolean,
+        default: false
+    },
     createAt: {
         type: Date,
         default: Date.now
