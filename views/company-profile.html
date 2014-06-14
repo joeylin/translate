@@ -127,65 +127,46 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
+                  <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
-                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" ng-controller="userLoginCtrl" novalidate > 
-                              <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
-                              <button type="button" id="btnLogin" class="btn">Login</button>
-                          </form>
-                          <br>
-                          <form class="form">
-                            <a class="signup" href="/signup" >New User? Sign-up..</a>
-                          </form>
-                          <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                          <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
-                      </div>
+                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>">Login</a>
                   </li>
+                  <% } else { %>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <!-- todo have custom user image -->
-                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
-                            <i class="fa fa-user"></i> 
-                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
+                            <span id="lblUsername" style="margin-left: 5px;">
+                              <%= locals.author && locals.author.name %>
+                            </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.author && locals.author.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> Jane Doe - Web Developer</span>
-                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                    <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_follower">10</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#" ><%= locals.author.share.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_praise">100</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#"><%= locals.author.connects.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_connects">30</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#">share</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Praise</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">Connects</a>
                                 </div>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Account</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
@@ -193,6 +174,7 @@
                             </li>
                         </ul>
                   </li>
+                  <% } %>
               </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home">Home</a></li>
@@ -205,22 +187,22 @@
         <div class="container">
           <div class="profile-sidebar col-md-3">
             <div class="section">
-              <div class="user-header bg-modena">
-                  <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" style="height: 175px;">
+              <div class="user-header bg-modena text-center">
+                  <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" style="height: 175px;">
               </div>
               <!-- Menu Body -->
               <div class="user-body clearfix">
                   <div class="col-xs-6 text-center">
-                      <a href="#" class="user_followers">10</a>
+                      <a href="#" class="user_share"><%= locals.user.share.length %></a>
                   </div>
                   <div class="col-xs-6 text-center">
-                      <a href="#" class="user_praise">100</a>
-                  </div>
-                  <div class="col-xs-6 text-center">
-                      <a href="#">Followers</a>
+                      <a href="#" class="user_connects"><%= locals.user.connects.length %></a>
                   </div>
                   <div class="col-xs-6 text-center">
                       <a href="#">share</a>
+                  </div>
+                  <div class="col-xs-6 text-center">
+                      <a href="#">Connects</a>
                   </div>
               </div>
             </div>
@@ -253,11 +235,14 @@
           </div>
           <div class="profile-body col-md-9">
             <div class="jumbotron">
-              <h1>AmazingSurge</h1>
-              <p class="des">Think different</p>
+              <% if (locals.author && locals.author.id === locals.user.id) { %>
+              <a class="btn btn-primary pull-right" href="/settings/profile" target="_self">Edit</a>
+              <% } %>
+              <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
+              <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
             </div>
             <div class="well company-about">
-              <h3>About us</h3>
+              <h3>About Us</h3>
               <div>
                 <p>Our company, HUBEI (PASSION RELEASE) PASSAGES GARMENT CO., LTD. is located in the bronze capital, Daye city, Hubei province, China. It covers land area of 35,000 sqm, standardized workshops of 11,000 sqm, and potentially holds 1500 people to work, which is one of the large scale clothing enterprises in Hubei. Presently, the company has equipped with complete set of brand-new and advanced machines exclusive for manufacturing fashion and leisure clothes.</p>
                 <p>Hubei Passages Garment Co., Ltd is a joint venture runs together with Taiwanese investor mainly dealing with garments design and manufacturing, which also specializes in producing all kinds of fashion and leisure clothes. The company has cooperated with many clients both from domestic and overseas, and has obtained consistently high praise from our customers since it was set up. </p> 
@@ -416,6 +401,18 @@
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/public/js/noAuth.js"></script>
+        <script type="text/javascript">
+          $('#btnLogout').click(function() {
+              $.ajax({
+                  url: "/api/user/logout",
+                  type: "post",
+                  success: function(data) {
+                      if (data.code === 200) {
+                          window.location.reload();
+                      }
+                  }
+              });
+          });
+        </script>
     </body>
 </html>

@@ -246,16 +246,18 @@
           window.user = null;
           window.profile = null;
           window.chooseTab = null;
+          window.lastUpdate = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
           <% } %>
           <% if (locals.profile) { %>
             window.profile = <%- JSON.stringify(locals.profile) %>;
+            window.lastUpdate = <%= locals.lastUpdate %>;
           <% } %>
           <% if (locals.chooseTab) { %>
             window.chooseTab = '<%= locals.chooseTab %>';
           <% } %>
-        </script>       
+        </script>        
     </head>
     
     <!-- HTML code from Bootply.com editor -->  
@@ -273,67 +275,41 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
-                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" novalidate > 
-                              <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
-                              <button type="button" id="btnLogin" class="btn">Login</button>
-                          </form>
-                          <br>
-                          <form class="form">
-                            <a class="signup" href="/signup" >New User? Sign-up..</a>
-                          </form>
-                          <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                          <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
-                      </div>
-                  </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <!-- todo have custom user image -->
-                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
-                            <i class="fa fa-user"></i> 
+                            <img src="<%= locals.user.avatar %>" alt="" class="nav-user-pic img-responsive">
                             <span id="lblUsername" style="margin-left: 5px;">
-                              <%= locals.user && locals.user.name %>
+                              <%= locals.user.name %>
                             </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> <%= locals.user &&locals.user.name %></span>
-                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                    <span class="user_username"> <%= locals.user.name %></span>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_follower">10</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#" ><%= locals.user.share.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_praise">100</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#"><%= locals.user.connects.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_connects">30</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">share</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">Connects</a>
                                 </div>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/settings" target="_self" class="btn btn-default btn-flat">Settings</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Account</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
