@@ -26,7 +26,7 @@
             <p>{{share.content}}</p>
           </div>
           <div class="clearfix media-info">
-            <span class="date pull-left"><a href="#">{{share.createAt}}</a></span>
+            <span class="date pull-left"><a href="#">{{share.createAt | formatDate:true }}</a></span>
             <span class="pull-right media-control">
               <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(share)"></i>({{share.likes}})</a>
               <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.comments.length}})</a>
@@ -47,7 +47,7 @@
               <div class="media-body">
                 <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
                 <div class="clearfix media-info">
-                  <span class="date pull-left"><a href="#">{{comment.date}}</a></span>
+                  <span class="date pull-left"><a href="#">{{comment.date | formatDate:true}}</a></span>
                   <span class="pull-right media-control">
                     <a href="#" class="comment" ng-show="comment.user.name === global.user.name || global.user.name === share.user.name" ng-click="vm.delete(comment, share)"><i class="fa fa-fw fa-trash-o"></i></a>
                     <a href="#" class="comment" ng-click="vm.reply(comment)">reply</a>

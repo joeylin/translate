@@ -88,7 +88,7 @@ ShareSchema.path('type').validate(function(type) {
 ShareSchema.statics.createNew = function(obj, cb) {
     var share = new this();
     share.content = obj.content;
-    share.user = obj.user;
+    share.user = obj.users;
     share.type = obj.type;
     share.jobType = obj.jobType;
     share.position = obj.position;

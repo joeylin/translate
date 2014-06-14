@@ -263,31 +263,28 @@
                   </li>
                   <% } else { %>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <!-- todo have custom user image -->
-                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
-                            <i class="fa fa-user"></i> 
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
                             <span id="lblUsername" style="margin-left: 5px;">
-                              <%= locals.user && locals.user.name %>
+                              <%= locals.author && locals.author.name %>
                             </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.author && locals.author.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> <%= locals.user &&locals.user.name %></span>
-                                    <small class="user_creatAt">Member since <%= locals.user.creatAt %></small>
+                                    <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" class="user_share"><%= locals.user.share.length %></a>
+                                    <a href="#" ><%= locals.author.share.length %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" class="user_connects"><%= locals.user.connects.length %></a>
+                                    <a href="#"><%= locals.author.connects.length %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
                                     <a href="#">share</a>
@@ -354,6 +351,9 @@
           </div>   
           <div class="profile-body col-md-9">
             <div class="jumbotron user-header">
+              <% if (locals.author && locals.author.id === locals.user.id) { %>
+              <a class="btn btn-primary pull-right" href="/settings/profile" target="_self">Edit</a>
+              <% } %>
               <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
               <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
             </div>
@@ -490,5 +490,18 @@
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript">
+          $('#btnLogout').click(function() {
+              $.ajax({
+                  url: "/api/user/logout",
+                  type: "post",
+                  success: function(data) {
+                      if (data.code === 200) {
+                          window.location.reload();
+                      }
+                  }
+              });
+          });
+        </script>
     </body>
 </html>

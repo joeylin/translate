@@ -84,6 +84,7 @@ module.exports = function(app) {
         User.getProfile(user.id, function(err, profile, user) {
             app.locals.user = user;
             app.locals.profile = profile;
+            app.locals.lastUpdate = profile.updateAt.getTime();
             app.locals.chooseTab = 'profile';
             if (user.role === 'user') {
                 res.render('settings-user-profile');

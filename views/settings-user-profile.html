@@ -240,11 +240,13 @@
           window.user = null;
           window.profile = null;
           window.chooseTab = null;
+          window.lastUpdate = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
           <% } %>
           <% if (locals.profile) { %>
             window.profile = <%- JSON.stringify(locals.profile) %>;
+            window.lastUpdate = <%= locals.lastUpdate %>;
           <% } %>
           <% if (locals.chooseTab) { %>
             window.chooseTab = '<%= locals.chooseTab %>';
@@ -267,9 +269,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <!-- todo have custom user image -->
-                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
-                            <i class="fa fa-user"></i> 
+                            <img src="<%= locals.user.avatar %>" alt="" class="nav-user-pic img-responsive">
                             <span id="lblUsername" style="margin-left: 5px;">
                               <%= locals.user.name %>
                             </span>
@@ -278,25 +278,18 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
                                     <span class="user_username"> <%= locals.user.name %></span>
-                                    <small class="user_creatAt">Member since Nov. 2012</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" class="user_follower">10</a>
+                                    <a href="#" ><%= locals.user.share.length %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" class="user_praise">100</a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#" class="user_connects">30</a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#">Followers</a>
+                                    <a href="#"><%= locals.user.connects.length %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
                                     <a href="#">share</a>
@@ -328,7 +321,7 @@
         <div class="container" ng-cloak>    
           <div class="profile-body col-md-9" ng-if="global.profile">
             <div class="clearfix header-info">
-              <span class="pull-left">Last update: {{lastUpdate}}</span>
+              <span class="pull-left">Last update: {{lastUpdate | formatDate:true}}</span>
               <span class="pull-right">
                 <a ng-href="/settings/account" ng-click="gotoAccount()">Account</a> |
                 <a ng-href="/profile/{{global.user.id}}" target="_self">Preview</a>

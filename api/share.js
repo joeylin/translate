@@ -62,7 +62,7 @@ var getShareComments = function(req, res) {
             comments.map(function(comment) {
                 var result = {
                     content: comment.content,
-                    date: comment.createAt.toLocaleDateString(),
+                    date: comment.createAt.getTime(),
                     user: {
                         name: comment.user.name,
                         id: comment.user.id,
@@ -88,7 +88,7 @@ var addShare = function(req, res) {
         res.send({
             code: 200,
             content: {
-                createAt: data.createAt.toLocaleDateString(),
+                createAt: data.createAt.getTime(),
                 _id: data._id
             }
         });
@@ -121,7 +121,7 @@ var addComment = function(req, res) {
                 res.send({
                     code: 200,
                     content: {
-                        createAt: comment.createAt.toDateString(),
+                        createAt: comment.createAt.getTime(),
                         _id: comment._id
                     }
                 });

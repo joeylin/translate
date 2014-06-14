@@ -97,10 +97,6 @@ $(document).ready(function() {
             type: "post",
             success: function(data) {
                 if (data.code === 200) {
-                    setUser(null);
-                    $('#menuLogin').show();
-                    $('#menuUser').hide();
-                    $('#menuNotify').hide();
                     window.location.href = '/login';
                 }
             }

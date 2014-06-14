@@ -279,6 +279,7 @@ var getTrends = function(req, res) {
         });
         var followList = connectList.concat(user.followers);
         var array = [];
+        array.push(user._id.toString());
         followList.map(function(value, key) {
             array.push(value.toString());
         });
@@ -298,63 +299,33 @@ var getTrends = function(req, res) {
             Share.find({
                 user: {
                     $in: array
-                }
+                },
+                type: 'view'
             }).count().exec(function(err, count) {
                 var content = [];
                 var hasNext;
                 trends.map(function(item, key) {
                     var result = {};
-                    if (item.type === 'view') {
-                        result.type = 'view';
-                        result._id = item._id;
-                        result.comments = item.comments.length;
-                        result.content = item.content;
-                        result.createAt = item.createAt.toLocaleDateString();
-                        result.id = item.id;
-                        result.user = {
-                            name: item.user.name,
-                            avatar: item.user.avatar,
-                            _id: item.user._id,
-                            id: item.user.id
-                        };
-                        result.liked = false;
-                        item.likes.map(function(like) {
-                            if (like.toString() == user._id.toString()) {
-                                result.liked = true;
-                            }
-                        });
-                        result.likes = item.likes.length;
-                        content.push(result);
-                    } 
-                    if (item.type === 'job') {
-                        result.type = 'job';
-                        result._id = item.job._id;
-                        result.comments = item.job.comments;
-                        result.id = item.job.id;
-                        result.createAt = item.share.createAt.toLocaleDateString();
-                        result.type = item.job.type;
-                        result.paymentStart = item.job.paymentStart;
-                        result.paymentEnd = item.job.paymentEnd;
-                        result.degree = item.job.degree;
-                        result.position = item.job.position;
-                        result.workYears = item.job.workYears;
-                        result.summary = item.job.summary;
-                        result.detail = item.job.detail;
-                        result.liked = false;
-                        item.job.likes.map(function(like) {
-                            if (like.toString() == user._id.toString()) {
-                                result.liked = true;
-                            }
-                        });
-                        result.user = {
-                            name: item.user.name,
-                            avatar: item.user.avatar,
-                            _id: item.user._id,
-                            id: item.user.id
-                        };
-                        result.likes = item.share.likes.length;
-                        content.push(result);
-                    }
+                    result.type = 'view';
+                    result._id = item._id;
+                    result.comments = item.comments;
+                    result.content = item.content;
+                    result.createAt = item.createAt.getTime();
+                    result.id = item.id;
+                    result.user = {
+                        name: item.user.name,
+                        avatar: item.user.avatar,
+                        _id: item.user._id,
+                        id: item.user.id
+                    };
+                    result.liked = false;
+                    item.likes.map(function(like) {
+                        if (like.toString() == user._id.toString()) {
+                            result.liked = true;
+                        }
+                    });
+                    result.likes = item.likes.length;
+                    content.push(result);
                 });
                 if ((page - 1) * perPageItems + content.length < count) {
                     hasNext = true;
@@ -405,8 +376,8 @@ var getMyShare = function(req, res) {
                 content: share.content,
                 likes: share.likes.length,
                 id: share.id,
-                comments: share.comments.length,
-                createAt: share.createAt.toLocaleDateString()
+                comments: share.comments,
+                createAt: share.createAt.getTime()
             };
             results.push(result);
         });
@@ -470,7 +441,7 @@ var getMyActive = function(req, res) {
                     result._id = item._id;
                     result.comments = item.comments;
                     result.content = item.content;
-                    result.createAt = item.createAt.toLocaleDateString();
+                    result.createAt = item.createAt.getTime();
                     result.id = item.id;
                     result.liked = false;
                     item.likes.map(function(like) {
@@ -486,7 +457,7 @@ var getMyActive = function(req, res) {
                     result._id = item._id;
                     result.comments = item.comments;
                     result.id = item.id;
-                    result.createAt = item.createAt.toLocaleDateString();
+                    result.createAt = item.createAt.getTime();
                     result.type = item.type;
                     result.paymentStart = item.paymentStart;
                     result.paymentEnd = item.paymentEnd;
