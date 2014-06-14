@@ -6,7 +6,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.pager = {
             hasNext: false,
-            current: 0
+            current: 1
         };
         $scope.itemList = [];
         $scope.newShare = '';
@@ -14,21 +14,41 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.submit = function() {
             var url = '/api/share/add';
             $http.post(url, {
+                type: 'view',
                 content: $scope.newShare,
             }).success(function(data) {
+                var share = {
+                    type: 'view',
+                    user: app.user,
+                    comments: [],
+                    likes: 0,
+                    content: $scope.newShare,
+                    liked: false,
+                    _id: data.content._id,
+                    createAt: data.content.createAt
+                };
+                $scope.itemList.unshift(share);
                 $scope.newShare = '';
+                $('#submit-success').css({
+                    display: 'block'
+                });
+                setTimeout(function() {
+                    $('#submit-success').css({
+                        display: 'none'
+                    });
+                }, 1000);
             });
         };
         var url = '/api/user/share';
         var params = {
-            page: 0
+            page: 1
         };
         var getTrends = function() {
-            var url = '/api/user/trend';
+            var url = '/api/user/myActive';
             $http.get(url, {
                 params: params,
             }).success(function(data) {
-                $scope.shareList = data.content;
+                $scope.itemList = data.content;
                 $scope.pager.hasNext = data.hasNext;
                 $scope.total = data.count;
             });
@@ -52,6 +72,26 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 
         // share item && item comments
         $scope.vm = {};
+        $scope.vm.toggleLike = function(share) {
+            var url;
+            if (share.liked) {
+                url = '/api/share/unlike';
+                $http.post(url, {
+                    shareId: share._id
+                }).success(function(data) {
+                    share.liked = false;
+                    share.likes -= 1;
+                });
+            } else {
+                url = '/api/share/like';
+                $http.post(url, {
+                    shareId: share._id
+                }).success(function(data) {
+                    share.liked = true;
+                    share.likes += 1;
+                });
+            }
+        };
         $scope.vm.toggleComment = function(share) {
             share.isShowComment = !share.isShowComment;
             if (share.isShowComment) {
@@ -59,7 +99,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                     shareId: share._id
                 };
                 var url = '/api/share/comments';
-                $http.get(url, params).success(function(data) {
+                $http.get(url, {
+                    params: params
+                }).success(function(data) {
                     share.comments = data.comments;
                 });
             }
@@ -70,19 +112,27 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             var url = '/api/share/comments/add';
             $http.post(url, {
-                shareId: share.id,
+                shareId: share._id,
                 content: share.newComment,
                 replyTo: share.replyTo
             }).success(function(data) {
-                share.comments.push(data.comment);
+                var comment = {
+                    user: app.user,
+                    content: share.newComment,
+                    replyTo: share.replyTo,
+                    _id: data.content._id,
+                    date: data.content.createAt
+                };
+                share.comments.unshift(comment);
+                share.newComment = '';
             });
         };
         $scope.vm.delete = function(comment, share) {
             var index = share.comments.indexOf(comment);
             var url = '/api/share/comments/delete';
             $http.post(url, {
-                shareId: share.id,
-                commentId: comment.id
+                shareId: share._id,
+                commentIndex: index
             }).success(function(data) {
                 share.comments.splice(index, 1);
             });
@@ -90,8 +140,29 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.vm.reply = function(comment) {
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
-                comment.newComment = 'reply to ' + comment.user.username + ' : ';
+                comment.newComment = 'reply to ' + comment.user.name + ' : ';
             }
+        };
+        $scope.vm.submitInlineComment = function(comment, share) {
+            if (comment.newComment === '') {
+                return false;
+            }
+            var url = '/api/share/comments/add';
+            $http.post(url, {
+                shareId: share._id,
+                content: comment.newComment,
+                replyTo: comment.user._id
+            }).success(function(data) {
+                var result = {
+                    user: app.user,
+                    content: comment.newComment,
+                    replyTo: comment.user._id,
+                    _id: data.content._id,
+                    date: data.content.createAt
+                };
+                share.comments.unshift(result);
+                comment.isShowReply = false;
+            });
         };
 
         // init
@@ -152,9 +223,10 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.showBlankError = true;
                 return false;
             }
-            var url = '/api/job/add';
+            var url = '/api/share/add';
             var data = {
-                type: $scope.type,
+                type: 'job',
+                jobType: $scope.type,
                 paymentStart: $scope.paymentStart,
                 paymentEnd: $scope.paymentEnd,
                 degree: $scope.degree,

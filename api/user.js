@@ -242,7 +242,8 @@ var getShare = function(req, res) {
     Share.find({
         user: {
             $in: connectList
-        }
+        },
+        type: 'view'
     }).sort({
         createAt: -1
     }).populate('user').skip(page * perPageItems).limit(perPageItems).exec(function(err, share) {
@@ -281,15 +282,21 @@ var getTrends = function(req, res) {
         followList.map(function(value, key) {
             array.push(value.toString());
         });
-        Trend.find({
-            userId: {
+        Share.find({
+            user: {
                 $in: array
             }
         }).sort({
             createAt: -1
-        }).populate('share').populate('job').populate('userId').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
-            Trend.find({
-                userId: {
+        }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
+            if (!trends) {
+                return res.send({
+                    code: 200,
+                    info: 'no share'
+                });
+            }
+            Share.find({
+                user: {
                     $in: array
                 }
             }).count().exec(function(err, count) {
@@ -297,32 +304,55 @@ var getTrends = function(req, res) {
                 var hasNext;
                 trends.map(function(item, key) {
                     var result = {};
-                    if (item.name === 'Share') {
-                        result.name = 'share';
-                        result._id = item.share._id;
-                        result.comments = item.share.comments;
-                        result.content = item.share.content;
-                        result.createAt = item.share.createAt.toLocaleDateString();
-                        result.id = item.share.id;
+                    if (item.type === 'view') {
+                        result.type = 'view';
+                        result._id = item._id;
+                        result.comments = item.comments.length;
+                        result.content = item.content;
+                        result.createAt = item.createAt.toLocaleDateString();
+                        result.id = item.id;
                         result.user = {
-                            name: item.userId.name,
-                            avatar: item.userId.avatar,
-                            id: item.userId.id
+                            name: item.user.name,
+                            avatar: item.user.avatar,
+                            _id: item.user._id,
+                            id: item.user.id
                         };
                         result.liked = false;
-                        item.share.likes.map(function(like) {
+                        item.likes.map(function(like) {
                             if (like.toString() == user._id.toString()) {
                                 result.liked = true;
                             }
                         });
-                        result.likes = item.share.likes.length;
+                        result.likes = item.likes.length;
                         content.push(result);
-                    } else {
-                        // todo later
-                        result.name = 'job';
-                        for (var i in item.job) {
-                            result[i] = item.job[i];
-                        }
+                    } 
+                    if (item.type === 'job') {
+                        result.type = 'job';
+                        result._id = item.job._id;
+                        result.comments = item.job.comments;
+                        result.id = item.job.id;
+                        result.createAt = item.share.createAt.toLocaleDateString();
+                        result.type = item.job.type;
+                        result.paymentStart = item.job.paymentStart;
+                        result.paymentEnd = item.job.paymentEnd;
+                        result.degree = item.job.degree;
+                        result.position = item.job.position;
+                        result.workYears = item.job.workYears;
+                        result.summary = item.job.summary;
+                        result.detail = item.job.detail;
+                        result.liked = false;
+                        item.job.likes.map(function(like) {
+                            if (like.toString() == user._id.toString()) {
+                                result.liked = true;
+                            }
+                        });
+                        result.user = {
+                            name: item.user.name,
+                            avatar: item.user.avatar,
+                            _id: item.user._id,
+                            id: item.user.id
+                        };
+                        result.likes = item.share.likes.length;
                         content.push(result);
                     }
                 });
@@ -365,7 +395,8 @@ var getConnects = function(req, res) {
 var getMyShare = function(req, res) {
     var userId = req.query.userId;
     Share.find({
-        user: userId
+        user: userId,
+        type: 'view'
     }, function(err, shares) {
         var results = [];
         shares.map(function(share) {
@@ -414,54 +445,63 @@ var getMyActive = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
     var perPageItems = 20;
-    Trend.find({
-        userId: user._id
+    Share.find({
+        user: user._id,
+        is_delete: false
     }).sort({
         createAt: -1
-    }).populate('share').populate('job').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
-        Trend.find({
-            userId: user._id
+    }).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
+        if (!trends) {
+            return res.send({
+                code: 200,
+                info: 'no active',
+                content: []
+            });
+        }
+        Share.find({
+            user: user._id
         }).count().exec(function(err, count) {
             var content = [];
             var hasNext;
             trends.map(function(item, key) {
                 var result = {};
-                if (item.name === 'Share') {
-                    result.name = 'share';
-                    result._id = item.share._id;
-                    result.comments = item.share.comments;
-                    result.content = item.share.content;
-                    result.createAt = item.share.createAt.toLocaleDateString();
-                    result.id = item.share.id;
+                if (item.type === 'view') {
+                    result.type = 'view';
+                    result._id = item._id;
+                    result.comments = item.comments;
+                    result.content = item.content;
+                    result.createAt = item.createAt.toLocaleDateString();
+                    result.id = item.id;
                     result.liked = false;
-                    item.share.likes.map(function(like) {
-                        if (like.toString() == user._id.toString()) {
+                    item.likes.map(function(like) {
+                        if (like.toString() == user._id) {
                             result.liked = true;
                         }
                     });
-                    result.likes = item.share.likes.length;
+                    result.likes = item.likes.length;
                     content.push(result);
-                } else {
-                    // todo later
-                    result.name = 'job';
-                    result._id = item.job._id;
-                    result.comments = item.job.comments;
-                    result.id = item.job.id;
-                    result.createAt = item.share.createAt.toLocaleDateString();
-                    result.type = item.job.type;
-                    result.paymentStart = item.job.paymentStart;
-                    result.paymentEnd = item.job.paymentEnd;
-                    result.degree = item.job.degree;
-                    result.position = item.job.position;
-                    result.workYears = item.job.workYears;
-                    result.summary = item.job.summary;
-                    result.detail = item.job.detail;
+                } 
+                if (item.type === 'job') {
+                    result.type = 'job';
+                    result._id = item._id;
+                    result.comments = item.comments;
+                    result.id = item.id;
+                    result.createAt = item.createAt.toLocaleDateString();
+                    result.type = item.type;
+                    result.paymentStart = item.paymentStart;
+                    result.paymentEnd = item.paymentEnd;
+                    result.degree = item.degree;
+                    result.position = item.position;
+                    result.workYears = item.workYears;
+                    result.summary = item.summary;
+                    result.detail = item.detail;
                     result.liked = false;
-                    item.job.likes.map(function(like) {
+                    item.likes.map(function(like) {
                         if (like.toString() == user._id.toString()) {
                             result.liked = true;
                         }
                     });
+                    result.likes = item.likes.length; 
                     content.push(result);
                 }
             });
@@ -488,6 +528,7 @@ module.exports = function(app) {
     // trends
     app.get('/api/user/share', middleware.check_login, getShare);
     app.get('/api/user/trend', middleware.check_login, getTrends);
+    app.get('/api/user/myActive', middleware.check_login, getMyActive);
     app.get('/api/user/myShare', middleware.check_login, getMyShare);
 
     // notify

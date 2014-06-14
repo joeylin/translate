@@ -11,17 +11,11 @@ var addJob = function(req, res) {
     var user = req.session.user;
     var job = req.body || {};
     job.user = user._id;
+    job.type = 'job';
     Job.createNew(job, function(err, job) {
-        User.findOne({
-            _id: user._id
-        }, function(err, user) {
-            user.jobs.push(job._id);
-            user.save(function(err) {
-                res.send({
-                    code: 200,
-                    content: job
-                });
-            });
+        res.send({
+            code: 200,
+            content: job
         });
     });
 };

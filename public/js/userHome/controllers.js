@@ -10,13 +10,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
         $scope.shareList = [];
         $scope.newShare = '';
-        $scope.total = 1;
+        $scope.total = 0;
         $scope.submit = function() {
             var url = '/api/share/add';
             if ($scope.newShare === '') {
                 return false;
             }
             $http.post(url, {
+                type: 'view',
                 content: $scope.newShare
             }).success(function(data) {
                 var share = {
@@ -30,15 +31,15 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 };
                 $scope.shareList.unshift(share);
                 $scope.newShare = '';
-            });
-            $('#submit-success').css({
-                display: 'block'
-            });
-            setTimeout(function() {
                 $('#submit-success').css({
-                    display: 'none'
+                    display: 'block'
                 });
-            }, 1000);
+                setTimeout(function() {
+                    $('#submit-success').css({
+                        display: 'none'
+                    });
+                }, 1000);
+            });
         };
         var url = '/api/user/trend';
         var params = {

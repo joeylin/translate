@@ -82,10 +82,8 @@ var getShareComments = function(req, res) {
 };
 var addShare = function(req, res) {
     var user = req.session.user;
-    var share = {
-        content: req.body.content,
-        userId: user._id
-    };
+    var share = req.body;
+    share.user = user._id;
     Share.createNew(share, function(err, data) {
         res.send({
             code: 200,
@@ -99,10 +97,7 @@ var addShare = function(req, res) {
 var deleteShare = function(req, res) {
     var user = req.session.user;
     var id = req.body.id;
-    Share.findOne({
-        _id: id,
-        user: user._id
-    }, function(err) {
+    Share.delete(id, user._id, function(err) {
         res.send({
             code: 200,
             info: 'delete success'

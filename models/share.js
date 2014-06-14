@@ -10,6 +10,9 @@ var ShareSchema = new Schema({
     type: {
         type: String
     },
+    jobType: {
+        type: String
+    },
     position: {
         type: String
     },
@@ -85,8 +88,9 @@ ShareSchema.path('type').validate(function(type) {
 ShareSchema.statics.createNew = function(obj, cb) {
     var share = new this();
     share.content = obj.content;
-    share.user = obj.userId;
+    share.user = obj.user;
     share.type = obj.type;
+    share.jobType = obj.jobType;
     share.position = obj.position;
     share.department = obj.department;
     share.paymentStart = obj.paymentStart;
@@ -102,13 +106,28 @@ ShareSchema.statics.createNew = function(obj, cb) {
         share.save(cb);
     });
 };
-ShareSchema.statics.delete = function(id, cb) {
+ShareSchema.statics.delete = function(id, userId, cb) {
     this.findOne({
         _id: id
     }, function(err, share) {
-        share.is_delete = true;
-        share.save(cb);
+        if (share.user.toString() == userId) {
+            share.is_delete = true;
+            share.save(cb);
+        } else {
+            cb({info: 'no auth'});
+        }
     });
+};
+ShareSchema.statics.addComment = function(shareId, obj, cb) {
+    this.findOne({
+        _id: shareId
+    }, function(err, share) {
+        var Comment = mongoose.Model('Comment');
+        Comment.createNew(obj, function(err, comment) {
+            share.comments.push(comment._id);
+            share.save(cb);
+        });
+    }); 
 };
 
 // methods
@@ -119,27 +138,6 @@ ShareSchema.methods.like = function(userId, cb) {
 ShareSchema.methods.unlike = function(userId, cb) {
     this.likes.splice(this.likes.indexOf(userId), 1);
     this.save(cb);
-};
-ShareSchema.methods.addComment = function(obj, cb) {
-    var Comment = mongoose.Model('Comment');
-    var share = this;
-    Comment.createNew(obj, function(err, comment) {
-        share.comments.push(comment._id);
-        share.save(cb);
-    });
-};
-ShareSchema.methods.deleteComment = function(comment, cb) {
-    var index = this.comments.indexOf(comment);
-    this.comments.splice(index, 1);
-    this.save(function(err, share) {
-        var Comment = mongoose.Model('Comment');
-        Comment.findOne({
-            _id: comment._id
-        }, function(err, comment) {
-            comment.is_delete = true;
-            comment.save(cb);
-        });
-    });
 };
 
 // middleware
