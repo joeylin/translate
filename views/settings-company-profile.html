@@ -414,7 +414,8 @@
               </div>
               <div class="panel-body" ng-show="showContent">
                 <div class="section">
-                  <p>{{desc}}</p>
+                  <p>{{teamDesc}}</p>
+                  <p>{{productDesc}}</p>
                 </div>
               </div>
               <div class="media" ng-show="showHome">
@@ -428,7 +429,12 @@
               </div>
               <div class="panel-body settings" ng-show="showSettings">
                 <div class="about-edit">
-                  <textarea class="form-control" rows="3" ng-model="inputDesc" placeholder="Describe yourself ..."></textarea>
+                  <label>team desc</label>
+                  <textarea class="form-control" rows="3" ng-model="inputTeamDesc" placeholder="Describe your team ..."></textarea>
+                </div>
+                <div class="about-edit">
+                  <label>product desc</label>
+                  <textarea class="form-control" rows="3" ng-model="inputProductDesc" placeholder="Describe your product or service ..."></textarea>
                 </div>
                 <div class="clearfix">
                   <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>

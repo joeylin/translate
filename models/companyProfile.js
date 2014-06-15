@@ -12,14 +12,17 @@ var CompanyProfileSchema = new Schema({
         ref: 'User',
         unique: true
     },
-    desc: {
+    teamDesc: {
+        type: String
+    },
+    productDesc: {
         type: String
     },
     industry: [{
         type: String
     }],
-    product: [{
-        type: String
+    images: [{
+        type:String
     }],
     activity: [{
         type:String

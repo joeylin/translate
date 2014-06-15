@@ -114,7 +114,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('describeCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
-        $scope.desc = app.profile.desc || '';
+        $scope.teamDesc = app.profile.teamDesc || '';
+        $scope.productDesc = app.profile.productDesc || '';
 
         $scope.showEditIcon = true;
         $scope.showContent = true;
@@ -127,19 +128,23 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showHome = false;
             $scope.showSettings = true;
 
-            $scope.inputDesc = $scope.desc;
+            $scope.inputTeamDesc = $scope.teamDesc;
+            $scope.inputProductDesc = $scope.productDesc;
         };
         $scope.save = function() {
             var url = '/api/companyProfile/desc';
             var data = {
-                desc: $scope.inputDesc
+                teamDesc: $scope.inputTeamDesc,
+                productDesc: $scope.inputProductDesc
             };
             $http.post(url, data).success(function(data) {
                 $scope.showEditIcon = true;
                 $scope.showContent = true;
                 $scope.showHome = false;
                 $scope.showSettings = false;
-                $scope.desc = $scope.inputDesc;
+
+                $scope.teamDesc = $scope.inputTeamDesc;
+                $scope.productDesc = $scope.inputProductDesc;
             });
             reset();
         };
@@ -153,7 +158,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         };
 
         function reset() {
-            if (!$scope.desc) {
+            if (!$scope.teamDesc && !$scope.productDesc) {
                 $scope.showEditIcon = false;
                 $scope.showContent = false;
                 $scope.showHome = true;

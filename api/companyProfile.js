@@ -44,11 +44,13 @@ var editBasic = function(req, res) {
 };
 var editDesc = function(req, res) {
     var user = req.session.user;
-    var data = req.body.desc;
+    var teamDesc = req.body.teamDesc;
+    var productDesc = req.body.productDesc;
     CompanyProfile.findOne({
         _id: user.profile
     }, function(err, profile) {
-        profile.desc = data;
+        profile.teamDesc = teamDesc;
+        profile.productDesc = productDesc;
         profile.save(function(err) {
             res.send({
                 code: 200
