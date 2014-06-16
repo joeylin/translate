@@ -39,7 +39,7 @@ var ShareSchema = new Schema({
     },
     detail: {
         type: String
-    },  
+    },
     resumes: [{
         type: ObjectId,
         ref: 'User'
@@ -77,7 +77,7 @@ ShareSchema.virtual('likeCount').get(function() {
     return this.likes.length;
 });
 ShareSchema.path('type').validate(function(type) {
-    var array = ['job','view','post'];
+    var array = ['job', 'view', 'post'];
     if (array.indexOf(type) >= 0) {
         return true;
     } else {
@@ -88,7 +88,7 @@ ShareSchema.path('type').validate(function(type) {
 ShareSchema.statics.createNew = function(obj, cb) {
     var share = new this();
     share.content = obj.content;
-    share.user = obj.users;
+    share.user = obj.user;
     share.type = obj.type;
     share.jobType = obj.jobType;
     share.position = obj.position;
@@ -114,7 +114,9 @@ ShareSchema.statics.delete = function(id, userId, cb) {
             share.is_delete = true;
             share.save(cb);
         } else {
-            cb({info: 'no auth'});
+            cb({
+                info: 'no auth'
+            });
         }
     });
 };
@@ -127,7 +129,7 @@ ShareSchema.statics.addComment = function(shareId, obj, cb) {
             share.comments.push(comment._id);
             share.save(cb);
         });
-    }); 
+    });
 };
 
 // methods

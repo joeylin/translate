@@ -15,7 +15,7 @@ var editHeader = function(req, res) {
     User.findOne({
         _id: user._id
     }, function(err, user) {
-        user.name = data.name;
+        user.display_name = data.display_name;
         user.signature = data.signature;
         user.save(function(err) {
             res.send({

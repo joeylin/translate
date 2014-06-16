@@ -329,14 +329,14 @@
         <div class="container" ng-cloak>
           <div class="profile-body col-md-9" ng-if="global.profile">
             <div class="clearfix header-info">
-              <span class="pull-left">Last update: {{lastUpdate}}</span>
+              <span class="pull-left">Last update: {{lastUpdate | formatDate:true}}</span>
               <span class="pull-right">
                 <a ng-href="/settings/account" ng-click="gotoAccount()">Account</a> |
                 <a ng-href="/profile/{{global.user.id}}" target="_self">Preview</a>
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
-              <h1><span ng-show="showNameContent">{{name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
+              <h1><span ng-show="showNameContent">{{display_name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="display_name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
               <p class="desc"><span ng-show="showSignContent">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
             </div>
             <div class="panel custom-box basic" ng-controller="basicCtrl">

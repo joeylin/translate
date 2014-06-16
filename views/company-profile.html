@@ -104,6 +104,17 @@
             width: 48px;
             height: 48px;
           }
+          .job-detail {
+            margin-bottom: 10px;
+          }
+          .job-detail > div {
+            display: inline-block;
+            padding-right: 8px;
+          }
+          .job-detail > div > span {
+            color: #999;
+            padding-right: 5px;
+          }
 
         </style>
         <!-- for angular ng-cloak -->
@@ -183,9 +194,9 @@
                   <% } %>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/profile">profile</a></li>
-                <li><a href="/search/all">search</a></li>
+                <li><a href="/home" target="_self">Home</a></li>
+                <li><a href="/profile" target="_self">profile</a></li>
+                <li><a href="/search/all" target="_self">search</a></li>
               </ul>
             </div>
           </div>
@@ -266,7 +277,7 @@
               <% if (locals.author && locals.author.id === locals.user.id) { %>
               <a class="btn btn-primary pull-right" href="/settings/profile" target="_self">Edit</a>
               <% } %>
-              <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
+              <h1><span><%= locals.user.display_name || 'Company Name' %></span></h1>
               <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
             </div>
             <div class="well company-about">
@@ -287,7 +298,7 @@
               <div class="panel-heading">
                 <h3 class="panel-title">News</h3>
               </div>
-              <div class="panel-body">
+              <div class="panel-body" ng-cloak>
                 <div class="media" ng-repeat="item in itemList">
                   <div class="media-body" ng-if="item.type==='view'">
                     <h4 class="media-heading">Share</h4>
@@ -296,9 +307,9 @@
                     </div>
                     <div class="clearfix media-info">
                       <span class="date pull-left">
-                        <span>{{item.createAt}}</span>
-                        <span>prase({{item.createAt}})</span>
-                        <span>comment({{item.createAt}})</span>
+                        <span>{{item.createAt | formatDate:true}}</span>
+                        <span>prase({{item.likes}})</span>
+                        <span>comment({{item.comments.length}})</span>
                       </span>
                       <span class="pull-right media-controll">
                         <a href="#" class="view">view >></a>
@@ -322,9 +333,9 @@
                     </div>
                     <div class="clearfix media-info">
                       <span class="date pull-left">
-                        <span>{{item.createAt}}</span>
-                        <span>prase({{item.createAt}})</span>
-                        <span>comment({{item.createAt}})</span>
+                        <span>{{item.createAt | formatDate:true}}</span>
+                        <span>prase({{item.likes}})</span>
+                        <span>comment({{item.comments.length}})</span>
                       </span>
                       <span class="pull-right media-controll">
                         <a href="#" class="view">view >></a>
@@ -340,9 +351,9 @@
                     </div>
                     <div class="clearfix media-info">
                       <span class="date pull-left">
-                        <span>{{item.createAt}}</span>
-                        <span>prase({{item.createAt}})</span>
-                        <span>comment({{item.createAt}})</span>
+                        <span>{{item.createAt | formatDate:true}}</span>
+                        <span>prase({{item.likes}})</span>
+                        <span>comment({{item.comments.length}})</span>
                       </span>
                       <span class="pull-right media-controll">
                         <a href="#" class="view">view >></a>

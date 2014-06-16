@@ -451,7 +451,7 @@ var getMyActive = function(req, res) {
                     });
                     result.likes = item.likes.length;
                     content.push(result);
-                } 
+                }
                 if (item.type === 'job') {
                     result.type = 'job';
                     result._id = item._id;
@@ -463,6 +463,7 @@ var getMyActive = function(req, res) {
                     result.paymentEnd = item.paymentEnd;
                     result.degree = item.degree;
                     result.position = item.position;
+                    result.location = item.location;
                     result.workYears = item.workYears;
                     result.summary = item.summary;
                     result.detail = item.detail;
@@ -472,7 +473,7 @@ var getMyActive = function(req, res) {
                             result.liked = true;
                         }
                     });
-                    result.likes = item.likes.length; 
+                    result.likes = item.likes.length;
                     content.push(result);
                 }
             });

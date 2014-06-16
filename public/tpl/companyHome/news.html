@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="clearfix media-info">
-            <span class="date pull-left"><a href="#">{{item.createAt}}</a></span>
+            <span class="date pull-left"><a href="#">{{item.createAt | formatDate:true}}</a></span>
             <span class="pull-right media-control">
               <a href="#" class="like" ng-class="{liked:item.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(item)"></i>({{item.likes}})</a>
               <a href="#" class="comment" ng-click="vm.toggleComment(item)"><i class="fa fa-fw fa-comments"></i>({{item.comments.length}})</a>

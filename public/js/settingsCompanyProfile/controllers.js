@@ -4,7 +4,7 @@
 angular.module('jsGen.controllers', ['ui.validate']).
 controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$http',
     function(app, $scope, $routeParams, getToc, getChapter, $http) {
-        $scope.name = app.user.name;
+        $scope.display_name = app.user.display_name || 'add your company name';
         $scope.signature = app.user.signature || 'add your signature';
 
         $scope.showNameContent = true;
@@ -45,11 +45,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
         function set() {
             var url = '/api/companyProfile/header';
-            if ($scope.name === '') {
+            if ($scope.display_name === '') {
                 return false;
             }
             var data = {
-                name: $scope.name,
+                display_name: $scope.display_name,
                 signature: $scope.signature
             };
             $http.post(url, data).success(function(data) {

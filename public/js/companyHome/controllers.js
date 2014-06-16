@@ -212,13 +212,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.paymentEnd = '';
         $scope.degree = 'noLimit';
         $scope.position = '';
+        $scope.location = '';
         $scope.summary = '';
         $scope.detail = '';
         $scope.workYears = 'noLimit';
 
         $scope.showBlankError = false;
         $scope.submit = function() {
-            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.summary === '' || $scope.detail === '';
+            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.summary === '' || $scope.detail === '' || $scope.location === '';
             if (check) {
                 $scope.showBlankError = true;
                 return false;
@@ -231,6 +232,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 paymentEnd: $scope.paymentEnd,
                 degree: $scope.degree,
                 position: $scope.position,
+                location: $scope.location,
                 summary: $scope.summary,
                 detail: $scope.detail,
                 workYears: $scope.workYears
