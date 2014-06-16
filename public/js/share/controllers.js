@@ -8,13 +8,14 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             hasNext: false,
             current: 1
         };
-        $scope.itemList = [];
+        $scope.share.total = 0;
+        $scope.comments = [];
         var params = {
             page: 1,
-            id: window.userId
+            shareId: $scope._id
         };
         var getTrends = function() {
-            var url = '/api/user/companyActive';
+            var url = '/api/share/comments';
             $http.get(url, {
                 params: params,
             }).success(function(data) {
