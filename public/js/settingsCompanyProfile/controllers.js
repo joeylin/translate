@@ -17,11 +17,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         };
         $scope.enterName = function(e) {
             if (!e) {
-                return set();
+                return setName();
             }
             var key = e.keyCode || e.which;
             if (key === 13) {
-                set();
+                setName();
             }
         };
 
@@ -35,15 +35,15 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         };
         $scope.enterSign = function(e) {
             if (!e) {
-                return set();
+                return setSign();
             }
             var key = e.keyCode || e.which;
             if (key === 13) {
-                set();
+                setSign();
             }
         };
 
-        function set() {
+        function setName() {
             var url = '/api/companyProfile/header';
             if ($scope.display_name === '') {
                 return false;
@@ -56,6 +56,22 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showNameContent = true;
                 $scope.showNameEdit = true;
                 $scope.showNameInput = false;
+            });
+        }
+
+        function setSign() {
+            var url = '/api/companyProfile/header';
+            if ($scope.signature === '') {
+                return false;
+            }
+            var data = {
+                display_name: $scope.display_name,
+                signature: $scope.signature
+            };
+            $http.post(url, data).success(function(data) {
+                $scope.showSignContent = true;
+                $scope.showSignEdit = true;
+                $scope.showSignInput = false;
             });
         }
     }

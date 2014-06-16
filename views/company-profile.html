@@ -11,6 +11,8 @@
         <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- font Awesome -->
         <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- magnific popup style -->
+        <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/main.css">
@@ -115,6 +117,13 @@
             color: #999;
             padding-right: 5px;
           }
+          .btn.liked, .btn.followed,
+          .btn.liked:hover, .btn.followed:hover {
+            background-color: #fafafa;
+            color: #666;
+            border-color: #ddd;
+            border-bottom-color: #ddd;
+          }
 
         </style>
         <!-- for angular ng-cloak -->
@@ -123,8 +132,12 @@
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.author = null;
+          window.userId = null;
           <% if (locals.author) { %>
             window.author = <%- JSON.stringify(locals.author) %>;
+          <% } %>
+          <% if (locals.user) { %>
+            window.userId = <%= locals.user.id %>;
           <% } %>
         </script>       
     </head>
@@ -146,7 +159,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>">Login</a>
+                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>" target="_self">Login</a>
                   </li>
                   <% } else { %>
                   <li class="dropdown user user-menu">
@@ -289,8 +302,13 @@
               <div></div>
               <div class="clearfix">
                 <p class="pull-right">
-                  <a class="btn btn-primary" role="button">star</a> 
-                  <a class="btn btn-primary" role="button">follow</a>
+                  <% if (locals.author) { %>
+                  <a class="btn btn-primary <%= locals.isLiked ? 'liked': '' %>" id="companyLike" role="button" >star</a> 
+                  <a class="btn btn-primary <%= locals.isFollowed ? 'followed': '' %>" id="companyFollow" role="button" >follow</a>
+                  <% } else { %>
+                  <a class="btn btn-primary checkLogin" href="#login-popup" role="button" >star</a>
+                  <a class="btn btn-primary checkLogin" href="#login-popup" role="button">follow</a>
+                  <% } %>
                 </p>
               </div>
             </div>
@@ -299,7 +317,7 @@
                 <h3 class="panel-title">News</h3>
               </div>
               <div class="panel-body" ng-cloak>
-                <div class="media" ng-repeat="item in itemList">
+                <div class="media" ng-repeat-start="item in itemList">
                   <div class="media-body" ng-if="item.type==='view'">
                     <h4 class="media-heading">Share</h4>
                     <div>
@@ -361,6 +379,7 @@
                     </div>
                   </div>
                 </div>
+                <hr ng-repeat-end>
                 <div class="media">
                   <div class="media-body">
                     <h4 class="media-heading">Post</h4>
@@ -514,6 +533,9 @@
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
+        <div id="login-popup" class="white-popup-block mfp-hide">
+          You need Login First !
+        </div>
         <script>
           reserveLoad(
             '/public/bower_components/jquery/jquery.js',
@@ -525,7 +547,7 @@
             '/public/bower_components/angular-route/angular-route.js',
             '/public/bower_components/marked/lib/marked.js',
             '/public/bower_components/toastr/toastr.js',
-            '/public/js/lib/simditor-1.0.3/scripts/js/simditor-all.min.js',
+            '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/lib/angular-locale_zh-cn.js',
             '/public/js/lib/angular-ui.js',
             '/public/js/lib/bootstrap.min.js',
@@ -558,6 +580,68 @@
                           }
                       }
                   });
+              });
+              $('.checkLogin').magnificPopup({
+                type: 'inline',
+                midClick: true
+              });
+              $('#companyLike').on('click', function() {
+                var liked = $(this).hasClass('liked');
+                var author = window.author;
+                var userId = window.userId;
+                var self = this;
+                if (author) {
+                  var url;
+                  if (liked) {
+                    url = '/api/user/unlike';
+                  } else {
+                    url = '/api/user/like';
+                  }
+                  var data = {
+                    id: userId
+                  };
+                  $.ajax({
+                      url: url,
+                      type: "post",
+                      data: data,
+                      success: function(data) {
+                          if (liked) {
+                            $(self).removeClass('liked');
+                          } else {
+                            $(self).addClass('liked');
+                          }
+                      }
+                  });
+                }
+              });
+              $('#companyFollow').on('click', function() {
+                var followed = $(this).hasClass('followed');
+                var author = window.author;
+                var userId = window.userId;
+                var self = this;
+                if (author) {
+                  var url;
+                  if (followed) {
+                    url = '/api/user/unfollow';
+                  } else {
+                    url = '/api/user/follow';
+                  }
+                  var data = {
+                    id: userId
+                  };
+                  $.ajax({
+                      url: url,
+                      type: "post",
+                      data: data,
+                      success: function(data) {
+                          if (followed) {
+                            $(self).removeClass('followed');
+                          } else {
+                            $(self).addClass('followed');
+                          }
+                      }
+                  });
+                }
               });
             }
           );

@@ -123,11 +123,15 @@
         </style>
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
-          window.user = null;
-          <% if (locals.user) { %>
-            window.user = <%- JSON.stringify(locals.user) %>;
+          window.author = null;
+          window.userId = null;
+          <% if (locals.author) { %>
+            window.author = <%- JSON.stringify(locals.author) %>;
           <% } %>
-        </script>       
+          <% if (locals.user) { %>
+            window.userId = <%= locals.user.id %>;
+          <% } %>
+        </script>          
     </head>
     
     <!-- HTML code from Bootply.com editor -->  
@@ -145,65 +149,46 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
+                  <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
-                      <div class="dropdown-menu" style="padding:17px;border-radius: 6px;">
-                          <form id="formLogin" class="form" novalidate > 
-                              <label>Login</label> 
-                              <input class="form-control" name="form-control" id="username" type="text" placeholder="Username" title="Enter your username" required>
-                              <input class="form-control" name="password" id="password" type="password" placeholder="Password" title="Enter your password" required>
-                              <button type="button" id="btnLogin" class="btn">Login</button>
-                          </form>
-                          <br>
-                          <form class="form">
-                            <a class="signup" href="/signup" >New User? Sign-up..</a>
-                          </form>
-                          <a role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                          <a role="button" href="#contactModal"><small>Need help? Contact us</small></a>
-                      </div>
+                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>" target="_self">Login</a>
                   </li>
-                  <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <!-- todo have custom user image -->
-                            <!-- <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive"> -->
-                            <i class="fa fa-user"></i> 
-                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                  <% } else { %>
+                  <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
+                            <span id="lblUsername" style="margin-left: 5px;">
+                              <%= locals.author && locals.author.name %>
+                            </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="/public/imgs/avatar3.png" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.author && locals.author.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span class="user_username"> Jane Doe - Web Developer</span>
-                                    <small class="user_creatAt">Member since Nov. 2012</small>
+                                    <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_follower">10</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#" ><%= locals.author.share.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_praise">100</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#"><%= locals.author.connects.length %></a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#" class="user_connects">30</a>
+                                <div class="col-xs-6 text-center">
+                                    <a href="#">share</a>
                                 </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="#">Praise</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
+                                <div class="col-xs-6 text-center">
                                     <a href="#">Connects</a>
                                 </div>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Account</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
@@ -211,68 +196,17 @@
                             </li>
                         </ul>
                   </li>
+                  <% } %>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Post</a></li>
-                <li><a href="#">Group</a></li>
+                <li><a href="/home" target="_self">Home</a></li>
+                <li><a href="/profile" target="_self">profile</a></li>
+                <li><a href="/search/all" target="_self">search</a></li>
               </ul>
-            </div>
+            </div> 
           </div>
         </nav>
         <div class="container">
-          <div class="profile-sidebar col-md-3">
-            <div class="section">
-              <a href="#" class="thumbnail">
-              <img data-src="holder.js/100%x180" alt="100%x180" style="height: 180px; width: 100%; display: block;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzEiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijg1LjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcxeDE4MDwvdGV4dD48L3N2Zz4=">
-              </a>
-              <div class="row">
-                <div class="col-xs-6 text-center">
-                    <a href="#" class="user_follower">10</a>
-                </div>
-                <div class="col-xs-6 text-center">
-                    <a href="#" class="user_praise">100</a>
-                </div>
-                <div class="col-xs-6 text-center">
-                    <a href="#">Followers</a>
-                </div>
-                <div class="col-xs-6 text-center">
-                    <a href="#">Praise</a>
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Basic</div>
-              <div class="panel-body">
-                <div>
-                  <strong>Number:</strong>
-                  18650330482
-                </div>
-                <div>
-                  <strong>Adress:</strong>
-                  Fujian,Fuzhou,JinAn
-                </div>
-                <div>
-                  <strong>Build:</strong>
-                  2012/12/10
-                </div>
-                <div>
-                  <strong>email:</strong>
-                  amazingSurge@163.com
-                </div>
-                <div>
-                  <strong>website:</strong>
-                  www.amazingSurge.com
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Reading List</div>
-              <div class="panel-body">
-                Panel content
-              </div>
-            </div>
-          </div>
           <div class="profile-body col-md-9" ng-controller="indexCtrl">
             <div class="jumbotron">
               <h1>AmazingSurge</h1>
@@ -385,6 +319,58 @@
                     <li><a href="#">Next</a></li>
                   </ul>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="profile-sidebar col-md-3">
+            <div class="section">
+              <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="100%x180" style="height: 180px; width: 100%; display: block;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzEiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijg1LjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcxeDE4MDwvdGV4dD48L3N2Zz4=">
+              </a>
+              <div class="row">
+                <div class="col-xs-6 text-center">
+                    <a href="#" class="user_follower">10</a>
+                </div>
+                <div class="col-xs-6 text-center">
+                    <a href="#" class="user_praise">100</a>
+                </div>
+                <div class="col-xs-6 text-center">
+                    <a href="#">Followers</a>
+                </div>
+                <div class="col-xs-6 text-center">
+                    <a href="#">Praise</a>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Basic</div>
+              <div class="panel-body">
+                <div>
+                  <strong>Number:</strong>
+                  18650330482
+                </div>
+                <div>
+                  <strong>Adress:</strong>
+                  Fujian,Fuzhou,JinAn
+                </div>
+                <div>
+                  <strong>Build:</strong>
+                  2012/12/10
+                </div>
+                <div>
+                  <strong>email:</strong>
+                  amazingSurge@163.com
+                </div>
+                <div>
+                  <strong>website:</strong>
+                  www.amazingSurge.com
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Reading List</div>
+              <div class="panel-body">
+                Panel content
               </div>
             </div>
           </div>     

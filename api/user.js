@@ -89,6 +89,7 @@ var login = function(req, res) {
     });
 };
 var logout = function(req, res) {
+    req.session.user = null;
     req.session.destroy();
     res.send({
         code: 200,
@@ -491,6 +492,189 @@ var getMyActive = function(req, res) {
         });
     });
 };
+var getCompanyActive = function(req, res) {
+    var id = req.query.id;
+    var page = req.query.page || 1;
+    var perPageItems = 20;
+    if (!id) {
+        return res.send({
+            code: 404
+        });
+    }
+    User.findOne({
+        id: id
+    }, function(err, user) {
+        Share.find({
+            user: user._id,
+            is_delete: false
+        }).sort({
+            createAt: -1
+        }).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
+            if (!trends) {
+                return res.send({
+                    code: 200,
+                    info: 'no active',
+                    content: []
+                });
+            }
+            Share.find({
+                user: user._id
+            }).count().exec(function(err, count) {
+                var content = [];
+                var hasNext;
+                trends.map(function(item, key) {
+                    var result = {};
+                    if (item.type === 'view') {
+                        result.type = 'view';
+                        result._id = item._id;
+                        result.comments = item.comments;
+                        result.content = item.content;
+                        result.createAt = item.createAt.getTime();
+                        result.id = item.id;
+                        result.liked = false;
+                        item.likes.map(function(like) {
+                            if (like.toString() == user._id) {
+                                result.liked = true;
+                            }
+                        });
+                        result.likes = item.likes.length;
+                        content.push(result);
+                    }
+                    if (item.type === 'job') {
+                        result.type = 'job';
+                        result._id = item._id;
+                        result.comments = item.comments;
+                        result.id = item.id;
+                        result.createAt = item.createAt.getTime();
+                        result.type = item.type;
+                        result.paymentStart = item.paymentStart;
+                        result.paymentEnd = item.paymentEnd;
+                        result.degree = item.degree;
+                        result.position = item.position;
+                        result.location = item.location;
+                        result.workYears = item.workYears;
+                        result.summary = item.summary;
+                        result.detail = item.detail;
+                        result.liked = false;
+                        item.likes.map(function(like) {
+                            if (like.toString() == user._id.toString()) {
+                                result.liked = true;
+                            }
+                        });
+                        result.likes = item.likes.length;
+                        content.push(result);
+                    }
+                });
+                if ((page - 1) * perPageItems + content.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                res.send({
+                    code: 200,
+                    count: count,
+                    hasNext: hasNext,
+                    content: content
+                });
+            });
+        });
+    });
+};
+var companyLike = function(req, res) {
+    var user = req.session.user;
+    var companyId = req.body.id;
+    User.findOne({
+        id: companyId
+    }, function(err, company) {
+        var likes = company.likes;
+        var isLiked = false;
+        likes.map(function(like) {
+            if (like.toString() == user._id) {
+                isLiked = true;
+            }
+        });
+        if (isLiked) {
+            return res.send({
+                code: 200,
+                liked: true
+            });
+        }
+        company.likes.push(user._id);
+        company.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var companyUnlike = function(req, res) {
+    var user = req.session.user;
+    var companyId = req.body.id;
+    User.findOne({
+        id: companyId
+    }, function(err, company) {
+        var likes = company.likes;
+        var index = -1;
+        likes.map(function(like, key) {
+            if (like.toString() == user._id) {
+                index = key;
+            }
+        });
+        company.likes.splice(index, 1);
+        company.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var companyFollow = function(req, res) {
+    var user = req.session.user;
+    var companyId = req.body.id;
+    User.findOne({
+        id: companyId
+    }, function(err, company) {
+        var followers = company.followers;
+        var isFolowed = false;
+        followers.map(function(follow) {
+            if (follow.toString() == user._id) {
+                isFolowed = true;
+            }
+        });
+        if (isFolowed) {
+            return res.send({
+                code: 200
+            });
+        }
+        company.followers.push(user._id);
+        company.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var companyUnfollow = function(req, res) {
+    var user = req.session.user;
+    var companyId = req.body.id;
+    User.findOne({
+        id: companyId
+    }, function(err, company) {
+        var followers = company.followers;
+        var index = -1;
+        followers.map(function(follow, key) {
+            if (follow.toString() == user._id) {
+                index = key;
+            }
+        });
+        company.followers.splice(index, 1);
+        company.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -502,6 +686,13 @@ module.exports = function(app) {
     app.get('/api/user/trend', middleware.check_login, getTrends);
     app.get('/api/user/myActive', middleware.check_login, getMyActive);
     app.get('/api/user/myShare', middleware.check_login, getMyShare);
+
+    // company profile
+    app.post('/api/user/like', middleware.check_login, companyLike);
+    app.post('/api/user/unlike', middleware.check_login, companyUnlike);
+    app.post('/api/user/follow', middleware.check_login, companyFollow);
+    app.post('/api/user/unfollow', middleware.check_login, companyUnfollow);
+    app.get('/api/user/companyActive', getCompanyActive);
 
     // notify
     app.get('/api/notify', getNotify);

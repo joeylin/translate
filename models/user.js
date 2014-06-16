@@ -108,6 +108,10 @@ var UserSchema = new Schema({
     }],
 
     // common
+    likes: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
     share: [{
         type: ObjectId,
         ref: 'Share'
@@ -307,7 +311,7 @@ UserSchema.methods = {
         return~ oAuthTypes.indexOf(this.provider);
     },
 
-    // help tool
+    // user
     checkConnected: function(userId) {
         var result = false;
         this.connects.map(function(connect, key) {
@@ -372,6 +376,28 @@ UserSchema.methods = {
                 });
             });
         });
+    },
+
+    // company
+    isLike: function(id) {
+        var likes = this.likes;
+        var result = false;
+        likes.map(function(like) {
+            if (like.toString() == id) {
+                result = true;
+            }
+        });
+        return result;
+    },
+    isFollow: function(id) {
+        var followers = this.followers;
+        var result = false;
+        followers.map(function(follower) {
+            if (follower.toString() == id) {
+                result = true;
+            }
+        });
+        return result;
     }
 };
 

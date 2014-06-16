@@ -43,6 +43,8 @@ module.exports = function(app) {
                 res.render('user-profile');
             }
             if (profile.name === 'company') {
+                app.locals.isLiked = req.session.user && user.isLike(req.session.user._id);
+                app.locals.isFollowed = req.session.user && user.isFollow(req.session.user._id);
                 res.render('company-profile');
             }
         });
@@ -107,6 +109,10 @@ module.exports = function(app) {
             }
         });
     };
+    var getView = function(req, res) {
+        var id = req.params.id;
+        res.render('share');
+    };
 
     // home
     app.get('/', middleware.check_login, getMain);
@@ -140,9 +146,9 @@ module.exports = function(app) {
     app.get('/notify', middleware.check_login, getNotify);
     app.get('/notify/:op', middleware.check_login, getNotify);
 
-    // share
-    app.get('/share', getShare);
-    app.get('/share/:id', getShare);
+    // view
+    app.get('/view', getView);
+    app.get('/view/:id', getView);
 
     // search 
     app.get('/search', middleware.check_login, getSearch);

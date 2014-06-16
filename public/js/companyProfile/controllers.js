@@ -9,12 +9,12 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             current: 1
         };
         $scope.itemList = [];
-        var url = '/api/user/share';
         var params = {
-            page: 1
+            page: 1,
+            id: window.userId
         };
         var getTrends = function() {
-            var url = '/api/user/myActive';
+            var url = '/api/user/companyActive';
             $http.get(url, {
                 params: params,
             }).success(function(data) {
