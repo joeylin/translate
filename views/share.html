@@ -116,7 +116,20 @@
           .comment-editor .input-group-btn:last-child>.btn {
             margin-left: 8px;
           }
-
+          .view-sidebar .user-basic {
+            margin-left: 100px;
+          }
+          .view-sidebar .user-basic h3 {
+            margin-top: 0;
+          }
+          .view-sidebar .well .user-signature {
+            margin-top: 15px;
+            padding-left: 15px;
+            border-left: 3px solid #3c8dbc;
+          }
+          .view-sidebar .well  {
+            
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -208,10 +221,6 @@
         </nav>
         <div class="container">
           <div class="profile-body col-md-9" ng-controller="indexCtrl">
-            <div class="jumbotron">
-              <h1>AmazingSurge</h1>
-              <p class="des">Think different</p>
-            </div>
             <div class="well">
               <p>
                 this is content, this is content, this is content, this is content,
@@ -225,17 +234,7 @@
               </div>
             </div>
             <div class="panel reply-panel">
-              <div class="submit"></div>
               <div class="panel-body">
-                <div>
-                  <div class="form-group">
-                      <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="newComment"></textarea>
-                  </div>
-                  <div class="clearfix">
-                    <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
-                  </div>
-                </div>
-                <hr>
                 <div class="media" ng-repeat="comment in comments" ng-cloak>
                   <a class="pull-left" href="#">
                     <img class="media-object" alt="64x64" ng-src="{{comment.user.avatar}}" style="width: 64px; height: 64px;">
@@ -259,60 +258,32 @@
                     </div>
                   </div>
                 </div>
-                <div class="media">
+              </div>
+              <div class="panel-body">
+                <div class="media" ng-repeat-start="comment in comments" ng-cloak>
                   <a class="pull-left" href="#">
-                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+                    <img class="media-object" alt="64x64" ng-src="{{comment.user.avatar}}" style="width: 64px; height: 64px;">
                   </a>
                   <div class="media-body">
-                    <h4 class="media-heading"><a href="#">Media heading</a></h4>
+                    <h4 class="media-heading"><a href="#">{{comment.user.username}}</a></h4>
                     <div>
-                      <p>Cras sit amet nibh libero, in gravida nulla.</p>
+                      <p>{{comment.content}}</p>
                     </div>
                     <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">2014/05/18</a></span>
+                      <span class="date pull-left"><a href="#">comment.date</a></span>
                       <span class="pull-right media-controll">
-                        <a href="#" class="reply" >reply</a>
+                        <a href="#" class="reply" ng-click="vm.reply(comment)">reply</a>
                       </span>
+                    </div>
+                    <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
+                        <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="vm.submitComment(comment)">submit</button>
+                        </span>
                     </div>
                   </div>
                 </div>
-                <hr>
-                <div class="media">
-                  <a class="pull-left" href="#">
-                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-                  </a>
-                  <div class="media-body">
-                    <h4 class="media-heading"><a href="#">Media heading</a></h4>
-                    <div>
-                      <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                    </div>
-                    <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="reply" >reply</a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <hr>
-                <div class="media">
-                  <a class="pull-left" href="#">
-                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-                  </a>
-                  <div class="media-body">
-                    <h4 class="media-heading"><a href="#">Media heading</a></h4>
-                    <div>
-                      <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                    </div>
-                    <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="reply" >reply</a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <hr>
+                <hr ng-repeat-end>
                 <div>
                   <ul class="pager" ng-show="pager.isShow">
                     <li><a href="#">Previous</a></li>
@@ -322,24 +293,21 @@
               </div>
             </div>
           </div>
-          <div class="profile-sidebar col-md-3">
-            <div class="section">
-              <a href="#" class="thumbnail">
-              <img data-src="holder.js/100%x180" alt="100%x180" style="height: 180px; width: 100%; display: block;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzEiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijg1LjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcxeDE4MDwvdGV4dD48L3N2Zz4=">
-              </a>
-              <div class="row">
-                <div class="col-xs-6 text-center">
-                    <a href="#" class="user_follower">10</a>
-                </div>
-                <div class="col-xs-6 text-center">
-                    <a href="#" class="user_praise">100</a>
-                </div>
-                <div class="col-xs-6 text-center">
-                    <a href="#">Followers</a>
-                </div>
-                <div class="col-xs-6 text-center">
-                    <a href="#">Praise</a>
-                </div>
+          <div class="profile-sidebar col-md-3 view-sidebar">
+            <div class="well" ng-cloak>
+              <div class="user-header bg-modena clearfix">
+                  <div class="pull-left">
+                    <img src="/public/imgs/avatar.jpg" style="height: 85px;width: 85px">
+                  </div>
+                  <div class="user-basic">
+                    <h3>{{global.user.name}} Joeylin</h3>
+                    <div>share: 100</div>
+                    <div>follow: 200</div>
+                  </div>
+              </div>
+              <!-- Menu Body -->
+              <div class="user-signature clearfix">
+                  <span>Think different Think different</span>
               </div>
             </div>
             <div class="panel panel-default section">
@@ -399,18 +367,29 @@
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
-            '/public/js/search/router.js',
+            '/public/js/share/router.js',
             '/public/js/services.js',
             '/public/js/filters.js',
             '/public/js/directives.js',
-            '/public/js/search/controllers.js',
-            '/public/js/search/app.js',
+            '/public/js/share/controllers.js',
+            '/public/js/share/app.js',
             function (errorUrl) {
               if (errorUrl) {
                 alert('Error loading: ' + errorUrl);
               } else {
                 angular.bootstrap(document, ['jsGen']);
               }
+              $('#btnLogout').click(function() {
+                  $.ajax({
+                      url: "/api/user/logout",
+                      type: "post",
+                      success: function(data) {
+                          if (data.code === 200) {
+                              window.location.reload();
+                          }
+                      }
+                  });
+              });
             }
           );
         </script>

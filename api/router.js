@@ -111,6 +111,20 @@ module.exports = function(app) {
     };
     var getView = function(req, res) {
         var id = req.params.id;
+        var author = req.session && req.session.user;
+        // Share.findOne({
+        //     id: id
+        // }).populate('user').exec(function(err, share) {
+        //     if (err) {
+        //         res.send({
+        //             code: 404,
+        //             info: 'cant find specified id'
+        //         });
+        //     }
+        //     app.locals.share = share;
+        //     app.locals.author = author;
+        //     res.render('share');
+        // });
         res.render('share');
     };
 
