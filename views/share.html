@@ -235,31 +235,6 @@
             </div>
             <div class="panel reply-panel">
               <div class="panel-body">
-                <div class="media" ng-repeat="comment in comments" ng-cloak>
-                  <a class="pull-left" href="#">
-                    <img class="media-object" alt="64x64" ng-src="{{comment.user.avatar}}" style="width: 64px; height: 64px;">
-                  </a>
-                  <div class="media-body">
-                    <h4 class="media-heading"><a href="#">{{comment.user.username}}</a></h4>
-                    <div>
-                      <p>{{comment.content}}</p>
-                    </div>
-                    <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">comment.date</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="reply" ng-click="vm.reply(comment)">reply</a>
-                      </span>
-                    </div>
-                    <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
-                        <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" ng-click="vm.submitComment(comment)">submit</button>
-                        </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
                 <div class="media" ng-repeat-start="comment in comments" ng-cloak>
                   <a class="pull-left" href="#">
                     <img class="media-object" alt="64x64" ng-src="{{comment.user.avatar}}" style="width: 64px; height: 64px;">
