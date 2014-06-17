@@ -76,5 +76,9 @@ config(['$httpProvider', 'app',
         app.myConf = myConf;
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数
+
+        app.share = window.shareObj;
+        app.author = window.author;
+        $rootScope.global.author = window.author;
     }
 ]);

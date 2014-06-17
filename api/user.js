@@ -164,7 +164,6 @@ var checkConnect = function(req, res) {
                         });
                     }
                     request.dispose(true, function(err) {
-                        console.log(value)
                         if (err) {
                             console.log(err);
                         }
@@ -459,7 +458,7 @@ var getMyActive = function(req, res) {
                     result.comments = item.comments;
                     result.id = item.id;
                     result.createAt = item.createAt.getTime();
-                    result.type = item.type;
+                    result.jobType = item.jobType;
                     result.paymentStart = item.paymentStart;
                     result.paymentEnd = item.paymentEnd;
                     result.degree = item.degree;

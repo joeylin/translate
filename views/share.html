@@ -14,6 +14,8 @@
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/main.css">
+        <!-- magnific popup style -->
+        <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
 
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -93,6 +95,9 @@
           .media-heading a:hover {
             color: #3c8dbc;
           }
+          .media-info .media-control .liked i {
+            color: rgb(51, 51, 51);
+          }
           .reply-panel {
             position: relative;
           }
@@ -113,6 +118,9 @@
           .comment-editor.comment-editor-inline {
             margin-top: 9px;
           }
+          .comment-editor .input-group-btn {
+            vertical-align: bottom;
+          }
           .comment-editor .input-group-btn:last-child>.btn {
             margin-left: 8px;
           }
@@ -126,9 +134,21 @@
             margin-top: 15px;
             padding-left: 15px;
             border-left: 3px solid #3c8dbc;
+            font-weight: 700;
           }
-          .view-sidebar .well  {
-            
+          .view-sidebar .find-btn  {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            margin-bottom: 0;
+            font-weight: 400;
+            text-align: center;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            border-radius: 3px;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -137,12 +157,12 @@
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.author = null;
-          window.userId = null;
+          window.shareObj = null;
+          <% if (locals.share) { %>
+            window.shareObj = <%- JSON.stringify(locals.share) %>;
+          <% } %>
           <% if (locals.author) { %>
             window.author = <%- JSON.stringify(locals.author) %>;
-          <% } %>
-          <% if (locals.user) { %>
-            window.userId = <%= locals.user.id %>;
           <% } %>
         </script>          
     </head>
@@ -164,7 +184,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>" target="_self">Login</a>
+                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.share.user.id %>" target="_self">Login</a>
                   </li>
                   <% } else { %>
                   <li class="dropdown user user-menu">
@@ -222,47 +242,72 @@
         <div class="container">
           <div class="profile-body col-md-9" ng-controller="indexCtrl">
             <div class="well">
-              <p>
-                this is content, this is content, this is content, this is content,
-              </p>
-              <div class="clearfix media-info">
-                <span class="date pull-left"><a href="#">2014/05/18</a></span>
-                <span class="pull-right media-controll">
-                  <a href="#" class="like">like</a>
-                  <a href="#" class="comment" >comment</a>
+              <% if (locals.share.type === 'view') { %>
+              <p><%= locals.share.content %></p>
+              <% } %>
+              <% if (locals.share.type === 'job') { %>
+              <h3><%= locals.share.position %></h3>
+              <p><%= locals.share.summary %></p>
+              <p><%= locals.share.detail %></p>
+              <div><strong>Type : </strong><%= locals.share.jobType %></div>
+              <div><strong>Department : </strong><%= locals.share.department %></div>
+              <div><strong>Payment : </strong><%= locals.share.paymentStart %>k - <%= locals.share.paymentEnd %>k</div>
+              <div><strong>Experience : </strong><%= locals.share.workYears %></div>
+              <div><strong>Degree : </strong><%= locals.share.degree %></div>
+              <div><strong>Location : </strong><%= locals.share.location %></div>
+              <% } %>
+              <div class="clearfix media-info" ng-cloak>
+                <span class="date pull-left"><a href="#">{{share.createAt | formatDate:true}}</a></span>
+                <span class="pull-right media-control">
+                  <% if (locals.author) { %>
+                  <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="toggleLike()"></i>({{share.likes}})</a>
+                  <% } else { %>
+                  <a class="like checkLogin" href="#login-popup" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
+                  <% } %>
+                  <a href="#" class="comment" >comment({{share.total}})</a>
                 </span>
               </div>
             </div>
-            <div class="panel reply-panel">
-              <div class="panel-body">
-                <div class="media" ng-repeat-start="comment in comments" ng-cloak>
-                  <a class="pull-left" href="#">
-                    <img class="media-object" alt="64x64" ng-src="{{comment.user.avatar}}" style="width: 64px; height: 64px;">
+            <div class="panel reply-panel" ng-cloak>
+              <div class="panel-body reply-container">
+                <div class="input-group comment-editor">
+                    <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="share.newComment"></textarea>
+                    <span class="input-group-btn">
+                        <% if (locals.author) { %>
+                        <button class="btn btn-primary reply-submit" type="button" ng-click="submitComment()">submit</button>
+                        <% } else { %>
+                        <a class="btn btn-primary reply-submit checkLogin" href="#login-popup" type="button">submit</a>
+                        <% } %>
+                    </span>
+                </div>
+                <div class="media reply-item" ng-repeat-start="comment in share.comments">
+                  <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
+                    <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
                   </a>
                   <div class="media-body">
-                    <h4 class="media-heading"><a href="#">{{comment.user.username}}</a></h4>
-                    <div>
-                      <p>{{comment.content}}</p>
-                    </div>
+                    <p class="reply-content"><span class="reply-user"><a ng-href="/profile/{{comment.user.id}}" target="_self">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
                     <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">comment.date</a></span>
-                      <span class="pull-right media-controll">
-                        <a href="#" class="reply" ng-click="vm.reply(comment)">reply</a>
+                      <span class="date pull-left"><a href="#">{{comment.date | formatDate:true}}</a></span>
+                      <span class="pull-right media-control">
+                        <% if (locals.author) { %>
+                        <a href="#" class="comment" ng-click="delete(comment)" ng-show="isMyShare || comment.user._id === global.author._id"><i class="fa fa-fw fa-trash-o"></i></a>
+                        <a href="#" class="comment" ng-click="reply(comment)">reply</a>
+                        <% } %>
                       </span>
                     </div>
                     <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
                         <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" ng-click="vm.submitComment(comment)">submit</button>
+                            <button class="btn btn-primary" type="button" ng-click="submitInlineComment(comment)">submit</button>
                         </span>
                     </div>
                   </div>
                 </div>
                 <hr ng-repeat-end>
-                <div>
-                  <ul class="pager" ng-show="pager.isShow">
-                    <li><a href="#">Previous</a></li>
-                    <li><a href="#">Next</a></li>
+                <div ng-show="share.comments.length > 0 && share.comments.length < total">
+                  <ul class="pager">
+                    <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
+                    <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
                   </ul>
                 </div>
               </div>
@@ -275,18 +320,19 @@
                     <img src="/public/imgs/avatar.jpg" style="height: 85px;width: 85px">
                   </div>
                   <div class="user-basic">
-                    <h3>{{global.user.name}} Joeylin</h3>
-                    <div>share: 100</div>
-                    <div>follow: 200</div>
+                    <h3><%= locals.share.user.name %></h3>
+                    <div>share: <%= locals.share.user.share %></div>
+                    <div>follow: <%= locals.share.user.followers %></div>
                   </div>
               </div>
               <!-- Menu Body -->
               <div class="user-signature clearfix">
-                  <span>Think different Think different</span>
+                  <span><%= locals.share.user.signature %></span>
               </div>
             </div>
+            <% if (locals.share.user.role === 'company') { %>
             <div class="panel panel-default section">
-              <div class="panel-heading">Basic</div>
+              <div class="panel-heading">Company Card</div>
               <div class="panel-body">
                 <div>
                   <strong>Number:</strong>
@@ -311,16 +357,58 @@
               </div>
             </div>
             <div class="panel panel-default section">
-              <div class="panel-heading">Reading List</div>
+              <div class="panel-heading">Other Jobs this company</div>
               <div class="panel-body">
                 Panel content
               </div>
             </div>
+            <div>
+              <a type="button" class="find-btn btn-block" target="_self">Find More Jobs >></a>
+            </div>
+            <% } else { %>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Connects</div>
+              <div class="panel-body">
+                <div>
+                  <strong>Number:</strong>
+                  18650330482
+                </div>
+                <div>
+                  <strong>Adress:</strong>
+                  Fujian,Fuzhou,JinAn
+                </div>
+                <div>
+                  <strong>Build:</strong>
+                  2012/12/10
+                </div>
+                <div>
+                  <strong>email:</strong>
+                  amazingSurge@163.com
+                </div>
+                <div>
+                  <strong>website:</strong>
+                  www.amazingSurge.com
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Relative Topic</div>
+              <div class="panel-body">
+                Panel content
+              </div>
+            </div>
+            <div>
+              <a type="button" class="find-btn btn-block" target="_self">Find Professional >></a>
+            </div>
+            <% } %>
           </div>     
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
+        <div id="login-popup" class="white-popup-block mfp-hide">
+          You need Login First !
+        </div>
         <script>
           reserveLoad(
             '/public/bower_components/jquery/jquery.js',
@@ -339,6 +427,7 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
@@ -354,6 +443,10 @@
               } else {
                 angular.bootstrap(document, ['jsGen']);
               }
+              $('.checkLogin').magnificPopup({
+                type: 'inline',
+                midClick: true
+              });
               $('#btnLogout').click(function() {
                   $.ajax({
                       url: "/api/user/logout",

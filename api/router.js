@@ -112,20 +112,61 @@ module.exports = function(app) {
     var getView = function(req, res) {
         var id = req.params.id;
         var author = req.session && req.session.user;
-        // Share.findOne({
-        //     id: id
-        // }).populate('user').exec(function(err, share) {
-        //     if (err) {
-        //         res.send({
-        //             code: 404,
-        //             info: 'cant find specified id'
-        //         });
-        //     }
-        //     app.locals.share = share;
-        //     app.locals.author = author;
-        //     res.render('share');
-        // });
-        res.render('share');
+        Share.findOne({
+            id: id
+        }).populate('user').exec(function(err, share) {
+            if (err || !share) {
+                res.send({
+                    code: 404,
+                    info: 'cant find specified id'
+                });
+            }
+            var result = {};
+            result.type = share.type;
+            result.content = share.content;
+            result._id = share._id;
+            result.id = share.id;
+            result.createAt = share.createAt.getTime();
+            result.jobType = share.jobType;
+            result.paymentStart = share.paymentStart;
+            result.paymentEnd = share.paymentEnd;
+            result.degree = share.degree;
+            result.position = share.position;
+            result.location = share.location;
+            result.workYears = share.workYears;
+            result.summary = share.summary;
+            result.detail = share.detail;
+            result.liked = false;
+            if (author) {
+                share.likes.map(function(like) {
+                    if (like.toString() == author._id) {
+                        result.liked = true;
+                    }
+                });
+            }
+            result.likes = share.likes.length;
+            result.total = share.comments.length;
+            // todo: fix pager
+            result.comments = [];
+            result.user = {
+                id: share.user.id,
+                _id: share.user._id,
+                avatar: share.user.avatar,
+                name: share.user.name,
+                role: share.user.role,
+                signature: share.user.signature,
+                followers: share.user.followers.length,
+            };
+            Share.find({
+                user: share.user._id,
+                is_delete: false
+            }).count().exec(function(err, count) {
+                result.user.share = count;
+                app.locals.share = result;
+                app.locals.author = author;
+                res.render('share');
+            });
+        });
     };
 
     // home

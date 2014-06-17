@@ -8,18 +8,21 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             hasNext: false,
             current: 1
         };
-        $scope.share.total = 0;
-        $scope.comments = [];
+        $scope.share = app.share;
+        if (app.author && app.author._id === app.share._id) {
+            $scope.isMyShare = true;
+        }
         var params = {
             page: 1,
-            shareId: $scope._id
+            perPageItems: 50,
+            shareId: $scope.share._id
         };
         var getTrends = function() {
             var url = '/api/share/comments';
             $http.get(url, {
                 params: params,
             }).success(function(data) {
-                $scope.itemList = data.content;
+                $scope.share.comments = data.comments;
                 $scope.pager.hasNext = data.hasNext;
             });
         };
@@ -39,95 +42,92 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             params.page = $scope.pager.current;
             getTrends();
         };
-        $scope.vm.toggleLike = function(share) {
+        $scope.toggleLike = function() {
+            if (!app.author) {
+                return false;
+            }
             var url;
-            if (share.liked) {
+            if ($scope.share.liked) {
                 url = '/api/share/unlike';
                 $http.post(url, {
-                    shareId: share._id
+                    shareId: $scope.share._id
                 }).success(function(data) {
-                    share.liked = false;
-                    share.likes -= 1;
+                    $scope.share.liked = false;
+                    $scope.share.likes -= 1;
                 });
             } else {
                 url = '/api/share/like';
                 $http.post(url, {
-                    shareId: share._id
+                    shareId: $scope.share._id
                 }).success(function(data) {
-                    share.liked = true;
-                    share.likes += 1;
+                    $scope.share.liked = true;
+                    $scope.share.likes += 1;
                 });
             }
         };
-        $scope.vm.toggleComment = function(share) {
-            share.isShowComment = !share.isShowComment;
-            if (share.isShowComment) {
-                var params = {
-                    shareId: share._id
-                };
-                var url = '/api/share/comments';
-                $http.get(url, {
-                    params: params
-                }).success(function(data) {
-                    share.comments = data.comments;
-                });
-            }
-        };
-        $scope.vm.submitComment = function(share) {
-            if (share.newComment === '') {
+        $scope.submitComment = function() {
+            if ($scope.share.newComment === '' || !app.author) {
                 return false;
             }
             var url = '/api/share/comments/add';
             $http.post(url, {
-                shareId: share._id,
-                content: share.newComment,
-                replyTo: share.replyTo
+                shareId: $scope.share._id,
+                content: $scope.share.newComment,
+                replyTo: $scope.share.replyTo
             }).success(function(data) {
                 var comment = {
-                    user: app.user,
-                    content: share.newComment,
-                    replyTo: share.replyTo,
+                    user: app.author,
+                    content: $scope.share.newComment,
+                    replyTo: $scope.share.replyTo,
                     _id: data.content._id,
                     date: data.content.createAt
                 };
-                share.comments.unshift(comment);
-                share.newComment = '';
+                $scope.share.comments.unshift(comment);
+                $scope.share.total += 1;
+                $scope.share.newComment = '';
             });
         };
-        $scope.vm.delete = function(comment, share) {
-            var index = share.comments.indexOf(comment);
+        $scope.delete = function(comment) {
+            if (!app.author) {
+                return false;
+            }
+            var index = $scope.share.comments.indexOf(comment);
             var url = '/api/share/comments/delete';
             $http.post(url, {
-                shareId: share._id,
+                shareId: $scope.share._id,
                 commentIndex: index
             }).success(function(data) {
-                share.comments.splice(index, 1);
+                $scope.share.comments.splice(index, 1);
+                $scope.share.total -= 1;
             });
         };
-        $scope.vm.reply = function(comment) {
+        $scope.reply = function(comment) {
+            if (!app.author) {
+                return false;
+            }
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
                 comment.newComment = 'reply to ' + comment.user.name + ' : ';
             }
         };
-        $scope.vm.submitInlineComment = function(comment, share) {
-            if (comment.newComment === '') {
+        $scope.submitInlineComment = function(comment) {
+            if (comment.newComment === '' || !app.author) {
                 return false;
             }
             var url = '/api/share/comments/add';
             $http.post(url, {
-                shareId: share._id,
+                shareId: $scope.share._id,
                 content: comment.newComment,
                 replyTo: comment.user._id
             }).success(function(data) {
                 var result = {
-                    user: app.user,
+                    user: app.author,
                     content: comment.newComment,
                     replyTo: comment.user._id,
                     _id: data.content._id,
                     date: data.content.createAt
                 };
-                share.comments.unshift(result);
+                $scope.share.comments.unshift(result);
                 comment.isShowReply = false;
             });
         };

@@ -39,6 +39,8 @@ var getShareById = function(req, res) {
 };
 var getShareComments = function(req, res) {
     var shareId = req.query.shareId;
+    var page = req.query.page || 1;
+    var perPageItems = req.query.perPageItems || 15;
     Share.findOne({
         _id: shareId
     }).exec(function(err, share) {
@@ -48,8 +50,8 @@ var getShareComments = function(req, res) {
                 info: 'cant get comments'
             });
         }
-        console.log(share);
         var count = share.comments.length;
+        // todo fix pager
         var latest = share.comments.slice(-15);
         Comment.find({
             _id: {
