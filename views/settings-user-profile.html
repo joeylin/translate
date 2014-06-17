@@ -135,6 +135,20 @@
           .custom-box .change .delete:hover {
             color: blue;
           }
+          .custom-box .user-avatar {
+            margin-right: 15px;
+            position: relative;
+          }
+          .custom-box .user-avatar > input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 0;
+          }
+
           .custom-box .user-avatar i {
             font-size: 74px;
           }
@@ -338,8 +352,9 @@
               </div>
               <div class="media" ng-show="showContent">
                 <a class="pull-right user-avatar" href="#">
-                  <i class="fa fa-fw fa-user"></i>
-                  <!-- <img ng-src="{{avatar}}"> -->
+                  <img ng-src="{{avatar}}" style="width:74px;height:74px" id="changeAvatar">
+                  <input type="file" id="avatar-upload" multiple="">
+                  <div class="upload-progress"></div>
                 </a>
                 <div class="media-body user-info">
                   <p>{{name}} | {{sex}} | {{edu}} | {{workYear}} year work experience</p>
