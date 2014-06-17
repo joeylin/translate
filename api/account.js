@@ -30,7 +30,16 @@ var editPassword = function(req, res) {
         }
     });
 };
+var getUploadToken = function(req, res) {
+    var result = {
+        token: '',
+        host: '',
+        key: ''
+    };
+    res.json(result);
+};
 
 module.exports = function(app) {
     app.post('/api/user/account/password', editPassword);
+    app.post('/api/upload/token', getUploadToken);
 };
