@@ -233,7 +233,7 @@ UserSchema.pre('save', function(next) {
 UserSchema.statics.getProfile = function(id, cb) {
     this.findOne({
         id: id
-    }, function(err, user) {
+    }).populate('connects').exec(function(err, user) {
         if (user.role === 'user') {
             var UserProfile = mongoose.model('UserProfile');
             UserProfile.findOne({
