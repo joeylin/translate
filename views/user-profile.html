@@ -385,16 +385,11 @@
               <div class="panel-body">    
                 <% locals.profile.experience.forEach(function(item,key){ %>
                     <div class="section">
-                      <h4><%= item.company %>-<%= item.title %> <small><%= item.startDate %>-<%= item.endDate %></small></h4>
+                      <h4><%= item.company %>-<%= item.title %> <small><%= item.startYear %>/<%= item.startMonth %>-<%= item.endYear %>/<%= item.endMonth %></small></h4>
                       <p><%= item.desc %></p>
                     </div>
                     <hr class="<%if(key === locals.profile.experience.length -1){%> displayNone <%}%>">
                 <% }) %>  
-                <!-- <div class="section">
-                  <h4>AamzingSurge-frontend <small>2012-2014</small></h4>
-                  <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                </div>
-                <hr> -->
               </div>
             </div>  
             <div class="panel custom-box education">
@@ -405,7 +400,7 @@
                 <div class="row">
                   <% locals.profile.edu.forEach(function(item,key){ %>
                     <div class="col-md-6 section">
-                      <span class="edu-date"><%= item.startDate %>--<%= item.endDate %></span>
+                      <span class="edu-date"><%= item.startYear %>/<%= item.startMonth %>--<%= item.endYear %>/<%= item.endMonth %></span>
                       <div class="content">
                         <div class="edu-school"> <%= item.school %></div>
                         <div class="edu-info">

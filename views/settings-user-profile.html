@@ -116,7 +116,7 @@
           .custom-box .media-body p {
             margin-bottom: 0;
           }
-          .custom-box .settings .row div {
+          .custom-box .settings .row > div {
             margin-bottom: 15px;
           }
           .custom-box .change {
@@ -136,10 +136,15 @@
             color: blue;
           }
           .custom-box .user-avatar {
-            margin-right: 15px;
+            margin-right: 30px;
             position: relative;
           }
-          .custom-box .user-avatar > input {
+          .custom-box .user-avatar  img,
+          .custom-box .basic-settings-avatar img {
+            width: 74px;
+            height: 74px;
+          }
+          .custom-box .basic-settings-avatar > input {
             position: absolute;
             top: 0;
             left: 0;
@@ -147,10 +152,20 @@
             height: 100%;
             border: none;
             opacity: 0;
+            cursor: pointer;
           }
-
-          .custom-box .user-avatar i {
-            font-size: 74px;
+          .custom-box .basic-settings-avatar .upload-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            line-height: 74px;
+            text-align: center;
+            background-color: #0b0b0b;
+            opacity: 0.8;
+            color: #fff;
           }
           .custom-box .user-info {
             padding-top: 0;
@@ -165,13 +180,11 @@
           .custom-box .basic-settings-avatar a {
             width: 100%;
             text-align: center;
+            display: inline-block;
           }
-          .custom-box .basic-settings-avatar i {
-            font-size: 98px;
-          }
-          .custom-box .basic-settings-avatar div {
+          .custom-box .basic-settings-avatar .avatar-tip {
             text-align: center;
-            font-size: 18px;
+            margin-top: 10px;
           }
           .custom-box .basic-edit {
             display: none;
@@ -243,6 +256,22 @@
           }
           .displayNone {
             display: none;
+          }
+          .divide .one {
+            padding-left: 0;
+            padding-right: 7px;
+          }
+          .divide .two {
+            padding-left: 7px;
+            padding-right: 0;
+          }
+          .settings .row-label {
+            font-size: 17px;
+            line-height: 34px;
+          }
+          .settings .row-form {
+            margin-bottom: 0;
+            margin-left: 74px;
           }
           
         </style>
@@ -351,13 +380,13 @@
                 <h2>Basic</h2>
               </div>
               <div class="media" ng-show="showContent">
-                <a class="pull-right user-avatar" href="#">
-                  <img ng-src="{{avatar}}" style="width:74px;height:74px" id="changeAvatar">
-                  <input type="file" id="avatar-upload" multiple="">
-                  <div class="upload-progress"></div>
-                </a>
+                <div class="pull-right user-avatar">
+                  <a href="#">
+                    <img ng-src="{{avatar}}" id="changeAvatar">
+                  </a>
+                </div>
                 <div class="media-body user-info">
-                  <p>{{name}} | {{sex}} | {{edu}} | {{workYear}} year work experience</p>
+                  <p>{{name}} | {{sex}} | {{degree}} | {{workYear}} year work experience</p>
                   <p> {{phone}}  {{email}}</p>
                 </div>
               </div>
@@ -377,7 +406,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputEdu">
+                            <select class="form-control" ng-model="inputDegree">
                               <option>Master</option>
                               <option>Graduate</option>
                               <option>underGraduate</option>
@@ -406,11 +435,12 @@
                     </div>
                   </div>
                   <div class="col-md-3 basic-settings-avatar">
-                    <a class="pull-right user-avatar" href="#">
-                      <i class="fa fa-fw fa-user"></i>
-                      <!-- <input ng-model="inputAvatar" /> -->
+                    <a href="#">
+                      <img ng-src="{{avatar}}" id="changeAvatar">
                     </a>
-                    <div>Change</div>
+                    <input type="file" id="avatar-upload" multiple />
+                    <div class="upload-progress" id="upload-progress"></div>
+                    <div class="avatar-tip">Click To Change</div>
                   </div>
                 </div>
               </div>
@@ -457,7 +487,7 @@
                     <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
                     <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                   </div>
-                  <h4>{{item.company}}-{{item.title}} <small>{{item.startDate}}-{{item.endDate}}</small></h4>
+                  <h4>{{item.company}}-{{item.title}} <small>{{item.startYear}}/{{item.startMonth}}-{{item.endYear}}/{{item.endMonth}}</small></h4>
                   <p>{{item.desc}}</p>
                 </div>
                 <hr ng-repeat-end ng-class="{displayNone: $last}">
@@ -481,34 +511,92 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <select class="form-control" ng-model="inputStartDate">
-                          <option>2014</option>
-                          <option>2013</option>
-                          <option>2012</option>
-                          <option>2011</option>
-                          <option>2010</option>
-                        </select>
+                    <div class="col-md-4 divide">
+                        <div class="col-md-6 one">
+                          <select class="form-control" ng-model="inputStartYear">
+                            <option>Start Year</option>
+                            <option>2014</option>
+                            <option>2013</option>
+                            <option>2012</option>
+                            <option>2011</option>
+                            <option>2010</option>
+                            <option>2009</option>
+                            <option>2008</option>
+                            <option>2007</option>
+                            <option>2006</option>
+                            <option>2005</option>
+                            <option>2004</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 two">
+                          <select class="form-control" ng-model="inputStartMonth">
+                            <option>Start Month</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                          </select>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-control" ng-model="inputEndDate">
-                          <option>2014</option>
-                          <option>2013</option>
-                          <option>2012</option>
-                          <option>2011</option>
-                          <option>2010</option>
-                        </select>
+                    <div class="col-md-4 divide">
+                        <div class="col-md-6 one">
+                          <select class="form-control" ng-model="inputEndYear">
+                            <option>End Year</option>
+                            <option>2014</option>
+                            <option>2013</option>
+                            <option>2012</option>
+                            <option>2011</option>
+                            <option>2010</option>
+                            <option>2009</option>
+                            <option>2008</option>
+                            <option>2007</option>
+                            <option>2006</option>
+                            <option>2005</option>
+                            <option>2004</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 two">
+                          <select class="form-control" ng-model="inputEndMonth">
+                            <option>End Month</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                          </select>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <input type="text" class="form-control" ng-model="inputLocation" placeholder="your location">
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-control" ng-model="inputIsCurrentJob">
-                          <option>Yes</option>
-                          <option>No</option>
-                        </select>
+                    <div class="col-md-4 clearfix">
+                        <span class="pull-left row-label">Current :</span>
+                        <div class="row-form">
+                          <select class="form-control" ng-model="inputIsCurrentJob">
+                            <option>Yes</option>
+                            <option>No</option>
+                          </select>
+                        </div>
+                          
                     </div>
                 </div>
                 <div class="row">
@@ -535,7 +623,7 @@
                       <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
                       <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                     </div>
-                    <span class="edu-date">{{item.startDate}}--{{item.endDate}}</span>
+                    <span class="edu-date">{{item.startYear}}/{{item.startMonth}}--{{item.endYear}}/{{item.endMonth}}</span>
                     <div class="content">
                       <div class="edu-school">  {{item.field}}</div>
                       <div class="edu-info">
@@ -566,28 +654,83 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <select class="form-control" ng-model="inputStartDate">
-                          <option>2014</option>
-                          <option>2013</option>
-                          <option>2012</option>
-                          <option>2011</option>
-                          <option>2010</option>
-                        </select>
+                    <div class="col-md-4 divide">
+                        <div class="col-md-6 one">
+                          <select class="form-control" ng-model="inputStartYear">
+                            <option>Start Year</option>
+                            <option>2014</option>
+                            <option>2013</option>
+                            <option>2012</option>
+                            <option>2011</option>
+                            <option>2010</option>
+                            <option>2009</option>
+                            <option>2008</option>
+                            <option>2007</option>
+                            <option>2006</option>
+                            <option>2005</option>
+                            <option>2004</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 two">
+                          <select class="form-control" ng-model="inputStartMonth">
+                            <option>Start Month</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                          </select>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-control" ng-model="inputEndDate">
-                          <option>2014</option>
-                          <option>2013</option>
-                          <option>2012</option>
-                          <option>2011</option>
-                          <option>2010</option>
-                        </select>
+                    <div class="col-md-4 divide">
+                        <div class="col-md-6 one">
+                          <select class="form-control" ng-model="inputEndYear">
+                            <option>End Year</option>
+                            <option>2014</option>
+                            <option>2013</option>
+                            <option>2012</option>
+                            <option>2011</option>
+                            <option>2010</option>
+                            <option>2009</option>
+                            <option>2008</option>
+                            <option>2007</option>
+                            <option>2006</option>
+                            <option>2005</option>
+                            <option>2004</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 two">
+                          <select class="form-control" ng-model="inputEndMonth">
+                            <option>End Month</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                          </select>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                   <div class="col-md-4">
                       <select class="form-control" ng-model="inputDegree">
+                          <option>-your degree-</option>
                           <option>Doctor</option>
                           <option>Master</option>
                           <option>graduate</option>
@@ -737,13 +880,6 @@
                       <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
                     </div>
                   </div>
-                  <div class="col-md-3 basic-settings-avatar">
-                    <a class="pull-right user-avatar" href="#">
-                      <i class="fa fa-fw fa-user"></i>
-                      <!-- <input ng-model="inputAvatar" /> -->
-                    </a>
-                    <div>Change</div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -772,6 +908,8 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/lib/qiniu.uploader.js',
+            '/public/js/upload.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',

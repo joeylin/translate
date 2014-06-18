@@ -50,6 +50,27 @@ var editBasic = function(req, res) {
         });
     });
 };
+var editAvatar = function(req, res) {
+    var user = req.session.user;
+    var data = req.body;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        user.avatar = data.avatar;
+        user.save(function(err) {
+            if (err) {
+                console.log(err);
+                res.send({
+                    code: 404,
+                    info: err.message
+                });
+            }
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
 var editDesc = function(req, res) {
     var user = req.session.user;
     var data = req.body.desc;
@@ -76,8 +97,10 @@ var editExperience = function(req, res) {
             profile.experience.push(data);
         }
         if (type === 'edit') {
-            profile.experience[index].startDate = data.startDate;
-            profile.experience[index].endDate = data.endDate;
+            profile.experience[index].startYear = data.startYear;
+            profile.experience[index].startMonth = data.startMonth;
+            profile.experience[index].endYear = data.endYear;
+            profile.experience[index].endMonth = data.endMonth;
             profile.experience[index].company = data.company;
             profile.experience[index].title = data.title;
             profile.experience[index].location = data.location;
@@ -113,8 +136,10 @@ var editEdu = function(req, res) {
             profile.edu.push(data);
         }
         if (type === 'edit') {
-            profile.edu[index].startDate = data.startDate;
-            profile.edu[index].endDate = data.endDate;
+            profile.edu[index].startYear = data.startYear;
+            profile.edu[index].startMonth = data.startMonth;
+            profile.edu[index].endYear = data.endYear;
+            profile.edu[index].endMonth = data.endMonth;
             profile.edu[index].degree = data.degree;
             profile.edu[index].field = data.field;
             profile.edu[index].school = data.school;
@@ -184,6 +209,7 @@ var editSocial = function(req, res) {
 module.exports = function(app) {
     app.post('/api/userProfile/header', editHeader);
     app.post('/api/userProfile/basic', editBasic);
+    app.post('/api/userProfile/avatar', editAvatar);
     app.post('/api/userProfile/desc', editDesc);
     app.post('/api/userProfile/experience', editExperience);
     app.post('/api/userProfile/edu', editEdu);

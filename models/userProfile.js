@@ -30,16 +30,20 @@ var UserProfileSchema = new Schema({
         rate: String
     }],
     edu: [{
-        startDate: Date,
-        endDate: Date,
+        startYear: String,
+        startMonth: String,
+        endYear: String,
+        endMonth: String,
         degree: String,
         field: String,
         school: String,
         desc: String
     }],
     experience: [{
-        startDate: Date,
-        endDate: Date,
+        startYear: String,
+        startMonth: String,
+        endYear: String,
+        endMonth: String,
         company: String,
         title: String,
         isCurrentJob: Boolean,

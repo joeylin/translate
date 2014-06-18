@@ -1,25 +1,25 @@
-// init qiniu
-var $progress = $('#upload-progress');
-var $img = $('#changeAvatar');
-initQiniuUploader({
-    input: 'avatar-upload',
-    progress: function(p, s, n) {
-        var text = 'Uploading ' + n + ' (' + s + ')';
-        var title = p + '%';
-        $progress.text(title);
-    },
-    putFailure: function(msg) {
-        messageBox.error('Upload failure', msg);
-        $progress.addClass('error').text('failure');
-    },
-    putFinished: function(fsize, res, taking) {
-        // res.key
-        var url = '//' + res.host + '/' + res.key;
-        // 完成进度
-        $progress.text('Success').fadeOut(1000);
-        $img.src = url + '-big';
-    }
-});
+// // init qiniu
+// var $progress = $('#upload-progress');
+// var $img = $('#changeAvatar');
+// initQiniuUploader({
+//     input: 'avatar-upload',
+//     progress: function(p, s, n) {
+//         var text = 'Uploading ' + n + ' (' + s + ')';
+//         var title = p + '%';
+//         $progress.text(title);
+//     },
+//     putFailure: function(msg) {
+//         messageBox.error('Upload failure', msg);
+//         $progress.addClass('error').text('failure');
+//     },
+//     putFinished: function(fsize, res, taking) {
+//         // res.key
+//         var url = '//' + res.host + '/' + res.key;
+//         // 完成进度
+//         $progress.text('Success').fadeOut(1000);
+//         $img.src = url + '-big';
+//     }
+// });
 
 
 // 初始化七牛上传组件
@@ -110,26 +110,29 @@ function initQiniuUploader(options) {
 
     // 获取上传Token
     var bucketHost;
-    $.post('/uploads/token.json?type=' + (options.bucketType || ''), function(d) {
+    $.post('/api/token.json', function(d) {
         Q.SetToken(d.token);
         bucketHost = d.host;
         startUpload();
     }, 'json');
 
     // 监听选择文件事件
-    $('#' + options.input).change(function() {
-        var files = document.getElementById(options.input).files;
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var f = files[i];
-                var k = genKey();
-                uploadQueue.push({
-                    f: f,
-                    k: k
-                });
+    // after DOM ready to bind event
+    setTimeout(function() {
+        $('#' + options.input).change(function() {
+            var files = document.getElementById(options.input).files;
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    var f = files[i];
+                    var k = genKey();
+                    uploadQueue.push({
+                        f: f,
+                        k: k
+                    });
+                }
+                startUpload();
             }
-            startUpload();
-        }
-    });
+        });
+    }, 60);
 }
 window.initQiniuUploader = initQiniuUploader;

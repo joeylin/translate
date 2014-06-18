@@ -17,11 +17,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         };
         $scope.enterName = function(e) {
             if (!e) {
-                return set();
+                return setName();
             }
             var key = e.keyCode || e.which;
             if (key === 13) {
-                set();
+                setName();
             }
         };
 
@@ -35,16 +35,19 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         };
         $scope.enterSign = function(e) {
             if (!e) {
-                return set();
+                return setSign();
             }
             var key = e.keyCode || e.which;
             if (key === 13) {
-                set();
+                setSign();
             }
         };
 
-        function set() {
+        function setName() {
             var url = '/api/userProfile/header';
+            if ($scope.display_name === '') {
+                return false;
+            }
             var data = {
                 display_name: $scope.display_name,
                 signature: $scope.signature
@@ -55,6 +58,23 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.showNameInput = false;
             });
         }
+
+        function setSign() {
+            var url = '/api/userProfile/header';
+            if ($scope.signature === '') {
+                return false;
+            }
+            var data = {
+                display_name: $scope.display_name,
+                signature: $scope.signature
+            };
+            $http.post(url, data).success(function() {
+                $scope.showSignContent = true;
+                $scope.showSignEdit = true;
+                $scope.showSignInput = false;
+            });
+        }
+
     }
 ]).controller('educationCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -79,10 +99,12 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
             $scope.inputSchool = '';
             $scope.inputField = '';
-            $scope.inputStartDate = '';
-            $scope.inputEndDate = '';
+            $scope.inputStartYear = 'Start Year';
+            $scope.inputStartMonth = 'Start Month';
+            $scope.inputEndYear = 'End Year';
+            $scope.inputEndMonth = 'End Month';
             $scope.inputDesc = '';
-            $scope.inputDegree = '';
+            $scope.inputDegree = '-your degree-';
         };
         $scope.cancel = function() {
             $scope.showAddIcon = true;
@@ -96,8 +118,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             var data = {
                 school: $scope.inputSchool,
                 field: $scope.inputField,
-                startDate: $scope.inputStartDate,
-                endDate: $scope.inputEndDate,
+                startYear: $scope.inputStartYear,
+                startMonth: $scope.inputStartMonth,
+                endYear: $scope.inputEndYear,
+                endMonth: $scope.inputEndMonth,
                 degree: $scope.inputDegree,
                 desc: $scope.inputDesc
             };
@@ -117,8 +141,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             var data = {
                 school: $scope.inputSchool,
                 field: $scope.inputField,
-                startDate: $scope.inputStartDate,
-                endDate: $scope.inputEndDate,
+                startYear: $scope.inputStartYear,
+                startMonth: $scope.inputStartMonth,
+                endYear: $scope.inputEndYear,
+                endMonth: $scope.inputEndMonth,
                 degree: $scope.inputDegree,
                 desc: $scope.inputDesc,
             };
@@ -140,8 +166,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             itemNumber = $scope.content.indexOf(item);
             $scope.inputSchool = item.school;
             $scope.inputField = item.field;
-            $scope.inputStartDate = item.startDate;
-            $scope.inputEndDate = item.endDate;
+            $scope.inputStartYear = item.startYear;
+            $scope.inputStartMonth = item.startMonth;
+            $scope.inputEndYear = item.endYear;
+            $scope.inputEndMonth = item.endMonth;
             $scope.inputDesc = item.desc;
 
             $scope.showAddIcon = false;
@@ -186,8 +214,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.inputCompany = '';
         $scope.inputTitle = '';
         $scope.inputDesc = '';
-        $scope.inputStartDate = '';
-        $scope.inputEndDate = '';
+        $scope.inputStartYear = 'Start Year';
+        $scope.inputStartMonth = 'Start Month';
+        $scope.inputEndYear = 'End Year';
+        $scope.inputEndMonth = 'End Month';
+        $scope.inputIsCurrentJob = 'No';
 
         $scope.statusAdd = false;
         $scope.statusEdit = false;
@@ -201,8 +232,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.inputCompany = '';
             $scope.inputTitle = '';
             $scope.inputDesc = '';
-            $scope.inputStartDate = '';
-            $scope.inputEndDate = '';
+            $scope.inputStartYear = 'Start Year';
+            $scope.inputStartMonth = 'Start Month';
+            $scope.inputEndYear = 'End Year';
+            $scope.inputEndMonth = 'End Month';
             $scope.inputIsCurrentJob = 'No';
             $scope.inputLocation = '';
 
@@ -214,8 +247,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 company: $scope.inputCompany,
                 title: $scope.inputTitle,
                 desc: $scope.inputDesc,
-                startDate: $scope.inputStartDate,
-                endDate: $scope.inputEndDate,
+                startYear: $scope.inputStartYear,
+                startMonth: $scope.inputStartMonth,
+                endYear: $scope.inputEndYear,
+                endMonth: $scope.inputEndMonth,
                 location: $scope.inputLocation,
                 isCurrentJob: $scope.inputIsCurrentJob
             };
@@ -244,8 +279,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.inputCompany = item.company;
             $scope.inputTitle = item.title;
             $scope.inputDesc = item.desc;
-            $scope.inputStartDate = item.startDate;
-            $scope.inputEndDate = item.endDate;
+            $scope.inputStartYear = item.startYear;
+            $scope.inputStartMonth = item.startMonth;
+            $scope.inputEndYear = item.endYear;
+            $scope.inputEndMonth = item.endMonth;
             $scope.inputLocation = item.location;
             $scope.inputIsCurrentJob = item.isCurrentJob;
 
@@ -265,8 +302,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 company: $scope.inputCompany,
                 title: $scope.inputTitle,
                 desc: $scope.inputDesc,
-                startDate: $scope.inputStartDate,
-                endDate: $scope.inputEndDate,
+                startYear: $scope.inputStartYear,
+                startMonth: $scope.inputStartMonth,
+                endYear: $scope.inputEndYear,
+                endMonth: $scope.inputEndMonth,
                 location: $scope.inputLocation,
                 isCurrentJob: $scope.inputIsCurrentJob
             };
@@ -309,11 +348,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     function(app, $scope, $routeParams, $location, $http) {
         $scope.name = app.user.name || 'add your realname';
         $scope.sex = app.user.sex || 'edit your sex';
-        $scope.edu = app.user.degree || 'add your degree';
+        $scope.degree = app.user.degree || 'add your degree';
         $scope.workYear = app.user.workYear || 'how many';
         $scope.phone = app.user.phone || 'your cellphone';
         $scope.email = app.user.email || 'your email';
-        $scope.avatar = app.user.avatar || 'your avatar';
+        $scope.avatar = app.user.avatar;
 
         $scope.showEditIcon = true;
         $scope.showContent = true;
@@ -326,11 +365,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
             $scope.inputName = $scope.name;
             $scope.inputSex = $scope.sex;
-            $scope.inputEdu = $scope.edu;
+            $scope.inputDegree = $scope.degree;
             $scope.inputWorkYear = $scope.workYear;
             $scope.inputPhone = $scope.phone;
             $scope.inputEmail = $scope.email;
-            $scope.inputAvatar = $scope.avatar;
         };
         $scope.save = function() {
             $scope.showEditIcon = true;
@@ -340,11 +378,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             setValue({
                 name: $scope.inputName,
                 sex: $scope.inputSex,
-                edu: $scope.inputEdu,
+                degree: $scope.inputDegree,
                 workYear: $scope.inputWorkYear,
                 phone: $scope.inputPhone,
-                email: $scope.inputEmail,
-                avatar: $scope.inputAvatar
+                email: $scope.inputEmail
             });
         };
         $scope.cancel = function() {
@@ -353,17 +390,26 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showSettings = false;
         };
 
+        $scope.$on('putFinish', function(event, imageUrl) {
+            var data = {
+                avatar: imageUrl
+            };
+            var url = '/api/userProfile/avatar';
+            $http.post(url, data).success(function() {
+                $scope.avatar = imageUrl;
+            });
+        });
+
         function setValue(obj) {
             var data = obj;
             var url = '/api/userProfile/basic';
             $http.post(url, obj).success(function() {
                 $scope.name = obj.name;
                 $scope.sex = obj.sex;
-                $scope.edu = obj.edu;
+                $scope.degree = obj.degree;
                 $scope.workYear = obj.workYear;
                 $scope.phone = obj.phone;
                 $scope.email = obj.email;
-                $scope.avatar = obj.avatar;
             });
         }
     }

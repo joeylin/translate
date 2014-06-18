@@ -31,15 +31,19 @@ var editPassword = function(req, res) {
     });
 };
 var getUploadToken = function(req, res) {
+    var qiniu = require('qiniu');
+    var config = require('../config/config.js');
+    qiniu.conf.ACCESS_KEY = config.qiniu.accessKey;
+    qiniu.conf.SECRET_KEY = config.qiniu.secretKey;
+    var putPolicy = new qiniu.rs.PutPolicy(config.qiniu.bucket);
     var result = {
-        token: '',
-        host: '',
-        key: ''
+        token: putPolicy.token(),
+        host: config.qiniu.bucketHost
     };
     res.json(result);
 };
 
 module.exports = function(app) {
     app.post('/api/user/account/password', editPassword);
-    app.post('/api/upload/token', getUploadToken);
+    app.post('/api/token.json', getUploadToken);
 };

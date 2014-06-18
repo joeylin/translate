@@ -89,9 +89,35 @@ config(['$httpProvider', 'app',
         }
         $rootScope.gotoProfile = function() {
             $rootScope.global.profile = true;
-        }
+        };
         $rootScope.gotoAccount = function() {
             $rootScope.global.profile = false;
-        }
+        };
+
+        // qiniu uploader
+        window.initQiniuUploader({
+            // input ID
+            input: 'avatar-upload',
+            progress: function(p, s, n) {
+                var title = p + '%';
+                var $progress = $('#upload-progress');
+                $progress.css({
+                    display: 'block'
+                });
+                $progress.text(title);
+            },
+            putFailure: function(msg) {
+                var $progress = $('#upload-progress');
+                $progress.addClass('error').text('failure').fadeOut(1000);
+            },
+            putFinished: function(fsize, res, taking) {
+                // res.key
+                var url = '//' + res.host + '/' + res.key;
+                var $progress = $('#upload-progress');
+                // 完成进度
+                $progress.text('Success').fadeOut(1000);
+                $rootScope.$broadcast('putFinish', url);
+            }
+        });
     }
 ]);
