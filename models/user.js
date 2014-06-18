@@ -82,7 +82,6 @@ var UserSchema = new Schema({
             ref: 'Share'
         }]
     },
-
     groups: {
         pending: [{
             type: ObjectId
