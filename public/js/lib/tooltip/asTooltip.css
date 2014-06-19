@@ -1,0 +1,94 @@
+.asTooltip-container {
+  position: relative;
+  display: inline-block;
+}
+.asTooltip-arrow {
+  position: absolute;
+  z-index: -1;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  width: 20px;
+  height: 20px;
+  background-color: #434240;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.asTooltip-content {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #ffffff;
+  background-color: #434240;
+}
+.asTooltip-loading {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url('../img/tooltip-loading.gif') no-repeat scroll 0 0 transparent;
+}
+.asTooltip-n {
+  padding-bottom: 10px;
+}
+.asTooltip-n .asTooltip-arrow {
+  left: 50%;
+  bottom: 6px;
+  margin-left: -10px;
+}
+.asTooltip-s {
+  padding-top: 10px;
+}
+.asTooltip-s .asTooltip-arrow {
+  left: 50%;
+  top: 6px;
+  margin-left: -10px;
+}
+.asTooltip-w {
+  padding-right: 10px;
+}
+.asTooltip-w .asTooltip-arrow {
+  top: 50%;
+  right: 6px;
+  margin-top: -10px;
+}
+.asTooltip-e {
+  padding-left: 10px;
+}
+.asTooltip-e .asTooltip-arrow {
+  top: 50%;
+  left: 6px;
+  margin-top: -10px;
+}
+.asTooltip-ne {
+  padding-bottom: 10px;
+}
+.asTooltip-ne .asTooltip-arrow {
+  bottom: 6px;
+  left: 9px;
+}
+.asTooltip-nw {
+  padding-bottom: 10px;
+}
+.asTooltip-nw .asTooltip-arrow {
+  bottom: 6px;
+  right: 9px;
+}
+.asTooltip-se {
+  padding-top: 10px;
+}
+.asTooltip-se .asTooltip-arrow {
+  left: 9px;
+  top: 6px;
+}
+.asTooltip-sw {
+  padding-top: 10px;
+}
+.asTooltip-sw .asTooltip-arrow {
+  right: 9px;
+  top: 6px;
+}

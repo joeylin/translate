@@ -40,7 +40,19 @@ module.exports = function(app) {
             app.locals.user = user;
             app.locals.author = req.session.user;
             if (profile.name === 'user') {
-                res.render('user-profile');
+                var array = [];
+                user.connects.map(function(item) {
+                    array.push(item.user.toString());
+                });
+                User.find({
+                    _id: {
+                        $in: array
+                    }
+                }, function(err, users) {
+                    app.locals.connects = users.slice(0, 5);
+                    res.render('user-profile');
+                });
+
             }
             if (profile.name === 'company') {
                 app.locals.isLiked = req.session.user && user.isLike(req.session.user._id);

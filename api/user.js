@@ -674,6 +674,63 @@ var companyUnfollow = function(req, res) {
         });
     });
 };
+var getUserCard = function(req, res) {
+    var id = req.params.id;
+    User.findOne({
+        id: id
+    }).exec(function(err, user) {
+        if (err || !user) {
+            return res.send({
+                code: 404
+            });
+        }
+        if (user.role === 'user') {
+            UserProfile.findOne({
+                _id: user.profile
+            }, function(err, profile) {
+                var connect = {
+                    avatar: user.avatar,
+                    name: user.name,
+                    id: user.id,
+                    occupation: user.occupation,
+                    skills: (function() {
+                        var result = [];
+                        profile.skills.map(function(item) {
+                            result.push(item);
+                        });
+                        return result;
+                    })()
+                };
+                res.send({
+                    code: 200,
+                    content: connect
+                });
+            });
+        } else {
+            CompanyProfile.findOne({
+                _id: user.profile
+            }, function(err, profile) {
+                var connect = {
+                    avatar: user.avatar,
+                    name: user.name,
+                    id: user.id,
+                    occupation: user.occupation,
+                    skills: (function() {
+                        var result = [];
+                        profile.skills.map(function(item) {
+                            result.push(item);
+                        });
+                        return result;
+                    })()
+                };
+                res.send({
+                    code: 200,
+                    content: connect
+                });
+            });
+        }
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -707,6 +764,9 @@ module.exports = function(app) {
     // message
     app.post('/api/message/send', sendMessage);
     app.post('/api/message/read', readMessage);
+
+    // user card
+    app.get('/api/user/:id/card', getUserCard);
 };
 
 // check request status

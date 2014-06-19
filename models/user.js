@@ -28,6 +28,9 @@ var UserSchema = new Schema({
     degree: {
         type: String
     },
+    occupation: {
+        type: String
+    },
     workYear: {
         type: String
     },

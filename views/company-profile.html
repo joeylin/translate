@@ -102,7 +102,7 @@
           .company-info .col-md-7 {
             padding-left: 0;
           }
-          .images > img {
+          .images  img {
             width: 34px;
             height: 34px;
           }
@@ -124,7 +124,6 @@
             border-color: #ddd;
             border-bottom-color: #ddd;
           }
-
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -277,10 +276,10 @@
               </div>
               <div class="panel-body">
                 <div class="images">
-                  <img src="/public/imgs/avatar.jpg" alt="">
-                  <img src="/public/imgs/avatar.jpg" alt="">
-                  <img src="/public/imgs/avatar.jpg" alt="">
-                  <img src="/public/imgs/avatar.jpg" alt="">
+                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
+                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
+                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
+                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
                 </div>
               </div>
             </div>
@@ -330,7 +329,7 @@
                         <span>comment({{item.comments.length}})</span>
                       </span>
                       <span class="pull-right media-controll">
-                        <a href="#" class="view">view >></a>
+                        <a ng-href="/view/{{item.id}}" class="view" target="_self">view >></a>
                       </span>
                     </div>
                   </div>
@@ -356,7 +355,7 @@
                         <span>comment({{item.comments.length}})</span>
                       </span>
                       <span class="pull-right media-controll">
-                        <a href="#" class="view">view >></a>
+                        <a ng-href="/view/{{item.id}}" class="view" target="_self">view >></a>
                       </span>
                     </div>
                   </div>
@@ -374,7 +373,7 @@
                         <span>comment({{item.comments.length}})</span>
                       </span>
                       <span class="pull-right media-controll">
-                        <a href="#" class="view">view >></a>
+                        <a ng-href="/view/{{item.id}}" class="view" target="_self">view >></a>
                       </span>
                     </div>
                   </div>

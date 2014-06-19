@@ -15,6 +15,9 @@
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/main.css">
 
+        <!-- tooltip style -->
+        <link rel="stylesheet" href="/public/js/lib/tooltip/asTooltip.css">
+
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -232,12 +235,6 @@
             padding: 15px 0;
             background-color: #fff;
           }
-          /*.profile-sidebar .section .panel-heading {
-            font-size: 18px;
-          }
-          .profile-sidebar .section .panel-body {
-            font-size: 16px;
-          }*/
           .section .panel-body .images img {
             width: 34px;
             height: 34px;
@@ -245,6 +242,12 @@
           .displayNone {
             display: none;
           }
+          /* tooltip*/
+          .asTooltip-content {
+            width: 204px;
+            height: 100px;
+          }
+          
         </style>    
     </head>
     <body>
@@ -343,14 +346,15 @@
             <div class="panel panel-default section">
               <div class="panel-heading clearfix">
                 Connected Persons
-                <a href="#" class="pull-right">100+</a>
               </div>
               <div class="panel-body">
                 <div class="images">
-                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
-                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
-                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
-                  <a href="#"><img src="/public/imgs/avatar.jpg" alt="laolei"></a>
+                  <% locals.connects.forEach(function(item,key){ %>
+                  <a href="/profile/<%= item.id %>" class="userCard" data-title="/api/user/<%= item.id %>/card"><img src="<%= item.avatar %>" alt="laolei"></a>
+                  <% }) %>  
+                  <% if (locals.connects.length === 0) { %>
+                  <p> He has not any Connects yet !</p>
+                  <% } %> 
                 </div>
               </div>
             </div>
@@ -490,18 +494,50 @@
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/tooltip/jquery-asTooltip.js"></script>
         <script type="text/javascript">
-          $('#btnLogout').click(function() {
-              $.ajax({
-                  url: "/api/user/logout",
-                  type: "post",
-                  success: function(data) {
-                      if (data.code === 200) {
-                          window.location.reload();
-                      }
-                  }
-              });
+          $(document).ready(function() {
+            $('#btnLogout').click(function() {
+                $.ajax({
+                    url: "/api/user/logout",
+                    type: "post",
+                    success: function(data) {
+                        if (data.code === 200) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            });
+            $('.userCard').asTooltip({
+              namespace: 'asTooltip',
+              interactive: true,
+              ajax: true,
+              ajaxParse: function(data) {
+                var tpl = '<div class="media">' +
+                      '<a class="pull-left" href="/profile/__id__">' +
+                        '<img class="media-object" style="width: 50px; height: 50px;">' +
+                      '</a>' +
+                      '<div class="media-body"><h4 class="media-heading"><a href="/profile/__id__">__name__</a></h4><div>' +
+                        '<p>__occupation__</p>' +
+                        '<div class="skills">__skills__</div>' +
+                        '</div>' +
+                      '</div>' +
+                    '</div>';
+                var $tpl = $(tpl);
+                $tpl.find('a').attr('href', '/profile/' + data.id);
+                $tpl.find('img').attr('src', data.avatar);
+                $tpl.find('h4 > a').text(data.name);
+                $tpl.find('.media-body > div > p').text(data.occupation || '');
+                var skills = '';
+                data.skills.map(function(item) {
+                  skills += '<span class="card-label">' + item + '</span>';
+                });
+                $tpl.find('.media-body > div > div').html(skills);
+                return $tpl;
+              }
+            });
           });
         </script>
     </body>
 </html>
+      
