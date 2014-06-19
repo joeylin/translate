@@ -293,6 +293,11 @@
           .sending.popover.offer >.arrow {
             margin-left: 183px;
           }
+          .relative-option {
+            margin-left: 15px;
+            font-size: 16px;
+            cursor: pointer;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -425,16 +430,14 @@
                   <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Collects</a></li>
               </ul>
             </div>
-            <div class="row" ng-view ng-cloak></div>
+            <div class="row" id="main" ng-view ng-cloak></div>
           </div>
             
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
-        <div id="connect-popup" class="white-popup-block mfp-hide">
-          <h4>Relative</h4>
-        </div>
+        
         <script>
           reserveLoad(
             '/public/bower_components/jquery/jquery.js',

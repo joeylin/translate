@@ -232,16 +232,20 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.keyword = '';
         $scope.content = [];
         $scope.isFilter = false;
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
         var url = '/api/search/people';
         var params = {
-            pager: 0,
+            pager: 1,
             name: $scope.name,
             keyword: $scope.keyword
         };
         $scope.submit = function() {
             // reset the config before submit
             var params = {
-                pager: 0,
+                pager: 1,
                 name: $scope.name,
                 keyword: $scope.keyword
             };
@@ -253,25 +257,25 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             });
         };
         $scope.next = function() {
-            if (!$scope.vm.pager.hasNext) {
+            if (!$scope.pager.hasNext) {
                 return false;
             }
-            $scope.vm.pager.current += 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current += 1;
+            params.pager = $scope.pager.current;
+            $scope.pager.link(url, params, function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasNext = data.hasNext;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.prev = function() {
-            if (!$scope.vm.pager.current) {
+            if (!$scope.pager.current) {
                 return false;
             }
-            $scope.vm.pager.current -= 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current -= 1;
+            params.pager = $scope.pager.current;
+            $scope.pager.link(url, params, function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasNext = data.hasNext;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.showFilter = function() {
@@ -286,7 +290,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasNext = data.hasNext;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.addFilter = addFilter;
@@ -302,7 +306,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         resetRelative();
         $scope.toggleMate = function() {
             if ($scope.isClassmate) {
-                var index = $scope.indexOf('classmate');
+                var index = $scope.relative.indexOf('classmate');
                 $scope.relative.splice(index,1);
             } else {
                 $scope.relative.push('classmate');
@@ -311,7 +315,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         }; 
         $scope.toggleFellow = function() {
             if ($scope.isFellow) {
-                var index = $scope.indexOf('fellow');
+                var index = $scope.relative.indexOf('fellow');
                 $scope.relative.splice(index,1);
             } else {
                 $scope.relative.push('fellow');
@@ -320,7 +324,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         }
         $scope.toggleFriend = function() {
             if ($scope.isFriend) {
-                var index = $scope.indexOf('friend');
+                var index = $scope.relative.indexOf('friend');
                 $scope.relative.splice(index,1);
             } else {
                 $scope.relative.push('friend');
@@ -329,7 +333,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         }
         $scope.toggleInterest = function() {
             if ($scope.isInterest) {
-                var index = $scope.indexOf('interest');
+                var index = $scope.relative.indexOf('interest');
                 $scope.relative.splice(index,1);
             } else {
                 $scope.relative.push('interest');
@@ -342,18 +346,29 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $scope.isFriend = false;
             $scope.isInterest = false;
             $scope.relative = [];
-        }           
-        $scope.connect = function(user) {
+        }
+        $scope.connectUser = null; 
+        $scope.setRelative = function(user) {
+            if (user.isConnected) {
+                return false;
+            }
+            resetRelative();
+            $scope.connectUser = user;
+        };          
+        $scope.connect = function() {
+            if ($scope.relative.length === 0) {
+                return false;
+            }
             var url = '/api/connect/send';
             $http.post(url, {
-                id: user._id,
+                id: $scope.connectUser._id,
+                content: $scope.relative.join(','),
                 type: 'connect'
             }).success(function(data) {
-                user.isConnected = true;
+                $scope.connectUser.isConnected = true;
+                $.magnificPopup.close();
             });
-        };
-        
-
+        }; 
         // default config
         $scope.years = '0-2';
     }

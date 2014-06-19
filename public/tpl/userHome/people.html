@@ -15,7 +15,7 @@
               <div class="search-people-relationship"><a href="#">{{user.similar}}</a></div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" ng-show="!user.isConnected" ng-click="connect(user)">connect</a>
+              <a class="btn btn-primary pull-right" popup href="#connect-popup-content" role="button" ng-show="!user.isConnected" ng-click="setRelative(user)">connect</a>
               <a class="btn btn-primary pull-right" role="button" ng-show="user.isMe">edit</a>
             </div>
           </div>
@@ -167,26 +167,25 @@
     </div>
   </div>
 </div>
-<div id="connect-popup" class="white-popup-block mfp-hide relative">
-  <h4>Relative</h4>
-  <div class="relative-option">
+<div id="connect-popup-content" class="white-popup-block mfp-hide relative" style="width:400px;">
+  <h3>Relative</h3>
+  <div class="relative-option" ng-click="toggleMate()">
     <i class="fa fa-fw" ng-class="{true:'fa-check-circle-o',false:'fa-circle-o'}[isClassmate]"></i>
     <span>Classmate</span>
   </div>
-  <div class="relative-option">
+  <div class="relative-option" ng-click="toggleFellow()">
     <i class="fa fa-fw" ng-class="{true:'fa-check-circle-o',false:'fa-circle-o'}[isFellow]"></i>
     <span>Fellow</span>
   </div>
-  <div class="relative-option">
+  <div class="relative-option" ng-click="toggleFriend()">
     <i class="fa fa-fw" ng-class="{true:'fa-check-circle-o',false:'fa-circle-o'}[isFriend]"></i>
     <span>Friends</span>
   </div>
-  <div class="relative-option">
+  <div class="relative-option" ng-click="toggleInterest()">
     <i class="fa fa-fw" ng-class="{true:'fa-check-circle-o',false:'fa-circle-o'}[isInterest]"></i>
     <span>Same Interest</span>
   </div>
-  <div class="relative-btn">
-    <a class="btn btn-default pull-right" role="button">close</a>
-    <a class="btn btn-primary pull-right" role="button">connect</a>
+  <div class="relative-btn clearfix">
+    <a class="btn pull-right" ng-class="{true:'btn-primary',false:'btn-default'}[!!relative.length]" role="button" ng-click="connect()">connect</a>
   </div>
 </div>

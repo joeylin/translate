@@ -202,4 +202,20 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
             }
         };
     }
+]).directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
+    function(mdParse, sanitize, pretty, isVisible, $timeout) {
+        return {
+            restrict: 'AE',
+            scope: {
+                config: '='
+            },
+            link: function(scope, element, attrs, ngModel) {
+                $(element).magnificPopup({
+                    type: 'inline',
+                    closeOnBgClick: false,
+                    midClick: true
+                });
+            }
+        };
+    }
 ]);
