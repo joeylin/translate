@@ -296,6 +296,53 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 addFilter(key, value);
             }
         };
+        
+
+        // connect relative
+        resetRelative();
+        $scope.toggleMate = function() {
+            if ($scope.isClassmate) {
+                var index = $scope.indexOf('classmate');
+                $scope.relative.splice(index,1);
+            } else {
+                $scope.relative.push('classmate');
+            }
+            $scope.isClassmate = !$scope.isClassmate;
+        }; 
+        $scope.toggleFellow = function() {
+            if ($scope.isFellow) {
+                var index = $scope.indexOf('fellow');
+                $scope.relative.splice(index,1);
+            } else {
+                $scope.relative.push('fellow');
+            }
+            $scope.isFellow = !$scope.isFellow;
+        }
+        $scope.toggleFriend = function() {
+            if ($scope.isFriend) {
+                var index = $scope.indexOf('friend');
+                $scope.relative.splice(index,1);
+            } else {
+                $scope.relative.push('friend');
+            }
+            $scope.isFriend = !$scope.isFriend;
+        }
+        $scope.toggleInterest = function() {
+            if ($scope.isInterest) {
+                var index = $scope.indexOf('interest');
+                $scope.relative.splice(index,1);
+            } else {
+                $scope.relative.push('interest');
+            }
+            $scope.isInterest = !$scope.isInterest;
+        }
+        function resetRelative() {
+            $scope.isClassmate = false;
+            $scope.isFellow = false;
+            $scope.isFriend = false;
+            $scope.isInterest = false;
+            $scope.relative = [];
+        }           
         $scope.connect = function(user) {
             var url = '/api/connect/send';
             $http.post(url, {
@@ -305,6 +352,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 user.isConnected = true;
             });
         };
+        
 
         // default config
         $scope.years = '0-2';
