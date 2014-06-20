@@ -388,6 +388,8 @@
                 <div class="media-body user-info">
                   <p>{{name}} | {{sex}} | {{degree}} | {{workYear}} year work experience</p>
                   <p> {{phone}}  {{email}}</p>
+                  <!-- <p>{{occupation}}</p>
+                  <p>skills: {{skills.join(',')}}</p> -->
                 </div>
               </div>
               <div class="panel-body basic-settings" ng-show="showSettings">
@@ -431,6 +433,9 @@
                     <div>
                         <input type="email" class="form-control" ng-model="inputEmail" placeholder="your email">
                     </div>
+                    <!-- <div>
+                        <input type="text" class="form-control" ng-model="inputOccupation" placeholder="your occupation">
+                    </div> -->
                     <div class="clearfix">
                       <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
                       <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>

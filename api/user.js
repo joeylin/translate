@@ -150,13 +150,12 @@ var checkConnect = function(req, res) {
         }, function(err, request) {
             if (user.checkConnected(request.from)) {
                 return res.send({
-                    code: 404,
+                    code: 200,
                     info: 'has connected'
                 });
             }
             if (value) {
                 user.connect(request.from, request.content, function(err, user) {
-
                     if (err) {
                         res.send({
                             code: 404,

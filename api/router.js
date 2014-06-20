@@ -180,6 +180,9 @@ module.exports = function(app) {
             });
         });
     };
+    var getSignupPage = function(req, res) {
+        res.render('signup');
+    };
 
     // home
     app.get('/', middleware.check_login, getMain);
@@ -200,6 +203,11 @@ module.exports = function(app) {
 
     // login
     app.get('/login', getLogin);
+
+    //signup
+    app.get('/signup', getSignupPage);
+    app.get('/signup/user/basic', getSignupPage);
+    app.get('/signup/company/basic', getSignupPage);
 
     // profile
     app.get('/profile', getProfile);
