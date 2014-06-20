@@ -58,7 +58,7 @@
 }
 .asTooltip-w .asTooltip-arrow {
   top: 50%;
-  right: 6px;
+  right: 0px;
   margin-top: -10px;
 }
 .asTooltip-e {
@@ -73,14 +73,14 @@
   padding-bottom: 10px;
 }
 .asTooltip-ne .asTooltip-arrow {
-  bottom: 6px;
+  bottom: 0px;
   left: 9px;
 }
 .asTooltip-nw {
   padding-bottom: 10px;
 }
 .asTooltip-nw .asTooltip-arrow {
-  bottom: 6px;
+  bottom: 0px;
   right: 9px;
 }
 .asTooltip-se {
