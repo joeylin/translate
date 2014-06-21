@@ -1,0 +1,51 @@
+<div class="nav-tabs-custom" ng-cloak>
+  <ul class="nav nav-tabs pull-left">
+      <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>Settings</li>
+      <li ng-class="{active: current.path === 'people'}" class="active"><a href="#">Basic</a></li>
+      <li ng-class="{active: current.path === 'myPeople'}"><a href="#">Members</a></li>
+  </ul>
+</div>
+<div class="group-settings-basic row">
+	<div class="panel col-md-12">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-3">
+					<label>Name :</label>
+				</div>
+				<div class="col-xs-6">
+					<input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<label>Industry :</label>
+				</div>
+				<div class="col-xs-6">
+					<input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<label>Announcement :</label>
+				</div>
+				<div class="col-xs-6">
+					<textarea class="form-control" rows="5" placeholder="Enter ..." ng-model="newShare"></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-9">
+					<div class="clearfix">
+				      <a class="btn btn-primary pull-right" role="button" ng-click="save()">Save</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="group-settings-members" ng-if="">
+	<div class="panel col-md-12">
+		<div class="panel-body">
+
+		</div>
+	</div>
+</div>

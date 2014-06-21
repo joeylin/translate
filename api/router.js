@@ -236,4 +236,5 @@ module.exports = function(app) {
     //group
     app.get('/group', getGroup);
     app.get('/group/:id', getGroup);
+    app.get('/group/:id/settings', getGroup);
 };
