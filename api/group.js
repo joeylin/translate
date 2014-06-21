@@ -20,7 +20,8 @@ var create = function(req, res) {
     };
     Group.createNew(obj, function(err, group) {
         res.send({
-            code: 200
+            code: 200,
+            groupId: group.id
         });
     });
 };
@@ -98,77 +99,58 @@ var getPost = function(req, res) {
     var user = req.session.user;
     var id = req.params.id;
     var page = req.query.page || 1;
-    var perPageItems = 20;
-    User.findOne({
-        _id: user._id,
-        is_delete: false,
-        group: id
-    }, function(err, user) {
-        var connectList = [];
-        user.connects.map(function(value, key) {
-            connectList.push(value.user);
-        });
-        var followList = connectList.concat(user.followers);
-        var array = [];
-        array.push(user._id.toString());
-        followList.map(function(value, key) {
-            array.push(value.toString());
-        });
+    var size = req.query.size || 20;
+    Share.find({
+        group: id,
+        is_delete: false
+    }).sort({
+        createAt: -1
+    }).populate('user').skip((page - 1) * size).limit(size).exec(function(err, trends) {
+        if (!trends) {
+            return res.send({
+                code: 200,
+                info: 'no share'
+            });
+        }
         Share.find({
-            user: {
-                $in: array
+            group: id,
+            is_delete: false
+        }).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            trends.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.comments = item.comments;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                result.liked = false;
+                item.likes.map(function(like) {
+                    if (like.toString() == user._id.toString()) {
+                        result.liked = true;
+                    }
+                });
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            if ((page - 1) * size + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
             }
-        }).sort({
-            createAt: -1
-        }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
-            if (!trends) {
-                return res.send({
-                    code: 200,
-                    info: 'no share'
-                });
-            }
-            Share.find({
-                user: {
-                    $in: array
-                },
-                type: 'view'
-            }).count().exec(function(err, count) {
-                var content = [];
-                var hasNext;
-                trends.map(function(item, key) {
-                    var result = {};
-                    result.type = 'view';
-                    result._id = item._id;
-                    result.comments = item.comments;
-                    result.content = item.content;
-                    result.createAt = item.createAt.getTime();
-                    result.id = item.id;
-                    result.user = {
-                        name: item.user.name,
-                        avatar: item.user.avatar,
-                        _id: item.user._id,
-                        id: item.user.id
-                    };
-                    result.liked = false;
-                    item.likes.map(function(like) {
-                        if (like.toString() == user._id.toString()) {
-                            result.liked = true;
-                        }
-                    });
-                    result.likes = item.likes.length;
-                    content.push(result);
-                });
-                if ((page - 1) * perPageItems + content.length < count) {
-                    hasNext = true;
-                } else {
-                    hasNext = false;
-                }
-                res.send({
-                    code: 200,
-                    count: count,
-                    hasNext: hasNext,
-                    content: content
-                });
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
             });
         });
     });

@@ -78,6 +78,7 @@ config(['$httpProvider', 'app',
         angular.extend(app, tools); //添加jsGen系列工具函数
 
         app.author = window.author;
-        app.group = window.pageGroup;
+        app.popular = window.groupPopular;
+        app.newGroup = window.newGroup;
     }
 ]);

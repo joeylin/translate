@@ -1,9 +1,13 @@
 'use strict';
 /*global angular*/
 
-angular.module('jsGen.controllers', ['ui.validate','ui.bootstrap.pagination']).
+angular.module('jsGen.controllers', ['ui.validate', 'ui.bootstrap.pagination']).
 controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
+        $scope.isOpened = false;
+        $scope.open = function() {
+            $scope.isOpened = !$scope.isOpened;
+        };
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -12,16 +16,17 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.newShare = '';
         $scope.total = 0;
         $scope.submit = function() {
-            var url = '/api/group/id/add';
+            var url = '/api/share/add';
             if ($scope.newShare === '') {
                 return false;
             }
             $http.post(url, {
                 type: 'view',
+                group: app.group._id,
                 content: $scope.newShare
             }).success(function(data) {
                 var share = {
-                    user: app.user,
+                    user: app.author,
                     comments: [],
                     likes: 0,
                     content: $scope.newShare,
@@ -31,6 +36,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 };
                 $scope.shareList.unshift(share);
                 $scope.newShare = '';
+                $scope.isOpened = false;
                 $('#submit-success').css({
                     display: 'block'
                 });
@@ -41,7 +47,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 }, 1000);
             });
         };
-        var url = '/api/group/id/topics';
+        var url = '/api/group/' + app.group.id + '/post';
         var params = {
             page: 1
         };
@@ -118,7 +124,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 replyTo: share.replyTo
             }).success(function(data) {
                 var comment = {
-                    user: app.user,
+                    user: app.author,
                     content: share.newComment,
                     replyTo: share.replyTo,
                     _id: data.content._id,
@@ -155,7 +161,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 replyTo: comment.user._id
             }).success(function(data) {
                 var result = {
-                    user: app.user,
+                    user: app.author,
                     content: comment.newComment,
                     replyTo: comment.user._id,
                     _id: data.content._id,
@@ -172,8 +178,15 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 ]).controller('settingsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.current = 'b';
+        $scope.groupId = app.group.id;
         $scope.members = [];
         $scope.admin = [];
+        $scope.basic = {};
+        $scope.basic.avatar = app.group.avatar;
+        $scope.basic.name = app.group.name;
+        $scope.basic.industry = app.group.industry;
+        $scope.basic.announcement = app.group.announcement;
+
         $scope.clickMember = function() {
             if ($scope.current === 'c') {
                 return false;
@@ -181,19 +194,26 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             getMembers();
         };
         // basic
-        $scope.name = app.group.name;
-        $scope.industry = app.group.industry;
-        $scope.announcement = app.group.announcement || '';
         $scope.isSuccess = false;
+        $scope.$on('putFinish', function(event, imageUrl) {
+            var data = {
+                id: app.group._id,
+                avatar: imageUrl
+            };
+            var url = '/api/group/settings/avatar';
+            $http.post(url, data).success(function() {
+                $scope.basic.avatar = imageUrl;
+            });
+        });
         $scope.save = function() {
             var url = '/api/group/settings/basic';
             var data = {
                 id: app.group._id,
-                name: $scope.name,
-                industry: $scope.industry,
-                announcement: $scope.announcement
+                name: $scope.basic.name,
+                industry: $scope.basic.industry,
+                announcement: $scope.basic.announcement
             };
-            $.post(url,data).success(function(data) {
+            $http.post(url, data).success(function(data) {
                 $scope.isSuccess = true;
                 app.timeout(function() {
                     $scope.isSuccess = false;
@@ -205,55 +225,52 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             var data = {
                 id: app.group._id
             };
-            $http.post(url,data).success(function(data) {
+            $http.post(url, data).success(function(data) {
                 $location.path('/group/' + app.group.id);
             });
         };
         // members
         var vm = $scope.vm = {};
         vm.page = {
-          size: 20,
-          index: 1
+            size: 20,
+            index: 1
         };
         vm.sort = {
-          column: '',
-          direction: -1,
-          toggle: function(column) {
-            if (column.sortable === false)
-              return;
+            column: '',
+            direction: -1,
+            toggle: function(column) {
+                if (column.sortable === false)
+                    return;
 
-            if (this.column === column.name) {
-              this.direction = -this.direction || -1;
-            } else {
-              this.column = column.name;
-              this.direction = -1;
+                if (this.column === column.name) {
+                    this.direction = -this.direction || -1;
+                } else {
+                    this.column = column.name;
+                    this.direction = -1;
+                }
             }
-          }
         };
         // 构建模拟数据
-        vm.columns = [
-          {
+        vm.columns = [{
             label: 'name',
             name: 'name',
             type: 'string'
-          },
-          {
+        }, {
             label: 'post',
             name: 'post',
             type: 'number'
-          },
-          {
+        }, {
             label: 'operate',
             name: 'actions',
             sortable: false
-          }
-        ];
+        }];
+
         function getMembers() {
             var url = '/api/group/members';
             var data = {
                 id: app.group._id
             };
-            $http.post(url,data).success(function(data) {
+            $http.post(url, data).success(function(data) {
                 $scope.creator = data.creator;
                 $scope.admin = data.admin;
                 $scope.members = data.members;
@@ -271,8 +288,8 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             };
             $http.post(url.data).success(function(data) {
                 var index = vm.items.indexOf(item);
-                vm.items.splice(index,1);
-            }); 
+                vm.items.splice(index, 1);
+            });
         };
         vm.removeAdmin = function(item) {
             var url = '/api/group/admin/delete';
@@ -280,7 +297,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 id: app.group._id,
                 deleteId: item._id
             };
-            $http.post(url,data).success(function(data) {
+            $http.post(url, data).success(function(data) {
                 item.isAdmin = false;
                 vm.items = sort(vm.items);
             });
@@ -291,17 +308,18 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 id: app.group._id,
                 adminId: item._id
             };
-            $http.post(url,data).success(function(data) {
+            $http.post(url, data).success(function(data) {
                 item.isAdmin = true;
                 var index = $scope.members.indexOf(item);
                 $scope.members.splice(index, 1);
                 $scope.admin.push(item);
             });
         };
-        
+
         var MAX_NUM = 10;
+
         function rand(min, max) {
-          return min + Math.round(Math.random() * (max-min));
+            return min + Math.round(Math.random() * (max - min));
         }
         $scope.creator = {
             _id: 'xxxx',
@@ -320,15 +338,15 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             post: 233948,
             isCreator: false,
             isAdmin: true,
-        }]
+        }];
         for (var i = 0; i < MAX_NUM; ++i) {
-          var id = rand(0, MAX_NUM);
-          $scope.members.push({
-            name: 'Name' + id, // 字符串类型
-            post: rand(0, 100 * 1000 * 1000), // 数字类型
-            isCreator: false,
-            isAdmin: false
-          });
+            var id = rand(0, MAX_NUM);
+            $scope.members.push({
+                name: 'Name' + id, // 字符串类型
+                post: rand(0, 100 * 1000 * 1000), // 数字类型
+                isCreator: false,
+                isAdmin: false
+            });
         }
     }
 ]);

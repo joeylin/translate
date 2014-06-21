@@ -3,6 +3,26 @@
   <hr class="group-line">
   <div class="group-collects">
     <div class="row">
+    	<div class="col-md-4" ng-repeat="item in popular">
+    		<div class="carbonad clearfix">
+				<span class="carbonad-image pull-left">
+					<a href="#">
+						<img class="carbonad-image carbonad-img" src="{{item.avatar}}" title="Hack Reactor" alt="Hack Reactor">
+					</a>
+				</span>
+				<div class="carbonad-info">
+					<div class="carbonad-title">
+						{{item.name}}
+					</div>
+					<div>
+						<span>{{item.industry}}</span>
+					</div>
+					<div>
+						<span>100/{{item.members.length}}</span>
+					</div>
+				</div>	
+    		</div>
+    	</div>
     	<div class="col-md-4">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">
@@ -111,6 +131,26 @@
   <hr class="group-line">
   <div class="group-collects">
     <div class="row">
+    	<div class="col-md-4" ng-repeat="item in newGroup">
+    		<div class="carbonad clearfix">
+				<span class="carbonad-image pull-left">
+					<a href="#">
+						<img class="carbonad-image carbonad-img" src="{{item.avatar}}" title="Hack Reactor" alt="Hack Reactor">
+					</a>
+				</span>
+				<div class="carbonad-info">
+					<div class="carbonad-title">
+						{{item.name}}
+					</div>
+					<div>
+						<span>{{item.industry}}</span>
+					</div>
+					<div>
+						<span>100/{{item.members.length}}</span>
+					</div>
+				</div>	
+    		</div>
+    	</div>
     	<div class="col-md-4">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">

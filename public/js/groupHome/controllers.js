@@ -1,7 +1,7 @@
 'use strict';
 /*global angular*/
 
-angular.module('jsGen.controllers', ['ui.validate','ui.bootstrap.pagination']).
+angular.module('jsGen.controllers', ['ui.validate', 'ui.bootstrap.pagination']).
 controller('searchCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.keyword = '';
@@ -49,30 +49,38 @@ controller('searchCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('homeCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
-        var url = '/api/group/home';
-        $http.get(url).success(function(data) {
-            $scope.top = data.top;
-            $scope.like = data.like;
-        });
+        // var url = '/api/group/home';
+        // $http.get(url).success(function(data) {
+        //     $scope.popular = data.popular;
+        //     $scope.newGroup = data.newGroup;
+        // });
+        $scope.popular = app.popular;
+        $scope.newGroup = app.newGroup;
     }
-]).controller('sideBarCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
+]).controller('CreateCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.name = '';
         $scope.industry = '';
-        $scope.isSuccess = false;
+        $scope.error = false;
         $scope.create = function() {
-            var url = '';
+            if ($scope.name === '' || $scope.industry === '') {
+                $scope.error = true;
+                return false;
+            }
+            var url = '/api/group/create';
             var data = {
                 name: $scope.name,
                 industry: $scope.industry,
             };
-            $http.post(url,data).success(function() {
-                $scope.isSuccess = true;
-                app.timeout(function() {
-                    $scope.isSuccess = false;
-                    $.magnificPopup.close();
-                },1000);
+            $http.post(url, data).success(function(data) {
+                $.magnificPopup.close();
+                $location.path('/group/' + data.groupId + '/settings');
             });
+        };
+        $scope.change = function() {
+            if ($scope.name !== '' && $scope.industry !== '') {
+                $scope.error = false;
+            }
         };
     }
 ]);

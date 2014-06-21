@@ -185,10 +185,32 @@ module.exports = function(app) {
         res.render('signup');
     };
     var getGroupHome = function(req, res) {
-        res.render('group-home');
+        var author = req.session && req.session.user;
+        User.findOne({
+            _id: author._id
+        }, function(err, user) {
+            Group.getLastest(function(err, lastest) {
+                Group.getPopular(function(err, popular) {
+                    app.locals.popular = popular || [];
+                    app.locals.newGroup = lastest || [];
+                    app.locals.author = user;
+                    res.render('group-home');
+                });
+            });
+        });
+
     };
     var getGroup = function(req, res) {
-        res.render('group-page');
+        var user = req.session.user;
+        var id = req.params.id;
+        Group.findOne({
+            id: id
+        }).populate('creator').populate('admin').exec(function(err, group) {
+            app.locals.group = group;
+            app.locals.author = user;
+            app.locals.isJoined = user && group.isJoined(user._id);
+            res.render('group-page');
+        });
     };
 
     // home

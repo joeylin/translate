@@ -3,49 +3,60 @@
       <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>Settings</li>
       <li ng-class="{active: current === 'b'}" ng-click="current = 'b'"><a href="#">Basic</a></li>
       <li ng-class="{active: current === 'm'}" ng-click="current = 'm'"><a href="#">Members</a></li>
+      <li class="pull-right"><div><a ng-href="/group/{{groupId}}" class="btn btn-primary btn-sm">Back Group</a></div></li>
   </ul>
 </div>
 <div class="group-settings-basic row" ng-if="current === 'b'" ng-cloak>
 	<div class="panel col-md-12">
 		<div class="panel-body">
-			<div class="row">
-				<div class="col-xs-3">
-					<label>Name :</label>
-				</div>
-				<div class="col-xs-6">
-					<input class="form-control" name="name" type="text" placeholder="group name" required="" ng-model="name">
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-3">
-					<label>Industry :</label>
-				</div>
-				<div class="col-xs-6">
-					<input class="form-control" name="industry" type="text" placeholder="group industry" required="" ng-model="industry">
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-3">
-					<label>Announcement :</label>
-				</div>
-				<div class="col-xs-6">
-					<textarea class="form-control" rows="5" placeholder="Enter announcement..." ng-model="newShare"></textarea>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-9">
+			<div class="row" style="margin-bottom: 50px;">
+				<div class="col-md-8 form-container">
+					<div class="row">
+						<div class="col-xs-4">
+							<label>Name :</label>
+						</div>
+						<div class="col-xs-8">
+							<input class="form-control" name="name" type="text" placeholder="group name" required="" ng-model="basic.name">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label>Industry :</label>
+						</div>
+						<div class="col-xs-8">
+							<input class="form-control" name="industry" type="text" placeholder="group industry" required="" ng-model="basic.industry">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label>Announcement :</label>
+						</div>
+						<div class="col-xs-8">
+							<textarea class="form-control" rows="5" placeholder="Enter announcement..." ng-model="basic.announcement"></textarea>
+						</div>
+					</div>
 					<div class="clearfix">
 				      <a class="btn btn-primary pull-right" role="button" ng-click="save()">Save</a>
-				      <span class="pull-right error" ng-show="name ==='' || industry ==='' ">name or industry can't be blank</span>
+				      <span class="pull-right error" ng-show="basic.name ==='' || basic.industry ===''">name or industry can't be blank</span>
 				      <span class="pull-right success" ng-show="isSuccess">name or industry can't be blank</span>
 				    </div>
 				</div>
-			</div>
+				<div class="col-md-4">
+					<div class="basic-settings-avatar">
+	                    <a href="#">
+	                        <img ng-src="{{basic.avatar}}" id="changeAvatar">
+	                    </a>
+	                    <input type="file" id="avatar-upload" multiple />
+	                    <div class="upload-progress" id="upload-progress"></div>
+	                    <div class="avatar-tip text-center">Click To Change</div>
+	                </div>
+				</div>
+			</div>				
 			<hr>
 			<div class="row">
 				<div class="col-xs-7">
 					<div class="clearfix">
-				      <a class="btn btn-primary pull-right" role="button">Quit</a>
+				      <a class="btn btn-danger pull-right" role="button">Quit</a>
 				    </div>
 				</div>
 			</div>

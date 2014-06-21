@@ -45,6 +45,13 @@ var GroupSchema = new Schema({
     }
 });
 
+GroupSchema.virtual('mCount').get(function() {
+    return this.members.length;
+});
+GroupSchema.virtual('pCount').get(function() {
+    return this.members.length;
+});
+
 // statics
 GroupSchema.statics.createNew = function(obj, cb) {
     var group = new this();
@@ -113,20 +120,37 @@ GroupSchema.statics.quit = function(id, userId, cb) {
         }
     });
 };
+GroupSchema.statics.getLastest = function(cb) {
+    this.find().sort({
+        createAt: -1
+    }).limit(6).exec(function(err, groups) {
+        if (!groups || err) {
+            cb(err, null);
+        }
+        cb(err, groups);
+    });
+};
+GroupSchema.statics.getPopular = function(cb) {
+    this.find().sort({
+        'members.length': -1
+    }).limit(6).exec(function(err, groups) {
+        cb(err, groups);
+    });
+};
 
 // methods
 GroupSchema.methods.isJoined = function(userId) {
-    var index = -1;
-    this.members.map(function(member, key) {
-        if (member.toString() == userId) {
-            index = key;
-        }
-    });
-    if (index >= 0) {
+    var group = this.toObject();
+    if (this.creator.toString() == userId) {
         return true;
-    } else {
-        return false;
     }
+    if (group.admin.indexOf(userId) >= 0) {
+        return true;
+    }
+    if (group.members.indexOf(userId) >= 0) {
+        return true;
+    }
+    return false;
 };
 GroupSchema.methods.isAdmin = function(userId) {
     var index = -1;
@@ -175,7 +199,7 @@ GroupSchema.methods.addAdmin = function(userId, cb) {
         cb(null, null);
     } else {
         var index = this.members.indexOf(userId);
-        this.members.splice(index,1);
+        this.members.splice(index, 1);
         this.admin.push(userId);
         this.save(cb);
     }
