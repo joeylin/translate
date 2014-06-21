@@ -47,7 +47,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 }, 1000);
             });
         };
-        var url = '/api/group/' + app.group.id + '/post';
+        var url = '/api/group/' + app.group._id + '/post';
         var params = {
             page: 1
         };
