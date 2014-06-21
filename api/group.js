@@ -9,146 +9,18 @@ var Request = Models.Request;
 var Group = Models.Group;
 var middleware = require('./middleware');
 
-var addJob = function(req, res) {
+var create = function(req, res) {
     var user = req.session.user;
-    var job = req.body || {};
-    job.user = user._id;
-    job.type = 'job';
-    Job.createNew(job, function(err, job) {
+    var name = req.body.name;
+    var industry = req.body.industry;
+    var obj = {
+        name: name,
+        creator: user._id,
+        industry: industry
+    };
+    Group.createNew(obj, function(err, group) {
         res.send({
-            code: 200,
-            content: job
-        });
-    });
-};
-var deleteJob = function(req, res) {
-    var user = req.session.user;
-    var jobId = req.body.jobId;
-    User.findOne({
-        _id: user._id
-    }, function(err, user) {
-        var index = user.jobs.indexOf(jobId);
-        if (index < 0) {
-            return res.send({
-                code: 404,
-                info: 'no job'
-            });
-        }
-        Job.delete({
-            _id: jobId
-        }, function(err) {
-            user.jobs.splice(index, 1);
-            user.save(function(err) {
-                res.send({
-                    code: 200,
-                    info: 'success'
-                });
-            });
-        });
-    });
-};
-var getJobById = function(req, res) {
-    var id = req.params.id;
-    Job.findOne({
-        _id: id
-    }).populate('comments').exec(function(err, job) {
-        if (err) {
-            return res.send({
-                code: 404,
-                info: 'unknow job, or have delete'
-            });
-        }
-        res.send({
-            code: 200,
-            content: job
-        });
-    });
-};
-var jobLike = function(req, res) {
-    var user = req.session.user;
-    var jobId = req.body.jobId;
-    Job.findOne({
-        _id: jobId
-    }, function(err, job) {
-        var index = job.likes.indexOf(user._id);
-        if (index >= 0) {
-            return res.send({
-                code: 404,
-                info: 'has liked'
-            });
-        }
-        job.likes.push(user.uid);
-        job.save(function(err) {
-            res.send({
-                code: 200,
-                info: 'success'
-            });
-        });
-    });
-};
-var jobUnlike = function(req, res) {
-    var user = req.session.user;
-    var jobId = req.body.jobId;
-    Job.findOne({
-        _id: jobId
-    }, function(err, job) {
-        var index = job.likes.indexOf(user._id);
-        if (index < 0) {
-            return res.send({
-                code: 404,
-                info: 'no liked'
-            });
-        }
-        job.likes.splice(index, 1);
-        job.save(function(err) {
-            res.send({
-                code: 200,
-                info: 'success'
-            });
-        });
-    });
-};
-var collectJob = function(req, res) {
-    var user = req.session.user;
-    var jobId = req.body.jobId;
-    User.findOne({
-        _id: user._id
-    }, function(err, user) {
-        var index = user.collects.job.indexOf(jobId);
-        if (index >= 0) {
-            return res.send({
-                code: 404,
-                info: 'has collected'
-            });
-        }
-        user.collects.job.push(jobId);
-        user.save(function(err) {
-            res.send({
-                code: 200,
-                info: 'success'
-            });
-        });
-    });
-};
-var unCollectJob = function(req, res) {
-    var user = req.session.user;
-    var jobId = req.body.jobId;
-    User.findOne({
-        _id: user._id
-    }, function(err, user) {
-        var index = user.collects.job.indexOf(jobId);
-        if (index < 0) {
-            return res.send({
-                code: 404,
-                info: 'never collected'
-            });
-        }
-        user.collects.job.splice(index, 1);
-        user.save(function(err) {
-            res.send({
-                code: 200,
-                info: 'success'
-            });
+            code: 200
         });
     });
 };
@@ -331,6 +203,7 @@ var setAvatar = function(req, res) {
 };
 
 module.exports = function(app) {
+    app.post('/api/group/create', create);
     app.post('/api/group/join', join);
     app.post('/api/group/quit', quit);
     app.post('/api/group/member/delete', memberDelete);
