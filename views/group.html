@@ -174,6 +174,10 @@
             display: none;
           }
           /*group*/
+          .group > .col-md-7 {
+            padding-left: 0;
+            padding-right: 0;
+          }
           .group-title h3 {
             margin-top: 0;
           } 
@@ -230,6 +234,12 @@
             height: 18px;
             margin-right: 5px;
           }
+          .group-settings-basic .panel,
+          .group-settings-members .panel {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+          }
+
           /* reset AdminLTE.css */
           .pagination {
             margin-top: 0;
@@ -239,6 +249,10 @@
             -webkit-box-shadow: none;
             -moz-box-shadow: none;
             box-shadow: none;
+          }
+          .nav-tabs-custom > .nav-tabs {
+            width: 100%;
+            background-color: #f5f5f5;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -325,7 +339,7 @@
               <a href="#"><img src="/public/imgs/angularjs.png"></a>
             </div>
             <div>
-              <a type="button" class="group-op-btn btn-block">Join this group</a>
+              <a popup href="#login-popup" type="button" class="group-op-btn btn-block">Join this group</a>
             </div>
           </div>
           <div class="col-md-7" ng-view></div>
@@ -347,7 +361,9 @@
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
-        
+        <div id="login-popup" class="white-popup-block mfp-hide">
+          You need Login First !
+        </div>
         <script>
           reserveLoad(
             '/public/bower_components/jquery/jquery.js',

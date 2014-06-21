@@ -1,11 +1,11 @@
-<div class="nav-tabs-custom" ng-cloak>
+<div class="nav-tabs-custom row" ng-cloak style="margin-bottom:0;">
   <ul class="nav nav-tabs pull-left">
       <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>Settings</li>
-      <li ng-class="{active: current.path === 'people'}" class="active"><a href="#">Basic</a></li>
-      <li ng-class="{active: current.path === 'myPeople'}"><a href="#">Members</a></li>
+      <li ng-class="{active: current === 'b'}" ng-click="current = 'b'"><a href="#">Basic</a></li>
+      <li ng-class="{active: current === 'm'}" ng-click="current = 'm'"><a href="#">Members</a></li>
   </ul>
 </div>
-<div class="group-settings-basic row" ng-cloak>
+<div class="group-settings-basic row" ng-if="current === 'b'" ng-cloak>
 	<div class="panel col-md-12">
 		<div class="panel-body">
 			<div class="row">
@@ -42,9 +42,13 @@
 		</div>
 	</div>
 </div>
-<div class="group-settings-members row" ng-cloak>
+<div class="group-settings-members row" ng-if="current === 'm'" ng-cloak>
 	<div class="panel col-md-12">
 		<div class="panel-body">
+			<div class="clearfix" style="margin-bottom: 5px;">
+				<span class="pull-right" style="padding-right:5px;"><a href="#"><i class="fa fa-fw fa-refresh"></i>refresh</a></span>
+				<span class="pull-right" style="padding-right:15px;"><strong>total</strong> : 100</span>
+			</div>
 			<table class="table table-bordered table-hover">
 			  <thead>
 				  <tr>
@@ -64,14 +68,22 @@
 				  </tr>
 				  <tr ng-repeat="item in vm.items|filter:vm.filter|orderBy:vm.sort.column:vm.sort.direction===-1|paging:vm.page.index:vm.page.size">
 				    <td>
-				      <img src="/public/imgs/angularjs.png"><span>{{item.name}}</span>
+				      <img src="/public/imgs/angularjs.png">
+				      <span>{{item.name}}</span>
+				      <i class="fa fa-fw fa-user"></i>
 				    </td>
 				    <td class="text-right">
 				      <span>{{item.post}}</span>
 				    </td>
 				    <td class="text-center">
-				      <span class="btn btn-primary btn-xs" title="详情" ng-mouseenter="item.popover=true" ng-mouseleave="item.popover=false">
+				      <span class="btn btn-primary btn-xs" title="remove">
 				      	<i class="fa fa-fw fa-trash-o"></i>
+				      </span>
+				      <span class="btn btn-primary btn-xs" title="admin">
+				      	<i class="fa fa-fw fa-user"></i>
+				      </span>
+				      <span class="btn btn-primary btn-xs" title="admin" ng-show="">
+				      	<i class="fa fa-fw fa-sign-out"></i>
 				      </span>
 				    </td>
 				  </tr>

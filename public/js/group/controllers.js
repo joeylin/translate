@@ -171,57 +171,58 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('settingsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-      var vm = $scope.vm = {};
-      vm.page = {
-        size: 5,
-        index: 1
-      };
-      vm.sort = {
-        column: 'id',
-        direction: -1,
-        toggle: function(column) {
-          if (column.sortable === false)
-            return;
+        $scope.current = 'b';
+        var vm = $scope.vm = {};
+        vm.page = {
+          size: 5,
+          index: 1
+        };
+        vm.sort = {
+          column: 'id',
+          direction: -1,
+          toggle: function(column) {
+            if (column.sortable === false)
+              return;
 
-          if (this.column === column.name) {
-            this.direction = -this.direction || -1;
-          } else {
-            this.column = column.name;
-            this.direction = -1;
+            if (this.column === column.name) {
+              this.direction = -this.direction || -1;
+            } else {
+              this.column = column.name;
+              this.direction = -1;
+            }
           }
-        }
-      };
-      // 构建模拟数据
-      vm.columns = [
-        {
-          label: 'name',
-          name: 'name',
-          type: 'string'
-        },
-        {
-          label: 'post',
-          name: 'post',
-          type: 'number'
-        },
-        {
-          label: 'operate',
-          name: 'actions',
-          sortable: false
-        }
-      ];
+        };
+        // 构建模拟数据
+        vm.columns = [
+          {
+            label: 'name',
+            name: 'name',
+            type: 'string'
+          },
+          {
+            label: 'post',
+            name: 'post',
+            type: 'number'
+          },
+          {
+            label: 'operate',
+            name: 'actions',
+            sortable: false
+          }
+        ];
 
-      vm.items = [];
-      var MAX_NUM = 10 * 1000;
-      function rand(min, max) {
-        return min + Math.round(Math.random() * (max-min));
-      }
-      for (var i = 0; i < MAX_NUM; ++i) {
-        var id = rand(0, MAX_NUM);
-        vm.items.push({
-          name: 'Name' + id, // 字符串类型
-          post: rand(0, 100 * 1000 * 1000), // 数字类型
-          summary: '这是一个测试' + i
-        });
-      }
+        vm.items = [];
+        var MAX_NUM = 10 * 1000;
+        function rand(min, max) {
+          return min + Math.round(Math.random() * (max-min));
+        }
+        for (var i = 0; i < MAX_NUM; ++i) {
+          var id = rand(0, MAX_NUM);
+          vm.items.push({
+            name: 'Name' + id, // 字符串类型
+            post: rand(0, 100 * 1000 * 1000), // 数字类型
+            summary: '这是一个测试' + i
+          });
+        }
     }
 ]);
