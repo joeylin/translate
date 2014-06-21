@@ -201,6 +201,24 @@ var setAvatar = function(req, res) {
         });
     });
 };
+var getMembers = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Group.findOne({
+        _id: id
+    }).populate('members').exec(function(err, group) {
+        if (group.isAdmin(user._id) || group.isCreator(user._id)) {
+            res.send({
+                code: 200,
+                members: group.members
+            });
+        } else {
+            res.send({
+                code: 404
+            });
+        }
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/group/create', create);
@@ -211,6 +229,7 @@ module.exports = function(app) {
     app.post('/api/group/admin/add', adminAdd);
     app.post('/api/group/settings/basic', setBasic);
     app.post('/api/group/settings/avatar', setAvatar);
+    app.post('/api/group/members', getMembers);
 
     app.get('/api/group/:id/post', getPost);
 };
