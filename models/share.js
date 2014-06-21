@@ -7,6 +7,10 @@ var ShareSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
+    group: {
+        type: ObjectId,
+        ref: 'Group'
+    },
     type: {
         type: String
     },
@@ -100,6 +104,7 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.location = obj.location;
     share.summary = obj.summary;
     share.detail = obj.detail;
+    share.group = obj.group;
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('share', function(err, doc) {
         share.id = doc.currentId;

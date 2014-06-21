@@ -7,6 +7,7 @@ var Comment = Models.Comment;
 var Trend = Models.Trend;
 var Request = Models.Request;
 var Share = Models.Share;
+var Group = Models.Group;
 var IdGenerator = Models.IdGenerator;
 
 var middleware = require('./middleware');

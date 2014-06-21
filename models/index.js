@@ -17,6 +17,7 @@ require('./share');
 require('./comment');
 require('./trend');
 require('./request');
+require('./group');
 require('./idGenerator');
 
 exports.User = mongoose.model('User');
@@ -27,4 +28,5 @@ exports.Share = mongoose.model('Share');
 exports.Comment = mongoose.model('Comment');
 exports.Trend = mongoose.model('Trend');
 exports.Request = mongoose.model('Request');
+exports.Request = mongoose.model('Group');
 exports.IdGenerator = mongoose.model('IdGenerator');

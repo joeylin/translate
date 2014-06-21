@@ -11,6 +11,7 @@ var Comment = Models.Comment;
 var Trend = Models.Trend;
 var Request = Models.Request;
 var Share = Models.Share;
+var Group = Models.Group;
 
 var fs = require('fs');
 var path = require('path');
@@ -183,6 +184,9 @@ module.exports = function(app) {
     var getSignupPage = function(req, res) {
         res.render('signup');
     };
+    var getGroup = function(req, res) {
+        res.render('group');
+    };
 
     // home
     app.get('/', middleware.check_login, getMain);
@@ -228,4 +232,8 @@ module.exports = function(app) {
     // search 
     app.get('/search', middleware.check_login, getSearch);
     app.get('/search/:op', middleware.check_login, getSearch);
+
+    //group
+    app.get('/group', getGroup);
+    app.get('/group/:id', getGroup);
 };

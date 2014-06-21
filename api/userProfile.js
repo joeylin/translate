@@ -6,6 +6,7 @@ var UserProfile = Models.UserProfile;
 var Comment = Models.Comment;
 var Share = Models.Share;
 var Request = Models.Request;
+var Group = Models.Group;
 
 var middleware = require('./middleware');
 

@@ -7,6 +7,7 @@ var Comment = Models.Comment;
 var Trend = Models.Trend;
 var Share = Models.Share;
 var Request = Models.Request;
+var Group = Models.Group;
 
 var editPassword = function(req, res) {
     var user = req.session.user;
