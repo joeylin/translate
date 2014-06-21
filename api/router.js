@@ -209,7 +209,7 @@ module.exports = function(app) {
             app.locals.group = group;
             app.locals.author = user;
             app.locals.isJoined = user && group.isJoined(user._id);
-            res.render('group-page');
+            res.render('group');
         });
     };
 
