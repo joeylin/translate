@@ -1,7 +1,7 @@
 'use strict';
 /*global angular*/
 
-angular.module('jsGen.controllers', ['ui.validate']).
+angular.module('jsGen.controllers', ['ui.validate','ui.bootstrap.pagination']).
 controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.pager = {
@@ -171,35 +171,57 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('settingsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.requests = [];
-        var checkUrl = '/api/connect/check';
-        var dispose = function() {
-            $rootScope.current.request -= 1;
-        };
-        $scope.vm = {};
-        $scope.vm.accept = function(request) {
-            var params = {
-                value: true,
-                requestId: request._id
-            };
-            $http.post(checkUrl, params).success(function(data) {
-                request.hasDisposed = true;
-                dispose();
-            });
-        };
-        $scope.vm.reject = function(request) {
-            var params = {
-                value: false,
-                requestId: request._id
-            };
-            $http.post(checkUrl, params).success(function(data) {
-                request.hasDisposed = true;
-                dispose();
-            });
-        };
-        var url = '/api/notify/request';
-        $http.get(url).success(function(data) {
-            $scope.requests = data.requests;
+      var vm = $scope.vm = {};
+      vm.page = {
+        size: 5,
+        index: 1
+      };
+      vm.sort = {
+        column: 'id',
+        direction: -1,
+        toggle: function(column) {
+          if (column.sortable === false)
+            return;
+
+          if (this.column === column.name) {
+            this.direction = -this.direction || -1;
+          } else {
+            this.column = column.name;
+            this.direction = -1;
+          }
+        }
+      };
+      // 构建模拟数据
+      vm.columns = [
+        {
+          label: 'name',
+          name: 'name',
+          type: 'string'
+        },
+        {
+          label: 'post',
+          name: 'post',
+          type: 'number'
+        },
+        {
+          label: 'operate',
+          name: 'actions',
+          sortable: false
+        }
+      ];
+
+      vm.items = [];
+      var MAX_NUM = 10 * 1000;
+      function rand(min, max) {
+        return min + Math.round(Math.random() * (max-min));
+      }
+      for (var i = 0; i < MAX_NUM; ++i) {
+        var id = rand(0, MAX_NUM);
+        vm.items.push({
+          name: 'Name' + id, // 字符串类型
+          post: rand(0, 100 * 1000 * 1000), // 数字类型
+          summary: '这是一个测试' + i
         });
+      }
     }
 ]);
