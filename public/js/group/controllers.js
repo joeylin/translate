@@ -181,9 +181,9 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             getMembers();
         };
         // basic
-        $scope.name = '';
-        $scope.industry = '';
-        $scope.announcement = '';
+        $scope.name = app.group.name;
+        $scope.industry = app.group.industry;
+        $scope.announcement = app.group.announcement || '';
         $scope.isSuccess = false;
         $scope.save = function() {
             var url = '/api/group/settings/basic';
@@ -198,6 +198,15 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 app.timeout(function() {
                     $scope.isSuccess = false;
                 }, 1000);
+            });
+        };
+        $scope.quit = function() {
+            var url = '/api/group/quit';
+            var data = {
+                id: app.group._id
+            };
+            $http.post(url,data).success(function(data) {
+                $location.path('/group/' + app.group.id);
             });
         };
         // members
@@ -289,7 +298,6 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.admin.push(item);
             });
         };
-
         
         var MAX_NUM = 10;
         function rand(min, max) {

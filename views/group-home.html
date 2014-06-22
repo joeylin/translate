@@ -123,28 +123,6 @@
           .profile-sidebar .user-body > div {
             padding-left: 0;
           }
-          .summary .nav {
-            height: 100%;
-            border-bottom: 0;
-            padding-top: 5px;
-            padding-bottom: 5px;
-          }
-          .summary .nav>li>a {
-            padding: 6px 15px;
-            color: #555;
-          }
-          .summary .nav>li>a i {
-            padding-right: 21px;
-            margin-left: -3px;
-          }
-          .summary .nav>li.active>a {
-            background-color: #f0f0f0;
-            border: 0;
-            font-weight: 700;
-          }
-          .summary .nav>li>a:hover {
-            border-color: transparent;
-          }
           .custom-well {
             background-color:transparent; 
             border: 1px solid transparent; 
@@ -195,111 +173,46 @@
             margin-top: -15px;
             display: none;
           }
-          .search-people-relationship {
-            color: #999;
-            font-style: italic;
+          /*group*/
+          .group {
+            margin-top: 75px;
+            width: 960px;
           }
-          .people-sort-title {
-            font-weight: 700;
-            margin-bottom: 6px;
+          .search {
+            margin-bottom: 30px;
           }
-          .people-sort-list {
-            padding-left: 20px;
+          .create {
+            margin-bottom: 15px;
           }
-          .custom-heading {
-            border-bottom: 1px solid #eee;
-          }
-          .custom-heading input {
-            margin-top: 3px;
-          }
-          .myShare .media-heading i {
-            font-size: 14px;
-            line-height: 18px;
-          }
-          .timeline-v {
-            position: relative;
-            margin-top: 10px;
+          .create-btn {
+            border: 1px solid #ddd;
+            background-color: #fff;
             margin-bottom: 0;
-            padding: 0;
-            list-style: none;
-          }
-          .timeline-v:before {
-            content: '';
-            position: absolute;
-            top: 13px;
-            left: 0;
-            height: 5px;
-            width: 100%;
-            background: #ddd;
-            border: 1px solid #eee;
-            margin: 0;
-            -webkit-border-radius: 2px;
-            -moz-border-radius: 2px;
-            border-radius: 2px;
-          }
-          .timeline-v > li {
-            position: relative;
-            display: inline-block;
-          }
-          .timeline-v > .active .post,
-          .timeline-v > .active .reading, 
-          .timeline-v > .active .interview,
-          .timeline-v > .active .offer {
-            background-color: #0073b7;
-            color: #fff;
-          }
-          .timeline-v > li > .fa{
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-            width: 30px;
-            height: 30px;
-            font-size: 15px;
-            line-height: 30px;
-            color: #666;
-            background: #eee;
-            border-radius: 50%;
+            font-weight: 400;
             text-align: center;
-          }
-          .timeline-v > .fail > .post,
-          .timeline-v > .fail > .reading,
-          .timeline-v > .fail > .interview,
-          .timeline-v > .fail > .offer {
-            background-color: #f4543c;
-            color: #fff;
-          }
-          .timeline-v > li > .reading {
-            margin-left: -30%;
-          }
-          .timeline-v > li > .interview {
-            margin-right: -23%;
-          }
-          .sending.popover {
-            display: none;
-            width: 470px;
-            max-width: 530px;
-            max-height: 76px;
-            top: inherit;
-            left: 18px;
-            bottom: 44px;
-          }
-          .sending.popover.post >.arrow {
-            margin-left: -224px;
-          }
-          .sending.popover.reading >.arrow {
-            margin-left: -103px;
-          }
-          .sending.popover.interview >.arrow {
-            margin-left: 35px;
-          }
-          .sending.popover.offer >.arrow {
-            margin-left: 183px;
-          }
-          .relative-option {
-            margin-left: 15px;
-            font-size: 16px;
             cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            border-radius: 3px;
           }
-          .relative h3 {
-            margin-top: 10px;
+          
+
+          /* reset AdminLTE.css */
+          .pagination {
+            margin-top: 0;
+          }
+          .pagination > li > a {
+            color: #428bca;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+          }
+          .nav-tabs-custom > .nav-tabs {
+            width: 100%;
+            background-color: #f5f5f5;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -307,11 +220,15 @@
         </style>
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
-          window.user = null;
-          <% if (locals.user) { %>
-            window.user = <%- JSON.stringify(locals.user) %>;
+          window.author = null;
+          window.group = null;
+          <% if (locals.author) { %>
+            window.author = <%- JSON.stringify(locals.author) %>;
           <% } %>
-        </script>       
+          <% if (locals.group) { %>
+            window.group = <%- JSON.stringify(locals.group) %>;
+          <% } %>
+        </script>    
     </head>
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -326,39 +243,35 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right" ng-cloak>
-                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                            <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{current.request + current.message}}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/notify/request" target="_self">{{current.request}} requests</a></li>
-                            <li><a href="/notify/message">{{current.message}} messages</a></li>
-                        </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  <% if (!locals.author) { %>
+                  <li class="dropdown" id="menuLogin" >
+                      <a class="dropdown-toggle" href="/login?re=/group/">Login</a>
                   </li>
+                  <% } else { %>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- todo have custom user image -->
-                            <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
-                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                            <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
+                            <span id="lblUsername" style="margin-left: 5px;">
+                              <%= locals.author && locals.author.name %>
+                            </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img ng-src="{{global.user.avatar}}" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.author && locals.author.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
-                                    <span>{{global.user.name}}</span>
+                                    <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">{{global.user.share.length}}</a>
+                                    <a href="#" ><%= locals.author.share.length %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">{{global.user.connects.length}}</a>
+                                    <a href="#"><%= locals.author.connects.length %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
                                     <a href="#">share</a>
@@ -378,70 +291,46 @@
                             </li>
                         </ul>
                   </li>
+                  <% } %>
               </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">Home</a></li>
-                <li><a href="/profile" target="_self">Profile</a></li>
-                <li><a href="/group" target="_self">Group</a></li>
-                <li><a href="/search/all" target="_self">Search</a></li>
+                <li><a href="/profile" target="_self">profile</a></li>
+                <li><a href="/group" target="_self">group</a></li>
+                <li><a href="/search/all" target="_self">search</a></li>
               </ul>
             </div>
           </div>
         </nav>
-        <div class="container home-container">
-          <div class="col-md-2">
-            <div class="well custom-well siderbar-nav">
-              <div class="user-body summary">
-                  <ul class="nav nav-tabs nav-stacked">
-                    <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
-                    <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending"><i class="fa fa-fw fa-rocket"></i>MySending</a></li>
-                    <li ng-class="{active: current.path === 'request'}"><a ng-href="/request"><i class="fa fa-fw fa-info-circle"></i>Requests</a></li>
-                    <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li>
-                    <li ng-class="{active: current.path === 'people' || current.path === 'myPeople'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
-                    <li ng-class="{active: current.path === 'share' || current.path === 'myShare'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
-                    <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li>
-                    <li ng-class="{active: current.path === 'job' || current.path === 'myJob'}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
-                  </ul>
-              </div>            
+        <div class="container group">
+          <div class="col-md-9">
+            <div class='row search'>
+              <div class="col-md-8 col-md-offset-2">
+                <input type="text" class="form-control" placeholder="Search groups" ng-model="keywords">
+              </div>
             </div>
-          </div>
-          <div class="col-md-10" style="padding-left:0;">
-            <div class="nav-tabs-custom" ng-show="current.path === 'people' || current.path === 'myPeople'" ng-cloak>
-              <ul class="nav nav-tabs pull-left">
-                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Professional</li>
-                  <li ng-class="{active: current.path === 'people'}"><a ng-href="/people">Find</a></li>
-                  <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople">Manage</a></li>
-              </ul>
+            <div class="main" ng-view>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'share' || current.path === 'myShare'" ng-cloak>
-              <ul class="nav nav-tabs pull-left">
-                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Discover</li>
-                  <li ng-class="{active: current.path === 'share'}"><a ng-href="/share">Find</a></li>
-                  <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare">My Share</a></li>
-              </ul>
-            </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'company' || current.path === 'myCompany'" ng-cloak>
-              <ul class="nav nav-tabs pull-left">
-                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Company</li>
-                  <li ng-class="{active: current.path === 'company'}"><a ng-href="/company">Find</a></li>
-                  <li ng-class="{active: current.path === 'myCompany'}"><a ng-href="/myCompany">My Follow</a></li>
-              </ul>
-            </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'job' || current.path === 'myJob'" ng-cloak>
-              <ul class="nav nav-tabs pull-left">
-                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Job</li>
-                  <li ng-class="{active: current.path === 'job'}"><a ng-href="/job">Find</a></li>
-                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Collects</a></li>
-              </ul>
-            </div>
-            <div class="row" id="main" ng-view ng-cloak></div>
-          </div>
             
+          </div>
+          <div class="col-md-3 pull-right">
+            <div class="create">
+              <a popup href="#login-popup" type="button" class="create-btn btn-block">Create New Group</a>
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">Members(500/100)</div>
+              <div class="panel-body">
+                Panel content (creator and admin)
+              </div>
+            </div>
+          </div>
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
-        
+        <div id="login-popup" class="white-popup-block mfp-hide">
+          You need Login First !
+        </div>
         <script>
           reserveLoad(
             '/public/bower_components/jquery/jquery.js',
@@ -454,22 +343,22 @@
             '/public/bower_components/marked/lib/marked.js',
             '/public/bower_components/toastr/toastr.js',
             '/public/js/lib/angular-locale_zh-cn.js',
-            '/public/js/lib/angular-ui.js',
             '/public/js/lib/bootstrap.min.js',
             '/public/js/lib/hmac-sha256.js',
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
+            '/public/js/lib/angular-ui.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
-            '/public/js/userHome/router.js',
+            '/public/js/groupHome/router.js',
             '/public/js/services.js',
             '/public/js/filters.js',
             '/public/js/directives.js',
-            '/public/js/userHome/controllers.js',
-            '/public/js/userHome/app.js',
+            '/public/js/groupHome/controllers.js',
+            '/public/js/groupHome/app.js',
             function (errorUrl) {
               if (errorUrl) {
                 alert('Error loading: ' + errorUrl);

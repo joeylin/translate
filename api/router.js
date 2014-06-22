@@ -184,8 +184,11 @@ module.exports = function(app) {
     var getSignupPage = function(req, res) {
         res.render('signup');
     };
+    var getGroupHome = function(req, res) {
+        res.render('group-home');
+    };
     var getGroup = function(req, res) {
-        res.render('group');
+        res.render('group-page');
     };
 
     // home
@@ -234,7 +237,9 @@ module.exports = function(app) {
     app.get('/search/:op', middleware.check_login, getSearch);
 
     //group
-    app.get('/group', getGroup);
+    app.get('/group', getGroupHome);
+    app.get('/group/home', getGroupHome);
+    app.get('/group/search', getGroupHome);
     app.get('/group/:id', getGroup);
     app.get('/group/:id/settings', getGroup);
 };
