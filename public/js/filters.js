@@ -125,9 +125,20 @@ filter('placeholder', ['tools',
   }
 }).filter('size', function() {
   return function (items) {
-    if (!items)
+    if (!items) {
       return 0;
-
-    return items.length || 0
+    }
+    return items.length || 0;
+  }
+}).filter('memberSort', function() {
+  return function (items) {
+    if (!items) {
+      return 0;
+    }
+    return items.sort(function(a,b) {
+        return b.isAdmin;
+    }).sort(function(a,b) {
+        return b.isCreator;
+    });
   }
 });

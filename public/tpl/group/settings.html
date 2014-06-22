@@ -13,7 +13,7 @@
 					<label>Name :</label>
 				</div>
 				<div class="col-xs-6">
-					<input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="">
+					<input class="form-control" name="name" type="text" placeholder="group name" required="" ng-model="name">
 				</div>
 			</div>
 			<div class="row">
@@ -21,7 +21,7 @@
 					<label>Industry :</label>
 				</div>
 				<div class="col-xs-6">
-					<input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="">
+					<input class="form-control" name="industry" type="text" placeholder="group industry" required="" ng-model="industry">
 				</div>
 			</div>
 			<div class="row">
@@ -29,13 +29,15 @@
 					<label>Announcement :</label>
 				</div>
 				<div class="col-xs-6">
-					<textarea class="form-control" rows="5" placeholder="Enter ..." ng-model="newShare"></textarea>
+					<textarea class="form-control" rows="5" placeholder="Enter announcement..." ng-model="newShare"></textarea>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-9">
 					<div class="clearfix">
 				      <a class="btn btn-primary pull-right" role="button" ng-click="save()">Save</a>
+				      <span class="pull-right error" ng-show="name ==='' || industry ==='' ">name or industry can't be blank</span>
+				      <span class="pull-right success" ng-show="isSuccess">name or industry can't be blank</span>
 				    </div>
 				</div>
 			</div>
@@ -70,7 +72,7 @@
 				    <td>
 				      <img src="/public/imgs/angularjs.png">
 				      <span>{{item.name}}</span>
-				      <i class="fa fa-fw fa-user"></i>
+				      <i class="fa fa-fw fa-user" ng-class="{isAdmin:'blue',isCreator:'red'}" ng-show="item.isAdmin || item.isCreator"></i>
 				    </td>
 				    <td class="text-right">
 				      <span>{{item.post}}</span>
@@ -79,10 +81,10 @@
 				      <span class="btn btn-primary btn-xs" title="remove">
 				      	<i class="fa fa-fw fa-trash-o"></i>
 				      </span>
-				      <span class="btn btn-primary btn-xs" title="admin">
+				      <span class="btn btn-primary btn-xs" title="admin" ng-show="!isAdmin && !isCreator">
 				      	<i class="fa fa-fw fa-user"></i>
 				      </span>
-				      <span class="btn btn-primary btn-xs" title="admin" ng-show="">
+				      <span class="btn btn-primary btn-xs" title="admin" ng-show="isAdmin">
 				      	<i class="fa fa-fw fa-sign-out"></i>
 				      </span>
 				    </td>

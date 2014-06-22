@@ -172,9 +172,31 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 ]).controller('settingsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.current = 'b';
+        // basic
+        $scope.name = '';
+        $scope.industry = '';
+        $scope.announcement = '';
+        $scope.isSuccess = false;
+        $scope.save = function() {
+            var url = '/api/group/settings/basic';
+            var data = {
+                id: app.group._id,
+                name: $scope.name,
+                industry: $scope.industry,
+                announcement: $scope.announcement
+            };
+            $.post(url,data).success(function(data) {
+                $scope.isSuccess = true;
+                app.timeout(function() {
+                    $scope.isSuccess = false;
+                }, 1000);
+            });
+        };
+        // members
         var vm = $scope.vm = {};
+        vm.items = [];
         vm.page = {
-          size: 5,
+          size: 20,
           index: 1
         };
         vm.sort = {
@@ -210,19 +232,54 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             sortable: false
           }
         ];
+        function getMembers() {
+            var url = '/api/group/members';
+            var data = {
+                id: app.group._id
+            };
+            $http.post(url,data).success(function(data) {
+                vm.items = data.content;
+            });
+        }
+        $scope.refresh = function() {
+            getMembers();
+        };
+        vm.deleteMember = function(item) {
+            var url = '/api/group/member/delete';
+            var data = {
+                id: app.group._id,
+                deleteId: item._id
+            };
+            $http.post(url.data).success(function(data) {
+                var index = vm.items.indexOf(item);
+                vm.items.splice(index,1);
+            }); 
+        };
+        vm.removeAdmin = function(item) {
+            var url = '/api/group/admin/delete';
+            var data = {
+                id: app.group._id,
+                deleteId: item._id
+            };
+            $http.post(url,data).success(function(data) {
+                item.isAdmin = false;
+            });
+        };
 
-        vm.items = [];
-        var MAX_NUM = 10 * 1000;
-        function rand(min, max) {
-          return min + Math.round(Math.random() * (max-min));
-        }
-        for (var i = 0; i < MAX_NUM; ++i) {
-          var id = rand(0, MAX_NUM);
-          vm.items.push({
-            name: 'Name' + id, // 字符串类型
-            post: rand(0, 100 * 1000 * 1000), // 数字类型
-            summary: '这是一个测试' + i
-          });
-        }
+        
+        // var MAX_NUM = 10 * 1000;
+        // function rand(min, max) {
+        //   return min + Math.round(Math.random() * (max-min));
+        // }
+        // for (var i = 0; i < MAX_NUM; ++i) {
+        //   var id = rand(0, MAX_NUM);
+        //   vm.items.push({
+        //     name: 'Name' + id, // 字符串类型
+        //     post: rand(0, 100 * 1000 * 1000), // 数字类型
+        //     isCreator: id % 8 === 1 ? true:false,
+        //     isAdmin: id % 9 === 2 ? true: false,
+        //     summary: '这是一个测试' + i
+        //   });
+        // }
     }
 ]);
