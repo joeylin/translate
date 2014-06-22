@@ -65,64 +65,6 @@
             margin-bottom: 20px;
             font-weight: 700;
           }
-          .media-info .date {
-            font-style: italic;
-          }
-          .media-info .media-control {
-            padding-right: 16px;
-          }
-          .media-info .media-control .like {
-            margin-right: 10px;
-          }
-          .media-info .media-control .liked i {
-            color: rgb(51, 51, 51);
-          }
-          .pager li>a {
-            border-radius: 3px;
-          }
-          .news .panel-heading {
-            border-bottom: 1px solid #ddd;
-          }
-          .news .panel-title {
-            font-weight: 700;
-            font-size: 18px;
-          }
-          .reply-container {
-            margin: 15px 0 0 0;
-            padding: 15px;
-            border: 1px solid #e3e3e3;
-          }
-          .reply-content {
-            margin-bottom: 5px;
-          }
-          .reply-hr {
-            margin-bottom: 8px;
-            margin-top: 15px;
-          }
-          .comment-editor.comment-editor-inline {
-            margin-top: 9px;
-          }
-          .comment-editor .input-group-btn:last-child >.btn {
-            margin-left: 8px;
-            border-bottom-left-radius: 3px;
-            border-top-left-radius: 3px;
-          }
-          .notifications-menu .dropdown-menu {
-            width: 130px!important;
-          }
-          .profile-sidebar .user-header h3 {
-            font-size: 18px;
-            margin-left: 10px;
-          }
-          .profile-sidebar .user-body {
-            margin-top: 15px;
-          }
-          .profile-sidebar .user-header img {
-            background-color: #999;
-          }
-          .profile-sidebar .user-body > div {
-            padding-left: 0;
-          }
           .custom-well {
             background-color:transparent; 
             border: 1px solid transparent; 
@@ -130,11 +72,6 @@
             -webkit-box-shadow: inset 0 1px 1px transparent; 
             box-shadow: inset 0 1px 1px transparent; 
             padding: 0;
-          }
-          .siderbar-nav {
-            border: 1px solid #e3e3e3;
-            background-color: #fff;
-            border-radius: 0;
           }
           .home-container .col-md-2 {
             padding-left: 0;
@@ -176,7 +113,6 @@
           /*group*/
           .group {
             margin-top: 75px;
-            width: 960px;
           }
           .search {
             margin-bottom: 30px;
@@ -198,6 +134,13 @@
             line-height: 1.42857143;
             border-radius: 3px;
           }
+          .main > .row {
+            margin-right: 0;
+            margin-left: 0;
+          }
+          .group-line {
+            margin-top: 0;
+          }
           
 
           /* reset AdminLTE.css */
@@ -213,6 +156,24 @@
           .nav-tabs-custom > .nav-tabs {
             width: 100%;
             background-color: #f5f5f5;
+          }
+          .group-collects > .row > .col-md-4 {
+            margin-bottom: 15px;
+          }
+          .carbonad {
+            border: 1px solid #866ab3;
+            padding: 15px;
+            border-radius: 4px;
+          }
+          .carbonad-image img {
+            width: 75px;
+            height: 75px;
+          }
+          .carbonad-info {
+            padding-left: 90px;
+          }
+          .carbonad-info .carbonad-title {
+            font-size: 16px;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -315,7 +276,11 @@
           </div>
           <div class="col-md-3 pull-right">
             <div class="create">
+              <% if (locals.author) { %>
+              <a popup href="#create-popup" type="button" class="create-btn btn-block">Create New Group</a>
+              <% } else { %>
               <a popup href="#login-popup" type="button" class="create-btn btn-block">Create New Group</a>
+              <% } %>
             </div>
             <div class="panel panel-default section">
               <div class="panel-heading">Members(500/100)</div>
@@ -329,6 +294,9 @@
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
         <div id="login-popup" class="white-popup-block mfp-hide">
+          You need Login First !
+        </div>
+        <div id="create-popup" class="white-popup-block mfp-hide">
           You need Login First !
         </div>
         <script>
