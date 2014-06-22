@@ -220,11 +220,31 @@ var getRequest = function(req, res) {
     var user = req.session.user;
     Request.find({
         to: user._id
-    }).populate('from').exec(function(err, requests) {
-        console.log(requests);
+    }).populate('from').populate('group').exec(function(err, requests) {
+        var items = [];
+        requests.map(function(request) {
+            var result = {};
+            result.from = {
+                id: request.from.id,
+                _id: request.from._id,
+                name: request.from.name,
+                avatar: request.from.avatar
+            };
+            result.group = {
+                id: request.group && request.group.id,
+                _id: request.group && request.group._id,
+                avatar: request.group && request.group.avatar,
+                name: request.group && request.group.name
+            };
+            result.hasDisposed = request.hasDisposed;
+            result.isPass = request.isPass;
+            result.type = request.type;
+            result.content = request.content;
+            items.push(result);
+        });
         res.send({
             code: 200,
-            requests: requests
+            requests: items
         });
     });
 };

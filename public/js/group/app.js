@@ -80,6 +80,7 @@ config(['$httpProvider', 'app',
         app.author = window.author;
         global.user = window.author;
         app.group = window.group;
+        app.isJoined = window.isJoined;
 
         // qiniu uploader
         window.initQiniuUploader({
@@ -106,5 +107,38 @@ config(['$httpProvider', 'app',
                 $rootScope.$broadcast('putFinish', url);
             }
         });
+
+        // popup
+        global.popup = {
+            show: false,
+            text: '',
+            close: function() {
+                global.popup.show = false;
+            }
+        };
+        $rootScope.$on('popup', function($event, type) {
+            if (type === 'login') {
+                global.popup.text = 'You Need Login First !';
+            }
+            if (type === 'join') {
+                global.popup.text = 'You Need Join Group First !';
+            }
+            global.popup.show = true;
+        });
+        global.join = function() {
+            if (!app.author) {
+                global.popup.text = 'You Need Login First !';
+                global.popup.show = true;
+            } else {
+                global.popup.text = 'Request has sent !';
+                var url = '/api/group/joinRequest';
+                var data = {
+                    id: app.group.id
+                };
+                $http.post(url, data).success(function(data) {
+                    global.popup.show = true;
+                });
+            }
+        };
     }
 ]);

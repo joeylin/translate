@@ -217,7 +217,22 @@ module.exports = function(app) {
         }).populate('creator').populate('admin').exec(function(err, group) {
             app.locals.group = group;
             app.locals.author = user;
-            app.locals.isJoined = user && group.isJoined(user._id);
+            app.locals.isJoined = false;
+            if (user) {
+                if (group.creator._id.toString() == user._id) {
+                    app.locals.isJoined = true;
+                }
+                group.admin.map(function(person, key) {
+                    if (person._id.toString() == user._id) {
+                        app.locals.isJoined = true;
+                    }
+                });
+                group.members.map(function(person, key) {
+                    if (person._id.toString() == user._id) {
+                        app.locals.isJoined = true;
+                    }
+                });
+            }
             res.render('group');
         });
     };

@@ -14,6 +14,10 @@ var RequestSchema = new Schema({
     type: {
         type: String
     },
+    group: {
+        type: ObjectId,
+        ref: 'Group'
+    },
     content: {
         type: String
     },
@@ -35,7 +39,7 @@ var RequestSchema = new Schema({
 });
 
 RequestSchema.path('type').validate(function(type) {
-    var array = ['connect', 'message'];
+    var array = ['connect', 'message', 'group'];
     if (array.indexOf(type) >= 0) {
         return true;
     } else {
@@ -50,6 +54,7 @@ RequestSchema.statics.createNew = function(obj, cb) {
     Request.to = obj.to;
     Request.type = obj.type;
     Request.content = obj.content;
+    Request.group = obj.group;
     Request.save(cb);
 };
 RequestSchema.statics.delete = function(id, cb) {

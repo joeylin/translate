@@ -9,6 +9,10 @@ var GroupSchema = new Schema({
     name: {
         type: String
     },
+    // count: {
+    //     type: ObjectId,
+    //     ref: 'GroupCount'
+    // },
     industry: {
         type: String
     },
@@ -43,13 +47,6 @@ var GroupSchema = new Schema({
         type: Date,
         default: Date.now
     }
-});
-
-GroupSchema.virtual('mCount').get(function() {
-    return this.members.length;
-});
-GroupSchema.virtual('pCount').get(function() {
-    return this.members.length;
 });
 
 // statics

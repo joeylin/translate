@@ -9,6 +9,8 @@ var Request = Models.Request;
 var Group = Models.Group;
 var middleware = require('./middleware');
 
+var async = require('async');
+
 var create = function(req, res) {
     var user = req.session.user;
     var name = req.body.name;
@@ -22,6 +24,47 @@ var create = function(req, res) {
         res.send({
             code: 200,
             groupId: group.id
+        });
+    });
+};
+var joinRequest = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Group.findOne({
+        id: id
+    }, function(err, group) {
+        var items = [];
+        items.push(group.creator);
+        items.concat(group.admin);
+        Request.find({
+            group: group._id,
+            from: user._id,
+            hasDisposed: false,
+        }, function(err, requests) {
+            if (requests) {
+                return res.send({
+                    code: 200
+                });
+            }
+            async.eachSeries(items, function(item, next) {
+                var obj = {
+                    from: user._id,
+                    to: item._id,
+                    type: 'group',
+                    group: group._id
+                };
+                Request.createNew(obj, function(err, request) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    next();
+                });
+            }, function(err) {
+                res.send({
+                    code: 200,
+                    info: 'request has sent'
+                });
+            });
         });
     });
 };
@@ -133,11 +176,13 @@ var getPost = function(req, res) {
                     id: item.user.id
                 };
                 result.liked = false;
-                item.likes.map(function(like) {
-                    if (like.toString() == user._id.toString()) {
-                        result.liked = true;
-                    }
-                });
+                if (user) {
+                    item.likes.map(function(like) {
+                        if (like.toString() == user._id.toString()) {
+                            result.liked = true;
+                        }
+                    });
+                }
                 result.likes = item.likes.length;
                 content.push(result);
             });
@@ -159,6 +204,7 @@ var setBasic = function(req, res) {
     var user = req.session.user;
     var id = req.body.id;
     var name = req.body.name;
+    var industry = req.body.industry;
     var announcement = req.body.announcement;
 
     Group.findOne({
@@ -166,6 +212,7 @@ var setBasic = function(req, res) {
     }, function(err, group) {
         group.name = name;
         group.announcement = announcement;
+        group.industry = industry;
         group.save(function(err) {
             res.send({
                 code: 200
@@ -194,22 +241,52 @@ var getMembers = function(req, res) {
     var id = req.body.id;
     Group.findOne({
         _id: id
-    }).populate('members').exec(function(err, group) {
-        if (group.isAdmin(user._id) || group.isCreator(user._id)) {
-            res.send({
-                code: 200,
-                members: group.members
-            });
-        } else {
-            res.send({
-                code: 404
-            });
-        }
+    }).populate('members').populate('creator').populate('admin').exec(function(err, group) {
+        var creator = {
+            _id: group.creator._id,
+            name: group.creator.name,
+            avatar: group.creator.avatar,
+            post: 12,
+            isCreator: true,
+            isAdmin: false
+        };
+        var admin = [];
+        group.admin.map(function(item, key) {
+            var result = {
+                _id: item._id,
+                name: item.name,
+                avatar: item.avatar,
+                post: 2,
+                isCreator: false,
+                isAdmin: true
+            };
+            admin.push(result);
+        });
+        var members = [];
+        group.members.map(function(item, key) {
+            var result = {
+                _id: item._id,
+                name: item.name,
+                avatar: item.avatar,
+                post: 2,
+                isCreator: false,
+                isAdmin: true
+            };
+            members.push(result);
+        });
+
+        res.send({
+            code: 200,
+            creator: creator,
+            admin: admin,
+            members: members
+        });
     });
 };
 
 module.exports = function(app) {
     app.post('/api/group/create', create);
+    app.post('/api/group/joinRequest', joinRequest);
     app.post('/api/group/join', join);
     app.post('/api/group/quit', quit);
     app.post('/api/group/member/delete', memberDelete);

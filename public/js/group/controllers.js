@@ -6,6 +6,12 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.isOpened = false;
         $scope.open = function() {
+            if (!app.author) {
+                return $scope.$emit('popup', 'login');
+            }
+            if (!app.isJoined) {
+                return $scope.$emit('popup', 'join');
+            }
             $scope.isOpened = !$scope.isOpened;
         };
         $scope.pager = {
@@ -81,6 +87,9 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.vm = {};
         $scope.vm.toggleLike = function(share) {
             var url;
+            if (!app.author) {
+                return false;
+            }
             if (share.liked) {
                 url = '/api/share/unlike';
                 $http.post(url, {
@@ -188,10 +197,12 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.basic.announcement = app.group.announcement;
 
         $scope.clickMember = function() {
-            if ($scope.current === 'c') {
+            if ($scope.current === 'm') {
                 return false;
+            } else {
+                $scope.current = 'm';
+                getMembers();
             }
-            getMembers();
         };
         // basic
         $scope.isSuccess = false;
@@ -317,37 +328,41 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             });
         };
 
-        var MAX_NUM = 10;
+        // var MAX_NUM = 10;
 
-        function rand(min, max) {
-            return min + Math.round(Math.random() * (max - min));
-        }
-        $scope.creator = {
-            _id: 'xxxx',
-            name: 'joeylin',
-            post: 233948,
-            isCreator: true,
-            isAdmin: false,
-        };
-        $scope.admin = [{
-            name: 'laolei',
-            post: 233948,
-            isCreator: false,
-            isAdmin: true,
-        }, {
-            name: 'howell',
-            post: 233948,
-            isCreator: false,
-            isAdmin: true,
-        }];
-        for (var i = 0; i < MAX_NUM; ++i) {
-            var id = rand(0, MAX_NUM);
-            $scope.members.push({
-                name: 'Name' + id, // 字符串类型
-                post: rand(0, 100 * 1000 * 1000), // 数字类型
-                isCreator: false,
-                isAdmin: false
-            });
-        }
+        // function rand(min, max) {
+        //     return min + Math.round(Math.random() * (max - min));
+        // }
+        // $scope.creator = {
+        //     _id: 'xxxx',
+        //     name: 'joeylin',
+        //     post: 233948,
+        //     isCreator: true,
+        //     isAdmin: false,
+        //     avatar: '/public/imgs/angularjs.png'
+        // };
+        // $scope.admin = [{
+        //     name: 'laolei',
+        //     post: 233948,
+        //     isCreator: false,
+        //     isAdmin: true,
+        //     avatar: '/public/imgs/angularjs.png'
+        // }, {
+        //     name: 'howell',
+        //     post: 233948,
+        //     isCreator: false,
+        //     isAdmin: true,
+        //     avatar: '/public/imgs/angularjs.png'
+        // }];
+        // for (var i = 0; i < MAX_NUM; ++i) {
+        //     var id = rand(0, MAX_NUM);
+        //     $scope.members.push({
+        //         name: 'Name' + id, // 字符串类型
+        //         post: rand(0, 100 * 1000 * 1000), // 数字类型
+        //         isCreator: false,
+        //         isAdmin: false,
+        //         avatar: '/public/imgs/angularjs.png'
+        //     });
+        // }
     }
 ]);

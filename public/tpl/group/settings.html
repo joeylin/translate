@@ -2,8 +2,8 @@
   <ul class="nav nav-tabs pull-left">
       <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>Settings</li>
       <li ng-class="{active: current === 'b'}" ng-click="current = 'b'"><a href="#">Basic</a></li>
-      <li ng-class="{active: current === 'm'}" ng-click="current = 'm'"><a href="#">Members</a></li>
-      <li class="pull-right"><div><a ng-href="/group/{{groupId}}" class="btn btn-primary btn-sm">Back Group</a></div></li>
+      <li ng-class="{active: current === 'm'}" ng-click="clickMember()"><a href="#">Members</a></li>
+      <li class="pull-right"><div><a href="/group/{{groupId}}" class="btn btn-primary btn-sm" target="_self">Back Group</a></div></li>
   </ul>
 </div>
 <div class="group-settings-basic row" ng-if="current === 'b'" ng-cloak>
@@ -89,9 +89,9 @@
 				  </tr>
 				  <tr ng-repeat="item in [creator].concat(admin,members)|filter:vm.filter|orderBy:vm.sort.column:vm.sort.direction===-1|paging:vm.page.index:vm.page.size">
 				    <td>
-				      <img src="/public/imgs/angularjs.png">
+				      <img ng-src="{{item.avatar}}">
 				      <span>{{item.name}}</span>
-				      <i class="fa fa-fw fa-user" ng-class="{item.isAdmin:'blue',item.isCreator:'red'}" ng-show="item.isAdmin || item.isCreator"></i>
+				      <i class="fa fa-fw fa-user" ng-class="{'admin':item.isAdmin,'creator':item.isCreator}" ng-show="item.isAdmin || item.isCreator"></i>
 				    </td>
 				    <td class="text-right">
 				      <span>{{item.post}}</span>

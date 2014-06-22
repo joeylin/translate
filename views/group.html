@@ -88,7 +88,7 @@
             font-size: 18px;
           }
           .reply-container {
-            margin: 15px 0 0 0;
+            margin: 15px 15px 0 0;
             padding: 15px;
             border: 1px solid #e3e3e3;
           }
@@ -245,6 +245,12 @@
             margin-right: 15px;
             color: #5cb85c;
           }
+          .displayNone {
+            display: none;
+          }
+          .members-items {
+            padding-left: 75px;
+          }
 
           /* upload */
           .basic-settings-avatar {
@@ -282,7 +288,9 @@
             margin-top: 15px;
           }
           .section strong {
-            padding-right: 15px;
+            width: 53px;
+            text-align: right;
+            display: inline-block;
           }
           .group-add-content {
             position: absolute;
@@ -351,6 +359,12 @@
             margin-top: -15px;
             display: none;
           }
+          .fa.creator {
+            color: #f56954;
+          }
+          .fa.admin {
+            color: #367fa9;
+          }
           /* reset AdminLTE.css */
           .pagination {
             margin-top: 0;
@@ -373,15 +387,33 @@
         <script type="text/javascript">
           window.author = null;
           window.group = null;
+          window.isJoined = null;
           <% if (locals.author) { %>
             window.author = <%- JSON.stringify(locals.author) %>;
           <% } %>
           <% if (locals.group) { %>
             window.group = <%- JSON.stringify(locals.group) %>;
           <% } %>
+          <% if (locals.isJoined) { %>
+            window.isJoined = <%= locals.isJoined %>;
+          <% } %>
         </script>    
     </head>
     <body>
+        <div class="mfp-bg mfp-ready" ng-cloak ng-if="global.popup.show"></div>
+        <div class="mfp-wrap mfp-close-btn-in mfp-auto-cursor mfp-ready" tabindex="-1" style="overflow-y: auto; overflow-x: hidden;" ng-cloak ng-if="global.popup.show">
+          <div class="mfp-container mfp-s-ready mfp-inline-holder">
+            <div class="mfp-content">
+              <div id="login-popup" class="white-popup-block">
+                {{global.popup.text}}
+                <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
+              </div>
+            </div>
+            <div class="mfp-preloader">Loading...</div>
+          </div>
+        </div>
+
+        <!-- body content -->
         <nav class="navbar navbar-inverse" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -397,7 +429,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="/login?re=/group/">Login</a>
+                      <a class="dropdown-toggle" href="/login?re=/group/<%= locals.group.id %>" target="_self">Login</a>
                   </li>
                   <% } else { %>
                   <li class="dropdown user user-menu">
@@ -461,13 +493,13 @@
             </div>
             <div>
               <% if (locals.author && locals.isJoined) { %>
-              <a ng-href="settings" type="button" class="group-op-btn btn-block">settings</a>
+              <a ng-href="/group/<%= locals.group.id %>/settings" type="button" class="group-op-btn btn-block">settings</a>
               <% } %>
               <% if (locals.author && !locals.isJoined) { %>
-              <a popup href="#join-popup" type="button" class="group-op-btn btn-block">Join this group</a>
+              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">Join this group</a>
               <% } %>
               <% if (!locals.author) { %>
-              <a popup href="#login-popup" type="button" class="group-op-btn btn-block">Join this group</a>
+              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">Join this group</a>
               <% } %>
             </div>
           </div>
@@ -482,7 +514,29 @@
             <div class="panel panel-default section">
               <div class="panel-heading">Members(50/100)</div>
               <div class="panel-body">
-                <div><strong>Creator :</strong><a href="/profile/<%= locals.group.creator.id %>" target="_self"><%= locals.group.creator.name %></a></div>
+                <div class="clearfix">
+                  <div class="pull-left">
+                    <strong>Creator :</strong>
+                  </div>
+                  <div class="members-items">
+                    <div><a href="/profile/<%= locals.group.creator.id %>" target="_self"><%= locals.group.creator.name %></a></div>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <div class="pull-left">
+                    <strong>Admin :</strong>
+                  </div>
+                  <div class="members-items">
+                    <% locals.group.admin.forEach(function(item,key){ %>
+                    <div>
+                      <a href="/profile/<%= item.id %>" target="_self"><%= item.name %></a>
+                    </div>
+                    <% }) %> 
+                    <% if (locals.group.admin.length === 0) { %>
+                    <div> no set any admin yet !</div>
+                    <% } %> 
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -490,12 +544,6 @@
         <footer>
           <p class="pull-right">©2014 Joeylin 331547274@qq.com</p>
         </footer>
-        <div id="login-popup" class="white-popup-block mfp-hide">
-          You need Login First !
-        </div>
-        <div id="join-popup" class="white-popup-block mfp-hide">
-          Request has sent !
-        </div>
         <script>
           reserveLoad(
             '/public/bower_components/jquery/jquery.js',
@@ -515,7 +563,6 @@
             '/public/js/lib/utf8.js',
             '/public/js/lib/qiniu.uploader.js',
             '/public/js/upload.js',
-            '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/lib/angular-ui.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
