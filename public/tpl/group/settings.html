@@ -41,6 +41,14 @@
 				    </div>
 				</div>
 			</div>
+			<hr>
+			<div class="row">
+				<div class="col-xs-7">
+					<div class="clearfix">
+				      <a class="btn btn-primary pull-right" role="button">Quit</a>
+				    </div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -48,8 +56,8 @@
 	<div class="panel col-md-12">
 		<div class="panel-body">
 			<div class="clearfix" style="margin-bottom: 5px;">
-				<span class="pull-right" style="padding-right:5px;"><a href="#"><i class="fa fa-fw fa-refresh"></i>refresh</a></span>
-				<span class="pull-right" style="padding-right:15px;"><strong>total</strong> : 100</span>
+				<span class="pull-right" style="padding-right:5px;" ng-click="refresh()"><a href="#"><i class="fa fa-fw fa-refresh"></i>refresh</a></span>
+				<span class="pull-right" style="padding-right:15px;"><strong>total</strong> : {{admin.length + members.length + 1}}</span>
 			</div>
 			<table class="table table-bordered table-hover">
 			  <thead>
@@ -68,23 +76,23 @@
 				    <td><input type="number" ng-model="vm.filter.post" class="form-control"/></td>
 				    <td></td>
 				  </tr>
-				  <tr ng-repeat="item in vm.items|filter:vm.filter|orderBy:vm.sort.column:vm.sort.direction===-1|paging:vm.page.index:vm.page.size">
+				  <tr ng-repeat="item in [creator].concat(admin,members)|filter:vm.filter|orderBy:vm.sort.column:vm.sort.direction===-1|paging:vm.page.index:vm.page.size">
 				    <td>
 				      <img src="/public/imgs/angularjs.png">
 				      <span>{{item.name}}</span>
-				      <i class="fa fa-fw fa-user" ng-class="{isAdmin:'blue',isCreator:'red'}" ng-show="item.isAdmin || item.isCreator"></i>
+				      <i class="fa fa-fw fa-user" ng-class="{item.isAdmin:'blue',item.isCreator:'red'}" ng-show="item.isAdmin || item.isCreator"></i>
 				    </td>
 				    <td class="text-right">
 				      <span>{{item.post}}</span>
 				    </td>
 				    <td class="text-center">
-				      <span class="btn btn-primary btn-xs" title="remove">
+				      <span class="btn btn-primary btn-xs" title="remove" ng-show="!item.isCreator">
 				      	<i class="fa fa-fw fa-trash-o"></i>
 				      </span>
-				      <span class="btn btn-primary btn-xs" title="admin" ng-show="!isAdmin && !isCreator">
+				      <span class="btn btn-primary btn-xs" title="admin" ng-show="!item.isAdmin && !item.isCreator">
 				      	<i class="fa fa-fw fa-user"></i>
 				      </span>
-				      <span class="btn btn-primary btn-xs" title="admin" ng-show="isAdmin">
+				      <span class="btn btn-primary btn-xs" title="admin" ng-show="item.isAdmin">
 				      	<i class="fa fa-fw fa-sign-out"></i>
 				      </span>
 				    </td>
@@ -94,11 +102,11 @@
 			<div class="row">
 			  <div class="col-md-3">
 			    <select ng-model="vm.page.size" class="form-control" title="每页条目数"
-			            ng-options="pageSize for pageSize in [5, 20, 100]">
+			            ng-options="pageSize for pageSize in [20, 50, 100]">
 			    </select>
 			  </div>
 			  <div class="col-md-9">
-			    <pagination total-items="vm.items|filter:vm.filter|size" ng-model="vm.page.index" max-size="5" items-per-page="vm.page.size" class="pagination-sm pull-right" boundary-links="true"></pagination>
+			    <pagination total-items="[creator].concat(admin,members)|filter:vm.filter|size" ng-model="vm.page.index" max-size="5" items-per-page="vm.page.size" class="pagination-sm pull-right" boundary-links="true"></pagination>
 			  </div>
 			</div>
 		</div>

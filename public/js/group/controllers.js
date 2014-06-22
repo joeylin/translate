@@ -172,6 +172,14 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 ]).controller('settingsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.current = 'b';
+        $scope.members = [];
+        $scope.admin = [];
+        $scope.clickMember = function() {
+            if ($scope.current === 'c') {
+                return false;
+            }
+            getMembers();
+        };
         // basic
         $scope.name = '';
         $scope.industry = '';
@@ -194,13 +202,12 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
         // members
         var vm = $scope.vm = {};
-        vm.items = [];
         vm.page = {
           size: 20,
           index: 1
         };
         vm.sort = {
-          column: 'id',
+          column: '',
           direction: -1,
           toggle: function(column) {
             if (column.sortable === false)
@@ -238,11 +245,14 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 id: app.group._id
             };
             $http.post(url,data).success(function(data) {
-                vm.items = data.content;
+                $scope.creator = data.creator;
+                $scope.admin = data.admin;
+                $scope.members = data.members;
             });
         }
         $scope.refresh = function() {
             getMembers();
+            vm.sort.column = '';
         };
         vm.deleteMember = function(item) {
             var url = '/api/group/member/delete';
@@ -263,23 +273,54 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             };
             $http.post(url,data).success(function(data) {
                 item.isAdmin = false;
+                vm.items = sort(vm.items);
+            });
+        };
+        vm.addAdmin = function(item) {
+            var url = '/api/group/admin/add';
+            var data = {
+                id: app.group._id,
+                adminId: item._id
+            };
+            $http.post(url,data).success(function(data) {
+                item.isAdmin = true;
+                var index = $scope.members.indexOf(item);
+                $scope.members.splice(index, 1);
+                $scope.admin.push(item);
             });
         };
 
         
-        // var MAX_NUM = 10 * 1000;
-        // function rand(min, max) {
-        //   return min + Math.round(Math.random() * (max-min));
-        // }
-        // for (var i = 0; i < MAX_NUM; ++i) {
-        //   var id = rand(0, MAX_NUM);
-        //   vm.items.push({
-        //     name: 'Name' + id, // 字符串类型
-        //     post: rand(0, 100 * 1000 * 1000), // 数字类型
-        //     isCreator: id % 8 === 1 ? true:false,
-        //     isAdmin: id % 9 === 2 ? true: false,
-        //     summary: '这是一个测试' + i
-        //   });
-        // }
+        var MAX_NUM = 10;
+        function rand(min, max) {
+          return min + Math.round(Math.random() * (max-min));
+        }
+        $scope.creator = {
+            _id: 'xxxx',
+            name: 'joeylin',
+            post: 233948,
+            isCreator: true,
+            isAdmin: false,
+        };
+        $scope.admin = [{
+            name: 'laolei',
+            post: 233948,
+            isCreator: false,
+            isAdmin: true,
+        }, {
+            name: 'howell',
+            post: 233948,
+            isCreator: false,
+            isAdmin: true,
+        }]
+        for (var i = 0; i < MAX_NUM; ++i) {
+          var id = rand(0, MAX_NUM);
+          $scope.members.push({
+            name: 'Name' + id, // 字符串类型
+            post: rand(0, 100 * 1000 * 1000), // 数字类型
+            isCreator: false,
+            isAdmin: false
+          });
+        }
     }
 ]);

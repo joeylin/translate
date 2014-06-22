@@ -53,9 +53,6 @@ GroupSchema.statics.createNew = function(obj, cb) {
     group.announcement = obj.announcement;
     group.avatar = obj.avatar;
     group.industry = obj.industry;
-    if (obj.creator) {
-        group.members.push(obj.creator);
-    }
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('group', function(err, doc) {
         group.id = doc.currentId;
@@ -100,16 +97,16 @@ GroupSchema.statics.quit = function(id, userId, cb) {
             }
         });
         if (index === -1) {
+            if (group.isAdmin(userId)) {
+                var adminIndex = group.admin.indexOf(userId);
+                group.admin.splice(adminIndex, 1);
+                return group.save(cb);
+            }
+            if (group.isCreator(userId)) {
+                group.creator = '';
+                return group.save(cb);
+            }
             return cb(null, null);
-        } else if (group.isAdmin(userId)) {
-            var adminIndex = group.admin.indexOf(userId);
-            group.admin.splice(adminIndex, 1);
-            group.members.splice(index, 1);
-            group.save(cb);
-        } else if (group.isCreator(userId)) {
-            group.creator = '';
-            group.members.splice(index, 1);
-            group.save(cb);
         } else {
             group.members.splice(index, 1);
             group.save(cb);
@@ -167,15 +164,18 @@ GroupSchema.methods.deleteAdmin = function(userId, cb) {
     if (this.isAdmin(userId)) {
         var index = this.admin.indexOf(userId);
         this.admin.splice(index, 1);
+        this.members.push(userId);
         this.save(cb);
     } else {
         cb(null, null);
     }
 };
 GroupSchema.methods.addAdmin = function(userId, cb) {
-    if (this.isAdmin(userId)) {
+    if (this.isAdmin(userId) && !this.isJoined(userId)) {
         cb(null, null);
     } else {
+        var index = this.members.indexOf(userId);
+        this.members.splice(index,1);
         this.admin.push(userId);
         this.save(cb);
     }

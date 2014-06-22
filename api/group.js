@@ -81,6 +81,12 @@ var adminAdd = function(req, res) {
     Group.findOne({
         _id: id
     }, function(err, group) {
+        if (grou.admin.length > 5) {
+            return res.send({
+                code: 404,
+                info: 'bound of limit'
+            });
+        }
         group.addAdmin(adminId, function(err, group) {
             res.send({
                 code: 200

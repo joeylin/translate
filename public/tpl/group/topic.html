@@ -1,7 +1,7 @@
-<div class="group-topic-add clearfix">
-  <a class="btn btn-primary btn-sm" href="#"> <i class="fa fa-fw fa-plus"></i> add your view</a>
+<div class="group-topic-add row clearfix">
+  <a class="btn btn-primary" href="#"> <i class="fa fa-fw fa-plus"></i> add your view</a>
 </div>
-<div class="well custom-well" style="display:none;">
+<div class="well row custom-well" style="display:none;">
     <div class="form-group" style="position:relative;">
         <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="newShare"></textarea>
         <div class="share-success" id="submit-success">
@@ -13,7 +13,7 @@
       <a class="btn btn-primary pull-right" role="button" ng-click="submit()" ng-class="{'default': newShare === ''}">submit</a>
     </div>
 </div>
-<div class="panel news">
+<div class="panel news row">
   <div class="panel-body" ng-cloak>
     <div class="media" ng-repeat-start="share in shareList">
       <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
