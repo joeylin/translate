@@ -214,6 +214,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 announcement: $scope.basic.announcement
             };
             $http.post(url, data).success(function(data) {
+                app.group.announcement = $scope.basic.announcement;
                 $scope.isSuccess = true;
                 app.timeout(function() {
                     $scope.isSuccess = false;

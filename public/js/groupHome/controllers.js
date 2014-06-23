@@ -74,7 +74,7 @@ controller('searchCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             };
             $http.post(url, data).success(function(data) {
                 $.magnificPopup.close();
-                $location.path('/group/' + data.groupId + '/settings');
+                window.location.href = '/group/' + data.groupId + '/settings';
             });
         };
         $scope.change = function() {

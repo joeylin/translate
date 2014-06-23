@@ -186,19 +186,28 @@ module.exports = function(app) {
     };
     var getGroupHome = function(req, res) {
         var author = req.session && req.session.user;
-        User.findOne({
-            _id: author._id
-        }, function(err, user) {
+        if (!author) {
             Group.getLastest(function(err, lastest) {
                 Group.getPopular(function(err, popular) {
                     app.locals.popular = popular || [];
                     app.locals.newGroup = lastest || [];
-                    app.locals.author = user;
                     res.render('group-home');
                 });
             });
-        });
-
+        } else {
+            User.findOne({
+                _id: author._id
+            }, function(err, user) {
+                Group.getLastest(function(err, lastest) {
+                    Group.getPopular(function(err, popular) {
+                        app.locals.popular = popular || [];
+                        app.locals.newGroup = lastest || [];
+                        app.locals.author = user;
+                        res.render('group-home');
+                    });
+                });
+            });
+        }
     };
     var getGroup = function(req, res) {
         var user = req.session.user;
