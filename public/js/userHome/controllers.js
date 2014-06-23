@@ -54,6 +54,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.total = data.count;
             });
         };
+        var getUserList = function() {
+            var url = '/api/user/userList';
+            $http.get(url).success(function(data) {
+                var userList = data.userList || [];
+                userList.push(app.user.name);
+                $scope.userList = userList;
+            });
+        };
         $scope.next = function() {
             if (!$scope.pager.hasNext) {
                 return false;
@@ -141,7 +149,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.vm.reply = function(comment) {
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
-                comment.newComment = 'reply to ' + comment.user.name + ' : ';
+                comment.newComment = '@' + comment.user.name + ' ';
             }
         };
         $scope.vm.submitInlineComment = function(comment, share) {
@@ -168,6 +176,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 
         // init
         getTrend();
+        getUserList();
     }
 ]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -184,7 +193,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 ]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.requests = [];
-        var checkUrl = '/api/connect/check';
+
         var dispose = function() {
             $rootScope.current.request -= 1;
         };
@@ -194,9 +203,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 value: true,
                 requestId: request._id
             };
+            var checkUrl = '/api/connect/check';
             $http.post(checkUrl, params).success(function(data) {
                 request.hasDisposed = true;
-                dispose();
+                request.isPass = true;
+                $rootScope.request.connect -= 1;
             });
         };
         $scope.vm.reject = function(request) {
@@ -204,12 +215,81 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 value: false,
                 requestId: request._id
             };
+            var checkUrl = '/api/connect/check';
             $http.post(checkUrl, params).success(function(data) {
                 request.hasDisposed = true;
-                dispose();
+                request.isPass = false;
+                $rootScope.request.connect -= 1;
             });
         };
-        var url = '/api/notify/request';
+        // group
+        $scope.vm.groupAccept = function(request) {
+            var params = {
+                value: true,
+                requestId: request._id
+            };
+            var checkUrl = '/api/group/checkRequest';
+            $http.post(checkUrl, params).success(function(data) {
+                request.hasDisposed = true;
+                request.isPass = true;
+                $rootScope.request.group -= 1;
+            });
+        };
+        $scope.vm.groupReject = function(request) {
+            var params = {
+                value: false,
+                requestId: request._id
+            };
+            var checkUrl = '/api/group/checkRequest';
+            $http.post(checkUrl, params).success(function(data) {
+                request.hasDisposed = true;
+                request.isPass = false;
+                $rootScope.request.group -= 1;
+            });
+        };
+
+        // comment reply
+        $scope.vm.replyView = function(request) {
+            if (request.hasDisposed) {
+                return false;
+            }
+            var data = {
+                groupId: request.group
+            };
+            var url = '/api/notify/reply/read';
+            $http.post(url, function(data) {
+                request.hasDisposed = true;
+                $rootScope.request.reply -= 1;
+            });
+        };
+        $scope.vm.commentView = function(request) {
+            if (request.hasDisposed) {
+                return false;
+            }
+            var data = {
+                groupId: request.group
+            };
+            var url = '/api/notify/reply/read';
+            $http.post(url, function(data) {
+                request.hasDisposed = true;
+                $rootScope.request.comment -= 1;
+            });
+        };
+
+        var url;
+        if ($rootScope.current.path === 'connect') {
+            url = '/api/notify/connect';
+        }
+        if ($rootScope.current.path === 'group') {
+            url = '/api/notify/group';
+        }
+        if ($rootScope.current.path === 'reply') {
+            url = '/api/notify/reply';
+        }
+        if ($rootScope.current.path === 'comment') {
+            url = '/api/notify/comment';
+        }
+
         $http.get(url).success(function(data) {
             $scope.requests = data.requests;
         });
@@ -300,23 +380,23 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 addFilter(key, value);
             }
         };
-        
+
 
         // connect relative
         resetRelative();
         $scope.toggleMate = function() {
             if ($scope.isClassmate) {
                 var index = $scope.relative.indexOf('classmate');
-                $scope.relative.splice(index,1);
+                $scope.relative.splice(index, 1);
             } else {
                 $scope.relative.push('classmate');
             }
             $scope.isClassmate = !$scope.isClassmate;
-        }; 
+        };
         $scope.toggleFellow = function() {
             if ($scope.isFellow) {
                 var index = $scope.relative.indexOf('fellow');
-                $scope.relative.splice(index,1);
+                $scope.relative.splice(index, 1);
             } else {
                 $scope.relative.push('fellow');
             }
@@ -325,7 +405,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.toggleFriend = function() {
             if ($scope.isFriend) {
                 var index = $scope.relative.indexOf('friend');
-                $scope.relative.splice(index,1);
+                $scope.relative.splice(index, 1);
             } else {
                 $scope.relative.push('friend');
             }
@@ -334,12 +414,13 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.toggleInterest = function() {
             if ($scope.isInterest) {
                 var index = $scope.relative.indexOf('interest');
-                $scope.relative.splice(index,1);
+                $scope.relative.splice(index, 1);
             } else {
                 $scope.relative.push('interest');
             }
             $scope.isInterest = !$scope.isInterest;
         }
+
         function resetRelative() {
             $scope.isClassmate = false;
             $scope.isFellow = false;
@@ -347,14 +428,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $scope.isInterest = false;
             $scope.relative = [];
         }
-        $scope.connectUser = null; 
+        $scope.connectUser = null;
         $scope.setRelative = function(user) {
             if (user.isConnected) {
                 return false;
             }
             resetRelative();
             $scope.connectUser = user;
-        };          
+        };
         $scope.connect = function() {
             if ($scope.relative.length === 0) {
                 return false;
@@ -368,7 +449,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.connectUser.isConnected = true;
                 $.magnificPopup.close();
             });
-        }; 
+        };
         // default config
         $scope.years = '0-2';
     }

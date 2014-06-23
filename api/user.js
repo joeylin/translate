@@ -201,53 +201,6 @@ var disconnect = function(req, res) {
         });
     });
 };
-var getNotify = function(req, res) {
-    var user = req.session.user;
-    Request.find({
-        to: user._id,
-        hasDisposed: false
-    }, function(err, request) {
-        res.send({
-            code: 200,
-            notify: {
-                request: request.length,
-                message: 0
-            }
-        });
-    });
-};
-var getRequest = function(req, res) {
-    var user = req.session.user;
-    Request.find({
-        to: user._id
-    }).populate('from').populate('group').exec(function(err, requests) {
-        var items = [];
-        requests.map(function(request) {
-            var result = {};
-            result.from = {
-                id: request.from.id,
-                _id: request.from._id,
-                name: request.from.name,
-                avatar: request.from.avatar
-            };
-            result.group = {
-                id: request.group && request.group.id,
-                _id: request.group && request.group._id,
-                avatar: request.group && request.group.avatar,
-                name: request.group && request.group.name
-            };
-            result.hasDisposed = request.hasDisposed;
-            result.isPass = request.isPass;
-            result.type = request.type;
-            result.content = request.content;
-            items.push(result);
-        });
-        res.send({
-            code: 200,
-            requests: items
-        });
-    });
-};
 var getShare = function(req, res) {
     var user = req.session.user;
     var connects = user.connects;
@@ -752,6 +705,142 @@ var getUserCard = function(req, res) {
     });
 };
 
+var getNotifyCount = function(req, res) {
+    var user = req.session.user;
+    Request.find({
+        to: user._id,
+        hasDisposed: false
+    }, function(err, requests) {
+        var comment = [];
+        var reply = [];
+        var group = [];
+        var connect = [];
+        requests.map(function(request) {
+            if (request.type === 'comment') {
+                comment.push(request);
+            }
+            if (request.type === 'group') {
+                group.push(request);
+            }
+            if (request.type === 'reply') {
+                reply.push(request);
+            }
+            if (request.type === 'connect') {
+                reply.push(request);
+            }
+        });
+        res.send({
+            code: 200,
+            comment: comment.length,
+            reply: reply.length,
+            group: group.length,
+            connect: connect.length
+        });
+    });
+};
+var getRequest = function(req, res) {
+    var user = req.session.user;
+    var op = req.params.op;
+    if (['group', 'reply', 'comment', 'connect'].indexOf(op) < 0) {
+        return res.send({
+            code: 404,
+            info: 'invalide operation'
+        });
+    }
+    Request.find({
+        to: user._id,
+        type: op
+    }).populate('from').populate('group').exec(function(err, requests) {
+        var items = [];
+        requests.map(function(request) {
+            var result = {};
+            result.from = {
+                id: request.from.id,
+                _id: request.from._id,
+                name: request.from.name,
+                avatar: request.from.avatar
+            };
+            result.group = {
+                id: request.group && request.group.id,
+                _id: request.group && request.group._id,
+                avatar: request.group && request.group.avatar,
+                name: request.group && request.group.name
+            };
+            result._id = request._id;
+            result.hasDisposed = request.hasDisposed;
+            result.isPass = request.isPass;
+            result.type = request.type;
+            result.content = request.content;
+            items.push(result);
+        });
+        res.send({
+            code: 200,
+            requests: items
+        });
+    });
+};
+var readRequest = function(req, res) {
+    var user = req.session.user;
+    var op = req.params.op;
+    var groupId = req.body.groupId;
+    if (['reply', 'comment'].indexOf(op) < 0) {
+        return res.send({
+            code: 404,
+            info: 'invalide operation'
+        });
+    }
+    Request.findOne({
+        to: user._id,
+        _id: groupId,
+        type: op,
+        hasDisposed: false
+    }, function(err, request) {
+        if (!request) {
+            return res.send({
+                code: 200
+            });
+        }
+        request.hasDisposed = true;
+        request.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+
+var getConnectList = function(req, res) {
+    var user = req.session.user;
+    if (!user) {
+        return res.send({
+            code: 404
+        });
+    }
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        var lists = [];
+        user.connects.map(function(item) {
+            lists.push(item.user);
+        });
+        User.find({
+            _id: {
+                $in: lists
+            }
+        }).select('name').exec(function(err, users) {
+            var userList = [];
+            users.map(function(item) {
+                userList.push(item.name);
+            });
+            res.send({
+                code: 200,
+                userList: userList
+            });
+        });
+
+    });
+};
+
 module.exports = function(app) {
     app.post('/api/user/register', create);
     app.post('/api/user/login', login);
@@ -771,9 +860,9 @@ module.exports = function(app) {
     app.get('/api/user/companyActive', getCompanyActive);
 
     // notify
-    app.get('/api/notify', getNotify);
-    app.get('/api/notify/request', getRequest);
-    // app.post('/api/notify/read', readRequest);
+    app.get('/api/notify', getNotifyCount);
+    app.get('/api/notify/:op', getRequest);
+    app.post('/api/notify/:op/read', readRequest);
 
     // connect
     app.post('/api/connect/send', sendNotify);
@@ -785,8 +874,9 @@ module.exports = function(app) {
     app.post('/api/message/send', sendMessage);
     app.post('/api/message/read', readMessage);
 
-    // user card
+    // user operation
     app.get('/api/user/:id/card', getUserCard);
+    app.get('/api/user/userList', getConnectList);
 };
 
 // check request status

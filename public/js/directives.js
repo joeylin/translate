@@ -206,14 +206,25 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
     function(mdParse, sanitize, pretty, isVisible, $timeout) {
         return {
             restrict: 'AE',
-            scope: {
-                config: '='
-            },
             link: function(scope, element, attrs, ngModel) {
                 $(element).magnificPopup({
                     type: 'inline',
                     closeOnBgClick: false,
                     midClick: true
+                });
+            }
+        };
+    }
+]).directive('atwho', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
+    function(mdParse, sanitize, pretty, isVisible, $timeout) {
+        return {
+            restrict: 'AE',
+            link: function(scope, element, attrs, ngModel) {
+                scope.$watch(attrs.wholist, function(value) {
+                    $(element).atwho({
+                        at: '@',
+                        data: value
+                    });
                 });
             }
         };

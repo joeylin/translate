@@ -1,43 +1,88 @@
 <div class="profile-body col-md-9">
-  <div class="media" ng-repeat="request in requests">
-    <a class="pull-left" ng-href="/profile/{{request.from.id}}" target="_self">
-      <img class="media-object" alt="64x64" ng-src="{{request.from.avatar}}" style="width: 64px; height: 64px;">
-    </a>
-    <div class="media-body" ng-if="request.type === 'connect'">
-      <h4 class="media-heading">{{request.from.name}}</h4>
-      <div class="row">
-        <div class="col-md-9">
-          <div>send you a connect. check as {{request.content}}</div>
-        </div>
-        <div class="col-md-3 clearfix">
-          <div class="pull-right" ng-show="!request.hasDisposed">
-            <a class="btn btn-primary" role="button" ng-click="vm.accept(request)">accept</a>
-            <a class="btn btn-primary" role="button" ng-click="vm.reject(request)">reject</a>
+  <div class="panel search-result">
+    <div class="panel-body">
+      <div class="media" ng-repeat="request in requests">
+        <a class="pull-left" ng-href="/profile/{{request.from.id}}" target="_self">
+          <img class="media-object" alt="48x48" ng-src="{{request.from.avatar}}" style="width: 48px; height: 48px;">
+        </a>
+        <div class="media-body" ng-if="request.type === 'connect'">
+          <h4 class="media-heading">{{request.from.name}}</h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>send you a connect. check as <span style="color:#428bca;">{{request.content}}</span></div>
+            </div>
+            <div class="col-md-3 clearfix">
+              <div class="pull-right" ng-show="!request.hasDisposed">
+                <a class="btn btn-primary btn-xs request-pass" role="button" ng-click="vm.accept(request)"><i class="fa fa-fw fa-check"></i></a>
+                <a class="btn btn-danger btn-xs" role="button" ng-click="vm.reject(request)"><i class="fa fa-fw fa-times"></i></a>
+              </div>
+              <div class="pull-right" ng-show="request.hasDisposed && request.isPass">
+                <span class="btn request-info" role="button">Agree and Disposed</span>
+              </div>
+              <div class="pull-right" ng-show="request.hasDisposed && !request.isPass">
+                <span class="btn request-info" role="button">Disagree and Disposed</span>
+              </div>
+            </div>
           </div>
-          <div class="pull-right" ng-show="request.hasDisposed">
-            <a class="btn btn-default" role="button">disposed</a>
+        </div>
+        <div class="media-body" ng-if="request.type === 'group'">
+          <h4 class="media-heading"><a ng-href="/profile/{{request.from.id}}" target="_self">{{request.from.name}}</a> apply for joining <a href="/group/{{request.group.id}}" target="_self">{{request.group.name}}</a></h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>send you a connect. check as {{request.content}}</div>
+            </div>
+            <div class="col-md-3 clearfix">
+              <div class="pull-right" ng-show="!request.hasDisposed">
+                <a class="btn btn-primary" role="button" ng-click="vm.accept(request)">accept</a>
+                <a class="btn btn-primary" role="button" ng-click="vm.reject(request)">reject</a>
+              </div>
+              <div class="pull-right" ng-show="request.hasDisposed">
+                <a class="btn btn-default" role="button">disposed</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="media-body" ng-if="request.type === 'reply'">
+          <h4 class="media-heading"><a ng-href="/profile/{{request.from.id}}" target="_self">{{request.from.name}}</a> apply for joining <a href="/group/{{request.group.id}}" target="_self">{{request.group.name}}</a></h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>send you a connect. check as {{request.content}}</div>
+            </div>
+            <div class="col-md-3 clearfix">
+              <div class="pull-right" ng-show="!request.hasDisposed">
+                <a class="btn btn-primary" role="button" ng-click="vm.accept(request)">accept</a>
+                <a class="btn btn-primary" role="button" ng-click="vm.reject(request)">reject</a>
+              </div>
+              <div class="pull-right" ng-show="request.hasDisposed">
+                <a class="btn btn-default" role="button">disposed</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="media-body" ng-if="request.type === 'comment'">
+          <h4 class="media-heading"><a ng-href="/profile/{{request.from.id}}" target="_self">{{request.from.name}}</a> apply for joining <a href="/group/{{request.group.id}}" target="_self">{{request.group.name}}</a></h4>
+          <div class="row">
+            <div class="col-md-9">
+              <div>send you a connect. check as {{request.content}}</div>
+            </div>
+            <div class="col-md-3 clearfix">
+              <div class="pull-right" ng-show="!request.hasDisposed">
+                <a class="btn btn-primary" role="button" ng-click="vm.accept(request)">accept</a>
+                <a class="btn btn-primary" role="button" ng-click="vm.reject(request)">reject</a>
+              </div>
+              <div class="pull-right" ng-show="request.hasDisposed">
+                <a class="request-info" role="button">disposed</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="media-body" ng-if="request.type === 'group'">
-      <h4 class="media-heading"><a ng-href="/profile/{{request.from.id}}" target="_self">{{request.from.name}}</a> apply for joining <a href="/group/{{request.group.id}}" target="_self">{{request.group.name}}</a></h4>
-      <div class="row">
-        <div class="col-md-9">
-          <div>send you a connect. check as {{request.content}}</div>
-        </div>
-        <div class="col-md-3 clearfix">
-          <div class="pull-right" ng-show="!request.hasDisposed">
-            <a class="btn btn-primary" role="button" ng-click="vm.accept(request)">accept</a>
-            <a class="btn btn-primary" role="button" ng-click="vm.reject(request)">reject</a>
-          </div>
-          <div class="pull-right" ng-show="request.hasDisposed">
-            <a class="btn btn-default" role="button">disposed</a>
-          </div>
-        </div>
+      <div class="media" ng-show="requests.length === 0">
+        <div class="text-center" style="padding:15px;">No any Notify</div>
       </div>
     </div>
   </div>
+      
 </div>
 <div class="profile-sidebar col-md-3">
   <div class="well">
@@ -64,7 +109,6 @@
             <a href="#">Connects</a>
         </div>
     </div>
-
   </div>
   <div class="panel panel-default section">
     <div class="panel-heading">Reading List</div>

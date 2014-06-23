@@ -14,8 +14,10 @@
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/main.css">
-        <!--  -->
+        <!-- popup -->
         <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
+        <!-- atwho -->
+        <link rel="stylesheet" href="/public/js/lib/atwho/jquery.atwho.css">
 
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -301,6 +303,18 @@
           .relative h3 {
             margin-top: 10px;
           }
+          .no-notify {
+            padding: 15px;
+          }
+          .request-info {
+            padding: 0 5px;
+            background-color: #e3e3e3;
+          }
+          .btn.request-pass {
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-right: 15px;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -330,11 +344,14 @@
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{current.request + current.message}}</span>
+                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment}}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/notify/request" target="_self">{{current.request}} requests</a></li>
-                            <li><a href="/notify/message">{{current.message}} messages</a></li>
+                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
+                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
+                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
+                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.comment" class="no-notify">No notify</li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
@@ -395,7 +412,7 @@
                   <ul class="nav nav-tabs nav-stacked">
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
                     <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending"><i class="fa fa-fw fa-rocket"></i>MySending</a></li>
-                    <li ng-class="{active: current.path === 'request'}"><a ng-href="/request"><i class="fa fa-fw fa-info-circle"></i>Requests</a></li>
+                    <li ng-class="{active: ['connect','group','reply','comment'].indexOf(current.path) >= 0}"><a ng-href="/request/connect"><i class="fa fa-fw fa-info-circle"></i>Notify</a></li>
                     <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li>
                     <li ng-class="{active: current.path === 'people' || current.path === 'myPeople'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
                     <li ng-class="{active: current.path === 'share' || current.path === 'myShare'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
@@ -434,6 +451,15 @@
                   <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Collects</a></li>
               </ul>
             </div>
+            <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group'" ng-cloak>
+              <ul class="nav nav-tabs pull-left">
+                  <li class="pull-left header"><i class="fa fa-fw fa-info-circle"></i>Notify</li>
+                  <li ng-class="{active: current.path === 'connect'}"><a ng-href="/request/connect">Friends</a></li>
+                  <li ng-class="{active: current.path === 'group'}"><a ng-href="/request/group">Group</a></li>
+                  <li ng-class="{active: current.path === 'reply'}"><a ng-href="/request/reply">Reply</a></li>
+                  <li ng-class="{active: current.path === 'comment'}"><a ng-href="/request/comment">Comment</a></li>
+              </ul>
+            </div>
             <div class="row" id="main" ng-view ng-cloak></div>
           </div>
             
@@ -460,6 +486,8 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/lib/atwho/jquery.caret.min.js',
+            '/public/js/lib/atwho/jquery.atwho.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',

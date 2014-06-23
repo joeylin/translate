@@ -68,6 +68,54 @@ var joinRequest = function(req, res) {
         });
     });
 };
+var checkRequest = function(req, res) {
+    var user = req.session.user;
+    var requestId = req.body.requestId;
+    var value = req.body.value;
+
+    Request.findOne({
+        _id: requestId
+    }, function(err, request) {
+        if (request.hasDisposed) {
+            return res.send({
+                code: 200,
+                info: 'others checked'
+            });
+        }
+        if (value) {
+            Group.join(request.group, user._id, function(err, group) {
+                Request.update({
+                    from: request.from,
+                    group: request.group
+                }, {
+                    $set: {
+                        hasDisposed: true,
+                        isPass: true
+                    }
+                }, function(err) {
+                    res.send({
+                        code: 200
+                    });
+                });
+            });
+        } else {
+            Request.update({
+                from: request.from,
+                group: request.group
+            }, {
+                $set: {
+                    hasDisposed: true,
+                    isPass: false
+                }
+            }, function(err) {
+                res.send({
+                    code: 200
+                });
+            });
+        }
+
+    });
+};
 var join = function(req, res) {
     var user = req.session.user;
     var id = req.body.id;
@@ -287,6 +335,7 @@ var getMembers = function(req, res) {
 module.exports = function(app) {
     app.post('/api/group/create', create);
     app.post('/api/group/joinRequest', joinRequest);
+    app.post('/api/group/checkRequest', checkRequest);
     app.post('/api/group/join', join);
     app.post('/api/group/quit', quit);
     app.post('/api/group/member/delete', memberDelete);

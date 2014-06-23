@@ -241,7 +241,6 @@ module.exports = function(app) {
     app.get('/', middleware.check_login, getMain);
     app.get('/home', middleware.check_login, getHome);
     app.get('/message', middleware.check_login, getHome);
-    app.get('/request', middleware.check_login, getHome);
     app.get('/company', middleware.check_login, getHome);
     app.get('/share', middleware.check_login, getHome);
     app.get('/job', middleware.check_login, getHome);
@@ -253,6 +252,12 @@ module.exports = function(app) {
     app.get('/mySending', middleware.check_login, getHome);
     app.get('/posts/new', middleware.check_login, getHome);
     app.get('/jobs/new', middleware.check_login, getHome);
+
+    // notify
+    app.get('/request/connect', middleware.check_login, getHome);
+    app.get('/request/comment', middleware.check_login, getHome);
+    app.get('/request/reply', middleware.check_login, getHome);
+    app.get('/request/group', middleware.check_login, getHome);
 
     // login
     app.get('/login', getLogin);

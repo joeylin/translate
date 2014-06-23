@@ -86,8 +86,11 @@ config(['$httpProvider', 'app',
             }
         });
         $http.get('/api/notify').success(function(data) {
-            $rootScope.current.request = data.notify.request;
-            $rootScope.current.message = data.notify.message;
+            $rootScope.request = {};
+            $rootScope.request.comment = data.comment;
+            $rootScope.request.reply = data.reply;
+            $rootScope.request.connect = data.connect;
+            $rootScope.request.group = data.group;
         });
     }
 ]);

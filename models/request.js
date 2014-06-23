@@ -39,7 +39,7 @@ var RequestSchema = new Schema({
 });
 
 RequestSchema.path('type').validate(function(type) {
-    var array = ['connect', 'message', 'group'];
+    var array = ['connect', 'message', 'group', 'reply', 'comment'];
     if (array.indexOf(type) >= 0) {
         return true;
     } else {

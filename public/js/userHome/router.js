@@ -42,11 +42,6 @@ constant('app', {
             controller: 'companyCtrl',
             path: 'company'
         };
-        var request = {
-            templateUrl: getFileProvider.html('request.html'),
-            controller: 'requestCtrl',
-            path: 'request'
-        };
         var message = {
             templateUrl: getFileProvider.html('message.html'),
             controller: 'messageCtrl',
@@ -77,6 +72,27 @@ constant('app', {
             controller: 'mySendingCtrl',
             path: 'mySending'
         };
+        var connect = {
+            templateUrl: getFileProvider.html('request.html'),
+            controller: 'requestCtrl',
+            path: 'connect'
+        };
+        var reply = {
+            templateUrl: getFileProvider.html('request.html'),
+            controller: 'requestCtrl',
+            path: 'reply'
+        };
+        var comment = {
+            templateUrl: getFileProvider.html('request.html'),
+            controller: 'requestCtrl',
+            path: 'comment'
+        };
+        var group = {
+            templateUrl: getFileProvider.html('request.html'),
+            controller: 'requestCtrl',
+            path: 'group'
+        };
+
         $routeProvider.
         when('/home', news).
         when('/people', people).
@@ -88,7 +104,10 @@ constant('app', {
         when('/myJob', myJob).
         when('/myCompany', myCompany).
         when('/mySending', mySending).
-        when('/request', request).
+        when('/request/connect', connect).
+        when('/request/reply', reply).
+        when('/request/comment', comment).
+        when('/request/group', group).
         when('/message', message);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }
