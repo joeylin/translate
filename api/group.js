@@ -41,7 +41,7 @@ var joinRequest = function(req, res) {
             from: user._id,
             hasDisposed: false,
         }, function(err, requests) {
-            if (requests) {
+            if ( !! requests.length) {
                 return res.send({
                     code: 200
                 });
@@ -49,7 +49,7 @@ var joinRequest = function(req, res) {
             async.eachSeries(items, function(item, next) {
                 var obj = {
                     from: user._id,
-                    to: item._id,
+                    to: item,
                     type: 'group',
                     group: group._id
                 };

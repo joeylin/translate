@@ -363,12 +363,12 @@
                             <i class="fa fa-bell"></i> 
                             <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment}}</span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" class="request-container">
                             <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
                             <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
                             <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
                             <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
-                            <li ng-show="!request.comment && !request.reply && !request.group && !request.comment" class="no-notify">No notify</li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">

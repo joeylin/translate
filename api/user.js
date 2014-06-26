@@ -727,7 +727,7 @@ var getNotifyCount = function(req, res) {
                 reply.push(request);
             }
             if (request.type === 'connect') {
-                reply.push(request);
+                connect.push(request);
             }
         });
         res.send({
