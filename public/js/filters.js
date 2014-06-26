@@ -3,41 +3,41 @@
 
 angular.module('jsGen.filters', []).
 filter('placeholder', ['tools',
-    function (tools) {
-        return function (str) {
+    function(tools) {
+        return function(str) {
             return tools.toStr(str) || '-';
         };
     }
 ]).filter('match', ['$locale',
-    function ($locale) {
-        return function (value, type) {
+    function($locale) {
+        return function(value, type) {
             return $locale.FILTER[type] && $locale.FILTER[type][value] || '';
         };
     }
 ]).filter('switch', ['$locale',
-    function ($locale) {
-        return function (value, type) {
+    function($locale) {
+        return function(value, type) {
             return $locale.FILTER[type] && $locale.FILTER[type][+ !! value] || '';
         };
     }
 ]).filter('checkName', ['tools',
-    function (tools) {
-        return function (text) {
+    function(tools) {
+        return function(text) {
             var reg = /^[(\u4e00-\u9fa5)a-z][(\u4e00-\u9fa5)a-zA-Z0-9_]{1,}$/;
             text = tools.toStr(text);
             return reg.test(text);
         };
     }
 ]).filter('length', ['utf8', 'tools',
-    function (utf8, tools) {
-        return function (text) {
+    function(utf8, tools) {
+        return function(text) {
             text = tools.toStr(text);
             return utf8.stringToBytes(text).length;
         };
     }
 ]).filter('cutText', ['utf8', 'tools',
-    function (utf8, tools) {
-        return function (text, len) {
+    function(utf8, tools) {
+        return function(text, len) {
             text = tools.trim(text);
             var bytes = utf8.stringToBytes(text);
             len = len > 0 ? len : 0;
@@ -50,8 +50,8 @@ filter('placeholder', ['tools',
         };
     }
 ]).filter('formatDate', ['$filter', '$locale',
-    function ($filter, $locale) {
-        return function (date, full) {
+    function($filter, $locale) {
+        return function(date, full) {
             var o = Date.now() - date,
                 dateFilter = $filter('date');
             if (full) {
@@ -70,8 +70,8 @@ filter('placeholder', ['tools',
         };
     }
 ]).filter('formatTime', ['$locale',
-    function ($locale) {
-        return function (seconds) {
+    function($locale) {
+        return function(seconds) {
             var re = '',
                 q = 0,
                 o = seconds > 0 ? Math.round(+seconds) : Math.floor(Date.now() / 1000),
@@ -92,8 +92,8 @@ filter('placeholder', ['tools',
         };
     }
 ]).filter('formatBytes', ['$locale',
-    function ($locale) {
-        return function (bytes) {
+    function($locale) {
+        return function(bytes) {
             bytes = bytes > 0 ? bytes : 0;
             if (!bytes) {
                 return '-';
@@ -109,25 +109,78 @@ filter('placeholder', ['tools',
         };
     }
 ]).filter('orderClass', function() {
-  return function (direction) {
-    if (direction === -1)
-      return "fa-sort-desc";
-    else
-      return "fa-sort-asc";
-  }
+    return function(direction) {
+        if (direction === -1)
+            return "fa-sort-desc";
+        else
+            return "fa-sort-asc";
+    };
 }).filter('paging', function() {
-  return function (items, index, pageSize) {
-    if (!items)
-      return [];
+    return function(items, index, pageSize) {
+        if (!items)
+            return [];
 
-    var offset = (index - 1) * pageSize;
-    return items.slice(offset, offset + pageSize);
-  }
+        var offset = (index - 1) * pageSize;
+        return items.slice(offset, offset + pageSize);
+    };
 }).filter('size', function() {
-  return function (items) {
-    if (!items) {
-      return 0;
+    return function(items) {
+        if (!items) {
+            return 0;
+        }
+        return items.length || 0;
     }
-    return items.length || 0;
-  }
+}).filter('count', function() {
+    return function(text) {
+        var textareaGetLength = (function() {
+            var trim = function(h) {
+                try {
+                    return h.replace(/^\s+|\s+$/g, "")
+                } catch (j) {
+                    return h
+                }
+            }
+            var byteLength = function(b) {
+                if (typeof b == "undefined") {
+                    return 0
+                }
+                var a = b.match(/[^\x00-\x80]/g);
+                return (b.length + (!a ? 0 : a.length))
+            };
+
+            return function(q, g) {
+                g = g || {};
+                g.max = g.max || 140;
+                g.min = g.min || 41;
+                g.surl = g.surl || 20;
+                var p = trim(q).length;
+                if (p > 0) {
+                    var j = g.min,
+                        s = g.max,
+                        b = g.surl,
+                        n = q;
+                    var r = q.match(/(http|https):\/\/[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+([-A-Z0-9a-z\$\.\+\!\_\*\(\)\/\,\:;@&=\?~#%]*)*/gi) || [];
+                    var h = 0;
+                    for (var m = 0,
+                            p = r.length; m < p; m++) {
+                        var o = byteLength(r[m]);
+                        if (/^(http:\/\/t.cn)/.test(r[m])) {
+                            continue
+                        } else {
+                            if (/^(http:\/\/)+(weibo.com|weibo.cn)/.test(r[m])) {
+                                h += o <= j ? o : (o <= s ? b : (o - s + b))
+                            } else {
+                                h += o <= s ? b : (o - s + b)
+                            }
+                        }
+                        n = n.replace(r[m], "")
+                    }
+                    return Math.ceil((h + byteLength(n)) / 2)
+                } else {
+                    return 0
+                }
+            }
+        })();
+        return 140 - textareaGetLength(text);
+    };
 });

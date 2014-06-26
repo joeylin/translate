@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
+var moment = require('moment');
 
 var ShareSchema = new Schema({
     user: {
@@ -76,7 +77,20 @@ var ShareSchema = new Schema({
         default: Date.now
     }
 });
-
+ShareSchema.virtual('date').get(function() {
+    moment.lang('zh-cn');
+    var date = moment(this.createAt);
+    var now = moment();
+    if (now.diff(date, 'days') < 9) {
+        return date.fromNow();
+    }
+    if (now.diff(date, 'days') >= 9 && now.diff(date, 'years') === 0) {
+        return date.format('M-D HH:mm');
+    }
+    if (now.diff(date, 'days') >= 9 && now.diff(date, 'years') > 0) {
+        return date.format('YYYY-M-D HH:mm');
+    }
+});
 ShareSchema.virtual('likeCount').get(function() {
     return this.likes.length;
 });

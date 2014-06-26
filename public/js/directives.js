@@ -220,12 +220,41 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
         return {
             restrict: 'AE',
             link: function(scope, element, attrs, ngModel) {
-                scope.$watch(attrs.wholist, function(value) {
+                scope.$watch(attrs.atwho, function(value) {
                     $(element).atwho({
                         at: '@',
                         data: value
                     });
                 });
+            }
+        };
+    }
+]).directive('autoHeight', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
+    function(mdParse, sanitize, pretty, isVisible, $timeout) {
+        return {
+            restrict: 'AE',
+            link: function(scope, element, attrs) {
+                if (!$(element).is('textarea')) {
+                    return false;
+                }
+                $(element).flexText();
+            }
+        };
+    }
+]).directive('mdContent', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
+    function(mdParse, sanitize, pretty, isVisible, $timeout) {
+        return function(scope, element, attr) {
+            var value = scope.$eval(attr.mdContent);
+            parseDoc(value);
+
+            function parseDoc(value) {
+                if (!angular.isDefined(value)) {
+                    return;
+                }
+                var content = sanitize(mdParse(value));
+                var replaceContent = content.replace(/\B@\w*\b/g, '<span class="at">$&</span>');
+                var result = angular.element(replaceContent).html();
+                element.html(result);
             }
         };
     }

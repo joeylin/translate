@@ -10,6 +10,7 @@
         "blueimp-file-upload-node": "*",
         "connect-mongo": "latest",
         "debug": "*",
+        "moment": "latest",
         "ejs": "*",
         "qiniu": "latest",
         "express": "3.1.0",

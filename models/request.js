@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
+var moment = require('moment');
 
 var RequestSchema = new Schema({
     from: {
@@ -38,6 +39,20 @@ var RequestSchema = new Schema({
     }
 });
 
+RequestSchema.virtual('date').get(function() {
+    moment.lang('zh-cn');
+    var date = moment(this.createAt);
+    var now = moment();
+    if (now.diff(date, 'days') < 9) {
+        return date.fromNow();
+    }
+    if (now.diff(date, 'days') >= 9 && now.diff(date, 'years') === 0) {
+        return date.format('M-D HH:mm');
+    }
+    if (now.diff(date, 'days') >= 9 && now.diff(date, 'years') > 0) {
+        return date.format('YYYY-M-D HH:mm');
+    }
+});
 RequestSchema.path('type').validate(function(type) {
     var array = ['connect', 'message', 'group', 'reply', 'comment'];
     if (array.indexOf(type) >= 0) {

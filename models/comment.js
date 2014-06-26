@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
+var moment = require('moment');
 
 var CommentSchema = new Schema({
     user: {
@@ -27,7 +28,20 @@ var CommentSchema = new Schema({
         default: Date.now
     }
 });
-
+CommentSchema.virtual('date').get(function() {
+    moment.lang('zh-cn');
+    var date = moment(this.createAt);
+    var now = moment();
+    if (now.diff(date, 'days') < 9) {
+        return date.fromNow();
+    }
+    if (now.diff(date, 'days') >= 9 && now.diff(date, 'years') === 0) {
+        return date.format('M-D HH:mm');
+    }
+    if (now.diff(date, 'days') >= 9 && now.diff(date, 'years') > 0) {
+        return date.format('YYYY-M-D HH:mm');
+    }
+});
 CommentSchema.path('content').validate(function(value) {
     if (!value) {
         return false;

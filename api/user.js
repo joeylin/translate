@@ -284,6 +284,7 @@ var getTrends = function(req, res) {
                     result.comments = item.comments;
                     result.content = item.content;
                     result.createAt = item.createAt.getTime();
+                    result.date = item.date;
                     result.id = item.id;
                     result.user = {
                         name: item.user.name,
