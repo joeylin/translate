@@ -30,6 +30,7 @@ var create = function(req, res) {
 var joinRequest = function(req, res) {
     var user = req.session.user;
     var id = req.body.id;
+    var content = req.body.content;
     Group.findOne({
         id: id
     }, function(err, group) {
@@ -51,6 +52,7 @@ var joinRequest = function(req, res) {
                     from: user._id,
                     to: item,
                     type: 'group',
+                    content: content,
                     group: group._id
                 };
                 Request.createNew(obj, function(err, request) {
@@ -82,8 +84,11 @@ var checkRequest = function(req, res) {
                 info: 'others checked'
             });
         }
+        var options = {
+            multi: true
+        };
         if (value) {
-            Group.join(request.group, user._id, function(err, group) {
+            Group.join(request.group, request.from.toString(), function(err, group) {
                 Request.update({
                     from: request.from,
                     group: request.group
@@ -92,7 +97,7 @@ var checkRequest = function(req, res) {
                         hasDisposed: true,
                         isPass: true
                     }
-                }, function(err) {
+                }, options, function(err, num) {
                     res.send({
                         code: 200
                     });
@@ -107,13 +112,12 @@ var checkRequest = function(req, res) {
                     hasDisposed: true,
                     isPass: false
                 }
-            }, function(err) {
+            }, options, function(err) {
                 res.send({
                     code: 200
                 });
             });
         }
-
     });
 };
 var join = function(req, res) {
@@ -173,10 +177,16 @@ var adminAdd = function(req, res) {
     Group.findOne({
         _id: id
     }, function(err, group) {
-        if (grou.admin.length > 5) {
+        if (group.admin.length > 5) {
             return res.send({
                 code: 404,
                 info: 'bound of limit'
+            });
+        }
+        if (!group.isCreator(user._id)) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
             });
         }
         group.addAdmin(adminId, function(err, group) {
@@ -318,7 +328,7 @@ var getMembers = function(req, res) {
                 avatar: item.avatar,
                 post: 2,
                 isCreator: false,
-                isAdmin: true
+                isAdmin: false
             };
             members.push(result);
         });
@@ -328,6 +338,45 @@ var getMembers = function(req, res) {
             creator: creator,
             admin: admin,
             members: members
+        });
+    });
+};
+var deleteShare = function(req, res) {
+    var user = req.session.user;
+    var shareId = req.body.shareId;
+    Share.findOne({
+        _id: shareId
+    }).populate('group').exec(function(err, share) {
+        if (!share.group.isAdmin(user._id) && !share.group.isCreator(user._id)) {
+            return res.send({
+                code: 404
+            });
+        }
+        share.is_delete = true;
+        share.save(function(err, share) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var getMembersList = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Group.findOne({
+        _id: id
+    }).populate('members').populate('creator').populate('admin').exec(function(err, group) {
+        var result = [];
+        result.push(group.creator.name);
+        group.admin.map(function(item, key) {
+            result.push(item.name);
+        });
+        group.members.map(function(item, key) {
+            result.push(item.name);
+        });
+        res.send({
+            code: 200,
+            list: result
         });
     });
 };
@@ -344,6 +393,8 @@ module.exports = function(app) {
     app.post('/api/group/settings/basic', setBasic);
     app.post('/api/group/settings/avatar', setAvatar);
     app.post('/api/group/members', getMembers);
+    app.post('/api/group/list', getMembersList);
 
     app.get('/api/group/:id/post', getPost);
+    app.post('/api/group/post/delete', deleteShare);
 };

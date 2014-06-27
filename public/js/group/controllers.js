@@ -66,6 +66,16 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.total = data.count;
             });
         };
+        var getMembersList = function() {
+            var url = '/api/group/list';
+            var data = {
+                id: app.group._id
+            };
+            $http.post(url, data).success(function(data) {
+                var userList = data.list || [];
+                $scope.userList = userList;
+            });
+        };
         $scope.next = function() {
             if (!$scope.pager.hasNext) {
                 return false;
@@ -85,6 +95,20 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 
         // share item && item comments
         $scope.vm = {};
+        $scope.vm.deletePopup = function(share) {
+            var shareDelete = function(cb) {
+                var url = '/api/group/post/delete';
+                var data = {
+                    shareId: share._id
+                };
+                $http.post(url, data).success(function(data) {
+                    var index = $scope.shareList.indexOf(share);
+                    $scope.shareList.splice(index, 1);
+                    cb();
+                });
+            };
+            $scope.$emit('popup', 'shareDelete', shareDelete);
+        };
         $scope.vm.toggleLike = function(share) {
             var url;
             if (!app.author) {
@@ -156,7 +180,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.vm.reply = function(comment) {
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
-                comment.newComment = 'reply to ' + comment.user.name + ' : ';
+                comment.newComment = '@' + comment.user.name + ' ';
             }
         };
         $scope.vm.submitInlineComment = function(comment, share) {
@@ -183,6 +207,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 
         // init
         getTrend();
+        getMembersList();
     }
 ]).controller('settingsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
@@ -293,15 +318,19 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             vm.sort.column = '';
         };
         vm.deleteMember = function(item) {
-            var url = '/api/group/member/delete';
-            var data = {
-                id: app.group._id,
-                deleteId: item._id
+            var del = function(cb) {
+                var url = '/api/group/member/delete';
+                var data = {
+                    id: app.group._id,
+                    deleteId: item._id
+                };
+                $http.post(url, data).success(function(data) {
+                    var index = $scope.members.indexOf(item);
+                    $scope.members.splice(index, 1);
+                    cb();
+                });
             };
-            $http.post(url.data).success(function(data) {
-                var index = vm.items.indexOf(item);
-                vm.items.splice(index, 1);
-            });
+            $scope.$emit('popup', 'memberDelete', del);
         };
         vm.removeAdmin = function(item) {
             var url = '/api/group/admin/delete';
@@ -311,10 +340,15 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             };
             $http.post(url, data).success(function(data) {
                 item.isAdmin = false;
-                vm.items = sort(vm.items);
+                var index = $scope.admin.indexOf(item);
+                $scope.admin.splice(index, 1);
+                $scope.members.push(item);
             });
         };
         vm.addAdmin = function(item) {
+            if ($scope.admin.length > 5) {
+                return false;
+            }
             var url = '/api/group/admin/add';
             var data = {
                 id: app.group._id,

@@ -751,7 +751,7 @@ var getRequest = function(req, res) {
     Request.find({
         to: user._id,
         type: op
-    }).populate('from').populate('group').exec(function(err, requests) {
+    }).populate('from').populate('group').sort('-createAt').exec(function(err, requests) {
         var items = [];
         requests.map(function(request) {
             var result = {};

@@ -97,13 +97,13 @@
 				      <span>{{item.post}}</span>
 				    </td>
 				    <td class="text-center">
-				      <span class="btn btn-primary btn-xs" title="remove" ng-show="!item.isCreator">
+				      <span class="btn btn-primary btn-xs" title="remove" ng-show="!item.isCreator && !item.isAdmin  && (global.isCreator || global.isAdmin)" ng-click="vm.deleteMember(item)">
 				      	<i class="fa fa-fw fa-trash-o"></i>
 				      </span>
-				      <span class="btn btn-primary btn-xs" title="admin" ng-show="!item.isAdmin && !item.isCreator">
+				      <span class="btn btn-primary btn-xs" title="add admin" ng-show="!item.isAdmin && !item.isCreator && global.isCreator" ng-click="vm.addAdmin(item)">
 				      	<i class="fa fa-fw fa-user"></i>
 				      </span>
-				      <span class="btn btn-primary btn-xs" title="admin" ng-show="item.isAdmin">
+				      <span class="btn btn-primary btn-xs" title="remove admin" ng-show="item.isAdmin && global.isCreator" ng-click="vm.removeAdmin(item)">
 				      	<i class="fa fa-fw fa-sign-out"></i>
 				      </span>
 				    </td>

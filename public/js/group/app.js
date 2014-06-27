@@ -111,34 +111,55 @@ config(['$httpProvider', 'app',
         // popup
         global.popup = {
             show: false,
+            type: '',
             text: '',
             close: function() {
                 global.popup.show = false;
             }
         };
-        $rootScope.$on('popup', function($event, type) {
+        $rootScope.$on('popup', function($event, type, execFuction) {
+            global.popup.type = type;
             if (type === 'login') {
                 global.popup.text = 'You Need Login First !';
             }
-            if (type === 'join') {
-                global.popup.text = 'You Need Join Group First !';
+            if (type === 'shareDelete') {
+                global.deleteShare = function() {
+                    execFuction(function() {
+                        global.popup.show = false;
+                    });
+                };
+            }
+            if (type === 'memberDelete') {
+                global.deleteMember = function() {
+                    execFuction(function() {
+                        global.popup.show = false;
+                    });
+                };
             }
             global.popup.show = true;
         });
+        global.isJoined = window.isJoined;
+        global.isAdmin = window.isAdmin;
+        global.isCreator = window.isCreator;
         global.join = function() {
             if (!app.author) {
+                global.popup.type = 'login';
                 global.popup.text = 'You Need Login First !';
                 global.popup.show = true;
             } else {
-                global.popup.text = 'Request has sent !';
-                var url = '/api/group/joinRequest';
-                var data = {
-                    id: app.group.id
-                };
-                $http.post(url, data).success(function(data) {
-                    global.popup.show = true;
-                });
+                global.popup.type = 'check';
+                global.popup.show = true;
             }
+        };
+        global.joinSubmit = function() {
+            var url = '/api/group/joinRequest';
+            var data = {
+                id: app.group.id,
+                content: global.inputMessage
+            };
+            $http.post(url, data).success(function(data) {
+                global.popup.show = false;
+            });
         };
     }
 ]);

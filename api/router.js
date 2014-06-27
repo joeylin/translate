@@ -214,24 +214,40 @@ module.exports = function(app) {
         var id = req.params.id;
         Group.findOne({
             id: id
-        }).populate('creator').populate('admin').exec(function(err, group) {
+        }).populate('creator').populate('admin').populate('members').exec(function(err, group) {
+            if (!group) {
+                // here send 404 page
+                return res.send({
+                    code: 404
+                });
+            }
             app.locals.group = group;
             app.locals.author = user;
             app.locals.isJoined = false;
+            app.locals.isAdmin = false;
+            app.locals.isCreator = false;
             if (user) {
+                var adminIndex = -1;
+                var memberIndex = -1;
                 if (group.creator._id.toString() == user._id) {
+                    app.locals.isCreator = true;
+                }
+                group.admin.map(function(item, key) {
+                    if (item._id.toString() == user._id) {
+                        adminIndex = key;
+                    }
+                });
+                group.members.map(function(item, key) {
+                    if (item._id.toString() == user._id) {
+                        memberIndex = key;
+                    }
+                });
+                if (adminIndex > -1) {
+                    app.locals.isAdmin = true;
+                }
+                if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
                     app.locals.isJoined = true;
                 }
-                group.admin.map(function(person, key) {
-                    if (person._id.toString() == user._id) {
-                        app.locals.isJoined = true;
-                    }
-                });
-                group.members.map(function(person, key) {
-                    if (person._id.toString() == user._id) {
-                        app.locals.isJoined = true;
-                    }
-                });
             }
             res.render('group');
         });

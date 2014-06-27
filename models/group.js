@@ -87,7 +87,6 @@ GroupSchema.statics.join = function(id, userId, cb) {
             group.members.push(userId);
             group.save(cb);
         }
-
     });
 };
 GroupSchema.statics.quit = function(id, userId, cb) {
@@ -137,14 +136,22 @@ GroupSchema.statics.getPopular = function(cb) {
 
 // methods
 GroupSchema.methods.isJoined = function(userId) {
-    var group = this.toObject();
+    var group = this.toJSON();
     if (this.creator.toString() == userId) {
         return true;
     }
-    if (group.admin.indexOf(userId) >= 0) {
-        return true;
-    }
-    if (group.members.indexOf(userId) >= 0) {
+    var index = -1;
+    group.admin.map(function(item, key) {
+        if (item.toString() == userId) {
+            index = key;
+        }
+    });
+    group.members.map(function(item, key) {
+        if (item.toString() == userId) {
+            index = key;
+        }
+    });
+    if (index > -1) {
         return true;
     }
     return false;
@@ -159,7 +166,7 @@ GroupSchema.methods.isAdmin = function(userId) {
             index = key;
         }
     });
-    if (index >= 0) {
+    if (index > -1) {
         return true;
     } else {
         return false;
@@ -173,8 +180,13 @@ GroupSchema.methods.isCreator = function(userId) {
     }
 };
 GroupSchema.methods.deleteMember = function(userId, cb) {
-    if (this.isJoined(userId)) {
-        var index = this.members.indexOf(userId);
+    var index = -1;
+    this.members.map(function(item, key) {
+        if (item.toString() == userId) {
+            index = key;
+        }
+    });
+    if (index > -1) {
         this.members.splice(index, 1);
         this.save(cb);
     } else {
@@ -182,23 +194,33 @@ GroupSchema.methods.deleteMember = function(userId, cb) {
     }
 };
 GroupSchema.methods.deleteAdmin = function(userId, cb) {
-    if (this.isAdmin(userId)) {
-        var index = this.admin.indexOf(userId);
+    var index = -1;
+    this.admin.map(function(item, key) {
+        if (item.toString() == userId) {
+            index = key;
+        }
+    });
+    if (index > -1) {
+        this.members.push(this.admin[index]);
         this.admin.splice(index, 1);
-        this.members.push(userId);
         this.save(cb);
     } else {
         cb(null, null);
     }
 };
 GroupSchema.methods.addAdmin = function(userId, cb) {
-    if (this.isAdmin(userId) && !this.isJoined(userId)) {
-        cb(null, null);
-    } else {
-        var index = this.members.indexOf(userId);
+    var index = -1;
+    this.members.map(function(item, key) {
+        if (item.toString() == userId) {
+            index = key;
+        }
+    });
+    if (index > -1) {
         this.members.splice(index, 1);
         this.admin.push(userId);
         this.save(cb);
+    } else {
+        cb(null, null);
     }
 };
 

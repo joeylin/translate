@@ -14,8 +14,12 @@
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/main.css">
-        <!--  -->
+        <!-- magnific popup -->
         <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
+        <!-- atwho -->
+        <link rel="stylesheet" href="/public/js/lib/atwho/jquery.atwho.css">
+        <!-- flexText -->
+        <link rel="stylesheet" href="/public/js/lib/flexText/jquery.flexText.css">
 
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -183,6 +187,9 @@
           .container.group .col-md-2 {
             padding-left: 0;
           }
+          .group-avatar {
+            margin-bottom: 15px;
+          }
           .group-avatar img {
             width: 100%;
             height: 173px;
@@ -250,6 +257,9 @@
           }
           .members-items {
             padding-left: 75px;
+          }
+          .tip {
+            margin-bottom: 10px;
           }
 
           /* upload */
@@ -365,6 +375,12 @@
           .fa.admin {
             color: #367fa9;
           }
+          .delete {
+            margin-right: 10px;
+          }
+          .at {
+            color: #428bca;
+          }
           /* for auto Height*/
           .comment-editor-inline .form-control {
             position: absolute;
@@ -376,6 +392,13 @@
           }
           .newTopic .flex-text-wrap > pre {
             min-height: 74px;
+          }
+          /* reset magnific popup */
+          .mfp-container:before {
+            content: '';
+            display: inline-block;
+            height: 20%;
+            vertical-align: middle;
           }
           /* reset AdminLTE.css */
           .pagination {
@@ -400,6 +423,8 @@
           window.author = null;
           window.group = null;
           window.isJoined = null;
+          window.isAdmin = null;
+          window.isCreator = null;
           <% if (locals.author) { %>
             window.author = <%- JSON.stringify(locals.author) %>;
           <% } %>
@@ -409,6 +434,12 @@
           <% if (locals.isJoined) { %>
             window.isJoined = <%= locals.isJoined %>;
           <% } %>
+           <% if (locals.isAdmin) { %>
+            window.isAdmin = <%= locals.isAdmin %>;
+          <% } %>
+           <% if (locals.isCreator) { %>
+            window.isCreator = <%= locals.isCreator %>;
+          <% } %>
         </script>    
     </head>
     <body>
@@ -416,9 +447,31 @@
         <div class="mfp-wrap mfp-close-btn-in mfp-auto-cursor mfp-ready" tabindex="-1" style="overflow-y: auto; overflow-x: hidden;" ng-cloak ng-if="global.popup.show">
           <div class="mfp-container mfp-s-ready mfp-inline-holder">
             <div class="mfp-content">
-              <div id="login-popup" class="white-popup-block">
+              <div class="white-popup-block" ng-if="global.popup.type == 'login'">
                 {{global.popup.text}}
                 <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
+              </div>
+              <div class="white-popup-block" ng-if="global.popup.type == 'check'" style="max-width: 450px;">
+                <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
+                <label>Validate message:</label>
+                <input class="form-control" type="text" placeholder="message" ng-model="global.inputMessage">
+                <div class="clearfix" style="margin-top:10px;">
+                    <button class="btn btn-primary pull-right" ng-click="global.joinSubmit()">Submit</button>
+                </div>
+              </div>
+              <div class="white-popup-block" ng-if="global.popup.type == 'shareDelete'">
+                <label>Are You Sure To Delete it ?</label>
+                <div class="clearfix">
+                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">No</button>
+                    <button class="btn btn-danger pull-right" ng-click="global.deleteShare()" style="margin-right:10px;">Yes</button>
+                </div>
+              </div>
+              <div class="white-popup-block" ng-if="global.popup.type == 'memberDelete'">
+                <label>Are You Sure To Delete it ?</label>
+                <div class="clearfix">
+                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">No</button>
+                    <button class="btn btn-danger pull-right" ng-click="global.deleteMember()" style="margin-right:10px;">Yes</button>
+                </div>
               </div>
             </div>
             <div class="mfp-preloader">Loading...</div>
@@ -503,8 +556,19 @@
             <div class="well custom-well siderbar-nav group-avatar">
               <a href="#"><img src="<%= locals.group.avatar %>"></a>
             </div>
+            <% if (locals.author) { %>
+            <div class="custom-well tip">
+              <i class="fa fa-fw fa-volume-up"></i>
+              Hi: <%= locals.author.name %> ! welcome
+            </div>
+            <% } else { %>
+            <div class="custom-well tip">
+              <i class="fa fa-fw fa-volume-up"></i>
+              You are visitor !
+            </div>
+            <% } %>
             <div>
-              <% if (locals.author && locals.isJoined) { %>
+              <% if (locals.isCreator || locals.isAdmin) { %>
               <a ng-href="/group/<%= locals.group.id %>/settings" type="button" class="group-op-btn btn-block">settings</a>
               <% } %>
               <% if (locals.author && !locals.isJoined) { %>
@@ -520,7 +584,7 @@
             <div class="panel panel-default section group-announcement">
               <div class="panel-body">
                 <div class="text-center group-announcement-title">Announcement</div>
-                <div><%= locals.group.announcement %> (2014/6/19)</div>
+                <div><%= locals.group.announcement || 'please add announcement !' %> (2014/6/19)</div>
               </div>
             </div>
             <div class="panel panel-default section">
@@ -573,6 +637,9 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/lib/atwho/jquery.caret.min.js',
+            '/public/js/lib/atwho/jquery.atwho.js',
+            '/public/js/lib/flexText/jquery.flexText.min.js',
             '/public/js/lib/qiniu.uploader.js',
             '/public/js/upload.js',
             '/public/js/lib/angular-ui.js',
