@@ -95,7 +95,7 @@ ShareSchema.virtual('likeCount').get(function() {
     return this.likes.length;
 });
 ShareSchema.path('type').validate(function(type) {
-    var array = ['job', 'view', 'post'];
+    var array = ['job', 'view', 'post', 'group'];
     if (array.indexOf(type) >= 0) {
         return true;
     } else {

@@ -27,7 +27,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 return false;
             }
             $http.post(url, {
-                type: 'view',
+                type: 'group',
                 group: app.group._id,
                 content: $scope.newShare
             }).success(function(data) {
