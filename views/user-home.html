@@ -34,6 +34,7 @@
            */
           .home-container {
             padding-top: 19px;
+            min-height: 960px;
           }
           footer {
             padding-left: 15px;
@@ -168,9 +169,6 @@
           .profile-sidebar {
             float: right;
             padding-left: 0;
-          }
-          .profile-body {
-            min-height: 960px;
           }
           .btn-primary.default {
             background-color: #fafafa;
@@ -339,9 +337,14 @@
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.user = null;
+          window.shareCount = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
           <% } %>
+          <% if (locals.shareCount) { %>
+            window.shareCount = <%= locals.shareCount %>;
+          <% } %>
+          
         </script>       
     </head>
     <body>
@@ -361,13 +364,14 @@
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment}}</span>
+                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
                         </a>
                         <ul class="dropdown-menu" class="request-container">
                             <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
                             <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
                             <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
                             <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
+                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
                             <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
                         </ul>
                   </li>
@@ -389,7 +393,7 @@
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">{{global.user.share.length}}</a>
+                                    <a href="#">{{global.shareCount || 0}}</a>
                                 </div>
                                 <div class="col-xs-6 text-center">
                                     <a href="#">{{global.user.connects.length}}</a>
@@ -429,7 +433,8 @@
                   <ul class="nav nav-tabs nav-stacked">
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
                     <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending"><i class="fa fa-fw fa-rocket"></i>MySending</a></li>
-                    <li ng-class="{active: ['connect','group','reply','comment'].indexOf(current.path) >= 0}"><a ng-href="/request/connect"><i class="fa fa-fw fa-info-circle"></i>Notify</a></li>
+                    <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>MyGroup</a></li>
+                    <li ng-class="{active: ['connect','group','reply','comment','at'].indexOf(current.path) >= 0}"><a ng-href="/request/connect"><i class="fa fa-fw fa-info-circle"></i>Notify</a></li>
                     <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li>
                     <li ng-class="{active: current.path === 'people' || current.path === 'myPeople'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
                     <li ng-class="{active: current.path === 'share' || current.path === 'myShare'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
@@ -468,13 +473,14 @@
                   <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Collects</a></li>
               </ul>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-info-circle"></i>Notify</li>
                   <li ng-class="{active: current.path === 'connect'}"><a ng-href="/request/connect">Friends</a></li>
                   <li ng-class="{active: current.path === 'group'}"><a ng-href="/request/group">Group</a></li>
                   <li ng-class="{active: current.path === 'reply'}"><a ng-href="/request/reply">Reply</a></li>
                   <li ng-class="{active: current.path === 'comment'}"><a ng-href="/request/comment">Comment</a></li>
+                  <li ng-class="{active: current.path === 'at'}"><a ng-href="/request/at">At</a></li>
               </ul>
             </div>
             <div class="row" id="main" ng-view ng-cloak></div>

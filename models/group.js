@@ -9,6 +9,9 @@ var GroupSchema = new Schema({
     name: {
         type: String
     },
+    type: {
+        type: String
+    },
     // count: {
     //     type: ObjectId,
     //     ref: 'GroupCount'

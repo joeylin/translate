@@ -80,7 +80,14 @@ module.exports = function(app) {
         }, function(err, user) {
             app.locals.user = user;
             if (user.role === 'user') {
-                res.render('user-home');
+                Share.find({
+                    user: user._id,
+                    is_delete: false,
+                    type: 'view'
+                }).count().exec(function(err, count) {
+                    app.locals.shareCount = count;
+                    res.render('user-home');
+                });
             } else {
                 res.render('company-home');
             }
@@ -266,6 +273,7 @@ module.exports = function(app) {
     app.get('/myShare', middleware.check_login, getHome);
     app.get('/myJob', middleware.check_login, getHome);
     app.get('/mySending', middleware.check_login, getHome);
+    app.get('/myGroup', middleware.check_login, getHome);
     app.get('/posts/new', middleware.check_login, getHome);
     app.get('/jobs/new', middleware.check_login, getHome);
 
@@ -274,6 +282,7 @@ module.exports = function(app) {
     app.get('/request/comment', middleware.check_login, getHome);
     app.get('/request/reply', middleware.check_login, getHome);
     app.get('/request/group', middleware.check_login, getHome);
+    app.get('/request/at', middleware.check_login, getHome);
 
     // login
     app.get('/login', getLogin);

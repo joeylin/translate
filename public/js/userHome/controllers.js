@@ -289,6 +289,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         if ($rootScope.current.path === 'comment') {
             url = '/api/notify/comment';
         }
+        if ($rootScope.current.path === 'at') {
+            url = '/api/notify/at';
+        }
 
         $http.get(url).success(function(data) {
             $scope.requests = data.requests;
@@ -901,5 +904,19 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         get();
         // just for example
         $('.tsTooltip').tsTooltip();
+    }
+]).controller('myGroupCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        $scope.content = [];
+        var getGroup = function() {
+            var url = '';
+            $http.get(url).success(function(data) {
+                $scope.content = data.content;
+            });
+        };
+        $scope.refresh = function() {
+            getGroup();
+        };
+        // getGroup();
     }
 ]);

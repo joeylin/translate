@@ -80,6 +80,7 @@ config(['$httpProvider', 'app',
         app.user = window.user;
         $rootScope.current = {};
         $rootScope.global.user = window.user;
+        $rootScope.global.shareCount = window.shareCount;
         $rootScope.$on('$routeChangeStart', function(event, next, current) {
             if (next && next.$$route) {
                 $rootScope.current.path = next.$$route.path;

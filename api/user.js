@@ -242,7 +242,7 @@ var getShare = function(req, res) {
 var getTrends = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
-    var perPageItems = 20;
+    var perPageItems = 25;
     User.findOne({
         _id: user._id
     }, function(err, user) {
@@ -259,7 +259,9 @@ var getTrends = function(req, res) {
         Share.find({
             user: {
                 $in: array
-            }
+            },
+            type: 'view',
+            is_delete: false
         }).sort({
             createAt: -1
         }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
@@ -273,7 +275,8 @@ var getTrends = function(req, res) {
                 user: {
                     $in: array
                 },
-                type: 'view'
+                type: 'view',
+                is_delete: false
             }).count().exec(function(err, count) {
                 var content = [];
                 var hasNext;
@@ -839,6 +842,21 @@ var getConnectList = function(req, res) {
             });
         });
 
+    });
+};
+var getGroupByUser = function(req, res) {
+    var user = req.session.user;
+    Group.find({
+        $or: [{
+            creator: user._id
+        }, {
+            admin: user._id
+        }, {
+            members: user._id
+        }]
+    }).exec(function(err, groups) {
+        // todo
+        // each group update
     });
 };
 
