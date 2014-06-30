@@ -273,6 +273,12 @@
             margin-bottom: 0;
             margin-left: 74px;
           }
+          .no-notify {
+            padding: 15px;
+          }
+          .notifications-menu .dropdown-menu {
+            width: 130px!important;
+          }
           
         </style>
         <!-- for angular ng-cloak -->
@@ -310,6 +316,20 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify" ng-cloak>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                            <i class="fa fa-bell"></i> 
+                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
+                        </a>
+                        <ul class="dropdown-menu" class="request-container">
+                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
+                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
+                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
+                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
+                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
+                        </ul>
+                  </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
                             <img src="<%= locals.user.avatar %>" alt="" class="nav-user-pic img-responsive">
@@ -356,6 +376,7 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">Home</a></li>
                 <li><a href="/profile/<%= locals.user.id %>" target="_self">profile</a></li>
+                <li><a href="/group" target="_self">Group</a></li>
                 <li><a href="/search/all" target="_self">search</a></li>
               </ul>
             </div>

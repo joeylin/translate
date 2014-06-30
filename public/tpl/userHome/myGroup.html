@@ -5,6 +5,9 @@
         <div class="col-md-8">
           <h4>My Group</h4>
         </div>
+        <div class="col-md-4 pull-right">
+          <a class="btn btn-primary pull-right btn-sm" role="button" style="margin-top: 6px;">Create New</a>
+        </div>
       </div>
     </div>
     <div class="panel-body">
@@ -19,8 +22,11 @@
               <div>{{group.industry}}</div>
               <div class="search-company-relationship">{{group.count}}/{{group.total}}</div>
             </div>
-            <div class="col-md-3" ng-show="group.updates > 0">
-              <a href="#" class="pull-right">{{group.updates}} share add <i class="fa fa-fw fa-angle-double-right"></i></a>
+            <div class="col-md-3" ng-show="group.update > 0">
+              <a href="/group/{{group.id}}" target="_self" class="pull-right">{{group.update}} share add <i class="fa fa-fw fa-angle-double-right"></i></a>
+            </div>
+            <div class="col-md-3" ng-show="group.update === 0">
+              <span class="pull-right">no update</span>
             </div>
           </div>
         </div>

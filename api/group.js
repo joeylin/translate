@@ -78,6 +78,12 @@ var checkRequest = function(req, res) {
     Request.findOne({
         _id: requestId
     }, function(err, request) {
+        if (request.to.toString() !== user._id) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
         if (request.hasDisposed) {
             return res.send({
                 code: 200,
@@ -98,6 +104,7 @@ var checkRequest = function(req, res) {
                         isPass: true
                     }
                 }, options, function(err, num) {
+
                     res.send({
                         code: 200
                     });
@@ -145,11 +152,20 @@ var memberDelete = function(req, res) {
     Group.findOne({
         _id: id
     }, function(err, group) {
-        if (group.isAdmin(user._id)) {
+        if (!group) {
+            return res.send({
+                code: 404
+            });
+        }
+        if (group.isAdmin(user._id) || group.isCreator(user._id)) {
             group.deleteMember(deleteId, function(err, group) {
                 res.send({
                     code: 200
                 });
+            });
+        } else {
+            res.send({
+                code: 404
             });
         }
     });
@@ -161,11 +177,21 @@ var adminDelete = function(req, res) {
     Group.findOne({
         _id: id
     }, function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'no specified group'
+            });
+        }
         if (group.isCreator(user._id)) {
             group.deleteAdmin(deleteId, function(err, group) {
                 res.send({
                     code: 200
                 });
+            });
+        } else {
+            res.send({
+                code: 404
             });
         }
     });
@@ -177,6 +203,12 @@ var adminAdd = function(req, res) {
     Group.findOne({
         _id: id
     }, function(err, group) {
+        if (!group) {
+            res.send({
+                code: 404,
+                info: 'no group'
+            });
+        }
         if (group.admin.length > 5) {
             return res.send({
                 code: 404,
@@ -210,6 +242,9 @@ var getPost = function(req, res) {
         if (!trends) {
             return res.send({
                 code: 200,
+                content: [],
+                hasNext: false,
+                count: 0,
                 info: 'no share'
             });
         }
@@ -268,6 +303,12 @@ var setBasic = function(req, res) {
     Group.findOne({
         _id: id
     }, function(err, group) {
+        if (!group.isCreator(user._id) && !group.isAdmin(user._id)) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
         group.name = name;
         group.announcement = announcement;
         group.industry = industry;
@@ -286,6 +327,12 @@ var setAvatar = function(req, res) {
     Group.findOne({
         _id: id
     }, function(err, group) {
+        if (!group.isCreator(user._id) && !group.isAdmin(user._id)) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
         group.avatar = avatar;
         group.save(function(err) {
             res.send({
@@ -366,6 +413,12 @@ var getMembersList = function(req, res) {
     Group.findOne({
         _id: id
     }).populate('members').populate('creator').populate('admin').exec(function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'no group'
+            });
+        }
         var result = [];
         result.push(group.creator.name);
         group.admin.map(function(item, key) {
@@ -382,19 +435,19 @@ var getMembersList = function(req, res) {
 };
 
 module.exports = function(app) {
-    app.post('/api/group/create', create);
-    app.post('/api/group/joinRequest', joinRequest);
-    app.post('/api/group/checkRequest', checkRequest);
-    app.post('/api/group/join', join);
-    app.post('/api/group/quit', quit);
-    app.post('/api/group/member/delete', memberDelete);
-    app.post('/api/group/admin/delete', adminDelete);
-    app.post('/api/group/admin/add', adminAdd);
-    app.post('/api/group/settings/basic', setBasic);
-    app.post('/api/group/settings/avatar', setAvatar);
+    app.post('/api/group/create', middleware.apiLogin, create);
+    app.post('/api/group/joinRequest', middleware.apiLogin, joinRequest);
+    app.post('/api/group/checkRequest', middleware.apiLogin, checkRequest);
+    app.post('/api/group/join', middleware.apiLogin, join);
+    app.post('/api/group/quit', middleware.apiLogin, quit);
+    app.post('/api/group/member/delete', middleware.apiLogin, memberDelete);
+    app.post('/api/group/admin/delete', middleware.apiLogin, adminDelete);
+    app.post('/api/group/admin/add', middleware.apiLogin, adminAdd);
+    app.post('/api/group/settings/basic', middleware.apiLogin, setBasic);
+    app.post('/api/group/settings/avatar', middleware.apiLogin, setAvatar);
     app.post('/api/group/members', getMembers);
     app.post('/api/group/list', getMembersList);
 
     app.get('/api/group/:id/post', getPost);
-    app.post('/api/group/post/delete', deleteShare);
+    app.post('/api/group/post/delete', middleware.apiLogin, deleteShare);
 };

@@ -719,6 +719,7 @@ var getNotifyCount = function(req, res) {
         var reply = [];
         var group = [];
         var connect = [];
+        var at = [];
         requests.map(function(request) {
             if (request.type === 'comment') {
                 comment.push(request);
@@ -732,13 +733,17 @@ var getNotifyCount = function(req, res) {
             if (request.type === 'connect') {
                 connect.push(request);
             }
+            if (request.type === 'at') {
+                at.push(request);
+            }
         });
         res.send({
             code: 200,
             comment: comment.length,
             reply: reply.length,
             group: group.length,
-            connect: connect.length
+            connect: connect.length,
+            at: at.length
         });
     });
 };
@@ -846,17 +851,28 @@ var getConnectList = function(req, res) {
 };
 var getGroupByUser = function(req, res) {
     var user = req.session.user;
-    Group.find({
-        $or: [{
-            creator: user._id
-        }, {
-            admin: user._id
-        }, {
-            members: user._id
-        }]
-    }).exec(function(err, groups) {
-        // todo
-        // each group update
+    User.findOne({
+        _id: user._id
+    }).populate('groups.join').exec(function(err, user) {
+        var joinGroups = user.groups.join;
+        var results = [];
+        joinGroups.map(function(group, key) {
+            var result = {
+                avatar: group.avatar,
+                id: group.id,
+                _id: group._id,
+                industry: group.industry,
+                name: group.name,
+                count: group.count,
+                total: 100,
+                update: 9
+            };
+            results.push(result);
+        });
+        res.send({
+            code: 200,
+            content: results
+        });
     });
 };
 
@@ -882,6 +898,9 @@ module.exports = function(app) {
     app.get('/api/notify', getNotifyCount);
     app.get('/api/notify/:op', getRequest);
     app.post('/api/notify/:op/read', readRequest);
+
+    // myGroup
+    app.get('/api/myGroup', middleware.apiLogin, getGroupByUser);
 
     // connect
     app.post('/api/connect/send', sendNotify);

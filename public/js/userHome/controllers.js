@@ -136,6 +136,16 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 share.newComment = '';
             });
         };
+        $scope.vm.deleteShare = function(share) {
+            var url = '/api/share/delete';
+            var data = {
+                id: share._id
+            };
+            $http.post(url, data).success(function(data) {
+                var index = $scope.shareList.indexOf(share);
+                $scope.shareList.splice(index, 1);
+            });
+        };
         $scope.vm.delete = function(comment, share) {
             var index = share.comments.indexOf(comment);
             var url = '/api/share/comments/delete';
@@ -909,7 +919,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.content = [];
         var getGroup = function() {
-            var url = '';
+            var url = '/api/myGroup';
             $http.get(url).success(function(data) {
                 $scope.content = data.content;
             });
@@ -917,6 +927,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.refresh = function() {
             getGroup();
         };
-        // getGroup();
+        getGroup();
     }
 ]);

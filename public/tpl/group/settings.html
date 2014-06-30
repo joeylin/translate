@@ -9,7 +9,7 @@
 <div class="group-settings-basic row" ng-if="current === 'b'" ng-cloak>
 	<div class="panel col-md-12">
 		<div class="panel-body">
-			<div class="row" style="margin-bottom: 50px;">
+			<div class="row">
 				<div class="col-md-8 form-container">
 					<div class="row">
 						<div class="col-xs-4">
@@ -55,8 +55,14 @@
 			<hr>
 			<div class="row">
 				<div class="col-xs-7">
-					<div class="clearfix">
-				      <a class="btn btn-danger pull-right" role="button">Quit</a>
+					<div>
+						admin max number is 5
+					</div>
+					<div>
+						creator quit will move power to admin
+					</div>
+					<div>
+				    	Quit this group: <a class="quit" role="button" ng-click="quit()">Quit</a>
 				    </div>
 				</div>
 			</div>

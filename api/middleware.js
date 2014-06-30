@@ -20,38 +20,17 @@ var check_login = function(req, res, next) {
         }
     }
 };
-var check_admin = function(req, res, next) {
-    next();
-};
-// for settings
-var check_auth = function(req, res, next) {
-    var page = req.params.op;
-    if (!req.session.user && page !== 'login') {
-        res.redirect('/settings/login');
+var apiLogin = function(req, res, next) {
+    var user = req.session.user;
+    if (!user) {
+        res.send({
+            code: 404,
+            info: 'no login'
+        });
     } else {
         next();
     }
 };
-var groupSettingsAuth = function(req, res, next) {
-    var user = req.session.user;
-    var id = req.params.id;
-    if (!id) {
-        return res.render('404');
-    }
-    if (!user) {
-        return res.redirect('/group/' + id);
-    }
-    Group.findOne({
-        id: id
-    }, function(err, group) {
-        if (group.isCreator(user._id) || group.isAdmin(user._id)) {
-            next();
-        } else {
-            res.render('404');
-        }
-    });
-};
+
 exports.check_login = check_login;
-exports.check_admin = check_admin;
-exports.check_auth = check_auth;
-exports.groupSettingsAuth = groupSettingsAuth;
+exports.apiLogin = apiLogin;

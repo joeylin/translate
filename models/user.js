@@ -87,10 +87,12 @@ var UserSchema = new Schema({
     },
     groups: {
         pending: [{
-            type: ObjectId
+            type: ObjectId,
+            ref: 'Group'
         }],
         join: [{
-            type: ObjectId
+            type: ObjectId,
+            ref: 'Group'
         }]
     },
 
@@ -252,6 +254,34 @@ UserSchema.statics.getProfile = function(id, cb) {
                 cb(err, profile, user);
             });
         }
+    });
+};
+UserSchema.statics.joinGroup = function(id, groupId, cb) {
+    this.findOne({
+        _id: id
+    }, function(err, user) {
+        if (!user) {
+            cb(null, null);
+        }
+        user.groups.join.push(groupId);
+        user.save(cb);
+    });
+};
+UserSchema.statics.quitGroup = function(id, groupId, cb) {
+    this.findOne({
+        _id: id
+    }, function(err, user) {
+        if (!user) {
+            cb(null, null);
+        }
+        var index = -1;
+        user.groups.join.map(function(item, key) {
+            if (item.toString() == groupId) {
+                index = key;
+            }
+        });
+        user.groups.join.splice(index, 1);
+        user.save(cb);
     });
 };
 

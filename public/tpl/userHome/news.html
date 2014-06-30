@@ -30,6 +30,7 @@
             <!-- <i class="fa fa-fw fa-clock-o" style="margin-right:3px; color:#999;"></i> -->
             <span class="date pull-left"><a href="#">{{share.createAt | formatDate:true }}</a></span>
             <span class="pull-right media-control">
+              <a href="#" class="delete" ng-show="global.user.name === share.user.name" ng-click="vm.deleteShare(share)"><i class="fa fa-fw fa-trash-o"></i></a>
               <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(share)"></i>({{share.likes}})</a>
               <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.comments.length}})</a>
             </span>

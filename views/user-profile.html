@@ -245,6 +245,12 @@
           .displayNone {
             display: none;
           }
+          .no-notify {
+            padding: 15px;
+          }
+          .notifications-menu .dropdown-menu {
+            width: 130px!important;
+          }
           /* tooltip*/
           .asTooltip-content {
             width: 204px;
@@ -272,6 +278,32 @@
                       <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>">Login</a>
                   </li>
                   <% } else { %>
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                            <i class="fa fa-bell"></i> 
+                            <span class="label label-wraning"><%= (locals.request.connect + locals.request.group + locals.request.reply + locals.request.comment + locals.request.at) || '' %></span>
+                        </a>
+                        <ul class="dropdown-menu" class="request-container">
+                            <% if (locals.request.connect > 0) { %>
+                            <li><a href="/request/connect" target="_self"><%= locals.request.connect %> friends request</a></li>
+                            <% } %>
+                            <% if (locals.request.group > 0) { %>
+                            <li><a href="/request/group" target="_self"><%= locals.request.group %> group request</a></li>
+                            <% } %>
+                            <% if (locals.request.reply > 0) { %>
+                            <li><a href="/request/reply" target="_self"><%= locals.request.reply %> reply</a></li>
+                            <% } %>
+                            <% if (locals.request.comment > 0) { %>
+                            <li><a href="/request/comment" target="_self"><%= locals.request.comment %> comment</a></li>
+                            <% } %>
+                            <% if (locals.request.at > 0) { %>
+                            <li><a href="/request/at" target="_self"><%= locals.request.at %> at</a></li>
+                            <% } %>
+                            <% if (locals.request.group + locals.request.connect + locals.request.reply + locals.request.comment + locals.request.at === 0) { %>
+                            <li class="no-notify">No notify</li>
+                            <% } %>
+                        </ul>
+                  </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
@@ -291,7 +323,7 @@
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" ><%= locals.author.share.length %></a>
+                                    <a href="#" ><%= locals.shareCount %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
                                     <a href="#"><%= locals.author.connects.length %></a>
@@ -319,6 +351,7 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">Home</a></li>
                 <li><a href="/profile" target="_self">profile</a></li>
+                <li><a href="/group" target="_self">group</a></li>
                 <li><a href="/search/all" target="_self">search</a></li>
               </ul>
             </div>
@@ -333,7 +366,7 @@
               <!-- Menu Body -->
               <div class="user-body clearfix">
                   <div class="col-xs-6 text-center">
-                      <a href="#" class="user_share"><%= locals.user.share.length %></a>
+                      <a href="#" class="user_share"><%= locals.shareCount %></a>
                   </div>
                   <div class="col-xs-6 text-center">
                       <a href="#" class="user_connects"><%= locals.user.connects.length %></a>

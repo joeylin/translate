@@ -52,9 +52,15 @@ var GroupSchema = new Schema({
     }
 });
 
+// virtual
+GroupSchema.virtual('count').get(function() {
+    return this.members.length + this.admin.length + 1;
+});
+
 // statics
 GroupSchema.statics.createNew = function(obj, cb) {
     var group = new this();
+    var User = mongoose.model('User');
     group.name = obj.name;
     group.creator = obj.creator;
     group.announcement = obj.announcement;
@@ -62,8 +68,10 @@ GroupSchema.statics.createNew = function(obj, cb) {
     group.industry = obj.industry;
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('group', function(err, doc) {
-        group.id = doc.currentId;
-        group.save(cb);
+        User.joinGroup(obj.creator, group._id, function(err) {
+            group.id = doc.currentId;
+            group.save(cb);
+        });
     });
 };
 GroupSchema.statics.delete = function(id, userId, cb) {
@@ -87,8 +95,11 @@ GroupSchema.statics.join = function(id, userId, cb) {
         if (group.isJoined(userId)) {
             cb(null, null);
         } else {
-            group.members.push(userId);
-            group.save(cb);
+            var User = mongoose.model('User');
+            User.joinGroup(userId, id, function(err) {
+                group.members.push(userId);
+                group.save(cb);
+            });
         }
     });
 };
@@ -97,6 +108,7 @@ GroupSchema.statics.quit = function(id, userId, cb) {
         _id: id
     }, function(err, group) {
         var index = -1;
+        var User = mongoose.model('User');
         group.members.map(function(member, key) {
             if (member.toString() == userId) {
                 index = key;
@@ -106,16 +118,22 @@ GroupSchema.statics.quit = function(id, userId, cb) {
             if (group.isAdmin(userId)) {
                 var adminIndex = group.admin.indexOf(userId);
                 group.admin.splice(adminIndex, 1);
-                return group.save(cb);
+                return User.quitGroup(userId, id, function(err) {
+                    group.save(cb);
+                });
             }
             if (group.isCreator(userId)) {
                 group.creator = '';
-                return group.save(cb);
+                return User.quitGroup(userId, id, function(err) {
+                    group.save(cb);
+                });
             }
             return cb(null, null);
         } else {
             group.members.splice(index, 1);
-            group.save(cb);
+            return User.quitGroup(userId, id, function(err) {
+                group.save(cb);
+            });
         }
     });
 };
@@ -184,6 +202,8 @@ GroupSchema.methods.isCreator = function(userId) {
 };
 GroupSchema.methods.deleteMember = function(userId, cb) {
     var index = -1;
+    var User = mongoose.model('User');
+    var groupId = this._id;
     this.members.map(function(item, key) {
         if (item.toString() == userId) {
             index = key;
@@ -191,7 +211,9 @@ GroupSchema.methods.deleteMember = function(userId, cb) {
     });
     if (index > -1) {
         this.members.splice(index, 1);
-        this.save(cb);
+        this.save(function(err) {
+            User.quitGroup(userId, groupId.toString(), cb);
+        });
     } else {
         cb(null, null);
     }

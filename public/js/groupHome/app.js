@@ -80,5 +80,12 @@ config(['$httpProvider', 'app',
         app.author = window.author;
         app.popular = window.groupPopular;
         app.newGroup = window.newGroup;
+        $http.get('/api/notify').success(function(data) {
+            $rootScope.request = {};
+            $rootScope.request.comment = data.comment;
+            $rootScope.request.reply = data.reply;
+            $rootScope.request.connect = data.connect;
+            $rootScope.request.group = data.group;
+        });
     }
 ]);

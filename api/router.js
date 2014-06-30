@@ -41,19 +41,60 @@ module.exports = function(app) {
             app.locals.user = user;
             app.locals.author = req.session.user;
             if (profile.name === 'user') {
-                var array = [];
-                user.connects.map(function(item) {
-                    array.push(item.user.toString());
-                });
-                User.find({
-                    _id: {
-                        $in: array
-                    }
-                }, function(err, users) {
-                    app.locals.connects = users.slice(0, 5);
-                    res.render('user-profile');
-                });
+                User.findOne({
+                    _id: user._id
+                }).populate('connects.user').exec(function(err, user) {
+                    Share.find({
+                        user: user._id,
+                        is_delete: false,
+                        type: 'view'
+                    }).count().exec(function(err, count) {
+                        var array = [];
+                        user.connects.map(function(item, key) {
+                            array.push(item.user);
+                        });
+                        app.locals.shareCount = count;
+                        app.locals.connects = array.slice(0, 7);
 
+                        Request.find({
+                            to: user._id,
+                            hasDisposed: false
+                        }, function(err, requests) {
+                            var comment = [];
+                            var reply = [];
+                            var group = [];
+                            var connect = [];
+                            var at = [];
+                            requests.map(function(request) {
+                                if (request.type === 'comment') {
+                                    comment.push(request);
+                                }
+                                if (request.type === 'group') {
+                                    group.push(request);
+                                }
+                                if (request.type === 'reply') {
+                                    reply.push(request);
+                                }
+                                if (request.type === 'connect') {
+                                    connect.push(request);
+                                }
+                                if (request.type === 'at') {
+                                    at.push(request);
+                                }
+                            });
+                            var request = {
+                                comment: comment.length,
+                                reply: reply.length,
+                                group: group.length,
+                                connect: connect.length,
+                                at: at.length
+                            };
+
+                            app.locals.request = request;
+                            res.render('user-profile');
+                        });
+                    });
+                });
             }
             if (profile.name === 'company') {
                 app.locals.isLiked = req.session.user && user.isLike(req.session.user._id);
@@ -193,28 +234,51 @@ module.exports = function(app) {
     };
     var getGroupHome = function(req, res) {
         var author = req.session && req.session.user;
-        if (!author) {
-            Group.getLastest(function(err, lastest) {
-                Group.getPopular(function(err, popular) {
-                    app.locals.popular = popular || [];
-                    app.locals.newGroup = lastest || [];
-                    res.render('group-home');
+        Group.getLastest(function(err, lastest) {
+            Group.getPopular(function(err, popular) {
+                var groupPopular = [];
+                popular.map(function(item) {
+                    var result = {
+                        id: item.id,
+                        _id: item._id,
+                        avatar: item.avatar,
+                        count: item.count,
+                        name: item.name,
+                        industry: item.industry,
+                        total: 100
+                    };
+                    groupPopular.push(result);
                 });
-            });
-        } else {
-            User.findOne({
-                _id: author._id
-            }, function(err, user) {
-                Group.getLastest(function(err, lastest) {
-                    Group.getPopular(function(err, popular) {
-                        app.locals.popular = popular || [];
-                        app.locals.newGroup = lastest || [];
+                var groupLatest = [];
+                lastest.map(function(item) {
+                    var result = {
+                        id: item.id,
+                        _id: item._id,
+                        avatar: item.avatar,
+                        count: item.count,
+                        name: item.name,
+                        industry: item.industry,
+                        total: 100
+                    };
+                    groupLatest.push(result);
+                });
+                if (!author) {
+                    app.locals.popular = groupPopular;
+                    app.locals.newGroup = groupLatest;
+                    res.render('group-home');
+                } else {
+                    User.findOne({
+                        _id: author._id
+                    }, function(err, user) {
+                        app.locals.popular = groupPopular;
+                        app.locals.newGroup = groupLatest;
                         app.locals.author = user;
                         res.render('group-home');
                     });
-                });
+                }
+
             });
-        }
+        });
     };
     var getGroup = function(req, res) {
         var user = req.session.user;

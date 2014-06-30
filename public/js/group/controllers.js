@@ -258,13 +258,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             });
         };
         $scope.quit = function() {
-            var url = '/api/group/quit';
-            var data = {
-                id: app.group._id
-            };
-            $http.post(url, data).success(function(data) {
-                $location.path('/group/' + app.group.id);
-            });
+            $scope.$emit('popup', 'quit');
         };
         // members
         var vm = $scope.vm = {};

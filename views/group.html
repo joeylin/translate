@@ -382,6 +382,15 @@
           .at {
             color: #428bca;
           }
+          .quit {
+            cursor: pointer;
+          }
+          .no-notify {
+            padding: 15px;
+          }
+          .notifications-menu .dropdown-menu {
+            width: 130px!important;
+          }
           /* for auto Height*/
           .comment-editor-inline .form-control {
             position: absolute;
@@ -474,6 +483,13 @@
                     <button class="btn btn-danger pull-right" ng-click="global.deleteMember()" style="margin-right:10px;">Yes</button>
                 </div>
               </div>
+              <div class="white-popup-block" ng-if="global.popup.type == 'quit'">
+                <label>Are You Sure To Quit this group ?</label>
+                <div class="clearfix">
+                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">No</button>
+                    <button class="btn btn-danger pull-right" ng-click="global.quit()" style="margin-right:10px;">Yes</button>
+                </div>
+              </div>
             </div>
             <div class="mfp-preloader">Loading...</div>
           </div>
@@ -498,6 +514,20 @@
                       <a class="dropdown-toggle" href="/login?re=/group/<%= locals.group.id %>" target="_self">Login</a>
                   </li>
                   <% } else { %>
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify" ng-cloak>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                            <i class="fa fa-bell"></i> 
+                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
+                        </a>
+                        <ul class="dropdown-menu" class="request-container">
+                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
+                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
+                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
+                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
+                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
+                        </ul>
+                  </li>
                   <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
@@ -571,6 +601,9 @@
             <div>
               <% if (locals.isCreator || locals.isAdmin) { %>
               <a ng-href="/group/<%= locals.group.id %>/settings" type="button" class="group-op-btn btn-block">settings</a>
+              <% } %>
+              <% if (locals.author && locals.isJoined && !locals.isCreator && !locals.isAdmin) { %>
+              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.triggerQuit()">Quit this group</a>
               <% } %>
               <% if (locals.author && !locals.isJoined) { %>
               <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">Join this group</a>
