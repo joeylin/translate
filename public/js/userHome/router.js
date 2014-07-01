@@ -102,6 +102,11 @@ constant('app', {
             controller: 'requestCtrl',
             path: 'at'
         };
+        var all = {
+            templateUrl: getFileProvider.html('request.html'),
+            controller: 'requestCtrl',
+            path: 'all'
+        };
 
         $routeProvider.
         when('/home', news).
@@ -120,6 +125,7 @@ constant('app', {
         when('/request/comment', comment).
         when('/request/group', group).
         when('/request/at', at).
+        when('/request/all', all).
         when('/message', message);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }

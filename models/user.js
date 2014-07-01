@@ -93,6 +93,10 @@ var UserSchema = new Schema({
         join: [{
             type: ObjectId,
             ref: 'Group'
+        }],
+        create: [{
+            type: ObjectId,
+            ref: 'Group'
         }]
     },
 

@@ -321,6 +321,21 @@
           .delete {
             margin-right: 10px;
           }
+          .white-popup-block {
+            max-width: 420px;
+          }
+          .createContainer h3 {
+            margin-bottom: 25px;
+          }
+          .createContainer > .row {
+            margin-bottom: 15px;
+          }
+          .inline-label {
+            line-height: 29px;
+          }
+          .error {
+            color: red;
+          }
           /* for auto Height*/
           .comment-editor-inline .form-control {
             position: absolute;
@@ -437,7 +452,7 @@
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>News</a></li>
                     <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending"><i class="fa fa-fw fa-rocket"></i>MySending</a></li>
                     <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>MyGroup</a></li>
-                    <li ng-class="{active: ['connect','group','reply','comment','at'].indexOf(current.path) >= 0}"><a ng-href="/request/connect"><i class="fa fa-fw fa-info-circle"></i>Notify</a></li>
+                    <li ng-class="{active: ['connect','group','reply','comment','at','all'].indexOf(current.path) >= 0}"><a ng-href="/request/all"><i class="fa fa-fw fa-info-circle"></i>Notify</a></li>
                     <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li>
                     <li ng-class="{active: current.path === 'people' || current.path === 'myPeople'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Find professional</a></li>
                     <li ng-class="{active: current.path === 'share' || current.path === 'myShare'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
@@ -476,9 +491,10 @@
                   <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Collects</a></li>
               </ul>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at' || current.path === 'all'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-info-circle"></i>Notify</li>
+                  <li ng-class="{active: current.path === 'all'}"><a ng-href="/request/all">All</a></li>
                   <li ng-class="{active: current.path === 'connect'}"><a ng-href="/request/connect">Friends</a></li>
                   <li ng-class="{active: current.path === 'group'}"><a ng-href="/request/group">Group</a></li>
                   <li ng-class="{active: current.path === 'reply'}"><a ng-href="/request/reply">Reply</a></li>
@@ -487,8 +503,7 @@
               </ul>
             </div>
             <div class="row" id="main" ng-view ng-cloak></div>
-          </div>
-            
+          </div>           
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>

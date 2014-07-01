@@ -68,9 +68,15 @@ GroupSchema.statics.createNew = function(obj, cb) {
     group.industry = obj.industry;
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('group', function(err, doc) {
-        User.joinGroup(obj.creator, group._id, function(err) {
-            group.id = doc.currentId;
-            group.save(cb);
+        User.joinGroup(obj.creator, group._id, function(err, user) {
+            if (user.groups.create.length > 4) {
+                return cb(null, null);
+            }
+            user.groups.create.push(group._id);
+            user.save(function(err) {
+                group.id = doc.currentId;
+                group.save(cb);
+            });
         });
     });
 };

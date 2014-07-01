@@ -67,6 +67,9 @@ controller('searchCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.error = true;
                 return false;
             }
+            if (app.user.groups.create.length > 4) {
+                return false;
+            }
             var url = '/api/group/create';
             var data = {
                 name: $scope.name,

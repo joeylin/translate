@@ -21,6 +21,12 @@ var create = function(req, res) {
         industry: industry
     };
     Group.createNew(obj, function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'out of group limit'
+            });
+        }
         res.send({
             code: 200,
             groupId: group.id

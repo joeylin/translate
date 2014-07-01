@@ -750,43 +750,78 @@ var getNotifyCount = function(req, res) {
 var getRequest = function(req, res) {
     var user = req.session.user;
     var op = req.params.op;
-    if (['group', 'reply', 'comment', 'connect'].indexOf(op) < 0) {
+    if (['group', 'reply', 'comment', 'connect', 'all'].indexOf(op) < 0) {
         return res.send({
             code: 404,
             info: 'invalide operation'
         });
     }
-    Request.find({
-        to: user._id,
-        type: op
-    }).populate('from').populate('group').sort('-createAt').exec(function(err, requests) {
-        var items = [];
-        requests.map(function(request) {
-            var result = {};
-            result.from = {
-                id: request.from.id,
-                _id: request.from._id,
-                name: request.from.name,
-                avatar: request.from.avatar
-            };
-            result.group = {
-                id: request.group && request.group.id,
-                _id: request.group && request.group._id,
-                avatar: request.group && request.group.avatar,
-                name: request.group && request.group.name
-            };
-            result._id = request._id;
-            result.hasDisposed = request.hasDisposed;
-            result.isPass = request.isPass;
-            result.type = request.type;
-            result.content = request.content;
-            items.push(result);
+    if (op === 'all') {
+        Request.find({
+            to: user._id,
+            hasDisposed: false
+        }).populate('from').populate('group').sort('-createAt').limit(20).exec(function(err, requests) {
+            var items = [];
+            requests.map(function(request) {
+                var result = {};
+                result.from = {
+                    id: request.from.id,
+                    _id: request.from._id,
+                    name: request.from.name,
+                    avatar: request.from.avatar
+                };
+                result.group = {
+                    id: request.group && request.group.id,
+                    _id: request.group && request.group._id,
+                    avatar: request.group && request.group.avatar,
+                    name: request.group && request.group.name
+                };
+                result._id = request._id;
+                result.hasDisposed = request.hasDisposed;
+                result.isPass = request.isPass;
+                result.type = request.type;
+                result.content = request.content;
+                items.push(result);
+            });
+            res.send({
+                code: 200,
+                requests: items
+            });
         });
-        res.send({
-            code: 200,
-            requests: items
+    } else {
+        Request.find({
+            to: user._id,
+            type: op
+        }).populate('from').populate('group').sort('-createAt').limit(20).exec(function(err, requests) {
+            var items = [];
+            requests.map(function(request) {
+                var result = {};
+                result.from = {
+                    id: request.from.id,
+                    _id: request.from._id,
+                    name: request.from.name,
+                    avatar: request.from.avatar
+                };
+                result.group = {
+                    id: request.group && request.group.id,
+                    _id: request.group && request.group._id,
+                    avatar: request.group && request.group.avatar,
+                    name: request.group && request.group.name
+                };
+                result._id = request._id;
+                result.hasDisposed = request.hasDisposed;
+                result.isPass = request.isPass;
+                result.type = request.type;
+                result.content = request.content;
+                items.push(result);
+            });
+            res.send({
+                code: 200,
+                requests: items
+            });
         });
-    });
+    }
+
 };
 var readRequest = function(req, res) {
     var user = req.session.user;

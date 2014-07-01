@@ -207,11 +207,13 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
         return {
             restrict: 'AE',
             link: function(scope, element, attrs, ngModel) {
-                $(element).magnificPopup({
-                    type: 'inline',
-                    closeOnBgClick: false,
-                    midClick: true
-                });
+                setTimeout(function() {
+                    $(element).magnificPopup({
+                        type: 'inline',
+                        closeOnBgClick: false,
+                        midClick: true
+                    });
+                }, 300);
             }
         };
     }

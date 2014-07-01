@@ -302,6 +302,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         if ($rootScope.current.path === 'at') {
             url = '/api/notify/at';
         }
+        if ($rootScope.current.path === 'all') {
+            url = '/api/notify/all';
+        }
 
         $http.get(url).success(function(data) {
             $scope.requests = data.requests;
@@ -917,6 +920,32 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('myGroupCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        // create new group
+        $scope.vm = {};
+        $scope.vm.name = '';
+        $scope.vm.industry = '';
+        $scope.error = false;
+        $scope.create = function() {
+            if ($scope.vm.name === '' || $scope.vm.industry === '') {
+                $scope.error = true;
+                return false;
+            }
+            var url = '/api/group/create';
+            var data = {
+                name: $scope.vm.name,
+                industry: $scope.vm.industry
+            };
+            $http.post(url, data).success(function(data) {
+                $.magnificPopup.close();
+                window.location.href = '/group/' + data.groupId + '/settings';
+            });
+        };
+        $scope.change = function() {
+            if ($scope.vm.name !== '' && $scope.vm.industry !== '') {
+                $scope.error = false;
+            }
+        };
+
         $scope.content = [];
         var getGroup = function() {
             var url = '/api/myGroup';
@@ -927,6 +956,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.refresh = function() {
             getGroup();
         };
+
         getGroup();
     }
 ]);

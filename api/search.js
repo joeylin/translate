@@ -14,6 +14,11 @@ var getPeople = function(req, res) {
     var user = req.session.user;
     var name = req.query.name;
     var re = new RegExp(name);
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        var array = [];
+    });
     User.find({
         name: re
     }, function(err, users) {
