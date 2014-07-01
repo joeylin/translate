@@ -417,7 +417,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.relative.push('fellow');
             }
             $scope.isFellow = !$scope.isFellow;
-        }
+        };
         $scope.toggleFriend = function() {
             if ($scope.isFriend) {
                 var index = $scope.relative.indexOf('friend');
@@ -426,7 +426,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.relative.push('friend');
             }
             $scope.isFriend = !$scope.isFriend;
-        }
+        };
         $scope.toggleInterest = function() {
             if ($scope.isInterest) {
                 var index = $scope.relative.indexOf('interest');
@@ -435,7 +435,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.relative.push('interest');
             }
             $scope.isInterest = !$scope.isInterest;
-        }
+        };
 
         function resetRelative() {
             $scope.isClassmate = false;
@@ -772,26 +772,43 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
 
         $scope.vm = {};
-        $scope.vm.select = function(item) {
+        $scope.vm.select = function(name) {
             var url = '/api/user/connects';
             var params = {
-                filter: item.name
+                filter: name
             };
-            $scope.title = item.name;
+            $scope.title = name;
             $http(url, params).success(function(data) {
                 $scope.content = data.content;
             });
         };
-        $scope.vm.remove = function(connect) {
-            var url = '/api/user/disconnect';
+        var removeUser = null;
+        $scope.vm.triggerRemove = function(user) {
+            removeUser = user;
+        };
+        $scope.vm.remove = function() {
+            var url = '/api/connect/disconnect';
             var params = {
-                connectId: connect._id
+                connectId: removeUser._id
             };
             $http.post(url, params).success(function(data) {
-                var index = $scope.content.indexOf(connect);
-                $scope.connect.splice(index, 1);
+                var index = $scope.content.indexOf(removeUser);
+                $scope.content.splice(index, 1);
+                $.magnificPopup.close();
             });
         };
+        $scope.vm.close = function() {
+            removeUser = null;
+            $.magnificPopup.close();
+        };
+
+        function getConnects() {
+            var url = '/api/connects';
+            $http.get(url).success(function(data) {
+                $scope.content = data.content;
+            });
+        }
+        getConnects();
     }
 ]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {

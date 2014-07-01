@@ -189,11 +189,17 @@ var checkConnect = function(req, res) {
 };
 var disconnect = function(req, res) {
     var user = req.session.user;
-    var id = req.body.id;
+    var connectId = req.body.connectId;
     User.findOne({
         _id: user._id
     }, function(err, user) {
-        user.disconnect(id, function(err, user) {
+        user.disconnect(connectId, function(err, user) {
+            if (!user) {
+                return res.send({
+                    code: 404,
+                    info: 'you are not friend'
+                });
+            }
             res.send({
                 code: 200,
                 info: 'success'
@@ -320,17 +326,21 @@ var getTrends = function(req, res) {
     });
 };
 var getConnects = function(req, res) {
-    var userId = req.query.userId;
+    var user = req.session.user;
     User.findOne({
-        _id: userId
-    }).populate('connects').exec(function(err, user) {
+        _id: user._id
+    }).populate('connects.user').exec(function(err, user) {
         var results = [];
         user.connects.map(function(connect) {
             var result = {
-                _id: connect._id,
-                name: connect.name,
-                id: connect.id,
-                avatar: connect.avatar
+                _id: connect.user._id,
+                name: connect.user.name,
+                id: connect.user.id,
+                avatar: connect.user.avatar,
+                relate: connect.relate,
+                occupation: connect.user.occupation,
+                signature: connect.user.signature,
+                connects: connect.user.connects.length
             };
             results.push(result);
         });
@@ -821,7 +831,6 @@ var getRequest = function(req, res) {
             });
         });
     }
-
 };
 var readRequest = function(req, res) {
     var user = req.session.user;
@@ -910,6 +919,28 @@ var getGroupByUser = function(req, res) {
         });
     });
 };
+var changeRelate = function(req, res) {
+    var user = req.session.user;
+    var content = req.body.content;
+    var userId = req.body.userId;
+
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        var connects = user.connects;
+        connects.map(function(item) {
+            if (item.user.toString() == userId) {
+                item.relate = content;
+            }
+        });
+        // user.markModified('connects.relate');
+        user.save(function() {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -941,6 +972,7 @@ module.exports = function(app) {
     app.post('/api/connect/send', sendNotify);
     app.post('/api/connect/check', checkConnect);
     app.post('/api/connect/disconnect', disconnect);
+    app.post('/api/connect/relate', changeRelate);
     app.get('/api/connects', getConnects);
 
     // message

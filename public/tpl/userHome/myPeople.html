@@ -11,100 +11,29 @@
       </div>
     </div>
     <div class="panel-body">
-      <div class="media" ng-repeat="user in content">
-        <a class="pull-left" ng-href="/profile/{{user.name}}" target="_self">
+      <div class="media" ng-repeat-start="user in content">
+        <a class="pull-left" ng-href="/profile/{{user.id}}" target="_self">
           <img class="media-object" alt="64x64" ng-src="{{user.avatar}}" style="width: 64px; height: 64px;">
         </a>
-        <div class="media-body">
-          <h4 class="media-heading"><a ng-href="profile/{{user.name}}" target="_self">{{user.name}}</a></h4>
+        <div class="media-body user-connects">
+          <div popup data-mfp-src="#remove-user" class="pull-right remove-btn" ng-click="vm.triggerRemove(user)"><i class="fa fa-fw fa-times"></i></div>
+          <h4 class="media-heading"><a ng-href="profile/{{user.id}}" target="_self">{{user.name}}</a></h4>
           <div class="row">
             <div class="col-md-9">
-              <div>{{user.desc}}</div>
-              <div class="search-people-info">{{user.info}}</div>
-              <div class="search-people-relationship"><a href="#">{{user.similar}}</a></div>
+              <div>{{user.occupation || 'no occupation yet'}}</div>
+              <div class="search-people-info">Intro: {{user.signature || 'no introduce yet'}}</div>
+              <div>Realte: {{user.relate}}</div>
+              <div class="search-people-relationship">Connects:{{user.connects}}</div>
             </div>
             <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" ng-show="!user.isConnected" ng-click="connect(user)">connect</a>
-              <a class="btn btn-primary pull-right" role="button" ng-show="user.isMe">edit</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading"><a href="#">Joeylin</a></h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div class="search-people-signature">Think different</div>
-              <div>BUPT Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
+              <div relselect user="user">
+                <a class="btn btn-default pull-right btn-sm" role="button">change relate</a>
               </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
-            </div>
-            <div class="col-md-2">
-              <a class="btn btn-default pull-right" role="button" >remove</a>
             </div>
           </div>
         </div>
       </div>
-      <hr>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading"><a href="#">LaoLei</a></h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div class="search-people-signature">Dream makes people great</div>
-              <div>BUPT Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
-              </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
-            </div>
-            <div class="col-md-2">
-              <a class="btn btn-default pull-right" role="button" >remove</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading"><a href="#">Leoylin</a></h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div class="search-people-signature">Think different</div>
-              <div>YanBian University Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
-              </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
-            </div>
-            <div class="col-md-2">
-              <a class="btn btn-default pull-right" role="button" >remove</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
+      <hr ng-repeat-end>
       <div>
         <ul class="pager">
           <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>
@@ -132,5 +61,36 @@
         <li><a href="#">Sale Man (11)</a></li>
       </ul>
     </div>
+  </div>
+</div>
+<div id="change-select" class="change-select" style="width:199px;" >
+    <div class="well custom-well">
+        <div class="arrow"></div>
+        <div class="relative-option" data-value="classmate">
+          <i class="fa fa-fw fa-circle-o"></i>
+          <span>Classmate</span>
+        </div>
+        <div class="relative-option" data-value="fellow">
+          <i class="fa fa-fw fa-circle-o"></i>
+          <span>Fellow</span>
+        </div>
+        <div class="relative-option" data-value="friend">
+          <i class="fa fa-fw fa-circle-o"></i>
+          <span>Friends</span>
+        </div>
+        <div class="relative-option" data-value="interest">
+          <i class="fa fa-fw fa-circle-o"></i>
+          <span>Same Interest</span>
+        </div>
+        <div class="clearfix" style="margin-top:10px;">
+          <a class="btn btn-primary btn-sm pull-right enter">Enter</a>
+        </div>
+    </div>
+</div>
+<div class="white-popup-block mfp-hide" id="remove-user">
+  <label>Are You Sure To Delete it ?</label>
+  <div class="clearfix">
+      <button class="btn btn-primary pull-right" ng-click="vm.close()">No</button>
+      <button class="btn btn-danger pull-right" ng-click="vm.remove()" style="margin-right:10px;">Yes</button>
   </div>
 </div>

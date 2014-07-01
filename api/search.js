@@ -17,7 +17,8 @@ var getPeople = function(req, res) {
     User.findOne({
         _id: user._id
     }, function(err, user) {
-        var array = [];
+
+
     });
     User.find({
         name: re

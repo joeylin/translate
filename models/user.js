@@ -392,24 +392,28 @@ UserSchema.methods = {
     },
     disconnect: function(userId, cb) {
         var User = mongoose.model('User');
-        this.connects.map(function(connect, key) {
-            if (connect.user.toString() === userId.toString()) {
-                this.connects.splice(key, 1);
+        var index = -1;
+        var connects = this.connects;
+        connects.map(function(connect, key) {
+            if (connect.user.toString() === userId) {
+                connects.splice(key, 1);
+                index = key;
             }
         });
+        if (index < 0) {
+            return cb(null, null);
+        }
         var id = this._id;
         this.save(function(err, user) {
             User.findOne({
                 _id: userId
             }, function(err, user) {
                 user.connects.map(function(connect, key) {
-                    if (connect.user === id) {
-                        this.connects.splice(key, 1);
+                    if (connect.user.toString() == id.toString()) {
+                        user.connects.splice(key, 1);
                     }
                 });
-                user.save(function(err, user) {
-                    cb(err, user);
-                });
+                user.save(cb);
             });
         });
     },

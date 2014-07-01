@@ -260,4 +260,94 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
             }
         };
     }
+]).directive('relselect', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$http',
+    function(mdParse, sanitize, pretty, isVisible, $http) {
+        return {
+            restrict: 'AE',
+            scope: {
+                user: '='
+            },
+            link: function($scope, element, attrs) {
+                $(element).css({
+                    position: 'relative',
+                    display: 'inline-block'
+                });
+                var userId = $scope.$eval(attrs.userId);
+                var relates = [];
+                var $template;
+                var optionClick = function() {
+                    var $this = $(this);
+                    var $icon = $this.find('i');
+                    if ($icon.hasClass('fa-circle-o')) {
+                        $icon.removeClass('fa-circle-o').addClass('fa-check-circle-o');
+                        relates.push($this.data('value'));
+                    } else {
+                        $icon.removeClass('fa-check-circle-o').addClass('fa-circle-o');
+                        relates.splice(relates.indexOf($this.data('value')), 1);
+                    }
+                    return false;
+                };
+                var close = function() {
+                    relates = [];
+                    $template.find('.relative-option i')
+                        .removeClass('fa-check-circle-o')
+                        .addClass('fa-circle-o');
+                    $template.find('.relative-option').off('click');
+                    $template.find('.enter').off('click');
+                    $(document).off('click.relselect');
+                };
+                $template = $('#change-select');
+                $(element).on('click', function(e) {
+                    if ($template.hasClass('isOpened')) {
+                        $template.removeClass('isOpened');
+                        close();
+                    } else {
+                        close();
+                        $template.addClass('isOpened');
+                        $template.find('.relative-option').on('click', optionClick);
+                        $template.find('.enter').on('click', function() {
+                            var url = '/api/connect/relate';
+                            var data = {
+                                content: relates.join(','),
+                                userId: $scope.user._id
+                            };
+                            $http.post(url, data).success(function() {
+                                $scope.user.relate = relates.join(',');
+                                $template.removeClass('isOpened');
+                                close();
+                            });
+                            return false;
+                        });
+                        $(document).on('click.relselect', function() {
+                            $template.removeClass('isOpened');
+                            close();
+                        });
+                        position($(element));
+                    }
+                    return false;
+                });
+                $template.on('click', function() {
+                    return false;
+                });
+
+                var position = function($element) {
+                    var offset = $element.offset(),
+                        height = $element.outerHeight(),
+                        width = $element.outerWidth(),
+                        picker_width = $template.outerWidth(true),
+                        picker_height = $template.outerHeight(true),
+                        top, left;
+
+                    top = offset.top + height;
+                    left = offset.left + (width - picker_width) / 2;
+
+                    $template.css({
+                        position: 'fixed',
+                        top: top,
+                        left: left
+                    });
+                };
+            }
+        };
+    }
 ]);
