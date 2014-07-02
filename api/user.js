@@ -481,7 +481,7 @@ var getMyShare = function(req, res) {
         user: user._id,
         type: 'view',
         is_delete: false
-    }).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+    }).sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
         Share.find({
             user: user._id,
             type: 'view',

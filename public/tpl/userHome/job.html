@@ -1,13 +1,22 @@
 <div class="profile-body col-md-9">
   <div class="panel search-result">
-    <div class="panel-heading">Results: 1568</div>
+    <div class="panel-heading custom-heading">
+      <div class="row">
+        <div class="col-md-8">
+          <h4><span ng-bind="title"></span></h4>
+        </div>
+        <div class="col-md-4 pull-right">
+          <a popup data-mfp-src="#publish-job" class="btn btn-primary pull-right btn-sm" role="button" style="margin-top: 6px;">Publish New Job</a>
+        </div>
+      </div>
+    </div>
     <div class="panel-body">
-      <div class="media" ng-repeat="job in content">
-        <a class="pull-left" ng-href="/api/company/{{job.company.name}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{job.company.avatar}}" style="width: 64px; height: 64px;">
+      <div class="media" ng-repeat-start="job in content">
+        <a class="pull-left" ng-href="/api/profile/{{job.owner.id}}" target="_self">
+          <img class="media-object" alt="64x64" ng-src="{{job.owner.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">{{job.company.name}}</h4>
+          <h4 class="media-heading">{{job.owner.name}}</h4>
           <div class="row">
             <div class="col-md-9">
               <div>{{job.desc}}</div>
@@ -17,18 +26,19 @@
               <div>
                 <a href="#" class="search-job-date">Posted at {{job.date}} </a>
                 <span> views: {{job.views}}</span>
+                <span> Join: {{job.join}}</span>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button" ng-href="/api/job/{{job.id}}" target="_self">View</a>
-                <a class="btn btn-primary" role="button" ng-click="save()" ng-show="!isSaved">Save</a>
-                <a class="btn btn-default" role="button" ng-click="save()" ng-show="isSaved">Saved</a>
+              <div class="pull-right job-op">
+                <a class="btn" role="button" ng-click="save()" ng-class="{'saved':job.isSaved}">{{job.isSaved ? 'Saved':'Save'}}</a>
+                <a class="btn" role="button" ng-href="/view/{{job.id}}" target="_self">View</a>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <hr ng-repeat-end>
       <div class="media">
         <a class="pull-left" href="#">
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
@@ -49,9 +59,9 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button">View</a>
-                <a class="btn btn-primary" role="button">Save</a>
+              <div class="pull-right job-op">
+                <a class="btn saved" role="button">Saved</a>
+                <a class="btn" role="button">View</a>
               </div>
             </div>
           </div>
@@ -78,9 +88,9 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button">View</a>
-                <a class="btn btn-primary" role="button">Save</a>
+              <div class="pull-right job-op">
+                <a class="btn" role="button">Save</a>
+                <a class="btn" role="button">View</a>
               </div>
             </div>
           </div>
@@ -107,9 +117,9 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button">View</a>
-                <a class="btn btn-primary" role="button">Save</a>
+              <div class="pull-right job-op">
+                <a class="btn" role="button">Save</a>
+                <a class="btn" role="button">View</a>
               </div>
             </div>
           </div>
@@ -130,11 +140,30 @@
     <div class="panel-body" ng-show="!isFilter">
       <div class="form-group">
           <label>keyword</label>
-          <input type="text" class="form-control" placeholder="Enter keyword" ng-model="keyword" ng-keydown="enter($event,'keyword',keyword)">
-      </div>   
+          <input type="text" class="form-control" placeholder="Enter keyword" ng-model="keyword" ng-keydown="enter($event,'keyword',keyword)" ng-focus="showSubmitBtn=true" ng-blur="showSubmitBtn=false">
+      </div>  
+      <div class="clearfix" ng-show="showSubmitBtn">
+        <a class="btn btn-primary pull-right btn-sm" role="button" ng-click="submit()">submit</a>
+      </div>
+      <hr style="margin-bottom:13px;"> 
+      <div class="form-group">
+          <label>Type</label>
+          <select class="form-control" ng-model="type" ng-change="addFilter('type',type)">
+              <option value="">all</option>
+              <option value="p">part-time</option>
+              <option value="f">full-time</option>
+              <option value="i">intern</option>
+          </select>
+      </div>
       <div class="form-group">
           <label>location</label>
-          <input type="text" class="form-control" ng-model="location" placeholder="Enter location" ng-keydown="enter($event,'location',location)">
+          <select class="form-control" ng-model="location" ng-change="addFilter('location',location)">
+              <option>noLimit</option>
+              <option>FuZhou</option>
+              <option>BeiJing</option>
+              <option>WuHan</option>
+              <option>ChangSha</option>
+          </select>
       </div>
       <div class="form-group">
           <label>payment</label>
@@ -147,15 +176,6 @@
               <option>15k-25k</option>
               <option>25k-50k</option>
               <option>above 50k</option>
-          </select>
-      </div>
-      <div class="form-group">
-          <label>Type</label>
-          <select class="form-control" ng-model="type" ng-change="addFilter('type',type)">
-              <option>all</option>
-              <option>part-time</option>
-              <option>full-time</option>
-              <option>intern</option>
           </select>
       </div>
       <div class="form-group">
@@ -180,9 +200,7 @@
               <option>10+</option>
           </select>
       </div>
-      <div class="clearfix">
-        <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
-      </div>
+      
       <!-- <div class="clearfix">
         <a class="pull-right search-filter" role="button" ng-click="showFilter()">Filters</a>
       </div> -->

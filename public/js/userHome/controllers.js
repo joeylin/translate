@@ -550,14 +550,15 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('jobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        var url = '/api/search/jobs';
+        var url = '/api/job/latest';
         $scope.content = [];
+        $scope.title = 'Latest Jobs';
         $scope.pager = {
             hasNext: false,
             current: 1
         };
         var params = {
-            pager: 1,
+            page: 1,
             payment: $scope.payment,
             degree: $scope.degree,
             years: $scope.years,
@@ -567,7 +568,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
         $scope.submit = function() {
             // reset the config before submit
-            params.pager = 1;
+            url = '/api/job/search';
+            params.page = 1;
             get();
         };
         $scope.next = function() {
@@ -575,7 +577,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 return false;
             }
             $scope.pager.current += 1;
-            params.pager = $scope.pager.current;
+            params.page = $scope.pager.current;
             get();
         };
         $scope.prev = function() {
@@ -583,7 +585,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 return false;
             }
             $scope.pager.current -= 1;
-            params.pager = $scope.pager.current;
+            params.page = $scope.pager.current;
             get();
         };
         var addFilter = function(key, value) {
@@ -603,7 +605,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $http.post(url, {
                 _id: job._id,
             }).success(function(data) {
-
+                job.isSaved = true;
             });
         };
 
@@ -620,8 +622,48 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.years = 'noLimit';
         $scope.degree = 'noLimit';
         $scope.payment = 'all';
-        $scope.type = 'all';
+        $scope.type = '';
+        $scope.location = 'noLimit';
         get();
+
+        // example data
+        var item = {
+            owner: {
+                avatar: '/public/imgs/group.png',
+                name: 'joeylin',
+                id: 'xx',
+                _id: 'xx'
+            },
+            desc: 'Ask for nodejs developer, code review, write document, communicate with customer',
+            payment: '10k-20k',
+            number: '2-8',
+            skills: 'node.js,angularjs,php',
+            location: 'FuZhou',
+            views: 100,
+            join: 20,
+            date: '2 min ago',
+            isSaved: true
+        };
+        var item1 = {
+            owner: {
+                avatar: '/public/imgs/group.png',
+                name: 'LaoLei',
+                id: 'xx',
+                _id: 'xx'
+            },
+            id: 'xxx',
+            desc: 'Ask for nodejs developer, code review, write document, communicate with customer',
+            payment: '10k-20k',
+            number: '2-8',
+            skills: 'node.js,angularjs,php',
+            location: 'FuZhou',
+            views: 100,
+            join: 20,
+            date: '2 min ago',
+            isSaved: false
+        };
+        $scope.content.push(item);
+        $scope.content.push(item1);
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {

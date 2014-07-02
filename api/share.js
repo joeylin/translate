@@ -267,6 +267,151 @@ var unCollectShare = function(req, res) {
     });
 };
 
+//jobs
+var getLatestJobs = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+
+    Share.find({
+        type: 'job',
+        is_delete: false
+    }).sort({
+        createAt: -1
+    }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find({
+            type: 'job',
+            is_delete: false
+        }).count().exec(function(err, count) {
+            User.findOne({
+                _id: user._id
+            }, function(err, user) {
+                var results = [];
+                var hasNext;
+                shares.map(function(item) {
+                    var obj = {
+                        owner: {
+                            avatar: item.user.avatar,
+                            name: item.user.name,
+                            id: item.user.id,
+                            _id: item.user._id
+                        },
+                        _id: item._id,
+                        desc: item.desc,
+                        payment: item.payment,
+                        number: item.number,
+                        skills: item.skills,
+                        location: item.location,
+                        views: item.views,
+                        join: item.join,
+                        type: item.jobType,
+                        date: item.createAt.getTime(),
+                        isSaved: false
+                    };
+                    var index = -1;
+                    user.collects.jobs.map(function(job, key) {
+                        if (job.toString() == item._id.toString()) {
+                            index = key;
+                        }
+                    });
+                    if (index > -1) {
+                        obj.isSaved = true;
+                    }
+                    results.push(obj);
+                });
+                if ((page - 1) * perPageItems + content.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+
+                res.send({
+                    code: 200,
+                    count: count,
+                    content: results,
+                    hasNext: hasNext
+                });
+            });
+        });
+    });
+};
+var jobsSearch = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var keyword = req.query.keyword;
+    var re;
+    if (req.query.keyword) {
+        re = new RegExp(keyword, 'ig');
+    }
+    Share.find({
+        type: 'job',
+        is_delete: false,
+        content: re,
+        jobType: req.query.type,
+        years: req.query.years,
+        payment: req.query.payment,
+        location: req.query.location,
+        degree: req.query.degree
+    }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find({
+            type: 'job',
+            is_delete: false,
+            content: re,
+            jobType: req.query.type,
+            years: req.query.years,
+            payment: req.query.payment,
+            location: req.query.location,
+            degree: req.query.degree
+        }).count().exec(function(err, count) {
+            var results = [];
+            var hasNext;
+            shares.map(function(item) {
+                var obj = {
+                    owner: {
+                        avatar: item.user.avatar,
+                        name: item.user.name,
+                        id: item.user.id,
+                        _id: item.user._id
+                    },
+                    _id: item._id,
+                    desc: item.desc,
+                    payment: item.payment,
+                    number: item.number,
+                    skills: item.skills,
+                    location: item.location,
+                    views: item.views,
+                    join: item.join,
+                    type: item.jobType,
+                    date: item.createAt.getTime(),
+                    isSaved: false
+                };
+                var index = -1;
+                user.collects.jobs.map(function(job, key) {
+                    if (job.toString() == item._id.toString()) {
+                        index = key;
+                    }
+                });
+                if (index > -1) {
+                    obj.isSaved = true;
+                }
+                results.push(obj);
+            });
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+
+            res.send({
+                code: 200,
+                count: count,
+                content: results,
+                hasNext: hasNext
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/share/collect', middleware.check_login, collectShare);
@@ -282,4 +427,8 @@ module.exports = function(app) {
     // comments
     app.post('/api/share/comments/add', middleware.check_login, addComment);
     app.post('/api/share/comments/delete', middleware.check_login, deleteComment);
+
+    // jobs
+    app.get('/api/job/latest', getLatestJobs);
+    app.get('/api/job/search', jobsSearch);
 };

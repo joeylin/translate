@@ -1,6 +1,15 @@
 <div class="profile-body col-md-9">
   <div class="panel search-result">
-    <div class="panel-heading">Results: 1568</div>
+    <div class="panel-heading custom-heading">
+      <div class="row">
+        <div class="col-md-8">
+          <h4></h4>
+        </div>
+        <div class="col-md-4 pull-right">
+          <input type="text" class="form-control" placeholder="search by name" ng-model="vm.filter.name">
+        </div>
+      </div>
+    </div>
     <div class="panel-body">
       <div class="media" ng-repeat="job in content">
         <a class="pull-left" ng-href="/api/company/{{job.company.name}}" target="_self">
