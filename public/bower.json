@@ -1,31 +1,32 @@
 {
-  "name": "translate",
-  "version": "0.1.0",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components"
-  ],
-  "devDependencies": {
-    "rainbow": "git@github.com:ccampbell/rainbow.git"
-  },
-  "dependencies": {
-    "angular": ">=1.2.0",
-    "angular-animate": ">=1.2.0",
-    "angular-cookies": ">=1.2.0",
-    "angular-resource": ">=1.2.0",
-    "angular-route": ">=1.2.0",
-    "pure": ">=0.3.0",
-    "font-awesome": ">=3.2.1",
-    "jquery": ">=2.0.3",
-    "jquery.old": "jquery#1.7.2",
-    "es5-shim": ">=2.1.0",
-    "html5shiv": ">=3.7.0",
-    "json2": "",
-    "marked": ">=0.2.9",
-    "toastr": ">=2.0.1",
-    "google-code-prettify": ">=1.0.0",
-    "angular-file-upload": "v0.2.8.7",
-    "reserveLoadjs": ">=0.4.1"
-  }
+    "name": "translate",
+    "version": "0.1.0",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components"
+    ],
+    "devDependencies": {
+        "rainbow": "git@github.com:ccampbell/rainbow.git"
+    },
+    "dependencies": {
+        "angular": ">=1.2.0",
+        "angular-animate": ">=1.2.0",
+        "angular-cookies": ">=1.2.0",
+        "angular-resource": ">=1.2.0",
+        "angular-route": ">=1.2.0",
+        "pure": ">=0.3.0",
+        "font-awesome": ">=3.2.1",
+        "jquery": ">=2.0.3",
+        "jquery.old": "jquery#1.7.2",
+        "es5-shim": ">=2.1.0",
+        "html5shiv": ">=3.7.0",
+        "json2": "",
+        "marked": ">=0.2.9",
+        "toastr": ">=2.0.1",
+        "google-code-prettify": ">=1.0.0",
+        "angular-file-upload": "v0.2.8.7",
+        "reserveLoadjs": ">=0.4.1",
+        "typeahead.js": ">=0.10.2"
+    }
 }

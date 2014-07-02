@@ -54,6 +54,16 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.total = data.count;
             });
         };
+        var getMyShare = function() {
+            url = '/api/user/myShare';
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.shareList = data.content;
+                $scope.hasNext = data.hasNext;
+                $scope.total = data.count;
+            });
+        };
         var getUserList = function() {
             var url = '/api/user/userList';
             $http.get(url).success(function(data) {
@@ -184,9 +194,30 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             });
         };
 
+        // for myshare search
+        $scope.vm.searchName = '';
+        $scope.vm.enter = function() {
+            url = '/api/user/myShare/search';
+            params.keyword = $scope.vm.searchName;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.shareList = data.content;
+                $scope.hasNext = data.hasNext;
+                $scope.total = data.count;
+            });
+        };
+        $scope.vm.getAll = function() {
+            getMyShare();
+        };
+
         // init
-        getTrend();
-        getUserList();
+        if ($rootScope.current.path === 'news') {
+            getTrend();
+            getUserList();
+        } else {
+            getMyShare();
+        }
     }
 ]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
@@ -753,9 +784,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 ]).controller('myPeopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.title = 'All Connects';
-        $scope.relations = [];
-        $scope.postions = [];
         $scope.content = [];
+
+        var url = '/api/connects';
 
         $scope.searchByName = function() {
             if ($scope.inputName === '') {
@@ -772,15 +803,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
 
         $scope.vm = {};
-        $scope.vm.select = function(name) {
-            var url = '/api/user/connects';
-            var params = {
-                filter: name
-            };
-            $scope.title = name;
-            $http(url, params).success(function(data) {
-                $scope.content = data.content;
-            });
+        $scope.vm.page = {
+            size: 30,
+            index: 1
         };
         var removeUser = null;
         $scope.vm.triggerRemove = function(user) {
@@ -801,6 +826,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             removeUser = null;
             $.magnificPopup.close();
         };
+        $scope.vm.getAll = getConnects;
+
+        $scope.vm.select = function(classify, name) {
+            // todo 
+        };
 
         function getConnects() {
             var url = '/api/connects';
@@ -808,6 +838,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.content = data.content;
             });
         }
+
         getConnects();
     }
 ]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',

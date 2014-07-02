@@ -517,7 +517,7 @@
                   <li class="dropdown notifications-menu user-menu" id="menuNotify" ng-cloak>
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
+                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment + request.at || ''}}</span>
                         </a>
                         <ul class="dropdown-menu" class="request-container">
                             <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
@@ -525,7 +525,7 @@
                             <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
                             <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
                             <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
-                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect && !request.at" class="no-notify">No notify</li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu">

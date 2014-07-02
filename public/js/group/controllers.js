@@ -355,42 +355,5 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.admin.push(item);
             });
         };
-
-        // var MAX_NUM = 10;
-
-        // function rand(min, max) {
-        //     return min + Math.round(Math.random() * (max - min));
-        // }
-        // $scope.creator = {
-        //     _id: 'xxxx',
-        //     name: 'joeylin',
-        //     post: 233948,
-        //     isCreator: true,
-        //     isAdmin: false,
-        //     avatar: '/public/imgs/angularjs.png'
-        // };
-        // $scope.admin = [{
-        //     name: 'laolei',
-        //     post: 233948,
-        //     isCreator: false,
-        //     isAdmin: true,
-        //     avatar: '/public/imgs/angularjs.png'
-        // }, {
-        //     name: 'howell',
-        //     post: 233948,
-        //     isCreator: false,
-        //     isAdmin: true,
-        //     avatar: '/public/imgs/angularjs.png'
-        // }];
-        // for (var i = 0; i < MAX_NUM; ++i) {
-        //     var id = rand(0, MAX_NUM);
-        //     $scope.members.push({
-        //         name: 'Name' + id, // 字符串类型
-        //         post: rand(0, 100 * 1000 * 1000), // 数字类型
-        //         isCreator: false,
-        //         isAdmin: false,
-        //         avatar: '/public/imgs/angularjs.png'
-        //     });
-        // }
     }
 ]);

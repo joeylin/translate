@@ -54,7 +54,7 @@ constant('app', {
         };
         var myShare = {
             templateUrl: getFileProvider.html('myShare.html'),
-            controller: 'myShareCtrl',
+            controller: 'newsCtrl',
             path: 'myShare'
         };
         var myJob = {

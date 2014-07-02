@@ -413,6 +413,12 @@
           .user-connects:hover .remove-btn {
             display: block;
           }
+          .my-title {
+            cursor: pointer;
+          }
+          .my-title:hover {
+            color: #3c8dbc;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -520,8 +526,8 @@
                     <li ng-class="{active: ['connect','group','reply','comment','at','all'].indexOf(current.path) >= 0}"><a ng-href="/request/all"><i class="fa fa-fw fa-info-circle"></i>Notify</a></li>
                     <!-- <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li> -->
                     <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople"><i class="fa fa-fw fa-plus-square"></i>My Friends</a></li>
-                    <li ng-class="{active: current.path === 'share' || current.path === 'myShare'}"><a ng-href="/share"><i class="fa fa-fw fa-asterisk"></i>Discover</a></li>
-                    <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li>
+                    <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>My Share</a></li>
+                    <!-- <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li> -->
                     <li ng-class="{active: current.path === 'job' || current.path === 'myJob'}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
                   </ul>
               </div>            
@@ -535,13 +541,13 @@
                   <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople">Manage</a></li>
               </ul>
             </div> -->
-            <div class="nav-tabs-custom" ng-show="current.path === 'share' || current.path === 'myShare'" ng-cloak>
+            <!-- <div class="nav-tabs-custom" ng-show="current.path === 'share' || current.path === 'myShare'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Discover</li>
                   <li ng-class="{active: current.path === 'share'}"><a ng-href="/share">Find</a></li>
                   <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare">My Share</a></li>
               </ul>
-            </div>
+            </div> -->
             <div class="nav-tabs-custom" ng-show="current.path === 'company' || current.path === 'myCompany'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Company</li>
@@ -596,6 +602,7 @@
             '/public/js/lib/atwho/jquery.atwho.js',
             '/public/js/lib/flexText/jquery.flexText.min.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
+            '/public/js/lib/typeahead/typeahead.bundle.min.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',

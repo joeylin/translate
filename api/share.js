@@ -267,6 +267,7 @@ var unCollectShare = function(req, res) {
     });
 };
 
+
 module.exports = function(app) {
     app.post('/api/share/collect', middleware.check_login, collectShare);
     app.post('/api/share/uncollect', middleware.check_login, unCollectShare);

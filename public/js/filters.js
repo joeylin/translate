@@ -183,4 +183,17 @@ filter('placeholder', ['tools',
         })();
         return 140 - textareaGetLength(text);
     };
+}).filter('classify', function() {
+    return function(items, name) {
+        if (!items) {
+            return 0;
+        }
+        var count = 0;
+        items.map(function(item) {
+            if (item.relate.split(',').indexOf(name)) {
+                count++;
+            }
+        });
+        return count;
+    };
 });

@@ -3,15 +3,15 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4>All Connects</h4>
+          <h4><span ng-bind="title"></span></h4>
         </div>
         <div class="col-md-4 pull-right">
-          <input type="text" class="form-control" placeholder="search by name">
+          <input type="text" class="form-control" placeholder="search by name" ng-model="vm.filter.name">
         </div>
       </div>
     </div>
     <div class="panel-body">
-      <div class="media" ng-repeat-start="user in content">
+      <div class="media" ng-repeat-start="user in content|filter:vm.filter">
         <a class="pull-left" ng-href="/profile/{{user.id}}" target="_self">
           <img class="media-object" alt="64x64" ng-src="{{user.avatar}}" style="width: 64px; height: 64px;">
         </a>
@@ -35,10 +35,7 @@
       </div>
       <hr ng-repeat-end>
       <div>
-        <ul class="pager">
-          <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>
-          <li ng-class="{'disabled': $scope.vm.pager.hasLast}" ng-click="next()"><a href="#">Next</a></li>
-        </ul>
+        <pager total-items="content|filter:vm.filter|size" ng-model="vm.page.index" items-per-page="vm.page.size" class="pagination-sm pull-right" boundary-links="true"></pager>
       </div>
     </div>
   </div>
@@ -48,10 +45,10 @@
     <div class="panel-body">
       <div class="people-sort-title">SortBy relation</div>
       <ul class="people-sort-list">
-        <li><a href="#">Your Fellows (10)</a></li>
-        <li><a href="#">Your Classmate (15)</a></li>
-        <li><a href="#">Your Firends (20)</a></li>
-        <li><a href="#">Same interest (11)</a></li>
+        <li ng-click="vm.select('r','fellow')"><a href="#">Your Fellows ({{content | classify: 'fellow'}})</a></li>
+        <li ng-click="vm.select('r','classmate')"><a href="#">Your Classmate ({{content | classify: 'classmate'}})</a></li>
+        <li ng-click="vm.select('r','friend')"><a href="#">Your Firends ({{content | classify: 'friend'}})</a></li>
+        <li ng-click="vm.select('r','interest')"><a href="#">Same interest ({{content | classify: 'interest'}})</a></li>
       </ul>
       <div class="people-sort-title">SortBy Position</div>
       <ul class="people-sort-list">

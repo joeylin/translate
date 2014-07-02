@@ -248,7 +248,7 @@ var getShare = function(req, res) {
 var getTrends = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
-    var perPageItems = 25;
+    var perPageItems = 30;
     User.findOne({
         _id: user._id
     }, function(err, user) {
@@ -327,10 +327,13 @@ var getTrends = function(req, res) {
 };
 var getConnects = function(req, res) {
     var user = req.session.user;
+    var perPageItems = 30;
+    var page = req.query.page || 1;
     User.findOne({
         _id: user._id
     }).populate('connects.user').exec(function(err, user) {
         var results = [];
+        var hasNext = false;
         user.connects.map(function(connect) {
             var result = {
                 _id: connect.user._id,
@@ -346,31 +349,239 @@ var getConnects = function(req, res) {
         });
         res.send({
             code: 200,
-            content: results
+            content: results,
+            hasNext: (results.length - page * perPageItems) > 0 ? true : false
         });
+
     });
 };
-var getMyShare = function(req, res) {
-    var userId = req.query.userId;
-    Share.find({
-        user: userId,
-        type: 'view'
-    }, function(err, shares) {
-        var results = [];
-        shares.map(function(share) {
-            var result = {
-                _id: share._id,
-                content: share.content,
-                likes: share.likes.length,
-                id: share.id,
-                comments: share.comments,
-                createAt: share.createAt.getTime()
-            };
-            results.push(result);
+var myConnnectsNameQuery = function(req, res) {
+    var user = req.session.user;
+    var name = req.query.name;
+    var page = req.query.page || 1;
+    var search = req.query.search || false;
+    var perPageItems = 30;
+    User.findOne({
+        _id: user._id
+    }).populate('connects.user').exec(function(err, user) {
+        var connects = user.connects;
+        var array = [];
+        connects.map(function(item) {
+            if (item.user.name.match('')) {
+                if (search) {
+                    array.push({
+                        _id: item.user._id,
+                        name: item.user.name,
+                        id: item.user.id,
+                        avatar: item.user.avatar,
+                        relate: item.relate,
+                        occupation: item.user.occupation,
+                        signature: item.user.signature,
+                        connects: item.user.connects.length
+                    });
+                } else {
+                    array.push(item.user.name);
+                }
+            }
         });
         res.send({
             code: 200,
-            content: results
+            content: array.slice((page - 1) * perPageItems, perPageItems),
+            hasNext: (array.length - page * perPageItems) > 0 ? true : false
+        });
+    });
+};
+var myConnectsByClassify = function(req, res) {
+    var user = req.session.user;
+    var classify = req.query.classify || false;
+    var name = req.query.name;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+
+    if (!classify) {
+        var count = {
+            fellow: 0,
+            friend: 0,
+            classmate: 0,
+            interest: 0
+        };
+        User.findOne({
+            _id: user._id
+        }, function(err, user) {
+            var connects = user.connects;
+            connects.map(function(item) {
+                if (item.relate.split(',').indexOf('fellow')) {
+                    count.fellow += 1;
+                }
+                if (item.relate.split(',').indexOf('friend')) {
+                    count.friend += 1;
+                }
+                if (item.relate.split(',').indexOf('classmate')) {
+                    count.classmate += 1;
+                }
+                if (item.relate.split(',').indexOf('interest')) {
+                    count.interest += 1;
+                }
+            });
+            res.send({
+                code: 200,
+                count: count
+            });
+        });
+    } else if (classify === 'r') {
+        if (!name) {
+            return res.send({
+                code: 200,
+                content: [],
+                hasNext: false
+            });
+        }
+        var relates = [];
+        User.findOne({
+            _id: user._id
+        }).populate('connects.user').exec(function(err, user) {
+            var connects = user.connects;
+            connects.map(function(item) {
+                if (item.relate.split(',').indexOf(name)) {
+                    relates.push({
+                        _id: item.user._id,
+                        name: item.user.name,
+                        id: item.user.id,
+                        avatar: item.user.avatar,
+                        relate: item.relate,
+                        occupation: item.user.occupation,
+                        signature: item.user.signature,
+                        connects: item.user.connects.length
+                    });
+                }
+            });
+            res.send({
+                code: 200,
+                content: relates.slice((page - 1) * perPageItems, perPageItems),
+                hasNext: (relates.length - page * perPageItems) > 0 ? true : false
+            });
+        });
+    } else if (classify === 'o') {
+        if (!name) {
+            return res.send({
+                code: 200,
+                content: [],
+                hasNext: false
+            });
+        }
+        var occupation = [];
+        // todo
+    }
+};
+var getMyShare = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    Share.find({
+        user: user._id,
+        type: 'view',
+        is_delete: false
+    }).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find({
+            user: user._id,
+            type: 'view',
+            is_delete: false
+        }).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            shares.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.comments = item.comments;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.date = item.date;
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                result.liked = false;
+                item.likes.map(function(like) {
+                    if (like.toString() == user._id.toString()) {
+                        result.liked = true;
+                    }
+                });
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });
+        });
+    });
+};
+var myShareSearch = function(req, res) {
+    var user = req.session.user;
+    var keyword = req.query.keyword;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var re = new RegExp(keyword, 'ig');
+    Share.find({
+        user: user._id,
+        content: re,
+        type: 'view',
+        is_delete: false
+    }).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find({
+            user: user._id,
+            content: re,
+            type: 'view',
+            is_delete: false
+        }).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            shares.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.comments = item.comments;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.date = item.date;
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                result.liked = false;
+                item.likes.map(function(like) {
+                    if (like.toString() == user._id.toString()) {
+                        result.liked = true;
+                    }
+                });
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });
         });
     });
 };
@@ -952,6 +1163,7 @@ module.exports = function(app) {
     app.get('/api/user/trend', middleware.check_login, getTrends);
     app.get('/api/user/myActive', middleware.check_login, getMyActive);
     app.get('/api/user/myShare', middleware.check_login, getMyShare);
+    app.get('/api/user/myShare/search', middleware.check_login, myShareSearch);
 
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);
@@ -961,19 +1173,21 @@ module.exports = function(app) {
     app.get('/api/user/companyActive', getCompanyActive);
 
     // notify
-    app.get('/api/notify', getNotifyCount);
-    app.get('/api/notify/:op', getRequest);
-    app.post('/api/notify/:op/read', readRequest);
+    app.get('/api/notify', middleware.check_login, getNotifyCount);
+    app.get('/api/notify/:op', middleware.check_login, getRequest);
+    app.post('/api/notify/:op/read', middleware.check_login, readRequest);
 
     // myGroup
-    app.get('/api/myGroup', middleware.apiLogin, getGroupByUser);
+    app.get('/api/myGroup', middleware.apiLogin, middleware.check_login, getGroupByUser);
 
     // connect
-    app.post('/api/connect/send', sendNotify);
-    app.post('/api/connect/check', checkConnect);
-    app.post('/api/connect/disconnect', disconnect);
-    app.post('/api/connect/relate', changeRelate);
-    app.get('/api/connects', getConnects);
+    app.post('/api/connect/send', middleware.check_login, sendNotify);
+    app.post('/api/connect/check', middleware.check_login, checkConnect);
+    app.post('/api/connect/disconnect', middleware.check_login, disconnect);
+    app.post('/api/connect/relate', middleware.check_login, changeRelate);
+    app.get('/api/connects', middleware.check_login, getConnects);
+    app.get('/api/myConnects/name', middleware.check_login, myConnnectsNameQuery);
+    app.get('/api/myConnects/classify', middleware.check_login, myConnectsByClassify);
 
     // message
     app.post('/api/message/send', sendMessage);
