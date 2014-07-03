@@ -2,11 +2,13 @@
   <div class="panel search-result">
     <div class="panel-heading custom-heading">
       <div class="row">
-        <div class="col-md-8">
-          <h4></h4>
-        </div>
-        <div class="col-md-4 pull-right">
-          <input type="text" class="form-control" placeholder="search by name" ng-model="vm.filter.name">
+        <div class="col-md-8 pull-right">
+          <div class="job-filter">
+            <a class="active" href="#">All</a>
+            <a href="#">Published</a>
+            <a href="#">Closed</a>
+            <a href="#">Draft</a>
+          </div>
         </div>
       </div>
     </div>
@@ -21,7 +23,9 @@
             <div class="col-md-9">
               <div>{{job.desc}}</div>
               <div> <strong>Payment</strong>: {{job.payment}}</div>
+              <div> <strong>Experience</strong>: 2-8</div>
               <div> <strong>Skills</strong>: {{job.skills}}</div>
+              <div> <strong>Type</strong>: {{job.type}}</div>
               <div class="search-job-location"><strong>location</strong>: {{job.location}}</div>
               <div>
                 <a href="#" class="search-job-date">Posted at {{job.date}} </a>
@@ -37,16 +41,13 @@
         </div>
       </div>
       <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
         <div class="media-body">
-          <h4 class="media-heading">AmazingSurge</h4>
           <div class="row">
             <div class="col-md-8">
               <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
               <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Number</strong>: 2-8</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
               <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
               <div class="search-job-location"><strong>location</strong>: FuZhou</div>
               <div>
@@ -55,17 +56,91 @@
                 <span> Join: 53</span>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button">View</a>
-                <a class="btn btn-default" role="button">remove</a>
-              </div>
+            <div class="col-md-4 job-op">
+              <span><a href="#">view</a></span>
+              <span><a href="#">edit</a></span>
+              <span><a href="#">remove</a></span>
             </div>
           </div>
         </div>
       </div>
       <hr>
       <div class="media">
+        <div class="media-body">
+          <div class="row">
+            <div class="col-md-8">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> Views: 1000</span>
+                <span> Join: 53</span>
+              </div>
+            </div>
+            <div class="col-md-4 job-op">
+              <span><a href="#">view</a></span>
+              <span><a href="#">edit</a></span>
+              <span><a href="#">remove</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="media">
+        <div class="media-body">
+          <div class="row">
+            <div class="col-md-8">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> Views: 1000</span>
+                <span> Join: 53</span>
+              </div>
+            </div>
+            <div class="col-md-4 job-op">
+              <span><a href="#">view</a></span>
+              <span><a href="#">edit</a></span>
+              <span><a href="#">remove</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="media">
+        <div class="media-body">
+          <div class="row">
+            <div class="col-md-8">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> Views: 1000</span>
+                <span> Join: 53</span>
+              </div>
+            </div>
+            <div class="col-md-4 job-op">
+              <span><a href="#">view</a></span>
+              <span><a href="#">edit</a></span>
+              <span><a href="#">remove</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <!-- <div class="media">
         <a class="pull-left" href="#">
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
         </a>
@@ -122,7 +197,7 @@
           </div>
         </div>
       </div>
-      <hr>
+      <hr> -->
       <div>
         <ul class="pager">
           <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>
@@ -134,11 +209,8 @@
 </div>
 <div class="profile-sidebar col-md-3">
   <div class="panel">
-    <div class="panel-heading">
-      <h4>Recommendation</h4>
-    </div>
-    <div class="panel-body">
-      
+    <div class="panel-heading text-center clearfix">
+      <div style="display:inline-block;"><a popup data-mfp-src="#publish-job" class="btn btn-primary pull-right btn-sm" role="button" style="margin-top: 6px;">Publish New Job</a></div>
     </div>
   </div>
 </div>

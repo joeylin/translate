@@ -309,7 +309,7 @@ var getLatestJobs = function(req, res) {
                         isSaved: false
                     };
                     var index = -1;
-                    user.collects.jobs.map(function(job, key) {
+                    user.collects.job.map(function(job, key) {
                         if (job.toString() == item._id.toString()) {
                             index = key;
                         }

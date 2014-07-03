@@ -15,6 +15,9 @@ var ShareSchema = new Schema({
     type: {
         type: String
     },
+    status: {
+        type: String
+    },
     jobType: {
         type: String
     },
