@@ -609,12 +609,15 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             });
         };
 
-        function get() {
+        function get(cb) {
             $http.get(url, {
                 params: params
             }).success(function(data) {
                 $scope.content = data.content;
                 $scope.pager.hasNext = data.hasNext;
+                if (cb) {
+                    cb();
+                }
             });
         }
 
@@ -626,44 +629,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.location = 'noLimit';
         get();
 
-        // example data
-        var item = {
-            owner: {
-                avatar: '/public/imgs/group.png',
-                name: 'joeylin',
-                id: 'xx',
-                _id: 'xx'
-            },
-            desc: 'Ask for nodejs developer, code review, write document, communicate with customer',
-            payment: '10k-20k',
-            number: '2-8',
-            skills: 'node.js,angularjs,php',
-            location: 'FuZhou',
-            views: 100,
-            join: 20,
-            date: '2 min ago',
-            isSaved: true
-        };
-        var item1 = {
-            owner: {
-                avatar: '/public/imgs/group.png',
-                name: 'LaoLei',
-                id: 'xx',
-                _id: 'xx'
-            },
-            id: 'xxx',
-            desc: 'Ask for nodejs developer, code review, write document, communicate with customer',
-            payment: '10k-20k',
-            number: '2-8',
-            skills: 'node.js,angularjs,php',
-            location: 'FuZhou',
-            views: 100,
-            join: 20,
-            date: '2 min ago',
-            isSaved: false
-        };
-        $scope.content.push(item);
-        $scope.content.push(item1);
+        
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
