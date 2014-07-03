@@ -566,11 +566,21 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             location: $scope.location,
             keyword: $scope.keyword
         };
+        var timeout = null;
+        $scope.blur = function() {
+            timeout = app.timeout(function() {
+                $scope.showSubmitBtn = false;
+            }, 200);
+        };
         $scope.submit = function() {
             // reset the config before submit
             url = '/api/job/search';
+            app.timeout.cancel(timeout);
             params.page = 1;
-            get();
+            get(function() {
+                $('#keyword').focus();
+                $scope.showSubmitBtn = true;
+            });
         };
         $scope.next = function() {
             if (!$scope.pager.hasNext) {

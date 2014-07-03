@@ -33,7 +33,7 @@
             <div class="col-md-3">
               <div class="pull-right job-op">
                 <a class="btn" role="button" ng-click="save()" ng-class="{'saved':job.isSaved}">{{job.isSaved ? 'Saved':'Save'}}</a>
-                <a class="btn" role="button" ng-href="/view/{{job.id}}" target="_self">View</a>
+                <a class="btn" role="button" href="/view/{{job.id}}" target="_self">View</a>
               </div>
             </div>
           </div>
@@ -139,10 +139,10 @@
     <div class="panel-body" ng-show="!isFilter">
       <div class="form-group">
           <label>keyword</label>
-          <input type="text" class="form-control" placeholder="Enter keyword" ng-model="keyword" ng-keydown="enter($event,'keyword',keyword)" ng-focus="showSubmitBtn=true" ng-blur="showSubmitBtn=false">
+          <input id="keyword" type="text" class="form-control" placeholder="Enter keyword" ng-model="keyword" ng-keydown="enter($event,'keyword',keyword)" ng-focus="showSubmitBtn=true" ng-blur="blur()">
       </div>  
       <div class="clearfix" ng-show="showSubmitBtn">
-        <a class="btn btn-primary pull-right btn-sm" role="button" ng-click="showSubmitBtn=true;">submit</a>
+        <a class="btn btn-primary pull-right btn-sm" role="button" ng-click="submit()">submit</a>
       </div>
       <hr style="margin-bottom:13px;"> 
       <div class="form-group">

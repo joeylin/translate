@@ -358,6 +358,7 @@ var getLatestJobs = function(req, res) {
                             _id: item.user._id
                         },
                         _id: item._id,
+                        id: item.id,
                         summary: item.summary,
                         position: item.position,
                         paymentStart: item.paymentStart,
@@ -440,6 +441,7 @@ var jobsSearch = function(req, res) {
                         _id: item.user._id
                     },
                     _id: item._id,
+                    id: item.id,
                     desc: item.desc,
                     payment: item.payment,
                     number: item.number,
@@ -462,7 +464,7 @@ var jobsSearch = function(req, res) {
                 }
                 results.push(obj);
             });
-            if ((page - 1) * perPageItems + content.length < count) {
+            if ((page - 1) * perPageItems + results.length < count) {
                 hasNext = true;
             } else {
                 hasNext = false;
