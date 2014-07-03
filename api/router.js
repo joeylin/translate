@@ -340,6 +340,7 @@ module.exports = function(app) {
     app.get('/myGroup', middleware.check_login, getHome);
     app.get('/posts/new', middleware.check_login, getHome);
     app.get('/jobs/new', middleware.check_login, getHome);
+    app.get('/jobs/:id/edit', middleware.check_login, getHome);
 
     // notify
     app.get('/request/connect', middleware.check_login, getHome);

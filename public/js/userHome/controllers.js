@@ -1049,4 +1049,106 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 
         getGroup();
     }
+]).controller('newJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+        $scope.type = 'full';
+        $scope.paymentStart = '';
+        $scope.paymentEnd = '';
+        $scope.degree = '';
+        $scope.position = '';
+        $scope.location = '';
+        $scope.summary = '';
+        $scope.workYears = '';
+        $scope.skills = '';
+
+        $scope.showBlankError = false;
+        $scope.submit = function() {
+            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.skills === '' || $scope.summary === '' || $scope.location === '';
+            if (check) {
+                $scope.showBlankError = true;
+                return false;
+            }
+            var url = '/api/share/add';
+            var data = {
+                type: 'job',
+                status: 'publish',
+                jobType: $scope.type,
+                paymentStart: $scope.paymentStart,
+                paymentEnd: $scope.paymentEnd,
+                degree: $scope.degree,
+                position: $scope.position,
+                location: $scope.location,
+                summary: $scope.summary,
+                skills: $scope.skills,
+                workYears: $scope.workYears
+            };
+            $http.post(url, data).success(function(data) {
+                $location.path('/job');
+            });
+        };
+        $scope.draft = function() {
+            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.summary === '' || $scope.location === '';
+            if (check) {
+                $scope.showBlankError = true;
+                return false;
+            }
+            var url = '/api/share/add';
+            var data = {
+                type: 'job',
+                status: 'draft',
+                jobType: $scope.type,
+                paymentStart: $scope.paymentStart,
+                paymentEnd: $scope.paymentEnd,
+                degree: $scope.degree,
+                position: $scope.position,
+                location: $scope.location,
+                summary: $scope.summary,
+                skills: $scope.skills,
+                workYears: $scope.workYears
+            };
+            $http.post(url, data).success(function(data) {
+                $location.path('/job');
+            });
+        };
+        $scope.save = function() {
+            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.skills === '' || $scope.summary === '' || $scope.location === '';
+            if (check) {
+                $scope.showBlankError = true;
+                return false;
+            }
+            var url = '/api/share/edit';
+            var data = {
+                jobType: $scope.type,
+                paymentStart: $scope.paymentStart,
+                paymentEnd: $scope.paymentEnd,
+                degree: $scope.degree,
+                position: $scope.position,
+                location: $scope.location,
+                summary: $scope.summary,
+                skills: $scope.skills,
+                workYears: $scope.workYears
+            };
+            $http.post(url, data).success(function(data) {
+                $location.path('/job');
+            });
+        };
+        $scope.change = function() {
+            $scope.showBlankError = false;
+        };
+
+        if ($rootScope.current.path === 'editJob') {
+            var url = '/api/job/' + $routeParams.id;
+            $http.get(url).success(function(data) {
+                $scope.type = data.job.type;
+                $scope.paymentStart = data.job.paymentStart;
+                $scope.paymentEnd = data.job.paymentEnd;
+                $scope.degree = data.job.degree;
+                $scope.position = data.job.position;
+                $scope.location = data.job.location;
+                $scope.summary = data.job.summary;
+                $scope.workYears = data.job.workYears;
+                $scope.skills = data.job.skills;
+            });
+        }
+    }
 ]);

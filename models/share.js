@@ -48,6 +48,16 @@ var ShareSchema = new Schema({
     detail: {
         type: String
     },
+    number: {
+        type: String
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    skills: {
+        type: String
+    },
     resumes: [{
         type: ObjectId,
         ref: 'User'
@@ -117,6 +127,7 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.paymentStart = obj.paymentStart;
     share.paymentEnd = obj.paymentEnd;
     share.degree = obj.degree;
+    share.skills = obj.skills;
     share.workYears = obj.workYears;
     share.location = obj.location;
     share.summary = obj.summary;

@@ -107,6 +107,16 @@ constant('app', {
             controller: 'requestCtrl',
             path: 'all'
         };
+        var newJob = {
+            templateUrl: getFileProvider.html('newJob.html'),
+            controller: 'newJobCtrl',
+            path: 'newJob'
+        };
+        var editJob = {
+            templateUrl: getFileProvider.html('newJob.html'),
+            controller: 'newJobCtrl',
+            path: 'editJob'
+        };
 
         $routeProvider.
         when('/home', news).
@@ -118,6 +128,8 @@ constant('app', {
         when('/myGroup', myGroup).
         when('/myShare', myShare).
         when('/myJob', myJob).
+        when('/jobs/new', newJob).
+        when('/jobs/:id/edit', editJob).
         when('/myCompany', myCompany).
         when('/mySending', mySending).
         when('/request/connect', connect).

@@ -83,6 +83,7 @@ var getShareComments = function(req, res) {
         });
     });
 };
+
 var addShare = function(req, res) {
     var user = req.session.user;
     var share = req.body;
@@ -94,6 +95,34 @@ var addShare = function(req, res) {
                 createAt: data.createAt.getTime(),
                 _id: data._id
             }
+        });
+    });
+};
+var editShare = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Share.findOne({
+        _id: id
+    }, function(err, share) {
+        share.content = req.body.content;
+        share.user = req.body.user;
+        share.type = req.body.type;
+        share.jobType = req.body.jobType;
+        share.position = req.body.position;
+        share.department = req.body.department;
+        share.paymentStart = req.body.paymentStart;
+        share.paymentEnd = req.body.paymentEnd;
+        share.degree = req.body.degree;
+        share.skills = req.body.skills;
+        share.workYears = req.body.workYears;
+        share.location = req.body.location;
+        share.summary = req.body.summary;
+        share.detail = req.body.detail;
+        share.group = req.body.group;
+        share.save(function(err) {
+            res.send({
+                code: 200
+            });
         });
     });
 };
@@ -268,6 +297,35 @@ var unCollectShare = function(req, res) {
 };
 
 //jobs
+var getJobById = function(req, res) {
+    var user = req.session.user;
+    var id = req.params.id;
+    Share.findOne({
+        _id: id
+    }, function(err, share) {
+        if (share.user._id.toString() !== user._id) {
+            return res.send({
+                code: 200,
+                job: {}
+            });
+        }
+        var obj = {};
+        obj.type = share.jobType;
+        obj.paymentStart = share.paymentStart;
+        obj.paymentEnd = share.paymentEnd;
+        obj.degree = share.degree;
+        obj.position = share.position;
+        obj.location = share.location;
+        obj.summary = share.summary;
+        obj.workYears = share.workYears;
+        obj.skills = share.skills;
+
+        res.send({
+            code: 200,
+            job: obj
+        });
+    });
+};
 var getLatestJobs = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
@@ -289,6 +347,9 @@ var getLatestJobs = function(req, res) {
                 var results = [];
                 var hasNext;
                 shares.map(function(item) {
+                    if (!item.user) {
+                        return;
+                    }
                     var obj = {
                         owner: {
                             avatar: item.user.avatar,
@@ -297,13 +358,17 @@ var getLatestJobs = function(req, res) {
                             _id: item.user._id
                         },
                         _id: item._id,
-                        desc: item.desc,
-                        payment: item.payment,
+                        summary: item.summary,
+                        position: item.position,
+                        paymentStart: item.paymentStart,
+                        paymentEnd: item.paymentEnd,
+                        workYears: item.workYears,
                         number: item.number,
                         skills: item.skills,
                         location: item.location,
+                        degree: item.degree,
                         views: item.views,
-                        join: item.join,
+                        join: item.resumes.length,
                         type: item.jobType,
                         date: item.createAt.getTime(),
                         isSaved: false
@@ -319,7 +384,7 @@ var getLatestJobs = function(req, res) {
                     }
                     results.push(obj);
                 });
-                if ((page - 1) * perPageItems + content.length < count) {
+                if ((page - 1) * perPageItems + results.length < count) {
                     hasNext = true;
                 } else {
                     hasNext = false;
@@ -420,6 +485,7 @@ module.exports = function(app) {
     app.post('/api/share/like', middleware.check_login, shareLike);
     app.post('/api/share/delete', middleware.check_login, deleteShare);
     app.post('/api/share/add', middleware.check_login, addShare);
+    app.post('/api/share/edit', middleware.check_login, editShare);
     app.get('/api/share/user', middleware.check_login, getShareByUser);
     app.get('/api/share/id/:id', getShareById);
     app.get('/api/share/comments', getShareComments);
@@ -430,5 +496,6 @@ module.exports = function(app) {
 
     // jobs
     app.get('/api/job/latest', getLatestJobs);
+    app.get('/api/job/:id', jobsSearch);
     app.get('/api/job/search', jobsSearch);
 };
