@@ -209,15 +209,15 @@ var unCollectJob = function(req, res) {
     });
 };
 module.exports = function(app) {
-    app.post('/api/job/collect', collectJob);
-    app.post('/api/job/uncollect', unCollectJob);
-    app.post('/api/job/unlike', jobUnlike);
-    app.post('/api/job/like', jobLike);
-    app.post('/api/job/delete', deleteJob);
-    app.post('/api/job/add', addJob);
-    app.get('/api/job/id/:id', getJobById);
+    // app.post('/api/job/collect', collectJob);
+    // app.post('/api/job/uncollect', unCollectJob);
+    // app.post('/api/job/unlike', jobUnlike);
+    // app.post('/api/job/like', jobLike);
+    // app.post('/api/job/delete', deleteJob);
+    // app.post('/api/job/add', addJob);
+    // app.get('/api/job/id/:id', getJobById);
 
-    // comments
-    app.post('/api/job/comments/add', addComment);
-    app.post('/api/job/comments/delete', deleteComment);
+    // // comments
+    // app.post('/api/job/comments/add', addComment);
+    // app.post('/api/job/comments/delete', deleteComment);
 };

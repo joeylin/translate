@@ -576,7 +576,7 @@
                     <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople"><i class="fa fa-fw fa-plus-square"></i>My Friends</a></li>
                     <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>My Share</a></li>
                     <!-- <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li> -->
-                    <li ng-class="{active: current.path === 'job' || current.path === 'myJob'}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
+                    <li ng-class="{active: ['job','myJob','newJob','editJob'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
                   </ul>
               </div>            
             </div>
@@ -607,7 +607,7 @@
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Job</li>
                   <li ng-class="{active: current.path === 'job'}"><a ng-href="/job">Find</a></li>
-                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Collects</a></li>
+                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Jobs</a></li>
               </ul>
             </div>
             <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at' || current.path === 'all'" ng-cloak>

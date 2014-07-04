@@ -439,6 +439,55 @@ var getMembersList = function(req, res) {
         });
     });
 };
+var searchGroup = function(req, res) {
+    var user = req.session.user;
+    var keyword = req.query.keyword;
+    var isMe = req.query.isMe;
+    var query = {};
+
+    var id = parseInt(keyword, 10);
+    if (id) {
+        query.id = id;
+    } else {
+        re = new RegExp(keyword, 'ig');
+        query.$or = [{
+            name: re
+        }, {
+            industry: re
+        }];
+    }
+    if (isMe) {
+        User.findOne({
+            _id: user._id
+        }).exec(function(err, user) {
+            var array = [];
+            var joinGroups = user.groups.join;
+            joinGroups.map(function(item) {
+                array.push(item.toString());
+            });
+            query._id = {
+                $in: array
+            };
+            Group.find(query).exec(function(err, groups) {
+                var results = [];
+                var result = {
+                    avatar: group.avatar,
+                    id: group.id,
+                    _id: group._id,
+                    industry: group.industry,
+                    name: group.name,
+                    count: group.count,
+                    total: 100,
+                    update: 9
+                };
+                results.push(result);
+            });
+        });
+    } else {
+
+    }
+    Group.find(query);
+};
 
 module.exports = function(app) {
     app.post('/api/group/create', middleware.apiLogin, create);
@@ -453,6 +502,7 @@ module.exports = function(app) {
     app.post('/api/group/settings/avatar', middleware.apiLogin, setAvatar);
     app.post('/api/group/members', getMembers);
     app.post('/api/group/list', getMembersList);
+    app.get('/api/group/search', searchGroup);
 
     app.get('/api/group/:id/post', getPost);
     app.post('/api/group/post/delete', middleware.apiLogin, deleteShare);

@@ -16,7 +16,8 @@ var ShareSchema = new Schema({
         type: String
     },
     status: {
-        type: String
+        type: String,
+        default: 'draft'
     },
     jobType: {
         type: String
@@ -133,6 +134,7 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.summary = obj.summary;
     share.detail = obj.detail;
     share.group = obj.group;
+    share.status = obj.status;
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('share', function(err, doc) {
         share.id = doc.currentId;

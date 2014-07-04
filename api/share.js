@@ -301,24 +301,33 @@ var getJobById = function(req, res) {
     var user = req.session.user;
     var id = req.params.id;
     Share.findOne({
-        _id: id
+        id: id
     }, function(err, share) {
-        if (share.user._id.toString() !== user._id) {
+        if (!share) {
+            return res.send({
+                code: 404,
+                info: 'no job'
+            });
+        }
+        if (share.user.toString() !== user._id) {
             return res.send({
                 code: 200,
                 job: {}
             });
         }
+
         var obj = {};
         obj.type = share.jobType;
         obj.paymentStart = share.paymentStart;
         obj.paymentEnd = share.paymentEnd;
+        obj.department = share.department;
         obj.degree = share.degree;
         obj.position = share.position;
         obj.location = share.location;
         obj.summary = share.summary;
         obj.workYears = share.workYears;
         obj.skills = share.skills;
+        obj.id = share._id;
 
         res.send({
             code: 200,
@@ -333,12 +342,14 @@ var getLatestJobs = function(req, res) {
 
     Share.find({
         type: 'job',
+        status: 'publish',
         is_delete: false
     }).sort({
         createAt: -1
-    }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+    }).populate('user').sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
         Share.find({
             type: 'job',
+            status: 'publish',
             is_delete: false
         }).count().exec(function(err, count) {
             User.findOne({
@@ -347,6 +358,7 @@ var getLatestJobs = function(req, res) {
                 var results = [];
                 var hasNext;
                 shares.map(function(item) {
+                    // test
                     if (!item.user) {
                         return;
                     }
@@ -407,29 +419,37 @@ var jobsSearch = function(req, res) {
     var perPageItems = 30;
     var keyword = req.query.keyword;
     var re;
+
+    var query = {
+        type: 'job',
+        status: 'publish',
+        is_delete: false
+    };
+    if (req.query.type) {
+        query.jobType = req.query.type;
+    }
+    if (req.query.years) {
+        query.workYears = req.query.years;
+    }
+    if (req.query.payment) {
+        query.payment = req.query.payment;
+    }
+    if (req.query.location) {
+        query.location = req.query.location;
+    }
+    if (req.query.degree) {
+        query.degree = req.query.degree;
+    }
     if (req.query.keyword) {
         re = new RegExp(keyword, 'ig');
+        query.$or = [{
+            summary: re
+        }, {
+            position: re
+        }];
     }
-    Share.find({
-        type: 'job',
-        is_delete: false,
-        content: re,
-        jobType: req.query.type,
-        years: req.query.years,
-        payment: req.query.payment,
-        location: req.query.location,
-        degree: req.query.degree
-    }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
-        Share.find({
-            type: 'job',
-            is_delete: false,
-            content: re,
-            jobType: req.query.type,
-            years: req.query.years,
-            payment: req.query.payment,
-            location: req.query.location,
-            degree: req.query.degree
-        }).count().exec(function(err, count) {
+    Share.find(query).populate('user').sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
             var results = [];
             var hasNext;
             shares.map(function(item) {
@@ -442,19 +462,23 @@ var jobsSearch = function(req, res) {
                     },
                     _id: item._id,
                     id: item.id,
-                    desc: item.desc,
-                    payment: item.payment,
+                    summary: item.summary,
+                    position: item.position,
+                    paymentStart: item.paymentStart,
+                    paymentEnd: item.paymentEnd,
+                    workYears: item.workYears,
                     number: item.number,
                     skills: item.skills,
                     location: item.location,
+                    degree: item.degree,
                     views: item.views,
-                    join: item.join,
+                    join: item.resumes.length,
                     type: item.jobType,
                     date: item.createAt.getTime(),
                     isSaved: false
                 };
                 var index = -1;
-                user.collects.jobs.map(function(job, key) {
+                user.collects.job.map(function(job, key) {
                     if (job.toString() == item._id.toString()) {
                         index = key;
                     }
@@ -479,6 +503,66 @@ var jobsSearch = function(req, res) {
         });
     });
 };
+var closeJob = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Share.findOne({
+        _id: id
+    }).populate('user').exec(function(err, job) {
+        if (job.user._id.toString() !== user._id) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
+        job.status = 'close';
+        job.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var removeJob = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Share.findOne({
+        _id: id
+    }).populate('user').exec(function(err, job) {
+        if (job.user._id.toString() !== user._id) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
+        job.is_delete = true;
+        job.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var publishJob = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Share.findOne({
+        _id: id
+    }).populate('user').exec(function(err, job) {
+        if (job.user._id.toString() !== user._id) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
+        job.status = 'publish';
+        job.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/share/collect', middleware.check_login, collectShare);
@@ -498,6 +582,9 @@ module.exports = function(app) {
 
     // jobs
     app.get('/api/job/latest', getLatestJobs);
-    app.get('/api/job/:id', jobsSearch);
     app.get('/api/job/search', jobsSearch);
+    app.get('/api/job/:id', getJobById);
+    app.post('/api/job/close', closeJob);
+    app.post('/api/job/remove', removeJob);
+    app.post('/api/job/publish', publishJob);
 };

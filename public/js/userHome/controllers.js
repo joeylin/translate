@@ -567,16 +567,31 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             keyword: $scope.keyword
         };
         var timeout = null;
-        $scope.blur = function() {
-            timeout = app.timeout(function() {
-                $scope.showSubmitBtn = false;
+        // todo need move to directive
+        $('#keyword').on('focus', function() {
+            app.applyFn(function() {
+                $scope.showSubmitBtn = true;
+            });
+        });
+        $('#keyword').on('blur', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(function() {
+                app.applyFn(function() {
+                    $scope.showSubmitBtn = false;
+                });
             }, 200);
-        };
+        });
         $scope.submit = function() {
             // reset the config before submit
             url = '/api/job/search';
-            app.timeout.cancel(timeout);
+            clearTimeout(timeout);
             params.page = 1;
+            params.keyword = $scope.keyword;
+            params.payment = null;
+            params.years = null;
+            params.type = null;
+            params.degree = null;
+            params.location = null;
             get(function() {
                 $('#keyword').focus();
                 $scope.showSubmitBtn = true;
@@ -639,7 +654,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.location = 'noLimit';
         get();
 
-        
+
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
@@ -905,7 +920,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     }
 ]).controller('myJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        var url = '/api/user/collects';
+        var url = '/api/user/myjob';
         $scope.content = [];
         $scope.pager = {
             hasNext: false,
@@ -930,6 +945,43 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             params.pager = $scope.pager.current;
             get();
         };
+        $scope.tag = 'all';
+        $scope.selectTag = function(tag) {
+            $scope.tag = tag;
+            if (tag === 'all') {
+                params.status = undefined;
+            }
+            if (tag === 'publish') {
+                params.status = 'publish';
+            }
+            if (tag === 'close') {
+                params.status = 'close';
+            }
+            if (tag === 'draft') {
+                params.status = 'draft';
+            }
+            get();
+        };
+        $scope.close = function(job) {
+            var url = '/api/job/close';
+            var data = {
+                id: job._id
+            };
+            $http.post(url, data).success(function(data) {
+                job.status = 'close';
+            });
+        };
+        $scope.remove = function(job) {
+            var url = '/api/job/remove';
+            var data = {
+                id: job._id
+            };
+            $http.post(url, data).success(function(data) {
+                var index = $scope.content.indexOf(job);
+                $scope.content.splice(index, 1);
+            });
+        };
+
 
         function get() {
             $http.get(url, {
@@ -1011,6 +1063,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.error = false;
             }
         };
+        $scope.search = function() {
+
+        };
 
         $scope.content = [];
         var getGroup = function() {
@@ -1038,6 +1093,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.skills = '';
 
         $scope.showBlankError = false;
+        $scope.showNothingError = false;
         $scope.submit = function() {
             var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.skills === '' || $scope.summary === '' || $scope.location === '';
             if (check) {
@@ -1063,9 +1119,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             });
         };
         $scope.draft = function() {
-            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.summary === '' || $scope.location === '';
+            var check = $scope.paymentStart === '' && $scope.paymentEnd === '' && $scope.degree === '' && $scope.position === '' && $scope.summary === '' && $scope.location === '';
             if (check) {
-                $scope.showBlankError = true;
+                $scope.showNothingError = true;
                 return false;
             }
             var url = '/api/share/add';
@@ -1077,13 +1133,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 paymentEnd: $scope.paymentEnd,
                 degree: $scope.degree,
                 position: $scope.position,
+                department: $scope.department,
                 location: $scope.location,
                 summary: $scope.summary,
                 skills: $scope.skills,
                 workYears: $scope.workYears
             };
             $http.post(url, data).success(function(data) {
-                $location.path('/job');
+                $location.path('/myJob');
             });
         };
         $scope.save = function() {
@@ -1094,18 +1151,20 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             var url = '/api/share/edit';
             var data = {
+                id: $scope.id,
                 jobType: $scope.type,
                 paymentStart: $scope.paymentStart,
                 paymentEnd: $scope.paymentEnd,
                 degree: $scope.degree,
                 position: $scope.position,
                 location: $scope.location,
+                department: $scope.department,
                 summary: $scope.summary,
                 skills: $scope.skills,
                 workYears: $scope.workYears
             };
             $http.post(url, data).success(function(data) {
-                $location.path('/job');
+                $location.path('/myJob');
             });
         };
         $scope.change = function() {
@@ -1113,6 +1172,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
 
         if ($rootScope.current.path === 'editJob') {
+            $scope.title = 'Edit Job ' + $routeParams.id;
             var url = '/api/job/' + $routeParams.id;
             $http.get(url).success(function(data) {
                 $scope.type = data.job.type;
@@ -1120,11 +1180,15 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.paymentEnd = data.job.paymentEnd;
                 $scope.degree = data.job.degree;
                 $scope.position = data.job.position;
+                $scope.department = data.job.department;
                 $scope.location = data.job.location;
                 $scope.summary = data.job.summary;
                 $scope.workYears = data.job.workYears;
                 $scope.skills = data.job.skills;
+                $scope.id = data.job.id;
             });
+        } else {
+            $scope.title = 'Create New Job';
         }
     }
 ]);

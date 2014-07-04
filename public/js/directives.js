@@ -281,6 +281,9 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
                     if ($icon.hasClass('fa-circle-o')) {
                         $icon.removeClass('fa-circle-o').addClass('fa-check-circle-o');
                         relates.push($this.data('value'));
+                        $template.find('.error').css({
+                            display: 'none'
+                        });
                     } else {
                         $icon.removeClass('fa-check-circle-o').addClass('fa-circle-o');
                         relates.splice(relates.indexOf($this.data('value')), 1);
@@ -307,6 +310,12 @@ directive('genParseMd', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout
                         $template.find('.relative-option').on('click', optionClick);
                         $template.find('.enter').on('click', function() {
                             var url = '/api/connect/relate';
+                            if (relates.length === 0) {
+                                $template.find('.error').css({
+                                    display: 'block'
+                                });
+                                return false;
+                            }
                             var data = {
                                 content: relates.join(','),
                                 userId: $scope.user._id

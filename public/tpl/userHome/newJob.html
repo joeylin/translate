@@ -3,7 +3,7 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4>Create New Job</h4>
+          <h4>{{title}}</h4>
         </div>
         
       </div>
@@ -107,9 +107,17 @@
         <label>Summary :</label>
         <textarea class="form-control" rows="3" placeholder="Enter detail..." ng-model="summary"></textarea>
       </div>
-    <div class="clearfix" style="margin-top:15px;">
-      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
-      <span class="pull-right color-red" ng-show="showBlankError" style="color:red; padding-right: 15px; line-height: 35px;">pls complete form</span>
+    <div class="clearfix" style="margin-top:15px;" ng-if="current.path === 'newJob'">
+      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">Publish</a>
+      <a class="btn btn-default pull-right" role="button" ng-click="draft()" style="margin-right:10px;">Draft</a>
+    </div>
+    <div class="clearfix" style="margin-top:15px;" ng-if="current.path === 'editJob'">
+      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">Publish</a>
+      <a class="btn btn-default pull-right" role="button" ng-click="save()" style="margin-right:10px;">Save</a>
+    </div>
+    <div class="clearfix">
+      <span class="pull-right color-red" ng-show="showBlankError" style="color:red; padding-right: 15px; line-height: 35px; margin-top:10px;">pls complete form</span>
+      <span class="pull-right color-red" ng-show="showNothingError" style="color:red; padding-right: 15px; line-height: 35px; margin-top:10px;">you form is blank</span>
     </div>
     </div>
   </div>  

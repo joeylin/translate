@@ -1135,6 +1135,12 @@ var changeRelate = function(req, res) {
     var content = req.body.content;
     var userId = req.body.userId;
 
+    if (content === '') {
+        return res.send({
+            code: 404,
+            info: 'relate cant be blank'
+        });
+    }
     User.findOne({
         _id: user._id
     }, function(err, user) {
@@ -1153,6 +1159,68 @@ var changeRelate = function(req, res) {
     });
 };
 
+var getMyJob = function(req, res) {
+    var user = req.session.user;
+    var status = req.query.status;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+
+    Share.find({
+        user: user._id,
+        type: 'job',
+        is_delete: false,
+        status: status || {
+            $in: ['publish', 'close', 'draft']
+        }
+    }).sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find({
+            user: user._id,
+            type: 'job',
+            is_delete: false,
+            status: status || {
+                $in: ['publish', 'close', 'draft']
+            }
+        }).count().exec(function(err, count) {
+            var results = [];
+            var hasNext;
+            shares.map(function(item) {
+                var obj = {
+                    _id: item._id,
+                    id: item.id,
+                    summary: item.summary,
+                    position: item.position,
+                    paymentStart: item.paymentStart,
+                    paymentEnd: item.paymentEnd,
+                    workYears: item.workYears,
+                    number: item.number,
+                    skills: item.skills,
+                    location: item.location,
+                    degree: item.degree,
+                    views: item.views,
+                    join: item.resumes.length,
+                    type: item.jobType,
+                    date: item.createAt.getTime(),
+                    status: item.status,
+                    isSaved: false
+                };
+                results.push(obj);
+            });
+            if ((page - 1) * perPageItems + results.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                content: results,
+                count: count,
+                hasNext: hasNext,
+            });
+        });
+    });
+};
+
+
 module.exports = function(app) {
     app.post('/api/user/register', create);
     app.post('/api/user/login', login);
@@ -1164,6 +1232,7 @@ module.exports = function(app) {
     app.get('/api/user/myActive', middleware.check_login, getMyActive);
     app.get('/api/user/myShare', middleware.check_login, getMyShare);
     app.get('/api/user/myShare/search', middleware.check_login, myShareSearch);
+    app.get('/api/user/myjob', middleware.check_login, getMyJob);
 
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);

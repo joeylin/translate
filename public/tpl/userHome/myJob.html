@@ -2,21 +2,18 @@
   <div class="panel search-result">
     <div class="panel-heading custom-heading">
       <div class="row">
-        <div class="col-md-8 pull-right">
+        <div class="col-md-12 pull-right">
           <div class="job-filter">
-            <a class="active" href="#">All</a>
-            <a href="#">Published</a>
-            <a href="#">Closed</a>
-            <a href="#">Draft</a>
+            <a href="#" ng-class="{active: tag==='all'}" ng-click="selectTag('all')">All</a>
+            <a href="#" ng-class="{active: tag==='publish'}" ng-click="selectTag('publish')">Published</a>
+            <a href="#" ng-class="{active: tag==='close'}" ng-click="selectTag('close')">Closed</a>
+            <a href="#" ng-class="{active: tag==='draft'}" ng-click="selectTag('draft')">Draft</a>
           </div>
         </div>
       </div>
     </div>
     <div class="panel-body">
-      <div class="media" ng-repeat="job in content">
-        <a class="pull-left" ng-href="/profile/{{job.owner.id}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{job.owner.avatar}}" style="width: 64px; height: 64px;">
-        </a>
+      <div class="media" ng-repeat-start="job in content">
         <div class="media-body">
           <h4 class="media-heading">{{job.position}}</h4>
           <div class="row">
@@ -34,154 +31,62 @@
                 <span> Join: {{job.join}}</span>
               </div>
             </div>
-            <div class="col-md-3 job-op">
+            <div class="col-md-3 job-op" ng-if="job.status==='draft'">
+              <span><a href="/jobs/{{job.id}}/edit" target="_self">edit</a></span>
+              <span><a href="" ng-click="remove(job)">remove</a></span>
+            </div>
+            <div class="col-md-3 job-op" ng-if="job.status==='publish'">
               <span><a href="/view/{{job.id}}" target="_self">view</a></span>
-              <span ng-if="job.status==='draft'"><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
+              <span><a href="" ng-click="close(job)">close</a></span>
+            </div>
+            <div class="col-md-3 job-op" ng-if="job.status==='close'">
+              <span><a href="/view/{{job.id}}" target="_self">view</a></span>
+              <span><a href="" ng-click="remove(job)">remove</a></span>
             </div>
           </div>
         </div>
       </div>
-      <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op">
-              <span><a href="#">view</a></span>
-              <span><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op">
-              <span><a href="#">view</a></span>
-              <span><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op">
-              <span><a href="#">view</a></span>
-              <span><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op">
-              <span><a href="#">view</a></span>
-              <span><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
+      <hr ng-repeat-end>
       <!-- <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
         <div class="media-body">
-          <h4 class="media-heading">SmashMagzine</h4>
           <div class="row">
             <div class="col-md-8">
               <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
               <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Number</strong>: 2-8</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
               <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
               <div class="search-job-location"><strong>location</strong>: FuZhou</div>
               <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
+                <a href="#" class="search-job-date">{{job.date | formatDate:true}} </a>
+                <span> Views: {{job.views}}</span>
+                <span> Join: {{job.join}}</span>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button">View</a>
-                <a class="btn btn-default" role="button">remove</a>
-              </div>
+            <div class="col-md-4 job-op" ng-if="job.status==='draft'">
+              <span><a href="/jobs/{{job.id}}/edit" target="_self">edit</a></span>
+              <span><a href="" ng-click="remove(job)">remove</a></span>
+            </div>
+            <div class="col-md-4 job-op" ng-if="job.status==='publish'">
+              <span><a href="/view/{{job.id}}" target="_self">view</a></span>
+              <span><a href="" ng-click="close(job)">close</a></span>
+            </div>
+            <div class="col-md-4 job-op" ng-if="job.status==='close'">
+              <span><a href="/view/{{job.id}}" target="_self">view</a></span>
+              <span><a href="" ng-click="remove(job)">remove</a></span>
             </div>
           </div>
         </div>
       </div>
       <hr>
       <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
         <div class="media-body">
-          <h4 class="media-heading">CssTrick</h4>
           <div class="row">
             <div class="col-md-8">
               <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
               <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Number</strong>: 2-8</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
               <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
               <div class="search-job-location"><strong>location</strong>: FuZhou</div>
               <div>
@@ -190,16 +95,65 @@
                 <span> Join: 53</span>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="pull-right">
-                <a class="btn btn-primary" role="button">View</a>
-                <a class="btn btn-default" role="button">remove</a>
-              </div>
+            <div class="col-md-4 job-op">
+              <span><a href="#">view</a></span>
+              <span><a href="#">edit</a></span>
+              <span><a href="#">remove</a></span>
             </div>
           </div>
         </div>
       </div>
-      <hr> -->
+      <hr>
+      <div class="media">
+        <div class="media-body">
+          <div class="row">
+            <div class="col-md-8">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> Views: 1000</span>
+                <span> Join: 53</span>
+              </div>
+            </div>
+            <div class="col-md-4 job-op">
+              <span><a href="#">view</a></span>
+              <span><a href="#">edit</a></span>
+              <span><a href="#">remove</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="media">
+        <div class="media-body">
+          <div class="row">
+            <div class="col-md-8">
+              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
+              <div> <strong>Payment</strong>: 10k-20k</div>
+              <div> <strong>Experience</strong>: 2-8</div>
+              <div> <strong>Type</strong>: full-time</div>
+              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
+              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
+              <div>
+                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
+                <span> Views: 1000</span>
+                <span> Join: 53</span>
+              </div>
+            </div>
+            <div class="col-md-4 job-op">
+              <span><a href="#">view</a></span>
+              <span><a href="#">edit</a></span>
+              <span><a href="#">remove</a></span>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
       <div>
         <ul class="pager">
           <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>

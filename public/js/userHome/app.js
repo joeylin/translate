@@ -54,6 +54,7 @@ config(['$httpProvider', 'app',
 
         window.jsGen = app;
         app.q = $q;
+        app.applyFn = applyFn;
         app.store = store;
         app.toast = toast;
         app.param = param;
