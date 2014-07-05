@@ -563,6 +563,72 @@ var publishJob = function(req, res) {
         });
     });
 };
+var postJob = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+
+    Share.findOne({
+        _id: id
+    }, function(err, share) {
+        if (share.user.toString() == user._id) {
+            return res.send({
+                code: 200,
+                info: 'creator'
+            });
+        }
+        var index = -1;
+        share.resumes.map(function(item, key) {
+            if (item.toString() == user._id) {
+                index = key;
+                return;
+            }
+        });
+        if (index > -1) {
+            return res.send({
+                code: 200,
+                info: 'has post'
+            });
+        }
+        share.resumes.push(user._id);
+        share.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var getPostJobList = function(req, res) {
+    var user = req.session.user;
+    var id = req.query.id;
+
+    Share.findOne({
+        _id: id
+    }).populate('resumes').exec(function(err, share) {
+        if (share.user.toString() !== user._id) {
+            return res.send({
+                code: 404,
+                info: 'no author'
+            });
+        }
+        var results = [];
+        share.resumes.map(function(item) {
+            var obj = {
+                sex: item.sex,
+                name: item.name,
+                id: item.id,
+                _id: item._id,
+                birth: item.birth,
+                occupation: item.occupation,
+                avatar: item.avatar
+            };
+            results.push(obj);
+        });
+        res.send({
+            code: 200,
+            content: results
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/share/collect', middleware.check_login, collectShare);

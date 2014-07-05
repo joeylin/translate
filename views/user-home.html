@@ -467,6 +467,22 @@
           .newJob .panel-body label {
             line-height: 35px;
           }
+          /* group */
+          .group-check {
+            line-height: 33px;
+            cursor: pointer;
+          }
+          .group-check > i {
+            position: relative;
+            top: 1px;
+            margin-right: 5px;
+            color: #ccc;
+          }
+          .group-check > i.fa-check-square-o {
+            color: #333;
+          }
+          /* media */
+          
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -573,7 +589,7 @@
                     <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>MyGroup</a></li>
                     <li ng-class="{active: ['connect','group','reply','comment','at','all'].indexOf(current.path) >= 0}"><a ng-href="/request/all"><i class="fa fa-fw fa-info-circle"></i>Notify</a></li>
                     <!-- <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li> -->
-                    <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople"><i class="fa fa-fw fa-plus-square"></i>My Friends</a></li>
+                    <li ng-class="{active: current.path === 'myPeople' || current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>Friends</a></li>
                     <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>My Share</a></li>
                     <!-- <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li> -->
                     <li ng-class="{active: ['job','myJob','newJob','editJob'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>Get Jobs</a></li>
@@ -582,13 +598,13 @@
             </div>
           </div>
           <div class="col-md-10" style="padding-left:0;">
-            <!-- <div class="nav-tabs-custom" ng-show="current.path === 'people' || current.path === 'myPeople'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'people' || current.path === 'myPeople'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
-                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Professional</li>
+                  <li class="pull-left header"><i class="fa fa-fw fa-plus-square"></i>Professional</li>
                   <li ng-class="{active: current.path === 'people'}"><a ng-href="/people">Find</a></li>
                   <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople">Manage</a></li>
               </ul>
-            </div> -->
+            </div>
             <!-- <div class="nav-tabs-custom" ng-show="current.path === 'share' || current.path === 'myShare'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Discover</li>

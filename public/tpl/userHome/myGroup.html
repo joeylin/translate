@@ -3,7 +3,8 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4>My Group</h4>
+          <h4 ng-show="!isSearch">My Group</h4>
+          <h4 ng-show="isSearch">Search <small><a href="" ng-click="refresh()" style="padding-left:15px">back my group <i class="fa fa-fw fa-angle-double-right"></i></a></small></h4>
         </div>
         <div class="col-md-4 pull-right">
           <a popup data-mfp-src="#create-popup" class="btn btn-primary pull-right btn-sm" role="button" style="margin-top: 6px;">Create New</a>
@@ -93,10 +94,11 @@
     <div class="panel-body">
       <div class="form-group">
           <label>keyword</label>
-          <input type="text" class="form-control" placeholder="Enter keyword">
+          <input type="text" class="form-control" placeholder="Enter keyword" ng-model="vm.keyword">
       </div>
       <div class="clearfix">
-        <a class="btn btn-primary pull-right" role="button">submit</a>
+        <span class="pull-left group-check" ng-click="vm.isMe = !vm.isMe"><i class="fa fa-fw" ng-class="{true:'fa-check-square-o', false:'fa-square-o'}[vm.isMe]"></i>My Group</span>
+        <a class="btn btn-primary pull-right" role="button" ng-click="search()">submit</a>
       </div>
     </div>
   </div>

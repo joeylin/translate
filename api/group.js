@@ -441,6 +441,8 @@ var getMembersList = function(req, res) {
 };
 var searchGroup = function(req, res) {
     var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
     var keyword = req.query.keyword;
     var isMe = req.query.isMe;
     var query = {};
@@ -468,25 +470,72 @@ var searchGroup = function(req, res) {
             query._id = {
                 $in: array
             };
-            Group.find(query).exec(function(err, groups) {
-                var results = [];
-                var result = {
-                    avatar: group.avatar,
-                    id: group.id,
-                    _id: group._id,
-                    industry: group.industry,
-                    name: group.name,
-                    count: group.count,
-                    total: 100,
-                    update: 9
-                };
-                results.push(result);
+            Group.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, groups) {
+                Group.find(query).count().exec(function(err, count) {
+                    var results = [];
+                    var hasNext;
+                    groups.map(function(group) {
+                        var result = {
+                            avatar: group.avatar,
+                            id: group.id,
+                            _id: group._id,
+                            industry: group.industry,
+                            name: group.name,
+                            count: group.count,
+                            total: 100,
+                            update: 9
+                        };
+                        results.push(result);
+                    });
+
+                    if ((page - 1) * perPageItems + results.length < count) {
+                        hasNext = true;
+                    } else {
+                        hasNext = false;
+                    }
+                    res.send({
+                        code: 200,
+                        content: results,
+                        count: count,
+                        hasNext: hasNext,
+                    });
+                });
             });
         });
     } else {
+        Group.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, groups) {
+            Group.find(query).count().exec(function(err, count) {
+                var results = [];
+                var hasNext;
+                groups.map(function(group) {
+                    var result = {
+                        avatar: group.avatar,
+                        id: group.id,
+                        _id: group._id,
+                        industry: group.industry,
+                        name: group.name,
+                        count: group.count,
+                        total: 100,
+                        update: 9
+                    };
+                    results.push(result);
+                });
 
+                if ((page - 1) * perPageItems + results.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                res.send({
+                    code: 200,
+                    content: results,
+                    count: count,
+                    hasNext: hasNext,
+                });
+            });
+        });
     }
-    Group.find(query);
+
 };
 
 module.exports = function(app) {
@@ -502,7 +551,7 @@ module.exports = function(app) {
     app.post('/api/group/settings/avatar', middleware.apiLogin, setAvatar);
     app.post('/api/group/members', getMembers);
     app.post('/api/group/list', getMembersList);
-    app.get('/api/group/search', searchGroup);
+    app.get('/api/group/search', middleware.apiLogin, searchGroup);
 
     app.get('/api/group/:id/post', getPost);
     app.post('/api/group/post/delete', middleware.apiLogin, deleteShare);

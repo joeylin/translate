@@ -9,6 +9,9 @@ var UserSchema = new Schema({
         type: String,
         default: 'display name'
     },
+    birth: {
+        type: Date
+    },
     sex: {
         type: String
     },

@@ -3,7 +3,8 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4><i class="fa fa-fw fa-asterisk" style="margin-right:10px;"></i><span ng-click="vm.getAll()" class="my-title">My Share</span></h4>
+          <h4 ng-show="!isSearch"><i class="fa fa-fw fa-asterisk" style="margin-right:10px;"></i><span>My Share</span></h4>
+          <h4 ng-show="isSearch"><i class="fa fa-fw fa-search"></i> Search <small><a href="" ng-click="vm.getAll()" style="padding-left:15px">back my share <i class="fa fa-fw fa-angle-double-right"></i></a></small></h4>
         </div>
       </div>
     </div>

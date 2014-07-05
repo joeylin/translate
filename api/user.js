@@ -1219,6 +1219,15 @@ var getMyJob = function(req, res) {
         });
     });
 };
+var getMyPostJob = function(req, res) {
+    var user = req.session.user;
+    Share.find({
+        type: 'job',
+        resumes: user._id
+    }).populate('user').exec(function(err, shares) {
+
+    });
+};
 
 
 module.exports = function(app) {

@@ -62,6 +62,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.shareList = data.content;
                 $scope.hasNext = data.hasNext;
                 $scope.total = data.count;
+                $scope.isSearch = false;
             });
         };
         var getUserList = function() {
@@ -195,6 +196,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
 
         // for myshare search
+        $scope.isSearch = false;
         $scope.vm.searchName = '';
         $scope.vm.enter = function() {
             url = '/api/user/myShare/search';
@@ -205,6 +207,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.shareList = data.content;
                 $scope.hasNext = data.hasNext;
                 $scope.total = data.count;
+                $scope.isSearch = true;
             });
         };
         $scope.vm.getAll = function() {
@@ -1063,8 +1066,19 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.error = false;
             }
         };
-        $scope.search = function() {
 
+        $scope.vm.keyword = '';
+        $scope.vm.isMe = false;
+        $scope.search = function() {
+            var url = '/api/group/search';
+            var data = {
+                keyword: $scope.vm.keyword,
+                isMe: $scope.vm.isMe
+            };
+            $http.get(url, data).success(function(data) {
+                $scope.content = data.content;
+                $scope.isSearch = true;
+            });
         };
 
         $scope.content = [];
@@ -1072,6 +1086,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             var url = '/api/myGroup';
             $http.get(url).success(function(data) {
                 $scope.content = data.content;
+                $scope.isSearch = false;
             });
         };
         $scope.refresh = function() {
