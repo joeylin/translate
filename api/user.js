@@ -1305,12 +1305,12 @@ var searchById = function(req,res) {
             name: user.name,
             school: user.school,
             company: user.company,
-            connects: item.connects.length,
+            connects: user.connects.length,
             occupation: user.occupation
         };
         res.send({
             code: 200,
-            user: [user]
+            user: [result]
         });
     });
 };
