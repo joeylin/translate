@@ -583,11 +583,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             clearTimeout(timeout);
             params.page = 1;
             params.keyword = $scope.keyword;
-            params.payment = null;
-            params.years = null;
-            params.type = null;
-            params.degree = null;
-            params.location = null;
+            $scope.payment = '';
+            $scope.years = '';
+            $scope.type = '';
+            $scope.degree = '';
+            $scope.location = '';
             get(function() {
                 $('#keyword').focus();
                 $scope.showSubmitBtn = true;
@@ -611,7 +611,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
         var addFilter = function(key, value) {
             params[key] = value;
-            params.pager = 0;
+            params.pager = 1;
             get();
         };
         $scope.addFilter = addFilter;
@@ -643,11 +643,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         }
 
         // default config
-        $scope.years = 'noLimit';
-        $scope.degree = 'noLimit';
-        $scope.payment = 'all';
+        $scope.payment = '';
+        $scope.years = '';
         $scope.type = '';
-        $scope.location = 'noLimit';
+        $scope.degree = '';
+        $scope.location = '';
         get();
 
 
