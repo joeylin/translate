@@ -361,11 +361,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.name = '';
         $scope.keyword = '';
         $scope.content = [];
-        $scope.isFilter = false;
         $scope.pager = {
             hasNext: false,
             current: 1
         };
+        $scope.title = 'People You May Know';
         var url = '/api/search/people';
         var params = {
             pager: 1,
@@ -408,12 +408,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.pager.hasNext = data.hasNext;
             });
         };
-        $scope.showFilter = function() {
-            $scope.isFilter = true;
-        };
-        $scope.hideFilter = function() {
-            $scope.isFilter = false;
-        };
         var addFilter = function(key, value) {
             params[key] = value;
             $http.get(url, {
@@ -430,7 +424,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 addFilter(key, value);
             }
         };
-
 
         // connect relative
         resetRelative();

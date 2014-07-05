@@ -1229,6 +1229,35 @@ var getMyPostJob = function(req, res) {
     });
 };
 
+var getMayKnowConnects = function(req, res) {
+    var user = req.session.user;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        var array = [];
+        var query = {};
+        user.connects.map(function(item) {
+            array.push(item.toString());
+        });
+        array.push(user._id.toString());
+
+        query._id = {
+            $nin: array
+        };
+        query.$or = [{
+            company: user.company
+        }, {
+            school: user.school
+        }];
+
+        User.find(query).exec(function(err, users) {
+            User.find(query).count().exec(function(err, count) {
+
+            });
+        });
+    });
+};
+
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
