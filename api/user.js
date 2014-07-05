@@ -1214,7 +1214,7 @@ var getMyJob = function(req, res) {
                 code: 200,
                 content: results,
                 count: count,
-                hasNext: hasNext,
+                hasNext: hasNext
             });
         });
     });
@@ -1231,29 +1231,86 @@ var getMyPostJob = function(req, res) {
 
 var getMayKnowConnects = function(req, res) {
     var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+
     User.findOne({
         _id: user._id
     }, function(err, user) {
         var array = [];
-        var query = {};
+        var query = {
+            role: 'user'
+        };
         user.connects.map(function(item) {
             array.push(item.toString());
         });
         array.push(user._id.toString());
 
-        query._id = {
-            $nin: array
-        };
+        // query._id = {
+        //     $nin: array
+        // };
         query.$or = [{
             company: user.company
         }, {
             school: user.school
         }];
 
-        User.find(query).exec(function(err, users) {
+        User.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, users) {
             User.find(query).count().exec(function(err, count) {
-
+                var results = [];
+                var hasNext;
+                users.map(function(item) {
+                    var obj = {
+                        id: item.id,
+                        _id: item._id,
+                        name: item.name,
+                        avatar: item.avatar,
+                        school: item.school,
+                        company: item.company,
+                        connects: item.connects.length,
+                        occupation: item.occupation
+                    };
+                    results.push(obj);
+                });
+                if ((page - 1) * perPageItems + results.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                res.send({
+                    code: 200,
+                    content: results,
+                    count: count,
+                    hasNext: hasNext
+                });
             });
+        });
+    });
+};
+var searchById = function(req,res) {
+    var id = req.query.id;
+    User.findOne({
+        id: id
+    }).exec(function(err, user) {
+        if (!user) {
+            return res.send({
+                code: 200,
+                info: 'no user'
+            });
+        }
+        var result = {
+            avatar: user.avatar,
+            id: user.id,
+            _id: user._id,
+            name: user.name,
+            school: user.school,
+            company: user.company,
+            connects: item.connects.length,
+            occupation: user.occupation
+        };
+        res.send({
+            code: 200,
+            user: [user]
         });
     });
 };
@@ -1271,6 +1328,8 @@ module.exports = function(app) {
     app.get('/api/user/myShare', middleware.check_login, getMyShare);
     app.get('/api/user/myShare/search', middleware.check_login, myShareSearch);
     app.get('/api/user/myjob', middleware.check_login, getMyJob);
+    app.get('/api/user/mayknow', middleware.check_login, getMayKnowConnects);
+    app.get('/api/user/id', middleware.check_login, searchById);
 
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);

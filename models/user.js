@@ -18,6 +18,9 @@ var UserSchema = new Schema({
     school: {
         type: String
     },
+    company: {
+        type: String
+    },
     name: {
         type: String
     },

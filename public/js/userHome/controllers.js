@@ -359,57 +359,59 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
 ]).controller('peopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.name = '';
-        $scope.keyword = '';
+        $scope.id = '';
+        $scope.school = '';
+        $scope.company = '';
+        $scope.location = '';
         $scope.content = [];
         $scope.pager = {
             hasNext: false,
             current: 1
         };
+        $scope.showSubmitBtn = false;
         $scope.title = 'People You May Know';
         var url = '/api/search/people';
         var params = {
-            pager: 1,
+            page: 1,
             name: $scope.name,
-            keyword: $scope.keyword
+            location: $scope.location,
+            school: $scope.school,
+            company: $scope.company
         };
         $scope.submit = function() {
-            // reset the config before submit
+            $scope.id = '';
             var params = {
-                pager: 1,
+                page: 1,
                 name: $scope.name,
-                keyword: $scope.keyword
+                school: $scope.school,
+                company: $scope.company,
+                location: $scope.location
             };
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
+            getConnects();
         };
         $scope.next = function() {
             if (!$scope.pager.hasNext) {
                 return false;
             }
             $scope.pager.current += 1;
-            params.pager = $scope.pager.current;
-            $scope.pager.link(url, params, function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
+            params.page = $scope.pager.current;
+            getConnects();
         };
         $scope.prev = function() {
             if (!$scope.pager.current) {
                 return false;
             }
             $scope.pager.current -= 1;
-            params.pager = $scope.pager.current;
-            $scope.pager.link(url, params, function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
+            params.page = $scope.pager.current;
+            getConnects();
         };
-        var addFilter = function(key, value) {
-            params[key] = value;
+
+        var getMayKnowConnects = function() {
+            url = '/api/user/mayknow';
+            params.page = 1;
+            getConnects();
+        };
+        var getConnects = function() {
             $http.get(url, {
                 params: params,
             }).success(function(data) {
@@ -417,12 +419,44 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.pager.hasNext = data.hasNext;
             });
         };
-        $scope.addFilter = addFilter;
-        $scope.enter = function(e, key, value) {
-            var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) {
-                addFilter(key, value);
+
+        // id btn
+        var timeout = null;
+        // todo need move to directive
+        $('#id').on('focus', function() {
+            app.applyFn(function() {
+                $scope.showSubmitBtn = true;
+            });
+        });
+        $('#id').on('blur', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(function() {
+                app.applyFn(function() {
+                    $scope.showSubmitBtn = false;
+                });
+            }, 200);
+        });
+        $scope.idSubmit = function() {
+            url = '/api/user/id';
+            clearTimeout(timeout);
+            if ($scope.id === '') {
+                $('#id').focus();
+                $scope.showSubmitBtn = true;
+                return false;
             }
+            params.page = 1;
+            params.id = $scope.id;
+            $scope.name = '';
+            $scope.school = '';
+            $scope.company = '';
+            $scope.location = '';
+            $http.get(url,{
+                params: params
+            }).success(function(data) {
+                $('#id').focus();
+                $scope.showSubmitBtn = true;
+                $scope.content = data.user;
+            });
         };
 
         // connect relative
@@ -493,8 +527,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $.magnificPopup.close();
             });
         };
-        // default config
-        $scope.years = '0-2';
+
+        getMayKnowConnects();
     }
 ]).controller('shareCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {

@@ -13,15 +13,56 @@ var middleware = require('./middleware');
 var getPeople = function(req, res) {
     var user = req.session.user;
     var name = req.query.name;
-    var re = new RegExp(name);
-
-    User.find({
-        name: re
-    }, function(err, users) {
-        setRelate(users, user._id, function(results) {
+    var location = req.query.location;
+    var school = req.query.school;
+    var company = req.query.company;
+    var name = req.query.name;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    
+    var query = {
+        role: 'user'
+    };
+    if (company) {
+        query.company = company;
+    }
+    if (school) {
+        query.school = school;
+    }
+    if (location) {
+        query.location = location;
+    }
+    if (name) {
+        var re = new RegExp(name);
+        query.name = re;
+    }
+    User.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, users) {
+        User.find(query).count().exec(function(err, count) {
+            var results = [];
+            var hasNext;
+            users.map(function(item) {
+                var obj = {
+                    id: item.id,
+                    _id: item._id,
+                    name: item.name,
+                    avatar: item.avatar,
+                    school: item.school,
+                    company: item.company,
+                    connects: item.connects.length,
+                    occupation: item.occupation
+                };
+                results.push(obj);
+            });
+            if ((page - 1) * perPageItems + results.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
             res.send({
                 code: 200,
-                content: results
+                content: results,
+                count: count,
+                hasNext: hasNext
             });
         });
     });

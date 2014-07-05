@@ -104,7 +104,7 @@
       <div>
         <ul class="pager">
           <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>
-          <li ng-class="{'disabled': $scope.vm.pager.hasLast}" ng-click="next()"><a href="#">Next</a></li>
+          <li ng-class="{'disabled': $scope.vm.pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
         </ul>
       </div>
     </div>
@@ -114,16 +114,20 @@
   <div class="panel">
     <div class="panel-body">
       <div class="form-group">
+          <label>Search By ID</label>
+          <input id="id" type="text" class="form-control" placeholder="Enter ID" ng-model="id" ng-keydown="enter($event,'id',id)">
+      </div>  
+      <div class="clearfix" ng-show="showSubmitBtn">
+        <a id="idBtn" class="btn btn-primary pull-right btn-sm" role="button" ng-click="idSubmit()">submit</a>
+      </div>
+      <hr style="margin-bottom:13px;"> 
+      <div class="form-group">
           <label>name</label>
-          <input type="text" class="form-control" placeholder="Enter email" ng-model="name">
+          <input type="text" class="form-control" placeholder="Enter name" ng-model="name">
       </div>
       <div class="form-group">
           <label>location</label>
           <input type="text" class="form-control" placeholder="Enter location" ng-model="location">
-      </div>
-      <div class="form-group">
-          <label>skill</label>
-          <input type="text" class="form-control" placeholder="Enter skill" ng-model="skill">
       </div>
       <div class="form-group">
           <label>Company</label>
@@ -135,7 +139,7 @@
       </div>
       <div class="clearfix">
         <a class="pull-left search-advance" role="button" style="line-height:30px;">advance <i class="fa fa-fw fa-angle-double-right"></i></a>
-        <a class="btn btn-primary pull-right" role="button" ng-click="submit()">submit</a>
+        <a class="btn btn-primary pull-right btn-sm" role="button" ng-click="submit()">submit</a>
       </div>
     </div>
   </div>
