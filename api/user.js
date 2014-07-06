@@ -1242,13 +1242,13 @@ var getMayKnowConnects = function(req, res) {
             role: 'user'
         };
         user.connects.map(function(item) {
-            array.push(item.toString());
+            array.push(item.user.toString());
         });
         array.push(user._id.toString());
 
-        // query._id = {
-        //     $nin: array
-        // };
+        query._id = {
+            $nin: array
+        };
         query.$or = [{
             company: user.company
         }, {

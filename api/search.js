@@ -33,7 +33,7 @@ var getPeople = function(req, res) {
         query.location = location;
     }
     if (name) {
-        var re = new RegExp(name);
+        var re = new RegExp(name,'ig');
         query.name = re;
     }
     User.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, users) {
