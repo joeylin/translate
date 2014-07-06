@@ -1287,7 +1287,7 @@ var getMayKnowConnects = function(req, res) {
         });
     });
 };
-var searchById = function(req,res) {
+var searchById = function(req, res) {
     var id = req.query.id;
     User.findOne({
         id: id
@@ -1315,6 +1315,94 @@ var searchById = function(req,res) {
     });
 };
 
+var getMysending = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var query = {
+        type: 'job',
+        status: 'publish',
+        is_delete: false,
+        'resumes.user': user._id
+    };
+    Share.find(query).populate('user').sort('-resumes.date').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
+            var results = [];
+            var hasNext;
+            shares.map(function(item) {
+                var obj = {
+                    owner: {
+                        avatar: item.user.avatar,
+                        name: item.user.name,
+                        id: item.user.id,
+                        _id: item.user._id
+                    },
+                    _id: item._id,
+                    id: item.id,
+                    summary: item.summary,
+                    position: item.position,
+                    paymentStart: item.paymentStart,
+                    paymentEnd: item.paymentEnd,
+                    workYears: item.workYears,
+                    number: item.number,
+                    skills: item.skills,
+                    location: item.location,
+                    degree: item.degree,
+                    views: item.views,
+                    join: item.resumes.length,
+                    type: item.jobType,
+                    date: item.createAt.getTime()
+                };
+                results.push(obj);
+            });
+            if ((page - 1) * perPageItems + results.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+
+            res.send({
+                code: 200,
+                count: count,
+                content: results,
+                hasNext: hasNext
+            });
+        });
+    });
+};
+var getJobRecommend = function(req, res) {
+    var user = req.session.user;
+    var query = {
+        type: 'job',
+        status: 'publish',
+        is_delete: false
+    };
+    Share.find(query).populate('user').sort('-createAt').limit(6).exec(function(err, shares) {
+        var results = [];
+        shares.map(function(item) {
+            var obj = {
+                owner: {
+                    avatar: item.user.avatar,
+                    name: item.user.name,
+                    id: item.user.id,
+                    _id: item.user._id
+                },
+                position: item.position,
+                _id: item._id,
+                id: item.id,
+                paymentStart: item.paymentStart,
+                paymentEnd: item.paymentEnd,
+                location: item.location
+            };
+            results.push(obj);
+        });
+        res.send({
+            code: 200,
+            content: results
+        });
+    });
+};
+
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -1330,7 +1418,8 @@ module.exports = function(app) {
     app.get('/api/user/myjob', middleware.check_login, getMyJob);
     app.get('/api/user/mayknow', middleware.check_login, getMayKnowConnects);
     app.get('/api/user/id', middleware.check_login, searchById);
-
+    app.get('/api/user/sending', middleware.check_login, getMysending);
+    app.get('/api/user/jobrecommend', middleware.check_login, getJobRecommend);
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);
     app.post('/api/user/unlike', middleware.check_login, companyUnlike);

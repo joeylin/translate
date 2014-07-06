@@ -60,8 +60,13 @@ var ShareSchema = new Schema({
         type: String
     },
     resumes: [{
-        type: ObjectId,
-        ref: 'User'
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        date: {
+            type: Date
+        }
     }],
     // common
     likes: [{

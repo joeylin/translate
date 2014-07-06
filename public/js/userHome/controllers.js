@@ -450,7 +450,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $scope.school = '';
             $scope.company = '';
             $scope.location = '';
-            $http.get(url,{
+            $http.get(url, {
                 params: params
             }).success(function(data) {
                 $('#id').focus();
@@ -1027,19 +1027,20 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         var url = '/api/user/sending';
         $scope.content = [];
+        $scope.recommend = [];
         $scope.pager = {
             hasNext: false,
             current: 1
         };
         var params = {
-            pager: 1
+            page: 1
         };
         $scope.next = function() {
             if (!$scope.pager.hasNext) {
                 return false;
             }
             $scope.pager.current += 1;
-            params.pager = $scope.pager.current;
+            params.page = $scope.pager.current;
             get();
         };
         $scope.prev = function() {
@@ -1047,7 +1048,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 return false;
             }
             $scope.pager.current -= 1;
-            params.pager = $scope.pager.current;
+            params.page = $scope.pager.current;
             get();
         };
 
@@ -1057,14 +1058,17 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }).success(function(data) {
                 $scope.content = data.content;
                 $scope.pager.hasNext = data.hasNext;
-                setTimeout(function() {
-                    $('.tsTooltip').tsTooltip();
-                }, 16);
+            });
+        }
+
+        function getRecommend() {
+            var url = '/api/user/jobrecommend';
+            $http.get(url).success(function(data) {
+                $scope.recommend = data.content;
             });
         }
         get();
-        // just for example
-        $('.tsTooltip').tsTooltip();
+        getRecommend();
     }
 ]).controller('myGroupCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
@@ -1098,11 +1102,13 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.vm.isMe = false;
         $scope.search = function() {
             var url = '/api/group/search';
-            var data = {
+            var params = {
                 keyword: $scope.vm.keyword,
                 isMe: $scope.vm.isMe
             };
-            $http.get(url, data).success(function(data) {
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
                 $scope.content = data.content;
                 $scope.isSearch = true;
             });

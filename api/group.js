@@ -450,6 +450,7 @@ var searchGroup = function(req, res) {
     var id = parseInt(keyword, 10);
     if (id) {
         query.id = id;
+        isMe = false;
     } else {
         re = new RegExp(keyword, 'ig');
         query.$or = [{
@@ -535,7 +536,6 @@ var searchGroup = function(req, res) {
             });
         });
     }
-
 };
 
 module.exports = function(app) {

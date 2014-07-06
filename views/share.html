@@ -263,11 +263,11 @@
                 <span class="date pull-left"><a href="#">{{share.createAt | formatDate:true}}</a></span>
                 <span class="pull-right media-control">
                   <% if (locals.author) { %>
-                  <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="toggleLike()"></i>({{share.likes}})</a>
+                  <a href="" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="toggleLike()"></i>({{share.likes}})</a>
                   <% } else { %>
                   <a class="like checkLogin" href="#login-popup" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
                   <% } %>
-                  <a href="#" class="comment" >comment({{share.total}})</a>
+                  <a href="" class="comment">comment({{share.total}})</a>
                 </span>
               </div>
             </div>

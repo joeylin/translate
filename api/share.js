@@ -578,7 +578,7 @@ var postJob = function(req, res) {
         }
         var index = -1;
         share.resumes.map(function(item, key) {
-            if (item.toString() == user._id) {
+            if (item.user.toString() == user._id) {
                 index = key;
                 return;
             }
@@ -589,7 +589,10 @@ var postJob = function(req, res) {
                 info: 'has post'
             });
         }
-        share.resumes.push(user._id);
+        share.resumes.push({
+            user: user._id,
+            date: new Date()
+        });
         share.save(function(err) {
             res.send({
                 code: 200
@@ -603,23 +606,24 @@ var getPostJobList = function(req, res) {
 
     Share.findOne({
         _id: id
-    }).populate('resumes').exec(function(err, share) {
+    }).populate('resumes.user').exec(function(err, share) {
         if (share.user.toString() !== user._id) {
             return res.send({
                 code: 404,
-                info: 'no author'
+                info: 'no auth'
             });
         }
         var results = [];
         share.resumes.map(function(item) {
+            var user = item.user;
             var obj = {
-                sex: item.sex,
-                name: item.name,
-                id: item.id,
-                _id: item._id,
-                birth: item.birth,
-                occupation: item.occupation,
-                avatar: item.avatar
+                sex: user.sex,
+                name: user.name,
+                id: user.id,
+                _id: user._id,
+                birth: user.birth,
+                occupation: user.occupation,
+                avatar: user.avatar
             };
             results.push(obj);
         });

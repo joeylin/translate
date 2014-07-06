@@ -9,11 +9,11 @@
     </div>
     <div class="panel-body">
       <div class="media" ng-repeat-start="job in content">
-        <a class="pull-left" ng-href="/api/profile/{{job.owner.id}}" target="_self">
+        <a class="pull-left" href="/profile/{{job.owner.id}}" target="_self">
           <img class="media-object" alt="64x64" ng-src="{{job.owner.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">{{job.position}} <small> <a href="/profile/{{job.owner.id}}">{{job.owner.name}}</a></small></h4>
+          <h4 class="media-heading">{{job.position}} <small> <a target="_self" href="/profile/{{job.owner.id}}">{{job.owner.name}}</a></small></h4>
           <div class="row">
             <div class="col-md-9">
               <div>{{job.summary}}</div>
@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-3">
               <div class="pull-right job-op">
-                <a class="btn" role="button" href="/view/{{job.id}}" target="_self">View</a>
+                <a role="button" href="/view/{{job.id}}" target="_self">View</a>
               </div>
             </div>
           </div>
@@ -196,6 +196,9 @@
               <option>5-10</option>
               <option>10+</option>
           </select>
+      </div>
+      <div class="clearfix">
+        <a class="pull-right search-advance" role="button">advance <i class="fa fa-fw fa-angle-double-right"></i></a>
       </div>
       
       <!-- <div class="clearfix">

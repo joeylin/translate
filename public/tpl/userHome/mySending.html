@@ -9,43 +9,29 @@
     </div>
     <div class="panel-body">
       <div class="media" ng-repeat-start="job in content">
-        <a class="pull-left" ng-href="/api/company/{{job.company.name}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{job.company.avatar}}" style="width: 64px; height: 64px;">
+        <a class="pull-left" href="/profile/{{job.owner.id}}" target="_self">
+          <img class="media-object" alt="64x64" ng-src="{{job.owner.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">{{job.name}}</h4>
+          <h4 class="media-heading">{{job.position}} <small> <a target="_self" href="/profile/{{job.owner.id}}">{{job.owner.name}}</a></small></h4>
           <div class="row">
             <div class="col-md-9">
-              <div>{{job.desc}}({{job.location}})</div>
+              <div>{{job.workYears}} | {{job.paymentStart}}k-{{job.paymentEnd}}k </div>
+              <div>{{job.type}} | {{job.degree}} | {{job.location}}</div>
+              <div> <strong>Skills</strong>: {{job.skills}}</div>
+              <div>{{job.summary}}</div>
               <div>
-                <a href="#" class="search-job-date">{{job.date}}</a>
-                <span> Views: {{job.views}}</span>
+                <a href="" class="search-job-date">Posted at {{job.date | formatDate:true}} </a>
+                <span> views: {{job.views}}</span>
                 <span> Join: {{job.join}}</span>
-              </div>
-              <div class="resume-process">
-                <ul class="timeline-v row tsTooltip">
-                  <li class="active col-md-3">
-                    <i class="fa fa-envelope post" data-tag="post" data-content=""></i>
-                  </li>
-                  <li class="active col-md-3 text-center">
-                    <i class="fa fa-fw fa-eye reading" data-tag="reading" data-content="check at 2 mins ago ."></i>
-                  </li>
-                  <li class="active col-md-3 text-center">
-                    <i class="fa fa-user interview" data-tag="interview" data-content="check at 2 hours age. address: Fuzhou jinanqu hualin lu 18hao , longfulou 1505"></i>
-                  </li>
-                  <li class="active col-md-3 text-right" style="padding-right:0;">
-                    <i class="fa fa-fw fa-check-circle offer" data-tag="offer" data-content="checked now. congratulations !"></i>
-                  </li>
-                </ul>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-default" role="button">Give up</a>
+              <div class="pull-right job-op">
+                <a class="btn" role="button" href="/view/{{job.id}}" target="_self">View</a>
               </div>
             </div>
           </div>
-              
         </div>
       </div>
       <hr ng-repeat-end>
@@ -134,13 +120,22 @@
   <div class="panel panel-default section job-recommend">
     <div class="panel-heading">Recommend Jobs</div>
     <div class="panel-body">
-      <div class="media">
+      <div class="media" ng-repeat="job in recommend">
+        <a class="pull-left" href="profile/{{job.owner.id}}" target="_self">
+          <img class="media-object" ng-src="{{job.owner.avatar}}" style="width: 36px; height: 36px;">
+        </a>
+        <div class="media-body">
+          <div><a href="/view/{{job.id}}" target="_self">{{job.position}}</a></div>
+          <div>{{job.paymentStart}}-{{job.paymentEnd}}K | {{job.location}}</div>
+        </div>
+      </div>
+      <!-- <div class="media">
         <a class="pull-left" href="#">
           <img class="media-object" src="//joeylin.qiniudn.com/2014/06/18/18qezat53t3ccdzzlainj184bq0ci" style="width: 36px; height: 36px;">
         </a>
         <div class="media-body">
-          <div style="font-weight:700;">SmashMagzine</div>
           <div><a href="">web developer</a></div>
+          <div>15-25K | FuZhou</div>
         </div>
       </div>
       <div class="media">
@@ -148,9 +143,9 @@
           <img class="media-object" src="//joeylin.qiniudn.com/2014/06/18/18qezat53t3ccdzzlainj184bq0ci" style="width: 36px; height: 36px;">
         </a>
         <div class="media-body">
-          <div style="font-weight:700;">SmashMagzine</div>
-          <div><a href="">web developer</a></div>
-        </div>
+         <div><a href="">PHP</a></div>
+          <div>15-25K | FuZhou</div>
+        </div> -->
       </div>
     </div>
   </div>
