@@ -25,6 +25,12 @@ var ShareSchema = new Schema({
     position: {
         type: String
     },
+    company: {
+        type: String
+    },
+    companyIntro: {
+        type: String
+    },
     department: {
         type: String
     },
@@ -132,6 +138,8 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.department = obj.department;
     share.paymentStart = obj.paymentStart;
     share.paymentEnd = obj.paymentEnd;
+    share.company = obj.company;
+    share.companyIntro = obj.companyIntro;
     share.degree = obj.degree;
     share.skills = obj.skills;
     share.workYears = obj.workYears;

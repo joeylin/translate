@@ -137,6 +137,8 @@
           .summary .nav>li>a {
             padding: 6px 15px;
             color: #555;
+            border-radius: 0;
+            margin-right: -1px;
           }
           .summary .nav>li>a i {
             padding-right: 21px;
@@ -146,9 +148,10 @@
             background-color: #f0f0f0;
             border: 0;
             font-weight: 700;
+            /*border-right: 2px solid #00694e;*/
           }
           .summary .nav>li>a:hover {
-            border-color: transparent;
+            border-bottom-color: transparent;
           }
           .custom-well {
             background-color:transparent; 
@@ -444,6 +447,7 @@
             text-align: right;
           }
           .job-filter > a {
+            position: relative;
             display: inline-block;
             width: 85px;
             text-align: center;
@@ -455,6 +459,20 @@
             color: #333;
             font-weight: 700;
           }
+          .job-filter > a.active:after {
+            top: 100%;
+            right: 34px;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(255, 255, 255, 0);
+            border-top-color: #ddd;
+            border-width: 6px;
+            margin-left: -6px;
+          }
           /* new job */
           .nav-tabs-custom > .publish-btn {
             margin-bottom: 15px;
@@ -463,6 +481,12 @@
             margin-bottom: 10px;
             margin-left: 0;
             margin-right: 0;
+          }
+          .newJob .flex-text-wrap > pre {
+            min-height: 74px;
+          }
+          .newJob .panel-body {
+            padding: 30px;
           }
           .newJob .panel-body label {
             line-height: 35px;
@@ -485,6 +509,7 @@
           .search-advance {
             cursor: pointer;
           }
+
           
         </style>
         <!-- for angular ng-cloak -->

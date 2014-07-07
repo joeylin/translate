@@ -45,7 +45,7 @@ constant('app', {
         $routeProvider.
         when('/home', news).
         when('/notify', notify).
-        when('/myJob/manage', jobManage).
+        when('/view/manage', jobManage).
         when('/posts/new', newPost).
         when('/jobs/new', newJob);
         $locationProvider.html5Mode(true).hashPrefix('!');

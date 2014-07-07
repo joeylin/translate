@@ -95,7 +95,10 @@
           .media-heading a:hover {
             color: #3c8dbc;
           }
-          .media-info .media-control .liked i {
+          .media-info .media-control .like {
+            margin-right: 15px;
+          }
+          .media-info .media-control .liked {
             color: rgb(51, 51, 51);
           }
           .reply-panel {
@@ -151,7 +154,36 @@
             border-radius: 3px;
           }
           .media-info {
-            margin-top: 10px;
+            margin-top: 15px;
+          }
+          .post {
+            padding: 3px 10px;
+            display: inline-block;
+            background-color: #0d9572;
+            color: #fff;
+          }
+          .post.btn:hover {
+            color: #fff;
+            background-color: #00694e;
+          }
+          .container .well {
+            padding: 30px 30px 15px 30px;
+          }
+          .container .well h3 {
+            margin-top: 0;
+          }
+          .reply-container {
+            padding: 30px;
+          }
+          .comment-editor .input-group-btn > .btn {
+            border-bottom-left-radius: 3px;
+            border-top-left-radius: 3px;
+          }
+          .notifications-menu .dropdown-menu {
+            width: 130px!important;
+          }
+          .no-notify {
+            padding: 15px;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -184,12 +216,26 @@
               <a class="navbar-brand" href="#">Translate</a>
             </div>
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
+              <ul class="nav navbar-nav navbar-right" ng-cloak>
                   <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
                       <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.share.user.id %>" target="_self">Login</a>
                   </li>
                   <% } else { %>
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                            <i class="fa fa-bell"></i> 
+                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
+                        </a>
+                        <ul class="dropdown-menu" class="request-container">
+                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
+                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
+                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
+                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
+                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
+                        </ul>
+                  </li>
                   <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
@@ -236,8 +282,8 @@
               </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">Home</a></li>
-                <li><a href="/profile" target="_self">profile</a></li>
-                <li><a href="/search/all" target="_self">search</a></li>
+                <li><a href="/profile" target="_self">Profile</a></li>
+                <li><a href="/search/all" target="_self">Search</a></li>
               </ul>
             </div> 
           </div>
@@ -250,25 +296,37 @@
               <% } %>
               <% if (locals.share.type === 'job') { %>
               <h3><%= locals.share.position %></h3>
-              <p><%= locals.share.summary %></p>
-              <p><%= locals.share.detail %></p>
-              <div><strong>Type : </strong><%= locals.share.jobType %></div>
-              <div><strong>Department : </strong><%= locals.share.department %></div>
-              <div><strong>Payment : </strong><%= locals.share.paymentStart %>k - <%= locals.share.paymentEnd %>k</div>
-              <div><strong>Experience : </strong><%= locals.share.workYears %></div>
-              <div><strong>Degree : </strong><%= locals.share.degree %></div>
-              <div><strong>Location : </strong><%= locals.share.location %></div>
+              <p>
+                <div><strong>Type : </strong><%= locals.share.jobType %></div>
+                <div><strong>Department : </strong><%= locals.share.department %></div>
+                <div><strong>Payment : </strong><%= locals.share.paymentStart %>k - <%= locals.share.paymentEnd %>k</div>
+                <div><strong>Experience : </strong><%= locals.share.workYears %></div>
+                <div><strong>Degree : </strong><%= locals.share.degree %></div>
+                <div><strong>Location : </strong><%= locals.share.location %></div>
+              </p>
+              <p><%= locals.share.summary || '' %></p>
+              <p><%= locals.share.detail || '' %></p>
+              <p><%= locals.share.company || '' %></p>
               <% } %>
               <div class="clearfix media-info" ng-cloak>
-                <span class="date pull-left"><a href="#">{{share.createAt | formatDate:true}}</a></span>
-                <span class="pull-right media-control">
+                <span class="pull-left media-control">
+                  <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
+                  <span>View(<%= locals.share.views || 0 %>)</span>
+                  <span>Join({{share.join}})</span>
                   <% if (locals.author) { %>
-                  <a href="" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="toggleLike()"></i>({{share.likes}})</a>
+                  <a href="" class="like" ng-class="{liked:share.liked}" ng-click="toggleLike()"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
+                  <% if (locals.isJobCreator) { %>
+                  <span href="#" class="post btn">Manage</span>
+                  <% } else { %>
+                  <span href="#" class="post btn" ng-show="!share.hasPost" ng-click="post()">Post Resume</span>
+                  <span href="#" class="post" ng-show="share.hasPost">has post</span>
+                  <% } %>
                   <% } else { %>
                   <a class="like checkLogin" href="#login-popup" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
+                  <span href="#" class="post">login to post</span>
                   <% } %>
-                  <a href="" class="comment">comment({{share.total}})</a>
                 </span>
+                <a href="" class="comment pull-right" style="line-height:28px;">comment({{share.total}})</a>
               </div>
             </div>
             <div class="panel reply-panel" ng-cloak>
@@ -283,6 +341,7 @@
                         <% } %>
                     </span>
                 </div>
+                <hr>
                 <div class="media reply-item" ng-repeat-start="comment in share.comments">
                   <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
                     <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
@@ -301,7 +360,7 @@
                     <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
                         <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" ng-click="submitInlineComment(comment)">submit</button>
+                            <button class="btn btn-primary btn-sm" type="button" ng-click="submitInlineComment(comment)">submit</button>
                         </span>
                     </div>
                   </div>
@@ -325,7 +384,7 @@
                   <div class="user-basic">
                     <h3><%= locals.share.user.name %></h3>
                     <div>share: <%= locals.share.user.share %></div>
-                    <div>follow: <%= locals.share.user.followers %></div>
+                    <div>connect: <%= locals.share.user.connects %></div>
                   </div>
               </div>
               <!-- Menu Body -->

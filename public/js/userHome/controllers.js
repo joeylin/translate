@@ -1135,6 +1135,10 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.paymentEnd = '';
         $scope.degree = '';
         $scope.position = '';
+        $scope.department = '';
+        $scope.company = '';
+        $scope.companyIntro = '';
+        $scope.detail = '';
         $scope.location = '';
         $scope.summary = '';
         $scope.workYears = '';
@@ -1143,7 +1147,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.showBlankError = false;
         $scope.showNothingError = false;
         $scope.submit = function() {
-            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.skills === '' || $scope.summary === '' || $scope.location === '';
+            var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.skills === '' || $scope.summary === '' || $scope.location === '' || $scope.company === '';
             if (check) {
                 $scope.showBlankError = true;
                 return false;
@@ -1155,6 +1159,10 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 jobType: $scope.type,
                 paymentStart: $scope.paymentStart,
                 paymentEnd: $scope.paymentEnd,
+                company: $scope.company,
+                companyIntro: $scope.companyIntro,
+                detail: $scope.detail,
+                department: $scope.department,
                 degree: $scope.degree,
                 position: $scope.position,
                 location: $scope.location,
@@ -1182,6 +1190,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 degree: $scope.degree,
                 position: $scope.position,
                 department: $scope.department,
+                company: $scope.company,
+                companyIntro: $scope.companyIntro,
+                detail: $scope.detail,
                 location: $scope.location,
                 summary: $scope.summary,
                 skills: $scope.skills,
@@ -1206,6 +1217,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 degree: $scope.degree,
                 position: $scope.position,
                 location: $scope.location,
+                company: $scope.company,
+                companyIntro: $scope.companyIntro,
+                detail: $scope.detail,
                 department: $scope.department,
                 summary: $scope.summary,
                 skills: $scope.skills,
@@ -1229,8 +1243,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.degree = data.job.degree;
                 $scope.position = data.job.position;
                 $scope.department = data.job.department;
+                $scope.company = data.job.company;
+                $scope.companyIntro = data.job.companyIntro;
                 $scope.location = data.job.location;
                 $scope.summary = data.job.summary;
+                $scope.detail = data.job.detail;
                 $scope.workYears = data.job.workYears;
                 $scope.skills = data.job.skills;
                 $scope.id = data.job.id;

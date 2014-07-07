@@ -5,7 +5,6 @@
         <div class="col-md-8">
           <h4>{{title}}</h4>
         </div>
-        
       </div>
     </div>
     <div class="panel-body" ng-cloak>
@@ -17,14 +16,7 @@
           <input type="text" class="form-control" placeholder="Enter position" ng-model="position" >
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2">
-          <label>department :</label>
-        </div>
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Enter department" ng-model="department">
-        </div>
-      </div>
+      
       <div class="row">
         <div class="col-md-2">
           <label>location :</label>
@@ -51,13 +43,13 @@
           <label>Payment :</label>
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Enter Title" ng-model="paymentStart">
+          <input type="text" class="form-control" placeholder="Enter Number" ng-model="paymentStart">
         </div>
         <div class="pull-left" style="line-height: 34px;">
           to
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Enter Title" ng-model="paymentEnd" >
+          <input type="text" class="form-control" placeholder="Enter Number" ng-model="paymentEnd" >
         </div>
         <div class="pull-left" style="line-height: 34px;">
           ( k, only number )
@@ -103,9 +95,34 @@
         </div>
       </div>
       <hr >
+      <div class="row">
+        <div class="col-md-2">
+          <label>company :</label>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Enter company name" ng-model="company">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>department :</label>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Enter department" ng-model="department">
+        </div>
+      </div>
+      <div>
+        <label>Company Introduce :</label>
+        <textarea auto-height class="form-control" rows="3" placeholder="Enter detail..." ng-model="companyIntro"></textarea>
+      </div>
+      <hr>
       <div>
         <label>Summary :</label>
-        <textarea class="form-control" rows="3" placeholder="Enter detail..." ng-model="summary"></textarea>
+        <textarea auto-height class="form-control" rows="3" placeholder="Enter detail..." ng-model="summary"></textarea>
+      </div>
+      <div>
+        <label>Detail :</label>
+        <textarea auto-height class="form-control" rows="3" placeholder="Enter detail..." ng-model="detail"></textarea>
       </div>
     <div class="clearfix" style="margin-top:15px;" ng-if="current.path === 'newJob'">
       <a class="btn btn-primary pull-right" role="button" ng-click="submit()">Publish</a>

@@ -107,7 +107,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
-                comment.newComment = 'reply to ' + comment.user.name + ' : ';
+                comment.newComment = '@' + comment.user.name + ' ';
             }
         };
         $scope.submitInlineComment = function(comment) {
@@ -129,6 +129,17 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 };
                 $scope.share.comments.unshift(result);
                 comment.isShowReply = false;
+            });
+        };
+
+        $scope.post = function() {
+            var url = '/api/job/post';
+            var data = {
+                id: app.share._id
+            };
+            $http.post(url, data).success(function(data) {
+                $scope.share.hasPost = true;
+                $scope.share.join += 1;
             });
         };
 

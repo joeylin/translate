@@ -80,5 +80,13 @@ config(['$httpProvider', 'app',
         app.share = window.shareObj;
         app.author = window.author;
         $rootScope.global.author = window.author;
+
+        $http.get('/api/notify').success(function(data) {
+            $rootScope.request = {};
+            $rootScope.request.comment = data.comment;
+            $rootScope.request.reply = data.reply;
+            $rootScope.request.connect = data.connect;
+            $rootScope.request.group = data.group;
+        });
     }
 ]);

@@ -110,6 +110,8 @@ var editShare = function(req, res) {
         share.jobType = req.body.jobType;
         share.position = req.body.position;
         share.department = req.body.department;
+        share.company = req.body.company;
+        share.companyIntro = req.body.companyIntro;
         share.paymentStart = req.body.paymentStart;
         share.paymentEnd = req.body.paymentEnd;
         share.degree = req.body.degree;
@@ -325,6 +327,8 @@ var getJobById = function(req, res) {
         obj.position = share.position;
         obj.location = share.location;
         obj.summary = share.summary;
+        obj.company = share.company;
+        obj.companyIntro = share.companyIntro;
         obj.workYears = share.workYears;
         obj.skills = share.skills;
         obj.id = share._id;
@@ -657,4 +661,5 @@ module.exports = function(app) {
     app.post('/api/job/close', closeJob);
     app.post('/api/job/remove', removeJob);
     app.post('/api/job/publish', publishJob);
+    app.post('/api/job/post', postJob);
 };

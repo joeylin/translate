@@ -191,6 +191,9 @@ module.exports = function(app) {
             result.jobType = share.jobType;
             result.paymentStart = share.paymentStart;
             result.paymentEnd = share.paymentEnd;
+            result.department = share.department;
+            result.company = share.company;
+            result.companyIntro = share.companyIntro;
             result.degree = share.degree;
             result.position = share.position;
             result.location = share.location;
@@ -198,16 +201,27 @@ module.exports = function(app) {
             result.summary = share.summary;
             result.detail = share.detail;
             result.liked = false;
-            if (author) {
+            result.hasPost = false;
+            if ( !! author) {
                 share.likes.map(function(like) {
                     if (like.toString() == author._id) {
                         result.liked = true;
                     }
                 });
+                share.resumes.map(function(item, key) {
+                    if (item.user.toString() == author._id) {
+                        result.hasPost = true;
+                    }
+                });
+                if (share.user._id.toString() == author._id) {
+                    app.locals.isJobCreator = true;
+                }
             }
+
             result.likes = share.likes.length;
             result.total = share.comments.length;
-            // todo: fix pager
+            result.join = share.resumes.length;
+
             result.comments = [];
             result.user = {
                 id: share.user.id,
@@ -216,16 +230,20 @@ module.exports = function(app) {
                 name: share.user.name,
                 role: share.user.role,
                 signature: share.user.signature,
-                followers: share.user.followers.length,
+                connects: share.user.connects.length
             };
             Share.find({
                 user: share.user._id,
                 is_delete: false
             }).count().exec(function(err, count) {
-                result.user.share = count;
-                app.locals.share = result;
-                app.locals.author = author;
-                res.render('share');
+                share.views = share.views + 1;
+                result.views = share.views;
+                share.save(function(err, share) {
+                    result.user.share = count;
+                    app.locals.share = result;
+                    app.locals.author = author;
+                    res.render('share');
+                });
             });
         });
     };
