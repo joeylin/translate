@@ -15,6 +15,9 @@ var UserSchema = new Schema({
     sex: {
         type: String
     },
+    occupation: {
+        type: String
+    },
     school: {
         type: String
     },
@@ -32,9 +35,6 @@ var UserSchema = new Schema({
         unique: true
     },
     degree: {
-        type: String
-    },
-    occupation: {
         type: String
     },
     workYear: {

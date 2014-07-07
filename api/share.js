@@ -606,7 +606,7 @@ var postJob = function(req, res) {
 };
 var getPostJobList = function(req, res) {
     var user = req.session.user;
-    var id = req.query.id;
+    var id = req.query.shareId;
 
     Share.findOne({
         _id: id
@@ -627,6 +627,8 @@ var getPostJobList = function(req, res) {
                 _id: user._id,
                 birth: user.birth,
                 occupation: user.occupation,
+                school: user.school || 'BUPT',
+                workYear: user.workYear,
                 avatar: user.avatar
             };
             results.push(obj);
@@ -657,6 +659,7 @@ module.exports = function(app) {
     // jobs
     app.get('/api/job/latest', getLatestJobs);
     app.get('/api/job/search', jobsSearch);
+    app.get('/api/job/postList', getPostJobList);
     app.get('/api/job/:id', getJobById);
     app.post('/api/job/close', closeJob);
     app.post('/api/job/remove', removeJob);

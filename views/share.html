@@ -135,8 +135,6 @@
           }
           .view-sidebar .well .user-signature {
             margin-top: 15px;
-            padding-left: 15px;
-            border-left: 3px solid #3c8dbc;
             font-weight: 700;
           }
           .view-sidebar .find-btn  {
@@ -184,6 +182,24 @@
           }
           .no-notify {
             padding: 15px;
+          }
+
+          /* reset adminTLE carbonad */
+          .carbonad {
+            padding: 15px;
+            border-radius: 4px;
+            height: 96px;
+            background-color: #fff;
+          }
+          .carbonad-image img {
+            width: 64px;
+            height: 64px;
+          }
+          .carbonad-info {
+            padding-left: 79px;
+          }
+          .carbonad-info .carbonad-title {
+            font-size: 16px;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -293,6 +309,19 @@
             <div class="well">
               <% if (locals.share.type === 'view') { %>
               <p><%= locals.share.content %></p>
+              <div class="clearfix media-info" ng-cloak>
+                <span class="pull-left media-control">
+                  <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
+                  <span>View(<%= locals.share.views || 0 %>)</span>
+                  <span>Join({{share.join}})</span>
+                  <% if (locals.author) { %>
+                  <a href="" class="like" ng-class="{liked:share.liked}" ng-click="toggleLike()"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
+                  <% } else { %>
+                  <a class="like checkLogin" href="#login-popup" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
+                  <% } %>
+                </span>
+                <a href="" class="comment pull-right" style="line-height:28px;">comment({{share.total}})</a>
+              </div>
               <% } %>
               <% if (locals.share.type === 'job') { %>
               <h3><%= locals.share.position %></h3>
@@ -307,7 +336,6 @@
               <p><%= locals.share.summary || '' %></p>
               <p><%= locals.share.detail || '' %></p>
               <p><%= locals.share.company || '' %></p>
-              <% } %>
               <div class="clearfix media-info" ng-cloak>
                 <span class="pull-left media-control">
                   <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
@@ -316,7 +344,8 @@
                   <% if (locals.author) { %>
                   <a href="" class="like" ng-class="{liked:share.liked}" ng-click="toggleLike()"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
                   <% if (locals.isJobCreator) { %>
-                  <span href="#" class="post btn">Manage</span>
+                  <span href="#" class="post btn" ng-click="manage()" ng-show="!isManage">Manage</span>
+                  <span href="#" class="post btn" ng-click="back()" ng-show="isManage">Back</span>
                   <% } else { %>
                   <span href="#" class="post btn" ng-show="!share.hasPost" ng-click="post()">Post Resume</span>
                   <span href="#" class="post" ng-show="share.hasPost">has post</span>
@@ -328,8 +357,9 @@
                 </span>
                 <a href="" class="comment pull-right" style="line-height:28px;">comment({{share.total}})</a>
               </div>
+              <% } %>             
             </div>
-            <div class="panel reply-panel" ng-cloak>
+            <div class="panel reply-panel" ng-cloak ng-show="!isManage">
               <div class="panel-body reply-container">
                 <div class="input-group comment-editor">
                     <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="share.newComment"></textarea>
@@ -365,13 +395,49 @@
                     </div>
                   </div>
                 </div>
-                <hr ng-repeat-end>
+                <hr ng-repeat-end ng-show="!$last">
+                <hr ng-show="share.comments.length > 0 && share.comments.length < total">
                 <div ng-show="share.comments.length > 0 && share.comments.length < total">
                   <ul class="pager">
-                    <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
-                    <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
+                    <li ng-class="{'disabled': page.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
+                    <li ng-class="{'disabled': !page.hasNext}" ng-click="next()"><a href="#">Next</a></li>
                   </ul>
                 </div>
+              </div>
+            </div>
+            <div class="well" ng-cloak ng-if="isManage" style="padding-bottom: 30px;">
+              <div class="row">
+                <div class="col-md-4" ng-repeat="user in postList">
+                  <div class="carbonad clearfix">
+                    <span class="carbonad-image pull-left">
+                      <a href="/profile/{{user.id}}" target="_self">
+                        <img class="carbonad-image carbonad-img" ng-src="{{user.avatar}}" title="user.name" >
+                      </a>
+                    </span>
+                    <div class="carbonad-info">
+                      <div class="carbonad-title">
+                        <a href="/profile/{{user.id}}" target="_self">{{user.name}}</a>
+                      </div>
+                      <div>
+                        <span>{{user.occupation}}</span>
+                      </div>
+                      <div>
+                        <span>{{user.school}} | </span>
+                        <span>{{user.workYear}}</span>
+                      </div>
+                      
+                    </div>  
+                  </div>
+
+
+                </div>
+              </div>
+              <hr ng-show="postList.length > 0 && postList.length < total">
+              <div ng-show="postList.length > 0 && postList.length < total">
+                <ul class="pager">
+                  <li ng-class="{'disabled': page.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
+                  <li ng-class="{'disabled': !page.hasNext}" ng-click="next()"><a href="#">Next</a></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -389,7 +455,9 @@
               </div>
               <!-- Menu Body -->
               <div class="user-signature clearfix">
-                  <span><%= locals.share.user.signature %></span>
+                  <i class="fa fa-fw fa-quote-left" style="font-size:11px;"></i>
+                  <span><%= locals.share.user.signature || 'Think different' %></span>
+                  <i class="fa fa-fw fa-quote-right" style="font-size:11px;"></i>
               </div>
             </div>
             <% if (locals.share.user.role === 'company') { %>

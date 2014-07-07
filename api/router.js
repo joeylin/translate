@@ -202,6 +202,7 @@ module.exports = function(app) {
             result.detail = share.detail;
             result.liked = false;
             result.hasPost = false;
+            app.locals.isJobCreator = false;
             if ( !! author) {
                 share.likes.map(function(like) {
                     if (like.toString() == author._id) {
