@@ -1403,6 +1403,11 @@ var getJobRecommend = function(req, res) {
     });
 };
 
+var userGuide = function(req, res) {
+    var user = req.session.user;
+    var school = req.body.school;
+};
+
 
 module.exports = function(app) {
     app.post('/api/user/register', create);

@@ -38,7 +38,7 @@ controller('userCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                     city: $scope.vm.city
                 };
                 $http.post(url, data).success(function(data) {
-
+                    window.location.href = '/profile/' + data.id;
                 });
             } else {
                 if ($scope.school === '' || $scope.industry === '' || $scope.vm.schoolDateStart === '' || $scope.vm.schoolDateEnd === '') {
@@ -53,7 +53,7 @@ controller('userCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                     schoolEnd: $scope.vm.schoolDateEnd
                 };
                 $http.post(url, data).success(function(data) {
-
+                    window.location.href = '/profile/' + data.id;
                 });
             }
         };
