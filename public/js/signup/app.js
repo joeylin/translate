@@ -85,9 +85,5 @@ config(['$httpProvider', 'app',
                 $rootScope.current.path = next.$$route.path;
             }
         });
-        $http.get('/api/notify').success(function(data) {
-            $rootScope.current.request = data.notify.request;
-            $rootScope.current.message = data.notify.message;
-        });
     }
 ]);

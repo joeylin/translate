@@ -47,6 +47,7 @@ require('./api/userProfile')(app);
 require('./api/companyProfile')(app);
 require('./api/group')(app);
 require('./api/router')(app);
+require('./api/json')(app);
 
 app.locals.formatTimestamp = function(t) {
     function n2(v) {
