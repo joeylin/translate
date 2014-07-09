@@ -381,6 +381,9 @@
                   data: data,
                   success: function (data) {
                       if (data.code === 200) {
+                          if (data.stage < 3) {
+                            window.location.href = '/register/step' + data.stage;
+                          }
                           if (redirectTo) {
                             window.location.href = redirectTo;
                           } else {

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+        <title>Translate</title>
+        <meta name="generator" content="translate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <!-- bootstrap 3.0.2 -->
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- font Awesome -->
+        <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/public/css/main.css">
+        <!--  -->
+        <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
+
+        <!--[if lt IE 9]>
+          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <style type="text/css">
+          .mfp-container:before {
+            content: '';
+            display: inline-block;
+            height: 10%;
+            vertical-align: middle;
+          }
+          .register-user {
+            width: 880px;
+            min-height: 650px;
+          }
+          .register-user h3 {
+            margin-bottom: 45px;
+          }
+          .register-user .col-xs-3 >label {
+            line-height: 30px;
+          }
+          .register-user form > .row {
+            margin-bottom: 20px;
+          }
+          .signupFooter > span {
+            line-height: 30px;
+          }
+          .radioInput input {
+            position: relative;
+            top: 2px;
+            margin-right: 3px;
+          }
+          .register-user.white-popup-block {
+            max-width: 880px;
+            position: relative;
+          }
+          .register-user .user-form {
+            padding-right: 0;
+            padding-left: 30px;
+          }
+          .profile-feature {
+            display: inline-block;
+            background-color: #FDF9DF;
+            padding: 15px 35px 20px;
+            margin-top: 91px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          }
+          .profile-feature h4 {
+            font-weight: 700;
+            margin-bottom: 15px;
+          }
+          .profile-feature .profile-item {
+            margin-bottom: 10px;
+          }
+          .profile-feature .profile-item i {
+            color: #43a131;
+            margin-right: 5px;
+          }
+          .container-footer {
+            position: absolute;
+            left: 0;
+            bottom: -37px;
+            width: 100%;
+            color: rgba(253, 253, 253, 0.45);
+          }
+          .progress-indicator {
+            position: absolute;
+            right: 33px;
+            top: 51px;
+            font-size: 11px;
+            color: #f0f0f0;
+          }
+          .progress-indicator i.active {
+            color: #367fa9;
+          }
+          .radioInput {
+            line-height: 35px;
+            margin-left: -3px;
+          }
+          .radioInput span {
+            cursor: pointer;
+            height: 35px;
+            font-weight: 700;
+          }
+          .radioInput i {
+            margin-right: 2px;
+          }
+          .checkInput {
+            margin-top: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-weight: 700;
+            line-height: 22px;
+            margin-left: -3px;
+          }
+        </style>
+        <script type="text/javascript">
+          window.user = null;
+          <% if (locals.user) { %>
+            window.user = <%- JSON.stringify(locals.user) %>;
+          <% } %>
+        </script>
+        
+        
+        <!-- for angular ng-cloak -->
+        <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
+        </style>
+        <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
+              
+    </head>
+    <body>
+        <div class="mfp-bg mfp-ready"></div>
+        <div class="mfp-wrap mfp-close-btn-in mfp-auto-cursor mfp-ready" tabindex="-1" style="overflow-y: auto; overflow-x: hidden;">
+          <div class="mfp-container mfp-s-ready mfp-inline-holder">
+            <div class="mfp-content">
+              <div class="register register-user white-popup-block">
+                <div class="row" ng-view>
+                </div>  
+                <div class="progress-indicator ">
+                  <i class="fa fa-fw fa-circle" ng-class="{active: ['step1','step2','step3'].indexOf(current.path) >= 0}"></i>
+                  <i class="fa fa-fw fa-circle" ng-class="{active: ['step2','step3'].indexOf(current.path) >= 0}"></i>
+                  <i class="fa fa-fw fa-circle" ng-class="{active: current.path === 'step3'}"></i>
+                </div>
+                <div class="container-footer">
+                  <p class="text-center">©Joeylin 331547274@qq.com</p>
+                </div>                 
+              </div>
+                
+            </div>
+            <div class="mfp-preloader">Loading...</div>
+          </div>
+        </div>
+        <footer>
+          <p class="pull-right" style="display:none;">©Joeylin 331547274@qq.com</p>
+        </footer>
+        
+        <script>
+          reserveLoad(
+            '/public/bower_components/jquery/jquery.js',
+            '/public/bower_components/angular/angular.js',
+            '/public/bower_components/angular-animate/angular-animate.js',
+            '/public/bower_components/angular-cookies/angular-cookies.js',
+            '/public/bower_components/angular-resource/angular-resource.js',
+            '/public/bower_components/google-code-prettify/src/prettify.js',
+            '/public/bower_components/angular-route/angular-route.js',
+            '/public/bower_components/marked/lib/marked.js',
+            '/public/bower_components/toastr/toastr.js',
+            '/public/js/lib/angular-locale_zh-cn.js',
+            '/public/js/lib/angular-ui.js',
+            '/public/js/lib/bootstrap.min.js',
+            '/public/js/lib/hmac-sha256.js',
+            '/public/js/lib/sanitize.js',
+            '/public/js/lib/store.js',
+            '/public/js/lib/utf8.js',
+            '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
+            '/public/js/bootply.js',
+            '/public/js/locale_zh-cn.js',
+            '/public/js/tools.js',
+            '/public/js/register/router.js',
+            '/public/js/services.js',
+            '/public/js/filters.js',
+            '/public/js/directives.js',
+            '/public/js/register/controllers.js',
+            '/public/js/register/app.js',
+            function (errorUrl) {
+              if (errorUrl) {
+                alert('Error loading: ' + errorUrl);
+              } else {
+                angular.bootstrap(document, ['jsGen']);
+              }
+            }
+          );
+        </script>
+    </body>
+</html>

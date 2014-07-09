@@ -9,7 +9,18 @@ var config = {
         maxAge: 3600000 * 24 * 30
     },
     db: 'mongodb://127.0.0.1/translate',
-    db_name: 'translate'
+    db_name: 'translate',
+    qiniu: {
+        accessKey: '',
+        secretKey: '',
+        bucket: '',
+        bucketHost: ''
+    },
+    email: {
+        service: 'Gmail',
+        user: '',
+        pass: ''
+    }
 };
 
 module.exports = config;

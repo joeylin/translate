@@ -15,13 +15,28 @@ var UserSchema = new Schema({
     sex: {
         type: String
     },
-    occupation: {
-        type: String
-    },
     school: {
         type: String
     },
+    schoolStart: {
+        type: Number
+    },
+    schoolEnd: {
+        type: Number
+    },
+    isStudent: {
+        type: Boolean
+    },
+    isFreelance: {
+        type: Boolean
+    },
     company: {
+        type: String
+    },
+    occupation: {
+        type: String
+    },
+    skills: {
         type: String
     },
     name: {
@@ -150,6 +165,23 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    emailActiveCode: {
+        count: {
+            type: Number,
+            default: 0
+        },
+        code: String,
+        date: Date
+    },
+    isFinishProfile: {
+        type: Boolean,
+        default: false
+    },
+    registerStage: {
+        type: Number,
+        default: 1
+    },
+
     facebook: {},
     twitter: {},
     github: {},
@@ -178,6 +210,10 @@ UserSchema.virtual('connectList').get(function() {
         result.push(value.user);
     });
     return result;
+});
+UserSchema.virtual('activeCode').set(function(code) {
+    this.emailActiveCode.code = code;
+    this.emailActiveCode.date = new Date();
 });
 
 /**

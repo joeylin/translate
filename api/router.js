@@ -248,9 +248,7 @@ module.exports = function(app) {
             });
         });
     };
-    var getSignupPage = function(req, res) {
-        res.render('signup');
-    };
+
     var getGroupHome = function(req, res) {
         var author = req.session && req.session.user;
         Group.getLastest(function(err, lastest) {
@@ -343,6 +341,50 @@ module.exports = function(app) {
         });
     };
 
+    var registerStep = function(req, res) {
+        var user = req.session.user;
+        User.findOne({
+            _id: user._id
+        }, function(err, user) {
+            var result = {
+                _id: user._id,
+                id: user.id,
+                name: user.name,
+                avatar: user.avatar,
+                email: user.email,
+                registerStage: user.registerStage
+            };
+            app.locals.user = result;
+            res.render('register');
+        });
+    };
+    var registerValidate = function(req, res) {
+        var token = req.query.token;
+        User.findOne({
+            'emailActiveCode.code': token
+        }, function(err, user) {
+            if (!user) {
+                return res.send({
+                    code: 404,
+                    info: 'wrong token'
+                });
+            }
+            if (user.isActive) {
+                return res.send({
+                    code: 404,
+                    info: 'has active'
+                });
+            }
+            user.isActive = true;
+            user.registerStage = 3;
+            user.save(function(err) {
+                // login and redirect
+                req.session.user = user;
+                res.redirect('/register/step3');
+            });
+        });
+    };
+
     // home
     app.get('/', middleware.check_login, getMain);
     app.get('/home', middleware.check_login, getHome);
@@ -372,10 +414,12 @@ module.exports = function(app) {
     // login
     app.get('/login', getLogin);
 
-    //signup
-    app.get('/signup', getSignupPage);
-    app.get('/signup/user/basic', getSignupPage);
-    app.get('/signup/company/basic', getSignupPage);
+    //register
+    app.get('/register', middleware.check_login, registerStep);
+    app.get('/register/step1', middleware.check_login, registerStep);
+    app.get('/register/step2', middleware.check_login, registerStep);
+    app.get('/register/step3', middleware.check_login, registerStep);
+    app.get('/register/validate', registerValidate);
 
     // profile
     app.get('/profile', getProfile);

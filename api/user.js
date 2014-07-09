@@ -10,8 +10,11 @@ var Share = Models.Share;
 var Group = Models.Group;
 var IdGenerator = Models.IdGenerator;
 
+
 var middleware = require('./middleware');
 var async = require('async');
+var moment = require('moment');
+var email = require('../lib/email');
 
 var create = function(req, res) {
     var options = {
@@ -85,7 +88,7 @@ var login = function(req, res) {
         req.session.user = user;
         res.send({
             code: 200,
-            user: req.session.user
+            stage: user.registerStage
         });
     });
 };
@@ -883,48 +886,40 @@ var getUserCard = function(req, res) {
             });
         }
         if (user.role === 'user') {
-            UserProfile.findOne({
-                _id: user.profile
-            }, function(err, profile) {
-                var connect = {
-                    avatar: user.avatar,
-                    name: user.name,
-                    id: user.id,
-                    occupation: user.occupation,
-                    skills: (function() {
-                        var result = [];
-                        profile.skills.map(function(item) {
-                            result.push(item);
-                        });
-                        return result;
-                    })()
-                };
-                res.send({
-                    code: 200,
-                    content: connect
-                });
+            var connect = {
+                avatar: user.avatar,
+                name: user.name,
+                id: user.id,
+                occupation: user.occupation,
+                skills: (function() {
+                    var result = [];
+                    user.skills.map(function(item) {
+                        result.push(item);
+                    });
+                    return result;
+                })()
+            };
+            res.send({
+                code: 200,
+                content: connect
             });
         } else {
-            CompanyProfile.findOne({
-                _id: user.profile
-            }, function(err, profile) {
-                var connect = {
-                    avatar: user.avatar,
-                    name: user.name,
-                    id: user.id,
-                    occupation: user.occupation,
-                    skills: (function() {
-                        var result = [];
-                        profile.skills.map(function(item) {
-                            result.push(item);
-                        });
-                        return result;
-                    })()
-                };
-                res.send({
-                    code: 200,
-                    content: connect
-                });
+            var connect = {
+                avatar: user.avatar,
+                name: user.name,
+                id: user.id,
+                occupation: user.occupation,
+                skills: (function() {
+                    var result = [];
+                    user.skills.map(function(item) {
+                        result.push(item);
+                    });
+                    return result;
+                })()
+            };
+            res.send({
+                code: 200,
+                content: connect
             });
         }
     });
@@ -1219,15 +1214,6 @@ var getMyJob = function(req, res) {
         });
     });
 };
-var getMyPostJob = function(req, res) {
-    var user = req.session.user;
-    Share.find({
-        type: 'job',
-        resumes: user._id
-    }).populate('user').exec(function(err, shares) {
-
-    });
-};
 
 var getMayKnowConnects = function(req, res) {
     var user = req.session.user;
@@ -1403,9 +1389,89 @@ var getJobRecommend = function(req, res) {
     });
 };
 
-var userGuide = function(req, res) {
+var setUserBasic = function(req, res) {
     var user = req.session.user;
     var school = req.body.school;
+    var company = req.body.company;
+    var occupation = req.body.occupation;
+    var workYear = req.body.workYear;
+    var schoolStart = req.body.schoolStart;
+    var schoolEnd = req.body.schoolEnd;
+    var isFreelance = req.body.isFreelance;
+    var professional = req.body.professional;
+
+    if (professional && (!workYear || !occupation || (!isFreelance && !company))) {
+        return res.send({
+            code: 404,
+            info: 'professional info incomplete'
+        });
+    }
+    if (!professional && (!school || !occupation || !schoolStart || !schoolEnd)) {
+        return res.send({
+            code: 404,
+            info: 'student info incomplete'
+        });
+    }
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        user.company = company;
+        user.occupation = occupation;
+        user.workYear = workYear;
+        user.school = school;
+        user.isStudent = !professional;
+        user.isFreelance = isFreelance;
+        user.schoolStart = schoolStart;
+        user.schoolEnd = schoolEnd;
+        user.registerStage = 2;
+
+        user.emailActiveCode.code = randomString();
+        user.emailActiveCode.date = new date();
+
+        user.save(function(err) {
+            email(user);
+            res.send({
+                code: 200,
+                stage: 2
+            });
+        });
+    });
+};
+
+var reSendActiveCode = function(req, res) {
+    var user = req.session.user;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        if (!user.emailActiveCode.code) {
+            user.emailActiveCode.code = randomString();
+            user.emailActiveCode.date = new date();
+            user.emailActiveCode.count += 1;
+            user.save(function(err) {
+                email(user);
+                res.send({
+                    code: 200,
+                    info: 'send success'
+                });
+            });
+        } else {
+            if (user.emailActiveCode.count >= 10) {
+                return res.send({
+                    code: 200,
+                    info: 'send too many'
+                });
+            }
+            var a = moment(new Date());
+            var b = moment(user.emailActiveCode.date);
+            if (a.diff(b) < 60) {
+                return res.send({
+                    code: 200,
+                    info: 'too frequency'
+                });
+            }
+            email(user);
+        }
+    });
 };
 
 
@@ -1413,6 +1479,8 @@ module.exports = function(app) {
     app.post('/api/user/register', create);
     app.post('/api/user/login', login);
     app.post('/api/user/logout', logout);
+    app.post('/api/user/userbasic', middleware.apiLogin, setUserBasic);
+    app.post('/api/user/acitveResend', middleware.apiLogin, reSendActiveCode);
 
     // trends
     app.get('/api/user/share', middleware.check_login, getShare);
@@ -1487,4 +1555,16 @@ function checkSameTypeRequest(userId, requests, cb) {
     }, function(err) {
         cb(err);
     });
+}
+
+function randomString(size) {
+    size = size || 6;
+    var code_string = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var max_num = code_string.length + 1;
+    var new_pass = '';
+    while (size > 0) {
+        new_pass += code_string.charAt(Math.floor(Math.random() * max_num));
+        size--;
+    }
+    return new_pass;
 }

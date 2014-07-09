@@ -13,6 +13,7 @@
         "moment": "latest",
         "ejs": "*",
         "qiniu": "latest",
+        "nodemailer": "latest",
         "express": "3.1.0",
         "imager": "latest",
         "marked": "~0.1.9",

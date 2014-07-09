@@ -20,9 +20,6 @@ var UserProfileSchema = new Schema({
         type: String
     }],
     desc: String,
-    skills: [{
-        type: String
-    }],
     language: [{
         name: {
             type: String
