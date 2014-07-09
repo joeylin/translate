@@ -595,9 +595,38 @@ var postJob = function(req, res) {
         }
         share.resumes.push({
             user: user._id,
-            date: new Date()
+            date: new Date(),
+            isQuit: false
         });
         share.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var giveUpJob = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+
+    Share.findOne({
+        _id: id
+    }, function(err, share) {
+        var index = -1;
+        share.resumes.map(function(item, key) {
+            if (item.user.toString() == user._id) {
+                item.isQuit = true;
+                index = key;
+            }
+        });
+        if (index === -1) {
+            return res.send({
+                code: 404,
+                info: 'no join user'
+            });
+        }
+        share.markModified('resumes');
+        share.save(function() {
             res.send({
                 code: 200
             });
@@ -619,19 +648,21 @@ var getPostJobList = function(req, res) {
         }
         var results = [];
         share.resumes.map(function(item) {
-            var user = item.user;
-            var obj = {
-                sex: user.sex,
-                name: user.name,
-                id: user.id,
-                _id: user._id,
-                birth: user.birth,
-                occupation: user.occupation,
-                school: user.school || 'BUPT',
-                workYear: user.workYear,
-                avatar: user.avatar
-            };
-            results.push(obj);
+            if (!item.isQuit) {
+                var user = item.user;
+                var obj = {
+                    sex: user.sex,
+                    name: user.name,
+                    id: user.id,
+                    _id: user._id,
+                    birth: user.birth,
+                    occupation: user.occupation,
+                    school: user.school || 'BUPT',
+                    workYear: user.workYear,
+                    avatar: user.avatar
+                };
+                results.push(obj);
+            }
         });
         res.send({
             code: 200,
@@ -665,4 +696,5 @@ module.exports = function(app) {
     app.post('/api/job/remove', removeJob);
     app.post('/api/job/publish', publishJob);
     app.post('/api/job/post', postJob);
+    app.post('/api/job/giveup', giveUpJob);
 };

@@ -1051,6 +1051,16 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             params.page = $scope.pager.current;
             get();
         };
+        $scope.giveUp = function(job) {
+            var url = '/api/job/giveup';
+            var data = {
+                id: job._id
+            };
+            $http.post(url, data).success(function(data) {
+                var index = $scope.content.indexOf(job);
+                $scope.content.splice(index, 1);
+            });
+        };
 
         function get() {
             $http.get(url, {

@@ -70,6 +70,10 @@ var ShareSchema = new Schema({
             type: ObjectId,
             ref: 'User'
         },
+        isQuit: {
+            type: Boolean,
+            default: false
+        },
         date: {
             type: Date
         }

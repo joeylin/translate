@@ -407,10 +407,8 @@
                   </a>
                 </div>
                 <div class="media-body user-info">
-                  <p>{{name}} | {{sex}} | {{degree}} | {{workYear}} year work experience</p>
+                  <p>{{name}} | {{sex}} | {{degree}} | {{workYear && workYear + ' year work experience'}}</p>
                   <p> {{phone}}  {{email}}</p>
-                  <!-- <p>{{occupation}}</p>
-                  <p>skills: {{skills.join(',')}}</p> -->
                 </div>
               </div>
               <div class="panel-body basic-settings" ng-show="showSettings">
@@ -430,15 +428,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <select class="form-control" ng-model="inputDegree">
-                              <option>-degree-</option>
-                              <option>Master</option>
-                              <option>Graduate</option>
-                              <option>underGraduate</option>
-                              <option>doctor</option>
+                              <option value=''>-degree-</option>
+                              <option value="diploma">diploma</option>
+                              <option value="bachelor">bachelor</option>
+                              <option value="master">master</option>
+                              <option value="doctor">doctor</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputWorkYear">
+                            <select class="form-control" ng-model="">
                               <option>-experience-</option>
                               <option>1</option>
                               <option>2</option>
@@ -446,6 +444,7 @@
                               <option>4</option>
                               <option>5</option>
                             </select>
+                            <input class="form-control" ng-model="inputWorkYear" />
                         </div>
                     </div>
                     <div >
