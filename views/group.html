@@ -32,6 +32,9 @@
            * Style tweaks
            * --------------------------------------------------
            */
+          html,body {
+            background-color: #edeff0;
+          }
           .home-container {
             padding-top: 19px;
           }
@@ -70,7 +73,7 @@
             font-weight: 700;
           }
           .media-info .date {
-            font-style: italic;
+            color: #99a1a6;
           }
           .media-info .media-control {
             padding-right: 16px;
@@ -391,6 +394,29 @@
           .notifications-menu .dropdown-menu {
             width: 130px!important;
           }
+          /* custom */
+          .input-search {
+            position: relative;
+            display: none;
+          }
+          .input-search > input {
+            padding-left: 33px;
+            border-radius: 3px!important;
+          }
+          .input-search > input:focus + .input-search-addon i {
+            color: #3c8dbc;
+          }
+          .input-search .input-search-addon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+          }
+          .input-search .input-search-addon i {
+            line-height: 34px;
+            padding: 0 11px;
+            color: #99a1a6;
+          }
           /* for auto Height*/
           .comment-editor-inline .form-control {
             position: absolute;
@@ -423,6 +449,9 @@
           .nav-tabs-custom > .nav-tabs {
             width: 100%;
             background-color: #f5f5f5;
+          }
+          .navbar {
+            border-radius: 0px;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -496,7 +525,7 @@
         </div>
 
         <!-- body content -->
-        <nav class="navbar navbar-inverse" role="navigation">
+        <nav class="navbar navbar-inverse" role="navigation" >
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

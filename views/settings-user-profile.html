@@ -279,6 +279,18 @@
           .notifications-menu .dropdown-menu {
             width: 130px!important;
           }
+          .notifications-menu > a {
+            background: url(../public/imgs/icon_msg.png) no-repeat center center;
+            height: 52px;
+            position: relative;
+            top: 3px;
+          }
+          .notifications-menu > a:hover {
+            background-color: #363d40;
+          }
+          .notifications-menu > a > i {
+            width: 30px;
+          }
           
         </style>
         <!-- for angular ng-cloak -->
@@ -318,7 +330,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown notifications-menu user-menu" id="menuNotify" ng-cloak>
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                            <i class="fa fa-bell"></i> 
+                            <i class="fa"></i> 
                             <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
                         </a>
                         <ul class="dropdown-menu" class="request-container">
@@ -436,15 +448,15 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="">
+                            <!-- <select class="form-control" ng-model="experience">
                               <option>-experience-</option>
                               <option>1</option>
                               <option>2</option>
                               <option>3</option>
                               <option>4</option>
                               <option>5</option>
-                            </select>
-                            <input class="form-control" ng-model="inputWorkYear" />
+                            </select> -->
+                            <input class="form-control" type="number" ng-model="inputWorkYear" />
                         </div>
                     </div>
                     <div >

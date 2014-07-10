@@ -15,6 +15,13 @@
         </div>
     </div>
   </div>
+  <div class="pull-right" style="width: 250px;">
+    <div class="input-search">
+        <input type="text" class="form-control" placeholder="Search">
+        <span class="input-search-addon"><i class="fa fa-fw fa-search"></i>
+        </span>
+    </div>
+  </div>
 </div>
 <div class="panel news row">
   <div class="panel-body" ng-cloak>
@@ -28,7 +35,7 @@
           <p md-content="share.content"></p>
         </div>
         <div class="clearfix media-info">
-          <span class="date pull-left"><a href="#">{{share.createAt | formatDate:true }}</a></span>
+          <span class="date pull-left">{{share.createAt | formatDate:true }}</span>
           <span class="pull-right media-control">
             <a href="#" class="delete" ng-show="global.user.name === share.user.name || global.isAdmin || global.isCreator" ng-click="vm.deletePopup(share)"><i class="fa fa-fw fa-trash-o"></i></a>
             <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(share)"></i>({{share.likes}})</a>

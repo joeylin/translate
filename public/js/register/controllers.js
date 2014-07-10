@@ -85,4 +85,8 @@ controller('step1Ctrl', ['app', '$scope', '$rootScope', '$location', '$http',
         }
         $scope.email = app.user.email;
     }
+]).controller('step3Ctrl', ['app', '$scope', '$rootScope', '$location', '$http',
+    function(app, $scope, $rootScope, $location, $http) {
+
+    }
 ]);
