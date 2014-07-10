@@ -327,6 +327,9 @@
         </div>
         <div class="clearfix signupFooter">
             <a type="buttom" class="btn btn-primary pull-right" ng-click="submit()">Join Us</a>
+            <div class="form-group has-error pull-right" ng-show="showBlankError">
+                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Input with error</label>
+            </div>
         </div>
     </form>
 </div>

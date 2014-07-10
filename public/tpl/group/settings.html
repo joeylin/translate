@@ -13,7 +13,15 @@
 				<div class="col-md-8 form-container">
 					<div class="row">
 						<div class="col-xs-4">
-							<label>Name :</label>
+							<label style="margin-bottom:0px;line-height:35px;">ID :</label>
+						</div>
+						<div class="col-xs-8" style="line-height: 35px;">
+							<span>{{groupId}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label>群名 :</label>
 						</div>
 						<div class="col-xs-8">
 							<input class="form-control" name="name" type="text" placeholder="group name" required="" ng-model="basic.name">
@@ -21,7 +29,7 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-4">
-							<label>Industry :</label>
+							<label>行业 :</label>
 						</div>
 						<div class="col-xs-8">
 							<input class="form-control" name="industry" type="text" placeholder="group industry" required="" ng-model="basic.industry">
@@ -29,7 +37,7 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-4">
-							<label>Announcement :</label>
+							<label>公告 :</label>
 						</div>
 						<div class="col-xs-8">
 							<textarea class="form-control" rows="5" placeholder="Enter announcement..." ng-model="basic.announcement"></textarea>

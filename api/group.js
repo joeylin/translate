@@ -444,7 +444,7 @@ var searchGroup = function(req, res) {
     var page = req.query.page || 1;
     var perPageItems = 30;
     var keyword = req.query.keyword;
-    var isMe = req.query.isMe;
+    var isMe = !! req.query.isMe;
     var query = {};
 
     var id = parseInt(keyword, 10);

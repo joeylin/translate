@@ -1114,7 +1114,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             var url = '/api/group/search';
             var params = {
                 keyword: $scope.vm.keyword,
-                isMe: $scope.vm.isMe
+                isMe: $scope.vm.isMe ? true : ''
             };
             $http.get(url, {
                 params: params
