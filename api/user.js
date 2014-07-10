@@ -1426,7 +1426,7 @@ var setUserBasic = function(req, res) {
         user.registerStage = 2;
 
         user.emailActiveCode.code = randomString();
-        user.emailActiveCode.date = new date();
+        user.emailActiveCode.date = new Date();
 
         user.save(function(err) {
             email(user);
