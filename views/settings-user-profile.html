@@ -61,7 +61,8 @@
           }
 
           /*here begin profile*/
-          .custom-box h2 {
+          .custom-box h2,
+          .custom-box h3 {
             margin-top: 0px;
             margin-bottom: 0px;
             border-left: 5px solid #eee;
@@ -70,6 +71,7 @@
           .custom-box .pure-btn {
             line-height: 34px;
             font-size: 18px;
+            cursor: pointer;
           }
           .custom-box .panel-body p {
             font-size: 16px;
@@ -172,10 +174,6 @@
           }
           .custom-box .user-info p {
             font-size: 18px;
-          }
-          .custom-box .basic-settings .form-item  input,
-          .custom-box .basic-settings .form-item  select {
-            /*margin-bottom: 15px;*/
           }
           .custom-box .basic-settings-avatar a {
             width: 100%;
@@ -305,7 +303,7 @@
             margin-bottom: 0;
           }
           .container {
-            font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI', 'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
+            /*font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI', 'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;*/
           }
           
         </style>
@@ -426,7 +424,7 @@
             <div class="panel custom-box basic" ng-controller="basicCtrl">
               <div class="panel-heading">
                 <i class="fa fa-edit pull-right basic-edit" ng-show="showEditIcon" ng-click="edit()"></i>
-                <h2>Basic</h2>
+                <h3>基本资料</h3>
               </div>
               <div class="media" ng-show="showContent">
                 <div class="pull-right user-avatar">
@@ -501,8 +499,8 @@
                         <input type="text" class="form-control" ng-model="inputOccupation" placeholder="your occupation">
                     </div> -->
                     <div class="clearfix">
-                      <a class="btn btn-primary pull-right" role="button" ng-click="save()">Save</a>
-                      <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;" >Cancel</a>
+                      <a class="btn btn-primary pull-right" role="button" ng-click="save()">保存</a>
+                      <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;" >取消</a>
                     </div>
                   </div>
                   <div class="col-md-3 basic-settings-avatar">
@@ -519,7 +517,7 @@
             <div class="panel custom-box" ng-controller="describeCtrl">
               <div class="panel-heading">
                 <i class="fa fa-edit pull-right" ng-show="showEditIcon" ng-click="edit()"></i>
-                <h2>Describe</h2>
+                <h3>自我描述</h3>
               </div>
               <div class="panel-body" ng-show="showContent">
                 <div class="section">
@@ -542,15 +540,15 @@
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">保存</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
             </div>
             <div class="panel custom-box" ng-controller="experienceCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
-                <h2>Experience</h2>
+                <h3>工作经验</h3>
               </div>
               <div class="panel-body" ng-show="showContent">
                 <div class="section" ng-repeat-start="item in content">
@@ -575,17 +573,20 @@
               <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                     <div class="col-md-4">
+                        <label>所在公司</label>
                         <input type="text" class="form-control" ng-model="inputCompany" placeholder="your company">
                     </div>
                     <div class="col-md-4">
+                        <label>担任职位</label>
                         <input type="text" class="form-control" ng-model="inputTitle" placeholder="your position">
                     </div>
                 </div>
                 <div class="row">
+                    <div style="padding: 0 15px;margin-bottom: 0;"><label>从业时间</label></div>
                     <div class="col-md-4 divide">
                         <div class="col-md-6 one">
                           <select class="form-control" ng-model="inputStartYear">
-                            <option>Start Year</option>
+                            <option value="">开始年份</option>
                             <option>2014</option>
                             <option>2013</option>
                             <option>2012</option>
@@ -601,7 +602,7 @@
                         </div>
                         <div class="col-md-6 two">
                           <select class="form-control" ng-model="inputStartMonth">
-                            <option>Start Month</option>
+                            <option value="">开始月份</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -621,7 +622,7 @@
                     <div class="col-md-4 divide">
                         <div class="col-md-6 one">
                           <select class="form-control" ng-model="inputEndYear">
-                            <option>End Year</option>
+                            <option value="">结束年份</option>
                             <option>2014</option>
                             <option>2013</option>
                             <option>2012</option>
@@ -637,7 +638,7 @@
                         </div>
                         <div class="col-md-6 two">
                           <select class="form-control" ng-model="inputEndMonth">
-                            <option>End Month</option>
+                            <option value="">结束月份</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -657,17 +658,15 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
+                        <label>工作地点</label>
                         <input type="text" class="form-control" ng-model="inputLocation" placeholder="your location">
                     </div>
-                    <div class="col-md-4 clearfix">
-                        <span class="pull-left row-label">Current :</span>
-                        <div class="row-form">
-                          <select class="form-control" ng-model="inputIsCurrentJob">
-                            <option>Yes</option>
-                            <option>No</option>
-                          </select>
-                        </div>
-                          
+                    <div class="col-md-4">
+                        <label>是否当前工作 :</label>
+                        <select class="form-control" ng-model="inputIsCurrentJob">
+                          <option value="yes">是</option>
+                          <option value="no">否</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -676,16 +675,16 @@
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusAdd" ng-click="addSave()">Add</a>
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusEdit" ng-click="editSave()">Save</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()" >Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusAdd" ng-click="addSave()">添加</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusEdit" ng-click="editSave()">保存</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
             </div>  
             <div class="panel custom-box education" ng-controller="educationCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
-                <h2>Education</h2>
+                <h3>教育经历</h3>
               </div>
               <div class="panel-body edu-box" ng-show="showContent">
                 <div class="row">
@@ -717,18 +716,41 @@
               </div>
               <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" ng-model="inputSchool" placeholder="your School">
+                    <div class="col-md-4" style="margin-bottom:0px;">
+                        <div class="input-group custom-input" style="left:-12px;">
+                            <span class="input-group-addon">所在学校:</span>
+                            <input type="text" class="form-control" ng-model="inputSchool" placeholder="your School">
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" ng-model="inputField" placeholder="your position">
+                    <div class="col-md-4" style="margin-bottom:0px;">
+                        <div class="input-group custom-input" style="left:-12px;">
+                            <span class="input-group-addon">专业:</span>
+                            <input type="text" class="form-control" ng-model="inputField" placeholder="your position">
+                        </div>
                     </div>
                 </div>
                 <div class="row">
+                  <div class="col-md-4" style="margin-bottom:0px;">
+                      <div class="input-group custom-input" style="left:-12px;">
+                          <span class="input-group-addon">所获学历:</span>
+                          <select class="form-control" ng-model="inputDegree">
+                              <option value="">选择学历</option>
+                              <option>Doctor</option>
+                              <option>Master</option>
+                              <option>graduate</option>
+                              <option>underGraduate</option>
+                              <option>Middle School</option>
+                          </select>
+                      </div>
+                          
+                  </div>
+                </div>
+                <div class="row">
+                    <div style="padding: 0 15px;margin-bottom: 10px;"><label>教育时间:</label></div>
                     <div class="col-md-4 divide">
                         <div class="col-md-6 one">
                           <select class="form-control" ng-model="inputStartYear">
-                            <option>Start Year</option>
+                            <option value="">开始年份</option>
                             <option>2014</option>
                             <option>2013</option>
                             <option>2012</option>
@@ -744,7 +766,7 @@
                         </div>
                         <div class="col-md-6 two">
                           <select class="form-control" ng-model="inputStartMonth">
-                            <option>Start Month</option>
+                            <option value="">开始月份</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -764,7 +786,7 @@
                     <div class="col-md-4 divide">
                         <div class="col-md-6 one">
                           <select class="form-control" ng-model="inputEndYear">
-                            <option>End Year</option>
+                            <option value="">结束年份</option>
                             <option>2014</option>
                             <option>2013</option>
                             <option>2012</option>
@@ -780,7 +802,7 @@
                         </div>
                         <div class="col-md-6 two">
                           <select class="form-control" ng-model="inputEndMonth">
-                            <option>End Month</option>
+                            <option value="">结束月份</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -799,33 +821,21 @@
                     </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-4">
-                      <select class="form-control" ng-model="inputDegree">
-                          <option>-your degree-</option>
-                          <option>Doctor</option>
-                          <option>Master</option>
-                          <option>graduate</option>
-                          <option>underGraduate</option>
-                          <option>Middle School</option>
-                      </select>
-                  </div>
-                </div>
-                <div class="row">
                   <div class="form-group col-md-8">
                       <textarea class="form-control" rows="3" placeholder="Describe your job ..." ng-model="inputDesc"></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="editSave()" ng-show="statusEdit">Save</a>
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="addSave()" ng-show="statusAdd">Add</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="editSave()" ng-show="statusEdit">保存</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="addSave()" ng-show="statusAdd">添加</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
             </div>
             <div class="panel custom-box" ng-controller="worksCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
-                <h2>Works</h2>
+                <h2>作品</h2>
               </div>
               <div class="panel-body" ng-show="showContent">
                 <div class="section" ng-repeat-start="item in content">
@@ -850,25 +860,25 @@
               <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                     <div class="col-md-8">
-                        <input type="text" class="form-control" ng-model="inputUrl" placeholder="Your URL">
+                        <input type="text" class="form-control" ng-model="inputUrl" placeholder="作品链接">
                     </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
-                      <textarea class="form-control" rows="3" ng-model="inputDesc" placeholder="Describe your job ..."></textarea>
+                      <textarea class="form-control" rows="3" ng-model="inputDesc" placeholder="作品描述 ..."></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="addSave()" ng-show="statusAdd">Add</a>
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="editSave()" ng-show="statusEdit">Save</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="addSave()" ng-show="statusAdd">添加</a>
+                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="editSave()" ng-show="statusEdit">保存</a>
+                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
             </div>    
             <div class="panel custom-box social" ng-controller="socialCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
-                <h2>Social</h2>
+                <h3>社交网络</h3>
               </div>
               <div class="panel-body social-info" ng-show="showContent">
                 <div class="clearfix section" ng-repeat="item in content">

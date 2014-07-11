@@ -99,12 +99,12 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
             $scope.inputSchool = '';
             $scope.inputField = '';
-            $scope.inputStartYear = 'Start Year';
-            $scope.inputStartMonth = 'Start Month';
-            $scope.inputEndYear = 'End Year';
-            $scope.inputEndMonth = 'End Month';
+            $scope.inputStartYear = '';
+            $scope.inputStartMonth = '';
+            $scope.inputEndYear = '';
+            $scope.inputEndMonth = '';
             $scope.inputDesc = '';
-            $scope.inputDegree = '-your degree-';
+            $scope.inputDegree = '';
         };
         $scope.cancel = function() {
             $scope.showAddIcon = true;
@@ -214,11 +214,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.inputCompany = '';
         $scope.inputTitle = '';
         $scope.inputDesc = '';
-        $scope.inputStartYear = 'Start Year';
-        $scope.inputStartMonth = 'Start Month';
-        $scope.inputEndYear = 'End Year';
-        $scope.inputEndMonth = 'End Month';
-        $scope.inputIsCurrentJob = 'No';
+        $scope.inputStartYear = '';
+        $scope.inputStartMonth = '';
+        $scope.inputEndYear = '';
+        $scope.inputEndMonth = '';
+        $scope.inputIsCurrentJob = 'no';
 
         $scope.statusAdd = false;
         $scope.statusEdit = false;
@@ -232,11 +232,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.inputCompany = '';
             $scope.inputTitle = '';
             $scope.inputDesc = '';
-            $scope.inputStartYear = 'Start Year';
-            $scope.inputStartMonth = 'Start Month';
-            $scope.inputEndYear = 'End Year';
-            $scope.inputEndMonth = 'End Month';
-            $scope.inputIsCurrentJob = 'No';
+            $scope.inputStartYear = '';
+            $scope.inputStartMonth = '';
+            $scope.inputEndYear = '';
+            $scope.inputEndMonth = '';
+            $scope.inputIsCurrentJob = 'no';
             $scope.inputLocation = '';
 
             $scope.statusAdd = true;
@@ -414,9 +414,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         }
     }
 ]).controller('userImageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
-
-    }
+    function(app, $scope, $routeParams, $location, $http) {}
 ]).controller('worksCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
         $scope.statusAdd = false;
