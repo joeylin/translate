@@ -175,7 +175,7 @@
           }
           .custom-box .basic-settings .form-item  input,
           .custom-box .basic-settings .form-item  select {
-            margin-bottom: 15px;
+            /*margin-bottom: 15px;*/
           }
           .custom-box .basic-settings-avatar a {
             width: 100%;
@@ -290,6 +290,22 @@
           }
           .notifications-menu > a > i {
             width: 30px;
+          }
+          .custom-input.input-group {
+            width: 100%;
+            margin-bottom: 15px;
+          }
+          .custom-input.input-group .input-group-addon {
+            background: none;
+            border: 0;
+            font-weight: 700;
+            width: 89px;
+          }
+          .custom-input.input-group .input-group-addon input {
+            margin-bottom: 0;
+          }
+          .container {
+            font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI', 'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;
           }
           
         </style>
@@ -428,49 +444,65 @@
                   <div class="col-md-9 form-item">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" class="form-control" ng-model="inputName" placeholder="your name">
+                            <div class="input-group custom-input">
+                                <span class="input-group-addon">真实姓名:</span>
+                                <input type="text" class="form-control" ng-model="inputName" placeholder="your name">
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputSex">
-                              <option>Male</option>
-                              <option>Female</option>
-                            </select>
+                            <div class="input-group custom-input">
+                                <span class="input-group-addon">性别:</span>
+                                <select class="form-control" ng-model="inputSex">
+                                  <option>Male</option>
+                                  <option>Female</option>
+                                </select>
+                            </div>
+                                
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <select class="form-control" ng-model="inputDegree">
-                              <option value=''>-degree-</option>
-                              <option value="diploma">diploma</option>
-                              <option value="bachelor">bachelor</option>
-                              <option value="master">master</option>
-                              <option value="doctor">doctor</option>
-                            </select>
+                            <div class="input-group custom-input">
+                                <span class="input-group-addon">学历:</span>
+                                <select class="form-control" ng-model="inputDegree">
+                                  <option value=''>-degree-</option>
+                                  <option value="diploma">diploma</option>
+                                  <option value="bachelor">bachelor</option>
+                                  <option value="master">master</option>
+                                  <option value="doctor">doctor</option>
+                                </select>
+                            </div>
+                                
                         </div>
                         <div class="col-md-6">
-                            <!-- <select class="form-control" ng-model="experience">
-                              <option>-experience-</option>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select> -->
-                            <input class="form-control" type="number" ng-model="inputWorkYear" />
+                            <div class="input-group custom-input">
+                                <span class="input-group-addon">工作年限:</span>
+                                <input class="form-control" type="number" ng-model="inputWorkYear" />
+                            </div>
+                            
                         </div>
                     </div>
-                    <div >
-                        <input type="text" class="form-control" ng-model="inputPhone" placeholder="your phone number">
-                    </div>
-                    <div>
-                        <input type="email" class="form-control" ng-model="inputEmail" placeholder="your email">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group custom-input">
+                                <span class="input-group-addon">手机号码:</span>
+                                <input type="text" class="form-control" ng-model="inputPhone" placeholder="your phone number">
+                            </div>              
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group custom-input">
+                                <span class="input-group-addon">邮箱:</span>
+                                <input type="email" class="form-control" ng-model="inputEmail" placeholder="your email">
+                            </div>
+                            
+                        </div>
                     </div>
                     <!-- <div>
                         <input type="text" class="form-control" ng-model="inputOccupation" placeholder="your occupation">
                     </div> -->
                     <div class="clearfix">
-                      <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
-                      <a class="pure-btn pull-left" role="button" ng-click="cancel()">Cancel</a>
+                      <a class="btn btn-primary pull-right" role="button" ng-click="save()">Save</a>
+                      <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;" >Cancel</a>
                     </div>
                   </div>
                   <div class="col-md-3 basic-settings-avatar">

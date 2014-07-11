@@ -5,6 +5,8 @@ angular.module('jsGen.controllers', ['ui.validate', 'ui.bootstrap.pagination']).
 controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.isOpened = false;
+        $scope.isSearch = false;
+        $scope.keyword = '';
         $scope.open = function() {
             if (!app.author) {
                 return $scope.$emit('popup', 'login');
@@ -53,9 +55,28 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 }, 1000);
             });
         };
+        $scope.search = function() {
+            url = '/api/group/' + app.group._id + '/search';
+            params.keyword = $scope.keyword;
+            params.page = 1;
+            getTrend();
+        };
+        $scope.enter = function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                $scope.isSearch = true;
+                $scope.search();
+            }
+        };
         var url = '/api/group/' + app.group._id + '/post';
         var params = {
             page: 1
+        };
+        $scope.backPost = function() {
+            url = '/api/group/' + app.group._id + '/post';
+            params.page = 1;
+            $scope.isSearch = false;
+            getTrend();
         };
         var getTrend = function() {
             $http.get(url, {

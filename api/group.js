@@ -537,6 +537,87 @@ var searchGroup = function(req, res) {
         });
     }
 };
+var groupPostSearch = function(req, res) {
+    var user = req.session.user;
+    var id = req.params.id;
+    var page = req.query.page || 1;
+    var keyword = req.query.keyword;
+    var size = req.query.size || 20;
+
+    if (!keyword) {
+        return res.send({
+            code: 200,
+            count: 0,
+            hasNext: false,
+            content: [],
+            info: 'no keyword'
+        });
+    }
+
+    var re = new RegExp(keyword, 'ig');
+
+    Share.find({
+        group: id,
+        content: re,
+        is_delete: false
+    }).sort({
+        createAt: -1
+    }).populate('user').skip((page - 1) * size).limit(size).exec(function(err, trends) {
+        if (!trends) {
+            return res.send({
+                code: 200,
+                content: [],
+                hasNext: false,
+                count: 0,
+                info: 'no share'
+            });
+        }
+        Share.find({
+            group: id,
+            content: re,
+            is_delete: false
+        }).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            trends.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.comments = item.comments;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                result.liked = false;
+                if (user) {
+                    item.likes.map(function(like) {
+                        if (like.toString() == user._id.toString()) {
+                            result.liked = true;
+                        }
+                    });
+                }
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            if ((page - 1) * size + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/group/create', middleware.apiLogin, create);
@@ -554,5 +635,6 @@ module.exports = function(app) {
     app.get('/api/group/search', middleware.apiLogin, searchGroup);
 
     app.get('/api/group/:id/post', getPost);
+    app.get('/api/group/:id/search', groupPostSearch);
     app.post('/api/group/post/delete', middleware.apiLogin, deleteShare);
 };

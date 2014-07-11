@@ -3,17 +3,17 @@
       <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>Settings</li>
       <li ng-class="{active: current === 'b'}" ng-click="current = 'b'"><a href="#">Basic</a></li>
       <li ng-class="{active: current === 'm'}" ng-click="clickMember()"><a href="#">Members</a></li>
-      <li class="pull-right"><div><a href="/group/{{groupId}}" class="btn btn-primary btn-sm" target="_self">Back Group</a></div></li>
+      <li class="pull-right" style="position: relative;top: 5px;margin-right: 15px;"><div><a href="/group/{{groupId}}" class="btn btn-success btn-sm" target="_self"><i class="fa fa-fw fa-angle-double-left"></i> Back Group</a></div></li>
   </ul>
 </div>
 <div class="group-settings-basic row" ng-if="current === 'b'" ng-cloak>
 	<div class="panel col-md-12">
 		<div class="panel-body">
-			<div class="row">
+			<div class="row" ng-if="global.isCreator || global.isAdmin">
 				<div class="col-md-8 form-container">
 					<div class="row">
 						<div class="col-xs-4">
-							<label style="margin-bottom:0px;line-height:35px;">ID :</label>
+							<label style="margin-bottom:0px;line-height:35px;">群号 :</label>
 						</div>
 						<div class="col-xs-8" style="line-height: 35px;">
 							<span>{{groupId}}</span>
@@ -59,7 +59,43 @@
 	                    <div class="avatar-tip text-center">Click To Change</div>
 	                </div>
 				</div>
-			</div>				
+			</div>
+			<div class="row" ng-if="global.isJoined && !global.isCreator && !global.isAdmin">
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-xs-4">
+							<label style="margin-bottom:0px;line-height:35px;">群号 :</label>
+						</div>
+						<div class="col-xs-8" style="line-height: 35px;">
+							<span>{{groupId}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label style="margin-bottom:0px;line-height:35px;">群名 :</label>
+						</div>
+						<div class="col-xs-8" style="line-height: 35px;">
+							<span>{{basic.name}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label style="margin-bottom:0px;line-height:35px;">行业 :</label>
+						</div>
+						<div class="col-xs-8" style="line-height: 35px;">
+							<span>{{basic.industry}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label style="margin-bottom:0px;line-height:35px;">公告 :</label>
+						</div>
+						<div class="col-xs-8" style="line-height: 35px;">
+							<span>{{basic.announcement || '暂无公告'}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
 			<hr>
 			<div class="row">
 				<div class="col-xs-7">
@@ -78,7 +114,7 @@
 	</div>
 </div>
 <div class="group-settings-members row" ng-if="current === 'm'" ng-cloak>
-	<div class="panel col-md-12">
+	<div class="panel col-md-12" ng-if="global.isCreator || global.isAdmin">
 		<div class="panel-body">
 			<div class="clearfix" style="margin-bottom: 5px;">
 				<span class="pull-right" style="padding-right:5px;" ng-click="refresh()"><a href="#"><i class="fa fa-fw fa-refresh"></i>refresh</a></span>
@@ -121,6 +157,54 @@
 				      	<i class="fa fa-fw fa-sign-out"></i>
 				      </span>
 				    </td>
+				  </tr>
+			  </tbody>
+			</table>
+			<div class="row">
+			  <div class="col-md-3">
+			    <select ng-model="vm.page.size" class="form-control" title="每页条目数"
+			            ng-options="pageSize for pageSize in [20, 50, 100]">
+			    </select>
+			  </div>
+			  <div class="col-md-9">
+			    <pagination total-items="[creator].concat(admin,members)|filter:vm.filter|size" ng-model="vm.page.index" max-size="5" items-per-page="vm.page.size" class="pagination-sm pull-right" boundary-links="true"></pagination>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="panel col-md-12" ng-if="global.isJoined && !global.isCreator && !global.isAdmin">
+		<div class="panel-body">
+			<div class="clearfix" style="margin-bottom: 5px;">
+				<span class="pull-right" style="padding-right:5px;" ng-click="refresh()"><a href="#"><i class="fa fa-fw fa-refresh"></i>refresh</a></span>
+				<span class="pull-right" style="padding-right:15px;"><strong>total</strong> : {{admin.length + members.length + 1}}</span>
+			</div>
+			<table class="table table-bordered table-hover">
+			  <thead>
+				  <tr>
+				    <th ng-repeat="column in vm.columns" ng-if="!column.hidden" ng-click="vm.sort.toggle(column)"
+				        ng-class="{sortable: column.sortable !== false}">
+				      {{column.label}}
+				      <i ng-if="column.name === vm.sort.column && vm.sort.direction"
+				         class="fa fa-fw {{vm.sort.direction|orderClass}}"></i>
+				    </th>
+				  </tr>
+			  </thead>
+			  <tbody>
+				  <tr>
+				    <td><input type="text" ng-model="vm.filter.name" class="form-control"/></td>
+				    <td><input type="number" ng-model="vm.filter.post" class="form-control"/></td>
+				    <td></td>
+				  </tr>
+				  <tr ng-repeat="item in [creator].concat(admin,members)|filter:vm.filter|orderBy:vm.sort.column:vm.sort.direction===-1|paging:vm.page.index:vm.page.size">
+				    <td>
+				      <img ng-src="{{item.avatar}}">
+				      <span>{{item.name}}</span>
+				      <i class="fa fa-fw fa-user" ng-class="{'admin':item.isAdmin,'creator':item.isCreator}" ng-show="item.isAdmin || item.isCreator"></i>
+				    </td>
+				    <td class="text-right">
+				      <span>{{item.post}}</span>
+				    </td>
+				    <td></td>
 				  </tr>
 			  </tbody>
 			</table>

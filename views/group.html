@@ -183,6 +183,7 @@
           /*group*/
           .group-title h3 {
             margin-top: 0;
+            margin-bottom: 15px;
           } 
           .group-title small {
             margin-left: 10px;
@@ -214,8 +215,10 @@
           .group-topic-add {
             margin-bottom: 10px;
           }
+
           .group-announcement .panel-body {
-            max-height: 110px;
+            max-height: 190px;
+            min-height: 160px;
           }
           .group-announcement-title {
             margin-bottom: 6px;
@@ -417,6 +420,23 @@
             padding: 0 11px;
             color: #99a1a6;
           }
+          .no-result {
+            margin: 15px;
+          }
+          .member-panel {
+            margin-top: 10px;
+          }
+          .member-panel .panel-heading {
+            padding: 6px 10px;
+          }
+          .members-item {
+            margin-left: -9px;
+          }
+          .members-item .title {
+            font-weight: 400;
+            width: 30px;
+            font-size: 12px;
+          }
           /* for auto Height*/
           .comment-editor-inline .form-control {
             position: absolute;
@@ -446,9 +466,12 @@
             -moz-box-shadow: none;
             box-shadow: none;
           }
+          .nav-tabs-custom {
+            box-shadow: none;
+          }
           .nav-tabs-custom > .nav-tabs {
             width: 100%;
-            background-color: #f5f5f5;
+            background-color: #edeff0;
           }
           .navbar {
             border-radius: 0px;
@@ -628,11 +651,8 @@
             </div>
             <% } %>
             <div>
-              <% if (locals.isCreator || locals.isAdmin) { %>
+              <% if (locals.isJoined) { %>
               <a ng-href="/group/<%= locals.group.id %>/settings" type="button" class="group-op-btn btn-block">settings</a>
-              <% } %>
-              <% if (locals.author && locals.isJoined && !locals.isCreator && !locals.isAdmin) { %>
-              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.triggerQuit()">Quit this group</a>
               <% } %>
               <% if (locals.author && !locals.isJoined) { %>
               <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">Join this group</a>
@@ -641,43 +661,35 @@
               <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">Join this group</a>
               <% } %>
             </div>
+            <div class="panel panel-default section member-panel">
+              <div class="panel-heading">成员 (50/100)</div>
+              <div class="panel-body">
+                <div class="members-item">
+                  <span class="title">【创建者】</span>
+                  <a href="/profile/<%= locals.group.creator.id %>" target="_self"><%= locals.group.creator.name %></a>
+                </div>
+                
+                <% locals.group.admin.forEach(function(item,key){ %>
+                <div class="members-item">
+                  <span class="title">【管理员】</span>
+                  <a href="/profile/<%= item.id %>" target="_self"><%= item.name %></a>
+                </div>
+                <% }) %> 
+                <% if (locals.group.admin.length === 0) { %>
+                <div> no set any admin yet !</div>
+                <% } %> 
+              </div>
+            </div>
           </div>
           <div class="col-md-7" ng-view></div>
           <div class="col-md-3 pull-right">
             <div class="panel panel-default section group-announcement">
               <div class="panel-body">
-                <div class="text-center group-announcement-title">Announcement</div>
-                <div><%= locals.group.announcement || 'please add announcement !' %> (2014/6/19)</div>
+                <div class="text-center group-announcement-title">公告</div>
+                <div><%= locals.group.announcement || 'please add announcement !' %></div>
               </div>
             </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Members(50/100)</div>
-              <div class="panel-body">
-                <div class="clearfix">
-                  <div class="pull-left">
-                    <strong>Creator :</strong>
-                  </div>
-                  <div class="members-items">
-                    <div><a href="/profile/<%= locals.group.creator.id %>" target="_self"><%= locals.group.creator.name %></a></div>
-                  </div>
-                </div>
-                <div class="clearfix">
-                  <div class="pull-left">
-                    <strong>Admin :</strong>
-                  </div>
-                  <div class="members-items">
-                    <% locals.group.admin.forEach(function(item,key){ %>
-                    <div>
-                      <a href="/profile/<%= item.id %>" target="_self"><%= item.name %></a>
-                    </div>
-                    <% }) %> 
-                    <% if (locals.group.admin.length === 0) { %>
-                    <div> no set any admin yet !</div>
-                    <% } %> 
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
         <footer>

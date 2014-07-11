@@ -1,5 +1,5 @@
 <div class="group-topic-add row clearfix">
-  <a class="btn btn-primary" href="#" ng-click="open()"> <i class="fa fa-fw" ng-class="{true:'fa-minus',false:'fa-plus'}[isOpened]"></i> add your view</a>
+  <a class="btn btn-primary" href="#" ng-click="open()" ng-show="!isSearch"> <i class="fa fa-fw" ng-class="{true:'fa-minus',false:'fa-plus'}[isOpened]"></i> add your view</a>
   <div class="group-add-content" ng-cloak ng-show="isOpened">
     <div class="well custom-well">
         <div class="arrow"></div>
@@ -15,9 +15,10 @@
         </div>
     </div>
   </div>
+  <a class="btn btn-success" href="" ng-click="backPost()" ng-show="isSearch"><i class="fa fa-fw fa-angle-double-left"></i> Back Group Home</a>
   <div class="pull-right" style="width: 250px;">
     <div class="input-search">
-        <input type="text" class="form-control" placeholder="Search">
+        <input type="text" class="form-control" placeholder="Search" ng-model="keyword" ng-keydown="enter($event)">
         <span class="input-search-addon"><i class="fa fa-fw fa-search"></i>
         </span>
     </div>
@@ -25,6 +26,9 @@
 </div>
 <div class="panel news row">
   <div class="panel-body" ng-cloak>
+    <div ng-show="isSearch && shareList.length > 0">
+      搜到相关结果{{total}}个
+    </div>
     <div class="media" ng-repeat-start="share in shareList">
       <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
         <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
@@ -79,6 +83,11 @@
       </div>
     </div>
     <hr ng-repeat-end>
+    <div ng-show="isSearch && shareList.length === 0">
+      <div class="no-result text-center">
+        ooh...   没搜到相关的内容，请尝试其他关键词吧!
+      </div>
+    </div>
     <div ng-show="shareList.length > 0">
       <ul class="pager">
         <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>

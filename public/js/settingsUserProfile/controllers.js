@@ -366,7 +366,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.inputName = $scope.name;
             $scope.inputSex = $scope.sex;
             $scope.inputDegree = $scope.degree;
-            $scope.inputWorkYear = $scope.workYear;
+            $scope.inputWorkYear = parseInt($scope.workYear, 10);
             $scope.inputPhone = $scope.phone;
             $scope.inputEmail = $scope.email;
         };
