@@ -411,10 +411,10 @@
         <div class="container" ng-cloak>    
           <div class="profile-body col-md-9" ng-if="global.profile">
             <div class="clearfix header-info">
-              <span class="pull-left">Last update: {{lastUpdate | formatDate:true}}</span>
+              <span class="pull-left">上次更新: {{lastUpdate | formatDate:true}}</span>
               <span class="pull-right">
-                <a ng-href="/settings/account" ng-click="gotoAccount()">Account</a> |
-                <a ng-href="/profile/{{global.user.id}}" target="_self">Preview</a>
+                <a ng-href="/settings/account" ng-click="gotoAccount()">账户</a> |
+                <a ng-href="/profile/{{global.user.id}}" target="_self">预览</a>
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
@@ -433,7 +433,7 @@
                   </a>
                 </div>
                 <div class="media-body user-info">
-                  <p>{{name}} | {{sex}} | {{degree}} | {{workYear && workYear + ' year work experience'}}</p>
+                  <p>{{name}} | {{sex}} | {{degree}} | {{workYear && workYear + '年工作经验'}}</p>
                   <p> {{phone}}  {{email}}</p>
                 </div>
               </div>
@@ -451,8 +451,8 @@
                             <div class="input-group custom-input">
                                 <span class="input-group-addon">性别:</span>
                                 <select class="form-control" ng-model="inputSex">
-                                  <option>Male</option>
-                                  <option>Female</option>
+                                  <option value="男">男</option>
+                                  <option value="女">女</option>
                                 </select>
                             </div>
                                 
@@ -463,11 +463,13 @@
                             <div class="input-group custom-input">
                                 <span class="input-group-addon">学历:</span>
                                 <select class="form-control" ng-model="inputDegree">
-                                  <option value=''>-degree-</option>
-                                  <option value="diploma">diploma</option>
-                                  <option value="bachelor">bachelor</option>
-                                  <option value="master">master</option>
-                                  <option value="doctor">doctor</option>
+                                  <option value=''>学历</option>
+                                  <option value="职高">职高</option>
+                                  <option value="专科">专科</option>
+                                  <option value="本科">本科</option>
+                                  <option value="硕士">硕士</option>
+                                  <option value="博士">博士</option>
+                                  <option value="博士后">博士后</option>
                                 </select>
                             </div>
                                 
@@ -495,9 +497,6 @@
                             
                         </div>
                     </div>
-                    <!-- <div>
-                        <input type="text" class="form-control" ng-model="inputOccupation" placeholder="your occupation">
-                    </div> -->
                     <div class="clearfix">
                       <a class="btn btn-primary pull-right" role="button" ng-click="save()">保存</a>
                       <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;" >取消</a>
@@ -509,7 +508,7 @@
                     </a>
                     <input type="file" id="avatar-upload" multiple />
                     <div class="upload-progress" id="upload-progress"></div>
-                    <div class="avatar-tip">Click To Change</div>
+                    <div class="avatar-tip">点击修改</div>
                   </div>
                 </div>
               </div>
@@ -734,12 +733,13 @@
                       <div class="input-group custom-input" style="left:-12px;">
                           <span class="input-group-addon">所获学历:</span>
                           <select class="form-control" ng-model="inputDegree">
-                              <option value="">选择学历</option>
-                              <option>Doctor</option>
-                              <option>Master</option>
-                              <option>graduate</option>
-                              <option>underGraduate</option>
-                              <option>Middle School</option>
+                              <option value=''>学历</option>
+                              <option value="职高">职高</option>
+                              <option value="专科">专科</option>
+                              <option value="本科">本科</option>
+                              <option value="硕士">硕士</option>
+                              <option value="博士">博士</option>
+                              <option value="博士后">博士后</option>
                           </select>
                       </div>
                           
@@ -835,7 +835,7 @@
             <div class="panel custom-box" ng-controller="worksCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
-                <h2>作品</h2>
+                <h3>作品</h3>
               </div>
               <div class="panel-body" ng-show="showContent">
                 <div class="section" ng-repeat-start="item in content">

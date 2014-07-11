@@ -890,14 +890,7 @@ var getUserCard = function(req, res) {
                 avatar: user.avatar,
                 name: user.name,
                 id: user.id,
-                occupation: user.occupation,
-                skills: (function() {
-                    var result = [];
-                    user.skills.map(function(item) {
-                        result.push(item);
-                    });
-                    return result;
-                })()
+                occupation: user.occupation
             };
             res.send({
                 code: 200,
@@ -908,14 +901,7 @@ var getUserCard = function(req, res) {
                 avatar: user.avatar,
                 name: user.name,
                 id: user.id,
-                occupation: user.occupation,
-                skills: (function() {
-                    var result = [];
-                    user.skills.map(function(item) {
-                        result.push(item);
-                    });
-                    return result;
-                })()
+                occupation: user.occupation
             };
             res.send({
                 code: 200,

@@ -64,7 +64,8 @@
           }
 
           /*here begin profile*/
-          .custom-box h2 {
+          .custom-box h2,
+          .custom-box h3 {
             margin-top: 0px;
             margin-bottom: 0px;
             border-left: 5px solid #eee;
@@ -411,18 +412,18 @@
             </div>
             <div class="panel custom-box basic">
               <div class="panel-heading">
-                <h2>Basic</h2>
+                <h3>基本资料</h3>
               </div>
               <div class="media">
                 <div class="media-body user-info">
-                  <p><%= locals.user.name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> year work experience</p>
+                  <p><%= locals.user.name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> 年工作经验</p>
                   <p> <%= locals.user.phone %>  <%= locals.user.email %></p>
                 </div>
               </div>
             </div>
             <div class="panel custom-box">
               <div class="panel-heading">
-                <h2>Describe</h2>
+                <h3>自我描述</h3>
               </div>
               <div class="panel-body">
                 <div class="section">
@@ -432,7 +433,7 @@
             </div>
             <div class="panel custom-box">
               <div class="panel-heading">
-                <h2>Experience</h2>
+                <h3>工作经验</h3>
               </div>
               <div class="panel-body">    
                 <% locals.profile.experience.forEach(function(item,key){ %>
@@ -446,7 +447,7 @@
             </div>  
             <div class="panel custom-box education">
               <div class="panel-heading">
-                <h2>Education</h2>
+                <h3>教育经历</h3>
               </div>
               <div class="panel-body edu-box">
                 <div class="row">
@@ -456,30 +457,18 @@
                       <div class="content">
                         <div class="edu-school"> <%= item.school %></div>
                         <div class="edu-info">
-                          <span><%= item.field %></span>
+                          <span><%= item.field %> | <%= item.degree %></span>
                         </div>
                         <div class="edu-desc"><%= item.desc %></div>
                       </div>
                     </div>
                   <% }) %>
-                    
-                  <!-- <div class="col-md-6 section">
-                    <span class="edu-date">2012--2014</span>
-                    <div class="content">
-                      <div class="edu-school"> BUPT University</div>
-                      <div class="edu-info">
-                        <span>electronic</span>
-                      </div>
-                      <div class="edu-desc">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at</div>
-                    </div>
-                  </div> -->
-                  
                 </div>
               </div>
             </div>
             <div class="panel custom-box">
               <div class="panel-heading">
-                <h2>Works</h2>
+                <h3>作品</h3>
               </div>
               <div class="panel-body">
                 <% locals.profile.works.forEach(function(item,key){ %>
@@ -489,17 +478,11 @@
                     </div>
                     <hr class="<%if(key === locals.profile.works.length -1){%> displayNone <%}%>">
                 <% }) %>  
-          
-                <!-- <div class="section">
-                  <h4>URL: <a href="#">www.github.com</a></h4>
-                  <p>a common used jQuery plugins for web developer, these plugins has a good compatible for IE 8 and others modern broswers, they also have different skins.</p>
-                </div>
-                <hr> -->
               </div>
             </div>    
             <div class="panel custom-box social">
               <div class="panel-heading">
-                <h2>Social</h2>
+                <h3>社交网络</h3>
               </div>
               <div class="panel-body social-info">
                 <% locals.profile.social.forEach(function(item,key){ %>
@@ -514,10 +497,10 @@
             </div>
             <div class="panel custom-box group">
               <div class="panel-heading">
-                <h2>Group</h2>
+                <h3>群组</h3>
               </div>
               <div class="panel-body">
-                <p class="no-join text-center"> you dont join any group !</p>
+                <p class="no-join text-center"> 你还没加入任何群 ！</p>
                 <div class="row">
                   <div class="col-md-2"></div>
                 </div>
@@ -565,11 +548,6 @@
                 $tpl.find('img').attr('src', data.avatar);
                 $tpl.find('h4 > a').text(data.name);
                 $tpl.find('.media-body > div > p').text(data.occupation || '');
-                var skills = '';
-                data.skills.map(function(item) {
-                  skills += '<span class="card-label">' + item + '</span>';
-                });
-                $tpl.find('.media-body > div > div').html(skills);
                 return $tpl;
               }
             });
