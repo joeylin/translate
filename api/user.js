@@ -1381,18 +1381,19 @@ var setUserBasic = function(req, res) {
     var company = req.body.company;
     var occupation = req.body.occupation;
     var workYear = req.body.workYear;
+    var location = req.body.location;
     var schoolStart = req.body.schoolStart;
     var schoolEnd = req.body.schoolEnd;
     var isFreelance = req.body.isFreelance;
     var professional = req.body.professional;
 
-    if (professional && (!workYear || !occupation || (!isFreelance && !company))) {
+    if (professional && (!workYear || !location || !occupation || (!isFreelance && !company))) {
         return res.send({
             code: 404,
             info: 'professional info incomplete'
         });
     }
-    if (!professional && (!school || !occupation || !schoolStart || !schoolEnd)) {
+    if (!professional && (!school || !location || !occupation || !schoolStart || !schoolEnd)) {
         return res.send({
             code: 404,
             info: 'student info incomplete'
@@ -1409,6 +1410,7 @@ var setUserBasic = function(req, res) {
         user.isFreelance = isFreelance;
         user.schoolStart = schoolStart;
         user.schoolEnd = schoolEnd;
+        user.location = location;
         user.registerStage = 2;
 
         user.emailActiveCode.code = randomString();
