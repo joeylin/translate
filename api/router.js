@@ -89,9 +89,11 @@ module.exports = function(app) {
                                 connect: connect.length,
                                 at: at.length
                             };
-
-                            app.locals.request = request;
-                            res.render('user-profile');
+                            Group.getJoined(user._id.toString(), 8, function(err, groups) {
+                                app.locals.groups = groups || [];
+                                app.locals.request = request;
+                                res.render('user-profile');
+                            });
                         });
                     });
                 });

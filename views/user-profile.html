@@ -230,7 +230,7 @@
           }
           .profile-sidebar .section {
             margin-bottom: 20px;
-            border-radius: 0;
+            border-radius: 4px;
           }
           .profile-sidebar .user-body {
             padding: 15px 0;
@@ -251,6 +251,55 @@
           }
           .notifications-menu .dropdown-menu {
             width: 130px!important;
+          }
+          /*group collects*/
+          .collects {
+            width: 100%;
+            overflow: hidden;
+          }
+          .collects img {
+            width: 55px;
+            margin: 0 10px;
+          }
+          .collects .collects-container {
+            width: 1120px;
+          }
+          /* circle */
+          .circle hr {
+            margin: 10px 0;
+          }
+          .circle-item {
+            display: inline-block;
+            color: rgb(153, 153, 153);
+            font-size: 0.9em;
+          }
+          /* skills */
+          .tags hr {
+            margin: 10px 0;
+            margin-top: 7px;
+          }
+          .tags .tags-myCircle {
+            font-size: 0.9em;
+            color: rgb(153, 153, 153);
+          }
+          .tags .tags-myCircle .tag {
+            color: rgb(51, 51, 51);
+          }
+          .tags-item {
+            background: #eee;
+            float: left;
+            padding-left: 7px;
+            padding-right: 7px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            border-radius: 10px;
+            margin: 0px 7px 6px 0;
+            font-size: 0.9em;
+            cursor: pointer;
+          }
+          .tags-item:hover {
+            background: #9C9C9C;
+            color: #FFF !important;
           }
           /* tooltip*/
           .asTooltip-content {
@@ -365,24 +414,26 @@
                   <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" style="height: 175px;">
               </div>
               <!-- Menu Body -->
-              <div class="user-body clearfix">
-                  <div class="col-xs-6 text-center">
-                      <a href="#" class="user_share"><%= locals.shareCount %></a>
-                  </div>
-                  <div class="col-xs-6 text-center">
-                      <a href="#" class="user_connects"><%= locals.user.connects.length %></a>
-                  </div>
-                  <div class="col-xs-6 text-center">
-                      <a href="#">share</a>
-                  </div>
-                  <div class="col-xs-6 text-center">
-                      <a href="#">Connects</a>
-                  </div>
+              <!-- <div class="user-body clearfix text-center">
+                  <div class="col-xs-6" style="border-right: 1px solid #eee; font-size:0.9em;padding-left: 30px;">
+                      <div> 微文 : <span style="margin-left:5px;"><%= locals.shareCount %></span></div>
+                      <div> 人脉 : <span style="margin-left:5px;"><%= locals.user.connects.length %></span></div>
+                  </div>  
+              </div> -->
+            </div>
+            <div class="panel">
+              <div class="panel-body clearfix">
+                <div class="text-left" style="font-size:0.9em; display:inline-block;">
+                    <div><span style="color:#999;">基本状态： </span> <span>北京 | 互联网</span></div>
+                    <div><span style="color:#999;">目前就职： </span> <span>UX云事业部</span></div>
+                    <div><span style="color:#999;">教育背景： </span> <span>北京邮电大学</span></div>
+                    <!-- <a href="#" class="btn btn-primary btn-sm">Connect</a> -->
+                </div>
               </div>
             </div>
-            <div class="panel panel-default section">
+            <!-- <div class="panel panel-default section">
               <div class="panel-heading clearfix">
-                Connected Persons
+                人脉圈
               </div>
               <div class="panel-body">
                 <div class="images">
@@ -394,11 +445,58 @@
                   <% } %> 
                 </div>
               </div>
+            </div> -->
+            <div class="panel panel-default section circle">
+              <div class="panel-heading clearfix">
+                人脉圈
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <span class="circle-item">产品经理 (2)</span>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="circle-item">前端开发 (5)</span>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="circle-item">PHP开发 (5)</span>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="circle-item">页面重构 (7)</span>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-6">
+                    <span class="circle-item">百度云开发部 (9)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default section tags">
+              <div class="panel-heading clearfix">
+                擅长技能
+              </div>
+              <div class="panel-body">
+                <!-- 暂时还没有添加任何技能! -->
+                <div class="clearfix">
+                  <span class="tags-item">NodeJS (2)</span>
+                  <span class="tags-item">AngularJS (3)</span>
+                  <span class="tags-item">HTML5 (6)</span>
+                  <span class="tags-item">CSS3 (2)</span>
+                </div>
+                <hr>
+                <div class="tags-myCircle">
+                  <div>你的人脉圈中 :</div>
+                  <div><a href="">laolei </a>等<a href=""> 5人 </a>认同他的 <span class="tag">nodeJS</span></div>
+                  <div><a href="">howell </a>等<a href=""> 3人 </a>认同他的 <span class="tag">angularJS</span></div>
+                </div>
+              </div>
             </div>
             <div class="panel panel-default section">
-              <div class="panel-heading">Follow Topic</div>
+              <div class="panel-heading">最近关注</div>
               <div class="panel-body">
-                Topic Lists
+                擅长技能
               </div>
             </div>
           </div>   
@@ -409,6 +507,29 @@
               <% } %>
               <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
               <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
+            </div>
+            <div class="panel custom-box group">
+              <div class="panel-heading">
+                <h3>文章</h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <!-- <div class="col-md-4">
+                    <div class="media">
+                        <a class="pull-left" href="">
+                            <img class="media-object" alt="64x64" style="width: 68px; height: 68px;" src="//joeylin.qiniudn.com/2014/06/21/ic70rsy1f9aq9oq1zfhjkudyf9h3lc25">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading ng-binding">博客标题</h4>
+                            <div>
+                                <p md-content="share.content">1, Google 推出支持Dart和JS的Chrome Dev Editor 2, 试用了一下，因为功能简洁，个人好感度比Atom和Sublime佳 ;</p>
+                            </div>
+                        </div>
+                    </div>
+                  </div> -->
+
+                </div>
+              </div>
             </div>
             <div class="panel custom-box basic">
               <div class="panel-heading">
@@ -433,7 +554,7 @@
             </div>
             <div class="panel custom-box">
               <div class="panel-heading">
-                <h3>工作经验</h3>
+                <h3>经验</h3>
               </div>
               <div class="panel-body">    
                 <% locals.profile.experience.forEach(function(item,key){ %>
@@ -444,10 +565,24 @@
                     <hr class="<%if(key === locals.profile.experience.length -1){%> displayNone <%}%>">
                 <% }) %>  
               </div>
+            </div> 
+            <div class="panel custom-box">
+              <div class="panel-heading">
+                <h3>作品</h3>
+              </div>
+              <div class="panel-body">
+                <% locals.profile.works.forEach(function(item,key){ %>
+                    <div class="section">
+                      <h4>URL: <a href="#"><%= item.url %></a></h4>
+                      <p><%= item.desc %></p>
+                    </div>
+                    <hr class="<%if(key === locals.profile.works.length -1){%> displayNone <%}%>">
+                <% }) %>  
+              </div>
             </div>  
             <div class="panel custom-box education">
               <div class="panel-heading">
-                <h3>教育经历</h3>
+                <h3>教育培训</h3>
               </div>
               <div class="panel-body edu-box">
                 <div class="row">
@@ -465,21 +600,7 @@
                   <% }) %>
                 </div>
               </div>
-            </div>
-            <div class="panel custom-box">
-              <div class="panel-heading">
-                <h3>作品</h3>
-              </div>
-              <div class="panel-body">
-                <% locals.profile.works.forEach(function(item,key){ %>
-                    <div class="section">
-                      <h4>URL: <a href="#"><%= item.url %></a></h4>
-                      <p><%= item.desc %></p>
-                    </div>
-                    <hr class="<%if(key === locals.profile.works.length -1){%> displayNone <%}%>">
-                <% }) %>  
-              </div>
-            </div>    
+            </div>   
             <div class="panel custom-box social">
               <div class="panel-heading">
                 <h3>社交网络</h3>
@@ -500,9 +621,15 @@
                 <h3>群组</h3>
               </div>
               <div class="panel-body">
-                <p class="no-join text-center"> 你还没加入任何群 ！</p>
-                <div class="row">
-                  <div class="col-md-2"></div>
+                <% if (locals.groups.length === 0) { %>
+                <p class="no-join text-center" style="display:none;"> 你还没加入任何群 ！</p>
+                <% } %> 
+                <div class="collects">
+                  <div class="collects-container">
+                    <% locals.groups.forEach(function(item,key){ %>
+                        <a href="/group/<%= item.id %>" title="<%= item.name %>"><img src="<%= item.avatar %>"></a>
+                    <% }) %>  
+                  </div>
                 </div>
               </div>
             </div>
@@ -513,7 +640,6 @@
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/public/js/lib/tooltip/jquery-asTooltip.js"></script>
         <script type="text/javascript">
           $(document).ready(function() {
             $('#btnLogout').click(function() {
@@ -527,30 +653,7 @@
                     }
                 });
             });
-            $('.userCard').asTooltip({
-              namespace: 'asTooltip',
-              interactive: true,
-              ajax: true,
-              onlyOne: true,
-              ajaxParse: function(data) {
-                var tpl = '<div class="media">' +
-                      '<a class="pull-left" href="/profile/__id__">' +
-                        '<img class="media-object" style="width: 50px; height: 50px;">' +
-                      '</a>' +
-                      '<div class="media-body"><h4 class="media-heading"><a href="/profile/__id__">__name__</a></h4><div>' +
-                        '<p>__occupation__</p>' +
-                        '<div class="skills">__skills__</div>' +
-                        '</div>' +
-                      '</div>' +
-                    '</div>';
-                var $tpl = $(tpl);
-                $tpl.find('a').attr('href', '/profile/' + data.id);
-                $tpl.find('img').attr('src', data.avatar);
-                $tpl.find('h4 > a').text(data.name);
-                $tpl.find('.media-body > div > p').text(data.occupation || '');
-                return $tpl;
-              }
-            });
+            
           });
         </script>
     </body>
