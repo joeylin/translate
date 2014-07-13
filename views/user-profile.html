@@ -310,6 +310,37 @@
             height: 100px;
           }
           
+          /* profile-image */
+          .profile-avatar {
+            height: 225px;
+            position: relative;
+          }
+          .profile-avatar img {
+            width: 100%;
+            max-height: 255px;
+            height: 100%;
+          }
+          .profile-avatar .profile-avatar-popover {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+            height: 55px;
+          }
+          .profile-avatar .profile-avatar-popover .add-icon {
+            line-height: 55px;
+            height: 44px;
+            color: #fff;
+            background-color: rgba(46, 167, 224, 0.5);
+            padding: 7px 10px;
+            font-family: 微软雅黑;
+            opacity: 0.5;
+            cursor: pointer;
+          }
+          .profile-avatar .profile-avatar-popover .add-icon:hover {
+            opacity: 1;
+            background-color: rgba(46, 167, 224, 0.7);
+          }
         </style>    
     </head>
     <body>
@@ -413,8 +444,17 @@
         <div class="container"> 
           <div class="profile-sidebar col-md-3">
             <div class="section">
-              <div class="user-header bg-modena text-center">
-                  <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" style="height: 175px;">
+              <div class="user-header bg-modena text-center profile-avatar " style="height:255px;">
+                  <img src="<%= locals.user.avatar %>" alt="User Image">
+                  <div class="profile-avatar-popover text-center">
+                    <% if (!locals.isMe) { %>
+                    <% if (locals.isConnected) { %>
+                    <span class="add-icon"><i class="fa fa-fw fa-check"></i>已添加</span>
+                    <% } else { %>
+                    <span class="add-icon" id="add-friend"><i class="fa fa-fw fa-plus"></i>添加好友</span>
+                    <% } %> 
+                    <% } %> 
+                  </div>
               </div>
               <!-- Menu Body -->
               <!-- <div class="user-body clearfix text-center">
@@ -441,22 +481,22 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="panel panel-default section">
+            <div class="panel panel-default section">
               <div class="panel-heading clearfix">
                 人脉圈
               </div>
               <div class="panel-body">
                 <div class="images">
                   <% locals.connects.forEach(function(item,key){ %>
-                  <a href="/profile/<%= item.id %>" class="userCard" data-title="/api/user/<%= item.id %>/card"><img src="<%= item.avatar %>" alt="laolei"></a>
+                  <a href="/profile/<%= item.id %>" class="userCard" title="<%= item.name %>"><img src="<%= item.avatar %>" alt="laolei"></a>
                   <% }) %>  
                   <% if (locals.connects.length === 0) { %>
                   <p> He has not any Connects yet !</p>
                   <% } %> 
                 </div>
               </div>
-            </div> -->
-            <div class="panel panel-default section circle">
+            </div>
+            <!-- <div class="panel panel-default section circle">
               <div class="panel-heading clearfix">
                 人脉圈
               </div>
@@ -482,14 +522,14 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="panel panel-default section tags">
               <div class="panel-heading clearfix">
                 擅长技能
               </div>
               <div class="panel-body">
-                <!-- 暂时还没有添加任何技能! -->
-                <div class="clearfix">
+                暂时还没有添加任何技能!
+                <!-- <div class="clearfix">
                   <span class="tags-item">NodeJS (2)</span>
                   <span class="tags-item">AngularJS (3)</span>
                   <span class="tags-item">HTML5 (6)</span>
@@ -500,13 +540,13 @@
                   <div>你的人脉圈中 :</div>
                   <div><a href="">laolei </a>等<a href=""> 5人 </a>认同他的 <span class="tag">nodeJS</span></div>
                   <div><a href="">howell </a>等<a href=""> 3人 </a>认同他的 <span class="tag">angularJS</span></div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="panel panel-default section">
               <div class="panel-heading">最近关注</div>
               <div class="panel-body">
-                擅长技能
+                最近没有关注
               </div>
             </div>
           </div>   
@@ -518,29 +558,16 @@
               <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
               <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
             </div>
-            <div class="panel custom-box group">
+            <!-- <div class="panel custom-box group">
               <div class="panel-heading">
                 <h3>文章</h3>
               </div>
               <div class="panel-body">
                 <div class="row">
-                  <!-- <div class="col-md-4">
-                    <div class="media">
-                        <a class="pull-left" href="">
-                            <img class="media-object" alt="64x64" style="width: 68px; height: 68px;" src="//joeylin.qiniudn.com/2014/06/21/ic70rsy1f9aq9oq1zfhjkudyf9h3lc25">
-                        </a>
-                        <div class="media-body">
-                            <h4 class="media-heading ng-binding">博客标题</h4>
-                            <div>
-                                <p md-content="share.content">1, Google 推出支持Dart和JS的Chrome Dev Editor 2, 试用了一下，因为功能简洁，个人好感度比Atom和Sublime佳 ;</p>
-                            </div>
-                        </div>
-                    </div>
-                  </div> -->
-
+                  
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="panel custom-box basic">
               <div class="panel-heading">
                 <h3>基本资料</h3>
@@ -592,7 +619,7 @@
             </div>  
             <div class="panel custom-box education">
               <div class="panel-heading">
-                <h3>教育培训</h3>
+                <h3>教育经历</h3>
               </div>
               <div class="panel-body edu-box">
                 <div class="row">
@@ -662,6 +689,10 @@
                         }
                     }
                 });
+            });
+            $('#add-friend').on('click', function() {
+
+              return false;
             });
             
           });

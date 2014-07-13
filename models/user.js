@@ -36,9 +36,16 @@ var UserSchema = new Schema({
     occupation: {
         type: String
     },
-    skills: {
-        type: String
-    },
+    skills: [{
+        name: String,
+        vote: [{
+            user: {
+                type: ObjectId,
+                ref: 'User'
+            },
+            rate: Number
+        }]
+    }],
     name: {
         type: String
     },

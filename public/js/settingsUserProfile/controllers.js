@@ -570,6 +570,31 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         }
         reset();
     }
+]).controller('skillsCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $http, $rootScope) {
+        $scope.skills = app.user.skills;
+
+        $scope.showEditIcon = true;
+        $scope.showContent = true;
+        $scope.showHome = false;
+        $scope.showSettings = false;
+
+        $scope.remove = function(item) {
+            var index = $scope.skills.indexOf(item);
+            $scope.skills.splice(index, 1);
+        };
+        $scope.add = function(item) {
+            $scope.skills.push(item);
+            var data = {
+                skills: $scope.skills.join(',')
+            };
+            var url = '/api/user/skills';
+            $http.post(url, data).success(function() {
+
+            });
+
+        };
+    }
 ]).controller('socialCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope', '$location',
     function(app, $scope, $routeParams, $http, $rootScope, $location) {
         $scope.content = app.profile.social || [];

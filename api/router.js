@@ -50,11 +50,26 @@ module.exports = function(app) {
                         type: 'view'
                     }).count().exec(function(err, count) {
                         var array = [];
+                        var index = -1;
                         user.connects.map(function(item, key) {
                             array.push(item.user);
+                            if (req.session.user && (req.session.user._id == item.toString())) {
+                                index = key;
+                            }
                         });
                         app.locals.shareCount = count;
                         app.locals.connects = array.slice(0, 7);
+                        if (index > -1) {
+                            app.locals.isConnected = true;
+                        } else {
+                            app.locals.isConnected = false;
+                        }
+
+                        if (req.session.user && (req.session.user.id == user.id)) {
+                            app.locals.isMe = true;
+                        } else {
+                            app.locals.isMe = false;
+                        }
 
                         Request.find({
                             to: user._id,

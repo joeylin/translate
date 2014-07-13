@@ -305,6 +305,22 @@
           .container {
             /*font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI', 'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;*/
           }
+          .tags-item {
+            background: #eee;
+            float: left;
+            padding-left: 7px;
+            padding-right: 7px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            border-radius: 10px;
+            margin: 0px 7px 6px 0;
+            font-size: 0.9em;
+            cursor: pointer;
+          }
+          .tags-item:hover {
+            background: #9C9C9C;
+            color: #FFF !important;
+          }
           
         </style>
         <!-- for angular ng-cloak -->
@@ -874,7 +890,18 @@
                   <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
-            </div>    
+            </div> 
+            <div class="panel custom-box social" ng-controller="skillsCtrl">               
+              <div class="panel-heading">            
+                <h3>擅长技能</h3>
+              </div>
+              <div class="panel-body social-info" ng-show="showContent">
+                <span class="tags-item" ng-repeat="item in content">
+                  {{item}}
+                  <span class="tags-item-delete"></span>
+                </span>
+              </div>                    
+            </div>   
             <div class="panel custom-box social" ng-controller="socialCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
