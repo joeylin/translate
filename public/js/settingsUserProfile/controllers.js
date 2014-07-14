@@ -4,7 +4,7 @@
 angular.module('jsGen.controllers', ['ui.validate']).
 controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$http',
     function(app, $scope, $routeParams, getToc, getChapter, $http) {
-        $scope.display_name = app.user.display_name || 'add your display name';
+        $scope.name = app.user.name || 'add your display name';
         $scope.signature = app.user.signature || 'add your signature';
 
         $scope.showNameContent = true;
@@ -45,11 +45,11 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 
         function setName() {
             var url = '/api/userProfile/header';
-            if ($scope.display_name === '') {
+            if ($scope.name === '') {
                 return false;
             }
             var data = {
-                display_name: $scope.display_name,
+                name: $scope.name,
                 signature: $scope.signature
             };
             $http.post(url, data).success(function() {
@@ -65,7 +65,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 return false;
             }
             var data = {
-                display_name: $scope.display_name,
+                name: $scope.name,
                 signature: $scope.signature
             };
             $http.post(url, data).success(function() {
@@ -346,7 +346,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
     }
 ]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.name = app.user.name || 'add your realname';
+        $scope.real_name = app.user.real_name || 'add your realname';
         $scope.sex = app.user.sex || 'edit your sex';
         $scope.degree = app.user.degree || 'add your degree';
         $scope.workYear = app.user.workYear || 'how many';
@@ -363,7 +363,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showContent = false;
             $scope.showSettings = true;
 
-            $scope.inputName = $scope.name;
+            $scope.inputRealName = $scope.real_name;
             $scope.inputSex = $scope.sex;
             $scope.inputDegree = $scope.degree;
             $scope.inputWorkYear = parseInt($scope.workYear, 10);
@@ -376,7 +376,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.showSettings = false;
 
             setValue({
-                name: $scope.inputName,
+                real_name: $scope.inputRealName,
                 sex: $scope.inputSex,
                 degree: $scope.inputDegree,
                 workYear: $scope.inputWorkYear,
@@ -404,7 +404,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             var data = obj;
             var url = '/api/userProfile/basic';
             $http.post(url, obj).success(function() {
-                $scope.name = obj.name;
+                $scope.real_name = obj.real_name;
                 $scope.sex = obj.sex;
                 $scope.degree = obj.degree;
                 $scope.workYear = obj.workYear;

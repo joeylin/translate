@@ -327,6 +327,12 @@
             background: #9C9C9C;
             color: #FFF !important;
           }
+          .password-settings .form-item > .row {
+            margin-bottom: 15px;
+          }
+          .password-settings .form-item > .row label {
+            line-height: 34px;
+          }
           
         </style>
         <!-- for angular ng-cloak -->
@@ -440,7 +446,7 @@
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
-              <h1><span ng-show="showNameContent">{{display_name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="display_name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
+              <h1><span ng-show="showNameContent">{{name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
               <p class="desc"><span ng-show="showSignContent">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
             </div>
             <div class="panel custom-box basic" ng-controller="basicCtrl">
@@ -455,7 +461,7 @@
                   </a>
                 </div>
                 <div class="media-body user-info">
-                  <p>{{name}} | {{sex}} | {{degree}} | {{workYear && workYear + '年工作经验'}}</p>
+                  <p>{{real_name}} | {{sex}} | {{degree}} | {{workYear && workYear + '年工作经验'}}</p>
                   <p> {{phone}}  {{email}}</p>
                 </div>
               </div>
@@ -466,7 +472,7 @@
                         <div class="col-md-6">
                             <div class="input-group custom-input">
                                 <span class="input-group-addon">真实姓名:</span>
-                                <input type="text" class="form-control" ng-model="inputName" placeholder="your name">
+                                <input type="text" class="form-control" ng-model="inputRealName" placeholder="your name">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -943,7 +949,7 @@
                 </a>
                 <div class="media-body">
                   <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                  <span><a href="#" ng-click="add()"> update your works</a></span>
+                  <span><a href="#" ng-click="add()"> 添加你的作品</a></span>
                 </div>
               </div>
               <div class="panel-body socail-settings" ng-show="showSettings">        
@@ -951,15 +957,16 @@
                     <div class="col-md-2">
                       <input type="text" class="form-control" ng-model="inputName" placeholder="item name">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="padding-left:0;">
                       <input type="text" class="form-control" ng-model="inputId" placeholder="item id">
                     </div>
                 </div>
-
-                <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusAdd" ng-click="addSave()">Add</a>
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusEdit" ng-click="editSave()">Save</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()" >Cancel</a>
+                <div class="row">
+                  <div class="col-md-6 clearfix">
+                    <a class="btn btn-primary pull-right" role="button" ng-show="statusAdd" ng-click="addSave()">添加</a>
+                    <a class="btn btn-primary pull-right" role="button" ng-show="statusEdit" ng-click="editSave()">保存</a>
+                    <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;">取消</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -967,19 +974,19 @@
           <div class="profile-body col-md-9" ng-if="!global.profile" >
             <div class="clearfix header-info">
               <span class="pull-right">
-                <a ng-href="/settings/profile" ng-click="gotoProfile()">Profile</a>
+                <a ng-href="/settings/profile" ng-click="gotoProfile()">主页设置</a>
               </span>
             </div>
             <div class="panel custom-box basic" ng-controller="accountCtrl">
               <div class="panel-heading">
-                <h2>Account</h2>
+                <h3>修改密码</h3>
               </div>
-              <div class="panel-body basic-settings">
+              <div class="panel-body password-settings">
                 <div class="row">
                   <div class="col-md-9 form-item">
                     <div class="row">
                         <div class="col-md-3">
-                            <label>Password</label>
+                            <label>旧密码</label>
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" ng-model="password" placeholder="your address">
@@ -987,7 +994,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>new Password</label>
+                            <label>新密码</label>
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" ng-model="password1" placeholder="your new password">
@@ -995,18 +1002,26 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>Password again</label>
+                            <label>新密码</label>
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" ng-model="password2" placeholder="your new password again">
                         </div>
                     </div>
-                    <div ng-show="error"><p>wrong password !</p></div>
+                    <div ng-show="error"><p>密码错误 !</p></div>
                     <div class="clearfix">
-                      <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">Save</a>
+                      <a class="btn btn-primary pull-right" role="button" style="margin-right: 10px;" ng-click="save()">保存</a>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="panel custom-box basic" ng-controller="accountCtrl">
+              <div class="panel-heading">
+                <h3>升级账户</h3>
+              </div>
+              <div class="panel-body password-settings">
+                <div class="text-center" style="margin:5px 0 10px 0;">ooh~~ 内测阶段改功能暂未开放</div>
               </div>
             </div>
           </div> 

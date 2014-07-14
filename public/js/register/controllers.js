@@ -45,7 +45,7 @@ controller('step1Ctrl', ['app', '$scope', '$rootScope', '$location', '$http',
                     return false;
                 }
                 data = {
-                    locatioin: $scope.vm.city.name,
+                    location: $scope.vm.city.name,
                     school: $scope.school,
                     professional: $scope.professional,
                     occupation: $scope.occupation,

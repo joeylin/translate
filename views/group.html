@@ -184,7 +184,7 @@
           .group-title h3 {
             margin-top: 0;
             margin-bottom: 15px;
-          } 
+          }
           .group-title small {
             margin-left: 10px;
           }
@@ -208,7 +208,7 @@
             vertical-align: middle;
             white-space: nowrap;
             padding: 6px 12px;
-            font-size: 14px;
+            font-size: 0.9em;
             line-height: 1.42857143;
             border-radius: 3px;
           }
@@ -648,27 +648,27 @@
             <% if (locals.author) { %>
             <div class="custom-well tip">
               <i class="fa fa-fw fa-volume-up"></i>
-              Hi: <%= locals.author.name %> ! welcome
+              您好: <%= locals.author.name %> !
             </div>
             <% } else { %>
             <div class="custom-well tip">
               <i class="fa fa-fw fa-volume-up"></i>
-              You are visitor !
+              你目前是访客 !
             </div>
             <% } %>
             <div>
               <% if (locals.isJoined) { %>
-              <a ng-href="/group/<%= locals.group.id %>/settings" type="button" class="group-op-btn btn-block">settings</a>
+              <a ng-href="/group/<%= locals.group.id %>/settings" type="button" class="group-op-btn btn-block">群设置</a>
               <% } %>
               <% if (locals.author && !locals.isJoined) { %>
-              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">Join this group</a>
+              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">加入该群</a>
               <% } %>
               <% if (!locals.author) { %>
-              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">Join this group</a>
+              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">加入该群</a>
               <% } %>
             </div>
             <div class="panel panel-default section member-panel">
-              <div class="panel-heading">成员 (50/100)</div>
+              <div class="panel-heading">成员 (<%= locals.group.admin.length + locals.group.members.length + 1 %>/50)</div>
               <div class="panel-body">
                 <div class="members-item">
                   <span class="title">【创建者】</span>
@@ -682,7 +682,10 @@
                 </div>
                 <% }) %> 
                 <% if (locals.group.admin.length === 0) { %>
-                <div> no set any admin yet !</div>
+                <div> </div>
+                <div class="members-item" style="color: #999; margin-left: -3px;">
+                  <span class="title">还没设置管理员 !</span>
+                </div>
                 <% } %> 
               </div>
             </div>

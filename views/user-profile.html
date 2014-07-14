@@ -469,11 +469,11 @@
                 <div class="text-left" style="font-size:0.9em; display:inline-block;">
                     <div><span style="color:#999;">基本状态： </span> <span><%= locals.user.location %> | <%= locals.user.occupation %></span></div>
                     <% if (locals.user.isStudent) { %>
-                    <div><span style="color:#999;">教育背景： </span> <span>student at <%= locals.user.school %></span></div>
+                    <div><span style="color:#999;">教育背景： </span> <span>目前就读于 <%= locals.user.school %></span></div>
                     <% } else { %>
                     <div><span style="color:#999;">目前就职： </span> <span><%= locals.user.isFreelance ? 'freelance' : locals.user.company %></span></div>
                     <% if (locals.user.school) { %>
-                    <div><span style="color:#999;">教育背景： </span> <span><%= locals.user.school %></span></div>
+                    <div><span style="color:#999;">教育背景： </span> <span>毕业于  <%= locals.user.school %></span></div>
                     <% } %> 
                     <% } %> 
 
@@ -564,7 +564,7 @@
               <% if (locals.author && locals.author.id === locals.user.id) { %>
               <a class="btn btn-primary pull-right" href="/settings/profile" target="_self">Edit</a>
               <% } %>
-              <h1><span><%= locals.user.display_name || 'display_name' %></span></h1>
+              <h1><span><%= locals.user.name %></span></h1>
               <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
             </div>
             <!-- <div class="panel custom-box group">
@@ -583,7 +583,7 @@
               </div>
               <div class="media">
                 <div class="media-body user-info">
-                  <p><%= locals.user.name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> 年工作经验</p>
+                  <p><%= locals.user.real_name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> 年工作经验</p>
                   <p> <%= locals.user.phone %>  <%= locals.user.email %></p>
                 </div>
               </div>

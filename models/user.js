@@ -5,9 +5,9 @@ var crypto = require('crypto');
 var oAuthTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
 
 var UserSchema = new Schema({
-    display_name: {
+    real_name: {
         type: String,
-        default: 'display name'
+        default: 'real name'
     },
     birth: {
         type: Date
@@ -60,7 +60,8 @@ var UserSchema = new Schema({
         type: String
     },
     workYear: {
-        type: String
+        type: Number,
+        default: 0
     },
     current: {
         location: {

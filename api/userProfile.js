@@ -16,7 +16,7 @@ var editHeader = function(req, res) {
     User.findOne({
         _id: user._id
     }, function(err, user) {
-        user.display_name = data.display_name;
+        user.name = data.name;
         user.signature = data.signature;
         user.save(function(err) {
             res.send({
@@ -31,7 +31,7 @@ var editBasic = function(req, res) {
     User.findOne({
         _id: user._id
     }, function(err, user) {
-        user.name = data.name;
+        user.real_name = data.real_name;
         user.sex = data.sex;
         user.degree = data.degree;
         user.workYear = parseInt(data.workYear, 10);
