@@ -129,7 +129,7 @@ filter('placeholder', ['tools',
             return 0;
         }
         return items.length || 0;
-    }
+    };
 }).filter('count', function() {
     return function(text) {
         var textareaGetLength = (function() {
