@@ -573,26 +573,31 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
 ]).controller('skillsCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
         $scope.skills = app.user.skills;
+        $scope.inputSkillName = '';
 
-        $scope.showEditIcon = true;
-        $scope.showContent = true;
-        $scope.showHome = false;
-        $scope.showSettings = false;
-
-        $scope.remove = function(item) {
+        $scope.vm = {};
+        $scope.vm.remove = function(item) {
             var index = $scope.skills.indexOf(item);
-            $scope.skills.splice(index, 1);
-        };
-        $scope.add = function(item) {
-            $scope.skills.push(item);
             var data = {
-                skills: $scope.skills.join(',')
+                index: index
             };
-            var url = '/api/user/skills';
-            $http.post(url, data).success(function() {
-
+            var url = '/api/user/skills/remove';
+            $http.post(url, data).success(function(data) {
+                $scope.skills.splice(index, 1);
             });
-
+        };
+        $scope.add = function() {
+            var data = {
+                name: $scope.inputSkillName
+            };
+            var url = '/api/user/skills/add';
+            $http.post(url, data).success(function(data) {
+                $scope.skills.push({
+                    name: $scope.inputSkillName
+                });
+                $scope.showAddInput = false;
+                $scope.inputSkillName = '';
+            });
         };
     }
 ]).controller('socialCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope', '$location',

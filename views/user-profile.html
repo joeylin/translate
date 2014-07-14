@@ -527,8 +527,16 @@
               <div class="panel-heading clearfix">
                 擅长技能
               </div>
+              
               <div class="panel-body">
+                <% if (locals.user.skills.length === 0) { %>
                 暂时还没有添加任何技能!
+                <% } %>
+                <div class="clearfix">
+                  <% locals.user.skills.forEach(function(item,key){ %>
+                  <span class="tags-item"><%= item.name %></span>
+                  <% }) %>  
+                </div>
                 <!-- <div class="clearfix">
                   <span class="tags-item">NodeJS (2)</span>
                   <span class="tags-item">AngularJS (3)</span>
@@ -542,6 +550,7 @@
                   <div><a href="">howell </a>等<a href=""> 3人 </a>认同他的 <span class="tag">angularJS</span></div>
                 </div> -->
               </div>
+              
             </div>
             <div class="panel panel-default section">
               <div class="panel-heading">最近关注</div>

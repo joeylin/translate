@@ -1462,6 +1462,55 @@ var reSendActiveCode = function(req, res) {
     });
 };
 
+var userSkillsAdd = function(req, res) {
+    var user = req.session.user;
+    var name = req.body.name;
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        var index = -1;
+        user.skills.map(function(item, key) {
+            if (item.name == name) {
+                index = key;
+                return false;
+            }
+        });
+        if (index > -1) {
+            return res.send({
+                code: 404,
+                info: 'repeat skill'
+            });
+        }
+        var skill = {
+            name: name,
+            vote: []
+        };
+        user.skills.push(skill);
+        user.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var userSkillsRemove = function(req, res) {
+    var user = req.session.user;
+    var index = req.body.index;
+
+    User.findOne({
+        _id: user._id
+    }, function(err, user) {
+        user.skills.splice(index, 1);
+        user.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var userSkillsVote = function(req, res) {
+    var user = req.session.user;
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -1481,12 +1530,18 @@ module.exports = function(app) {
     app.get('/api/user/id', middleware.check_login, searchById);
     app.get('/api/user/sending', middleware.check_login, getMysending);
     app.get('/api/user/jobrecommend', middleware.check_login, getJobRecommend);
+
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);
     app.post('/api/user/unlike', middleware.check_login, companyUnlike);
     app.post('/api/user/follow', middleware.check_login, companyFollow);
     app.post('/api/user/unfollow', middleware.check_login, companyUnfollow);
     app.get('/api/user/companyActive', getCompanyActive);
+
+    // skills
+    app.post('/api/user/skills/add', middleware.apiLogin, userSkillsAdd);
+    app.post('/api/user/skills/remove', middleware.apiLogin, userSkillsRemove);
+    app.post('/api/user/skills/vote', middleware.apiLogin, userSkillsVote);
 
     // notify
     app.get('/api/notify', middleware.check_login, getNotifyCount);

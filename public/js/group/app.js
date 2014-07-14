@@ -175,6 +175,12 @@ config(['$httpProvider', 'app',
                 global.popup.show = false;
             });
         };
+        $rootScope.current = {};
+        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+            if (next && next.$$route) {
+                $rootScope.current.path = next.$$route.path;
+            }
+        });
         $http.get('/api/notify').success(function(data) {
             $rootScope.request = {};
             $rootScope.request.comment = data.comment;

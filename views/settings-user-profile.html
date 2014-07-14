@@ -317,6 +317,12 @@
             font-size: 0.9em;
             cursor: pointer;
           }
+          .tags-item i {
+            opacity: 0.5
+          }
+          .tags-item i:hover {
+            opacity: 1;
+          }
           .tags-item:hover {
             background: #9C9C9C;
             color: #FFF !important;
@@ -895,11 +901,23 @@
               <div class="panel-heading">            
                 <h3>擅长技能</h3>
               </div>
-              <div class="panel-body social-info" ng-show="showContent">
-                <span class="tags-item" ng-repeat="item in content">
-                  {{item}}
-                  <span class="tags-item-delete"></span>
-                </span>
+              <div class="panel-body social-info">
+                <div class="clearfix">
+                  <span class="tags-item" ng-repeat="item in skills">
+                    {{item.name}}
+                    <span class="tags-item-delete"><i class="fa fa-fw fa-times" ng-click="vm.remove(item)"></i></span>
+                  </span>
+                </div>
+                <hr>
+                <div>
+                  <span class="tags-item" ng-click="showAddInput=true;" ng-show="!showAddInput" style="padding-right:11px;margin-bottom:4px;"><i class="fa fa-fw fa-plus"></i>添加技能</span>
+                  <span ng-show="showAddInput">
+                    <input class="form-control" ng-model="inputSkillName" style="width:180px; display:inline-block;" />
+                    <button class="btn btn-primary btn-sm" ng-click="add()">保存</button>
+                    <button class="btn btn-default btn-sm" ng-click="showAddInput=false;">取消</button>
+                  </span>
+                </div>
+                
               </div>                    
             </div>   
             <div class="panel custom-box social" ng-controller="socialCtrl">

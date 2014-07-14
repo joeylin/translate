@@ -94,5 +94,10 @@
         <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
       </ul>
     </div>
+    <div ng-show="!isSearch && shareList.length === 0">
+      <div class="no-result text-center">
+        ooh...   还没有人发表博文，快来发表哦 ~~
+      </div>
+    </div>
   </div>
 </div>  
