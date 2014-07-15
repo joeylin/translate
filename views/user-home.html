@@ -45,6 +45,7 @@
           }
           .section {
             margin-bottom: 20px;
+            font-size: 12px;
           }
           .well .section {
             margin-bottom: 0;
@@ -190,7 +191,8 @@
             font-size: 30px;
           }
           .share-success >span {
-            line-height: 30px;
+            position: relative;
+            top: -5px;
             font-size: 18px;
             color: #999;
           }
@@ -507,11 +509,36 @@
           .group-check > i.fa-check-square-o {
             color: #333;
           }
-          
           .search-advance {
             cursor: pointer;
           }
 
+          /* optimze */
+          .shareCount {
+            font-style: italic;
+            font-size: 1.4em;
+          }
+          .extend-friends {
+            margin-top: 0;
+            margin-bottom: 15px;
+          }
+          .extend-friends .media-body {
+            position: relative;
+          }
+          .extend-friends .hover-tag {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #999;
+          }
+          .extend-friends .hover-tag:hover {
+            background: #9C9C9C;
+            color: #FFF !important;
+          }
+          .extend-friends .media:hover .hover-tag {
+            display: block;
+          }
           
         </style>
         <!-- for angular ng-cloak -->

@@ -2,8 +2,8 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
-    function(app, $scope, $rootScope, $location, $http) {
+controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount',
+    function(app, $scope, $rootScope, $location, $http, wordCount) {
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -11,9 +11,16 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.shareList = [];
         $scope.newShare = '';
         $scope.total = 0;
+        $scope.shareCount = 0;
+        $scope.change = function() {
+            $scope.shareCount = wordCount($scope.newShare);
+        };
         $scope.submit = function() {
             var url = '/api/share/add';
             if ($scope.newShare === '') {
+                return false;
+            }
+            if ($scope.shareCount > 140) {
                 return false;
             }
             $http.post(url, {

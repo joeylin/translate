@@ -183,7 +183,13 @@ filter('placeholder', ['tools',
         })();
         return 140 - textareaGetLength(text);
     };
-}).filter('classify', function() {
+}).filter('wCount', ['wordCount',
+    function(wordCount) {
+        return function(text) {
+            return 140 - wordCount(text);
+        };
+    }
+]).filter('classify', function() {
     return function(items, name) {
         if (!items) {
             return 0;
