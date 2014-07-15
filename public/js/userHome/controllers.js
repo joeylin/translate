@@ -376,7 +376,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             current: 1
         };
         $scope.showSubmitBtn = false;
-        $scope.title = 'People You May Know';
+        $scope.title = '你可能认识的好友';
         var url = '/api/search/people';
         var params = {
             page: 1,

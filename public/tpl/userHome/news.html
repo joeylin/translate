@@ -71,8 +71,8 @@
       <hr ng-repeat-end>
       <div ng-show="shareList.length > 0">
         <ul class="pager">
-          <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
-          <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
+          <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+          <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
         </ul>
       </div>
     </div>
@@ -82,12 +82,14 @@
   <div class="well">
     <div class="user-header bg-modena clearfix">
         <div class="pull-left">
-          <img ng-src="{{global.user.avatar}}" style="height: 78px;width: 78px">
+          <a href="/profile/{{global.user.id}}" target="_self">
+            <img ng-src="{{global.user.avatar}}" style="height: 78px;width: 78px">
+          </a>
         </div>
         <div class="pull-left">
           <h3 style="margin-top: 4px;">{{global.user.name}}</h3>
-          <div style="margin-left: 12px;">微说 : {{global.shareCount}}</div>
-          <div style="margin-left: 12px;">人脉 : {{global.user.connects.length}}</div>
+          <div style="margin-left: 12px;"><a class="unStyle" href="/myShare">微说 : {{global.shareCount}}</a></div>
+          <div style="margin-left: 12px;"><a class="unStyle" href="/myPeople">人脉 : {{global.user.connects.length}}</a></div>
         </div>
     </div>
     <!-- Menu Body -->
@@ -108,12 +110,12 @@
   </div>
   <div class="panel panel-default section">
     <div class="panel-heading">最近一周</div>
-    <div class="panel-body">
+    <div class="panel-body" style="padding-top: 12px;">
       <div>
-        <a href="">被专业人士浏览了4次</a>
+        <a href="">被专业人士浏览了 <span style="font-size: 16px;color: #333;">4</span> 次</a>
       </div>
       <div>
-        <a href="">被猎头搜索了5次</a>
+        <a href="">被猎头搜索了 <span style="font-size: 16px;color: #333;">5</span> 次</a>
       </div>
     </div>
   </div>

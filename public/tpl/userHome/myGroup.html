@@ -3,11 +3,11 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4 ng-show="!isSearch">My Group</h4>
-          <h4 ng-show="isSearch">Search <small><a href="" ng-click="refresh()" style="padding-left:15px">back my group <i class="fa fa-fw fa-angle-double-right"></i></a></small></h4>
+          <h4 ng-show="!isSearch">我的兴趣圈</h4>
+          <h4 ng-show="isSearch">搜索 <small><a href="" ng-click="refresh()" style="padding-left:15px">返回我的兴趣圈 <i class="fa fa-fw fa-angle-double-right"></i></a></small></h4>
         </div>
         <div class="col-md-4 pull-right">
-          <a popup data-mfp-src="#create-popup" class="btn btn-primary pull-right btn-sm" role="button" style="margin-top: 6px;">Create New</a>
+          <a popup data-mfp-src="#create-popup" class="btn btn-primary pull-right btn-sm" role="button" style="margin-top: 6px;">创建圈子</a>
         </div>
       </div>
     </div>
@@ -93,12 +93,12 @@
   <div class="panel">
     <div class="panel-body">
       <div class="form-group">
-          <label>keyword or ID</label>
-          <input type="text" class="form-control" placeholder="Enter keyword" ng-model="vm.keyword">
+          <label>查找兴趣圈</label>
+          <input type="text" class="form-control" placeholder="输入关键字或ID" ng-model="vm.keyword">
       </div>
       <div class="clearfix">
-        <span class="pull-left group-check" ng-click="vm.isMe = !vm.isMe"><i class="fa fa-fw" ng-class="{true:'fa-check-square-o', false:'fa-square-o'}[vm.isMe]"></i>My Group</span>
-        <a class="btn btn-primary pull-right" role="button" ng-click="search()">submit</a>
+        <span class="pull-left group-check" ng-click="vm.isMe = !vm.isMe"><i class="fa fa-fw" ng-class="{true:'fa-check-square-o', false:'fa-square-o'}[vm.isMe]"></i>我的兴趣圈</span>
+        <a class="btn btn-primary btn-sm pull-right" role="button" ng-click="search()">搜索</a>
       </div>
     </div>
   </div>
@@ -106,28 +106,28 @@
 
 <!-- magnifi popup -->
 <div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-if="global.user.groups.create.length <= 4">
-    <div><h3 class="text-center">Create Group({{global.user.groups.create.length + 1}}/5)</h3></div>
+    <div><h3 class="text-center">创建兴趣圈({{global.user.groups.create.length + 1}}/5)</h3></div>
     <div class="row">
       <div class="col-md-3">
-        <label class="inline-label">Name :</label>
+        <label class="inline-label">圈名 :</label>
       </div>
       <div class="col-md-9">
-        <input type="text" class="form-control" placeholder="Enter name" ng-model="vm.name" ng-change="change()">
+        <input type="text" class="form-control" placeholder="输入圈名" ng-model="vm.name" ng-change="change()">
       </div>
     </div>
     <div class="row">
       <div class="col-md-3">
-        <label class="inline-label">Industry :</label>
+        <label class="inline-label">行业 :</label>
       </div>
       <div class="col-md-9">
-        <input type="text" class="form-control" placeholder="industry" ng-model="vm.industry" ng-change="change()">
+        <input type="text" class="form-control" placeholder="所属行业" ng-model="vm.industry" ng-change="change()">
       </div>
     </div>
     <div class="clearfix">
-      <a href="#" class="btn btn-primary pull-right" ng-click="create()">Create</a>
-      <span class="pull-right error" ng-show="error" style="line-height: 35px; margin-right:15px;">cant be blank</span>
+      <a href="#" class="btn btn-primary pull-right" ng-click="create()">创建</a>
+      <span class="pull-right error" ng-show="error" style="line-height: 35px; margin-right:15px;">信息填写不完整</span>
     </div>
 </div>
 <div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-if="global.user.groups.create.length > 4">
-    You only can build 10 groups
+    普通会员只能创建5个圈子
 </div>
