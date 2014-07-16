@@ -3,7 +3,7 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4><i class="fa fa-fw fa-rocket" style="margin-right:10px;"></i><span>My Sending</span></h4>
+          <h4><i class="fa fa-fw fa-rocket" style="margin-right:10px;"></i><span>我申请的职位</span></h4>
         </div>
       </div>
     </div>
@@ -13,22 +13,19 @@
           <img class="media-object" alt="64x64" ng-src="{{job.owner.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">{{job.position}} <small> <a target="_self" href="/profile/{{job.owner.id}}">{{job.owner.name}}</a></small></h4>
+          <h4 class="media-heading">{{job.position}}</h4>
           <div class="row">
             <div class="col-md-9">
-              <div>{{job.workYears}} | {{job.paymentStart}}k-{{job.paymentEnd}}k </div>
-              <div>{{job.type}} | {{job.degree}} | {{job.location}}</div>
-              <div> <strong>Skills</strong>: {{job.skills}}</div>
-              <div>{{job.summary}}</div>
+              <div><a href="">{{job.company || '百度云服务部门'}}</a></div>
+              <div> {{job.location}} | {{job.type}} | <span style="color:#99a1a6;">{{job.date | formatDate:true}}</span></div>
               <div>
-                <a href="" class="search-job-date">Posted at {{job.date | formatDate:true}} </a>
-                <span> views: {{job.views}}</span>
-                <span> Join: {{job.join}}</span>
+                <div>人脉圈中<a target="_self" href="/profile/{{job.owner.id}}"> {{job.owner.name}} </a>相关</div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="pull-right">
-                <a class="btn btn-default" role="button" ng-click="giveUp(job)">Give up</a>
+                <a href="" ng-click="giveUp(job)">Give up</a>
+                <a href="/view/{{job.id}}" target="_self">查看 <i class="fa fa-fw fa-angle-double-right"></i></a>
               </div>
             </div>
           </div>

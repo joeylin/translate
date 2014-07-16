@@ -130,6 +130,21 @@ filter('placeholder', ['tools',
         }
         return items.length || 0;
     };
+}).filter('statusCn', function() {
+    return function(status) {
+        if (!status) {
+            return '未知';
+        }
+        if (status === 'draft') {
+            return '草稿';
+        }
+        if (status === 'publish') {
+            return '已发布';
+        }
+        if (status === 'close') {
+            return '已关闭';
+        }
+    };
 }).filter('count', function() {
     return function(text) {
         var textareaGetLength = (function() {

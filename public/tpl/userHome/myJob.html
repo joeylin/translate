@@ -4,10 +4,10 @@
       <div class="row">
         <div class="col-md-12 pull-right">
           <div class="job-filter">
-            <a href="#" ng-class="{active: tag==='all'}" ng-click="selectTag('all')">All</a>
-            <a href="#" ng-class="{active: tag==='publish'}" ng-click="selectTag('publish')">Published</a>
-            <a href="#" ng-class="{active: tag==='close'}" ng-click="selectTag('close')">Closed</a>
-            <a href="#" ng-class="{active: tag==='draft'}" ng-click="selectTag('draft')">Draft</a>
+            <a href="#" ng-class="{active: tag==='all'}" ng-click="selectTag('all')">全部</a>
+            <a href="#" ng-class="{active: tag==='publish'}" ng-click="selectTag('publish')">已发布</a>
+            <a href="#" ng-class="{active: tag==='close'}" ng-click="selectTag('close')">已关闭</a>
+            <a href="#" ng-class="{active: tag==='draft'}" ng-click="selectTag('draft')">草稿</a>
           </div>
         </div>
       </div>
@@ -15,7 +15,7 @@
     <div class="panel-body">
       <div class="media" ng-repeat-start="job in content">
         <div class="media-body">
-          <h4 class="media-heading">{{job.position}}</h4>
+          <h4 class="media-heading">{{job.position}} <small>[{{job.status | statusCn}}]</small></h4>
           <div class="row">
             <div class="col-md-9">
               <div>{{job.summary}}</div>
@@ -26,22 +26,22 @@
               <div class="search-job-location"><strong>location</strong>: {{job.location}}</div>
               <div> <strong>Skills</strong>: {{job.skills}}</div>
               <div>
-                <a href="#" class="search-job-date">Posted at {{job.date | formatDate:true}} </a>
-                <span> views: {{job.views}}</span>
-                <span> Join: {{job.join}}</span>
+                <a href="#" class="search-job-date">{{job.date | formatDate:true}} </a>
+                <span> 查阅: {{job.views}}</span>
+                <span> 申请: {{job.join}}</span>
               </div>
             </div>
             <div class="col-md-3 job-op" ng-if="job.status==='draft'">
-              <span><a href="/jobs/{{job.id}}/edit" target="_self">edit</a></span>
-              <span><a href="" ng-click="remove(job)">remove</a></span>
+              <span><a href="/jobs/{{job.id}}/edit" target="_self">编辑</a></span>
+              <span><a href="" ng-click="remove(job)">删除</a></span>
             </div>
             <div class="col-md-3 job-op" ng-if="job.status==='publish'">
-              <span><a href="/view/{{job.id}}" target="_self">view</a></span>
-              <span><a href="" ng-click="close(job)">close</a></span>
+              <span><a href="/view/{{job.id}}" target="_self">查看</a></span>
+              <span><a href="" ng-click="close(job)">关闭</a></span>
             </div>
             <div class="col-md-3 job-op" ng-if="job.status==='close'">
-              <span><a href="/view/{{job.id}}" target="_self">view</a></span>
-              <span><a href="" ng-click="remove(job)">remove</a></span>
+              <span><a href="/view/{{job.id}}" target="_self">查看</a></span>
+              <span><a href="" ng-click="remove(job)">删除</a></span>
             </div>
           </div>
         </div>
@@ -156,8 +156,8 @@
 
       <div>
         <ul class="pager">
-          <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>
-          <li ng-class="{'disabled': $scope.vm.pager.hasLast}" ng-click="next()"><a href="#">Next</a></li>
+          <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">上一页</a></li>
+          <li ng-class="{'disabled': $scope.vm.pager.hasLast}" ng-click="next()"><a href="#">下一页</a></li>
         </ul>
       </div>
     </div>
@@ -166,7 +166,7 @@
 <div class="profile-sidebar col-md-3">
   <div class="panel">
     <div class="panel-heading text-center clearfix">
-      <div style="display:inline-block;"><a class="btn btn-primary pull-right btn-sm" href="/jobs/new" target="_self" role="button" style="margin-top: 6px;">Publish New Job</a></div>
+      <div style="display:inline-block;"><a class="btn btn-primary pull-right btn-sm" href="/jobs/new" target="_self" role="button" style="margin-top: 6px;">发布职位</a></div>
     </div>
   </div>
 </div>
