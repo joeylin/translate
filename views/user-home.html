@@ -304,10 +304,12 @@
           }
           .relative-option {
             font-size: 14px;
+            margin-bottom: 2px;
             cursor: pointer;
           }
           .relative h3 {
             margin-top: 10px;
+            margin-bottom: 15px;
           }
           .no-notify {
             padding: 15px;
@@ -571,6 +573,20 @@
             background: #9C9C9C;
             color: #FFF !important;
           }
+          .custom-input-group .input-group-btn {
+            padding-left: 10px;
+            position: relative;
+            top: 1px;
+          }
+          .custom-input-group .input-group-btn .btn {
+            border-radius: 3px;
+          }
+          .search-all label {
+            font-weight: 400;
+          }
+          .pager {
+            font-size: 12px;
+          }
           
         </style>
         <!-- for angular ng-cloak -->
@@ -674,14 +690,13 @@
               <div class="user-body summary">
                   <ul class="nav nav-tabs nav-stacked">
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>动态</a></li>
-                    <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending"><i class="fa fa-fw fa-rocket"></i>我的投递</a></li>
                     <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>我的圈子</a></li>
                     <li ng-class="{active: ['connect','group','reply','comment','at','all'].indexOf(current.path) >= 0}"><a ng-href="/request/all"><i class="fa fa-fw fa-info-circle"></i>通知</a></li>
                     <!-- <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li> -->
                     <li ng-class="{active: current.path === 'myPeople' || current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>人脉</a></li>
-                    <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>My Share</a></li>
+                    <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>我的微说</a></li>
                     <!-- <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li> -->
-                    <li ng-class="{active: ['job','myJob','newJob','editJob'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>工作</a></li>
+                    <li ng-class="{active: ['job','myJob','newJob','editJob','mySending'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>职位</a></li>
                   </ul>
               </div>            
             </div>
@@ -708,11 +723,12 @@
                   <li ng-class="{active: current.path === 'myCompany'}"><a ng-href="/myCompany">My Follow</a></li>
               </ul>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'job' || current.path === 'myJob'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'job' || current.path === 'myJob' || current.path === 'mySending'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
-                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Job</li>
-                  <li ng-class="{active: current.path === 'job'}"><a ng-href="/job">Find</a></li>
-                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">My Jobs</a></li>
+                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>职位</li>
+                  <li ng-class="{active: current.path === 'job'}"><a ng-href="/job">人脉圈</a></li>
+                  <li ng-class="{active: current.path === 'myJob'}"><a ng-href="/myJob">发布</a></li>
+                  <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending">申请</a></li>
               </ul>
             </div>
             <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at' || current.path === 'all'" ng-cloak>

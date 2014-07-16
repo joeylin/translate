@@ -1,4 +1,4 @@
-<div class="profile-body col-md-9">
+<div class="profile-body col-md-9 people">
   <div class="panel search-result">
     <div class="panel-heading custom-heading">
       <div class="row">
@@ -6,12 +6,12 @@
           <h4><span ng-bind="title"></span></h4>
         </div>
         <div class="col-md-4 pull-right">
-          <input type="text" class="form-control" placeholder="search by name" ng-model="vm.filter.name">
+          <input type="text" class="form-control" placeholder="根据名字过滤" ng-model="vm.filter.name">
         </div>
       </div>
     </div>
     <div class="panel-body">
-      <div class="media" ng-repeat-start="user in content|filter:vm.filter">
+      <!-- <div class="media" ng-repeat-start="user in content|filter:vm.filter">
         <a class="pull-left" ng-href="/profile/{{user.id}}" target="_self">
           <img class="media-object" alt="64x64" ng-src="{{user.avatar}}" style="width: 64px; height: 64px;">
         </a>
@@ -33,7 +33,25 @@
           </div>
         </div>
       </div>
-      <hr ng-repeat-end>
+      <hr ng-repeat-end> -->
+      <div class="row">
+        <div class="col-md-3" ng-repeat="user in content|filter:vm.filter" >
+          <div class="thumbnail">
+            <a href="/profile/{{user.id}}" target="_self">
+                <img ng-src="{{user.avatar}}" alt="{{user.name}}" />
+            </a>
+            <div class="caption">
+              <div><a href="/profile/{{user.id}}" target="_self">{{user.name}}</a></div>
+              <div>{{user.location || '未知'}} | {{user.occupation}}</div>
+              <div relselect user="user" class="addBtn text-center" style="width:100%;overflow:hidden;height:24px;">
+                <span>{{user.relate}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-hide="content|filter:vm.filter|size" class="text-center" style="margin:5px 0;">ooh~~ 没有搜到，换个关键词试试 ~~</div>
+      </div>
+      <hr>
       <div>
         <pager total-items="content|filter:vm.filter|size" ng-model="vm.page.index" items-per-page="vm.page.size" class="pagination-sm pull-right" boundary-links="true"></pager>
       </div>
@@ -43,19 +61,19 @@
 <div class="profile-sidebar col-md-3">
   <div class="panel">
     <div class="panel-body">
-      <div class="people-sort-title">SortBy relation</div>
+      <div class="people-sort-title">人脉关系</div>
       <ul class="people-sort-list">
-        <li ng-click="vm.select('r','fellow')"><a href="#">Your Fellows ({{content | classify: 'fellow'}})</a></li>
-        <li ng-click="vm.select('r','classmate')"><a href="#">Your Classmate ({{content | classify: 'classmate'}})</a></li>
-        <li ng-click="vm.select('r','friend')"><a href="#">Your Firends ({{content | classify: 'friend'}})</a></li>
-        <li ng-click="vm.select('r','interest')"><a href="#">Same interest ({{content | classify: 'interest'}})</a></li>
+        <li ng-click="vm.select('r','同事')"><a href="#">我的同事 ({{content | classify: '同事'}})</a></li>
+        <li ng-click="vm.select('r','同学')"><a href="#">我的同学 ({{content | classify: '同学'}})</a></li>
+        <li ng-click="vm.select('r','朋友')"><a href="#">我的朋友 ({{content | classify: '朋友'}})</a></li>
+        <li ng-click="vm.select('r','共同爱好')"><a href="#">共同爱好 ({{content | classify: '共同爱好'}})</a></li>
       </ul>
-      <div class="people-sort-title">SortBy Position</div>
+      <div class="people-sort-title">职位分布</div>
       <ul class="people-sort-list">
-        <li><a href="#">Product Manager (23)</a></li>
-        <li><a href="#">FrontEnd developer (31)</a></li>
-        <li><a href="#">Server developer (10)</a></li>
-        <li><a href="#">Sale Man (11)</a></li>
+        <li><a href="#">产品经理 (23)</a></li>
+        <li><a href="#">前端开发 (31)</a></li>
+        <li><a href="#">数据库管理 (10)</a></li>
+        <li><a href="#">市场营销 (11)</a></li>
       </ul>
     </div>
   </div>
@@ -63,32 +81,32 @@
 <div id="change-select" class="change-select" style="width:199px;" >
     <div class="well custom-well">
         <div class="arrow"></div>
-        <div class="relative-option" data-value="classmate">
+        <div class="relative-option" data-value="同学">
           <i class="fa fa-fw fa-circle-o"></i>
-          <span>Classmate</span>
+          <span>同学</span>
         </div>
-        <div class="relative-option" data-value="fellow">
+        <div class="relative-option" data-value="同事">
           <i class="fa fa-fw fa-circle-o"></i>
-          <span>Fellow</span>
+          <span>同事</span>
         </div>
-        <div class="relative-option" data-value="friend">
+        <div class="relative-option" data-value="朋友">
           <i class="fa fa-fw fa-circle-o"></i>
-          <span>Friends</span>
+          <span>朋友</span>
         </div>
-        <div class="relative-option" data-value="interest">
+        <div class="relative-option" data-value="共同爱好">
           <i class="fa fa-fw fa-circle-o"></i>
-          <span>Same Interest</span>
+          <span>共同爱好</span>
         </div>
         <div class="clearfix" style="margin-top:10px;">
-          <a class="btn btn-primary btn-sm pull-right enter">Enter</a>
-          <span class="error pull-right" style="display:none;">please choose relate</span>
+          <a class="btn btn-primary btn-sm pull-right enter">确定</a>
+          <span class="error pull-right" style="display:none;">关系不能为空</span>
         </div>
     </div>
 </div>
 <div class="white-popup-block mfp-hide" id="remove-user">
-  <label>Are You Sure To Delete it ?</label>
+  <label>你确定删除吗？</label>
   <div class="clearfix">
-      <button class="btn btn-primary pull-right" ng-click="vm.close()">No</button>
-      <button class="btn btn-danger pull-right" ng-click="vm.remove()" style="margin-right:10px;">Yes</button>
+      <button class="btn btn-primary pull-right" ng-click="vm.close()">否</button>
+      <button class="btn btn-danger pull-right" ng-click="vm.remove()" style="margin-right:10px;">是</button>
   </div>
 </div>

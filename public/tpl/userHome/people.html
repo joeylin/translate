@@ -101,20 +101,24 @@
         </div>
       </div> -->
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3" ng-repeat="user in content" >
           <div class="thumbnail">
-            <img src="/public/imgs/avatar.jpg" alt="..." />
+            <a href="/profile/{{user.id}}" target="_self">
+                <img ng-src="{{user.avatar}}" alt="{{user.name}}" />
+            </a>
             <div class="caption">
-              <div><a href="#">Joeylin</a></div>
-              <div>北京 | 网络开发者</div>
-              <div class="addBtn text-center">
-                <span><i class="fa fa-fw fa-plus"></i>添加</span>
+              <div><a href="/profile/{{user.id}}" target="_self">{{user.name}}</a></div>
+              <div>{{user.location || '未知'}} | {{user.occupation}}</div>
+              <div class="addBtn text-center" ng-show="!user.isConnected">
+                <span popup data-mfp-src="#connect-popup-content" ng-click="setRelative(user)"><i class="fa fa-fw fa-plus"></i>添加</span>
+              </div>
+              <div class="addBtn text-center" ng-show="user.isConnected">
+                <span style="padding-left:3px;padding-right:3px;"><i class="fa fa-fw fa-check"></i>已发送请求</span>
               </div>
             </div>
-
           </div>
         </div>
-         <div class="col-md-3">
+        <div class="col-md-3">
           <div class="thumbnail">
             <img src="/public/imgs/nodejs.png" alt="..." />
             <div class="caption">
@@ -166,8 +170,8 @@
       <hr>
       <div>
         <ul class="pager">
-          <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">上一页</a></li>
-          <li ng-class="{'disabled': $scope.vm.pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
+          <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+          <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
         </ul>
       </div>
     </div>

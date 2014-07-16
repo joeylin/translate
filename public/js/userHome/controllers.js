@@ -405,7 +405,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             getConnects();
         };
         $scope.prev = function() {
-            if (!$scope.pager.current) {
+            if ($scope.pager.current === 1) {
                 return false;
             }
             $scope.pager.current -= 1;
@@ -589,7 +589,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         var url = '/api/job/latest';
         $scope.content = [];
-        $scope.title = 'Latest Jobs';
+        $scope.title = '最新职位';
+        $scope.isIntern = false;
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -853,7 +854,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
     }
 ]).controller('myPeopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.title = 'All Connects';
+        $scope.title = '所有好友';
         $scope.content = [];
 
         var url = '/api/connects';
@@ -866,7 +867,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             var params = {
                 name: $scope.inputName
             };
-            $scope.title = 'Search By ' + $scope.inputName;
+            $scope.title = '搜索 ' + $scope.inputName;
             $http.get(url, params).success(function(data) {
                 $scope.content = data.content;
             });
