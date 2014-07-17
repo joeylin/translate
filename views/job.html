@@ -214,7 +214,10 @@
             bottom: 0;
           }
           .job-items {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+          }
+          .job-items .row >.col-md-6 {
+            margin-bottom: 5px;
           }
           .job-desc, .job-require {
             margin-bottom: 20px;
@@ -224,8 +227,11 @@
             font-weight: 700;
           }
           .color-card {
-            background-color: #fff;
+            background-color: #fafafa;
             padding: 10px 15px;
+          }
+          .color-card:hover {
+            background-color: #fff;
           }
         </style>
         <!-- for angular ng-cloak -->
@@ -340,7 +346,7 @@
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading" style="margin-bottom:10px;margin-top:5px;"><%= locals.share.position %></h3>
-                        <div style="font-size:18px;margin-bottom:10px;"><a href="#">amazingSurge</a>北京</div>
+                        <div style="font-size:18px;margin-bottom:10px;"><a href="#"><%= locals.share.company || 'amazingSurge' %></a>北京</div>
                         <div>7天之前发布</div>
                         <div class="job-op">
                           <a href="" class="btn btn-primary btn-sm">投递简历</a>
@@ -377,13 +383,13 @@
               </div>
               <div class="job-require">
                 <h5>任职要求</h5>
-                <div></div>
+                <div><%= locals.share.detail %></div>
               </div>
             </div>
             <div class="well" style="padding-top:15px;">
               <h5 style="font-size:16px;font-weight:700;">公司简介</h5>
               <div><%= locals.share.companyIntro %></div>
-              <hr>
+              <hr style="border-top: 1px solid #e3e3e3;">
               <h5 style="font-size:16px;font-weight:700;margin-bottom:20px;"><%= locals.share.company %>正在招聘的其他职位</h5>
               <div class="row" style="margin-bottom:15px;">
                 <div class="col-md-3">
