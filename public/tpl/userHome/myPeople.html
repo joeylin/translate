@@ -47,6 +47,12 @@
                 <span>{{user.relate}}</span>
               </div>
             </div>
+            <a href="/profile/{{user.id}}" target="_self" class="hover-remove">
+              <div class="hover-container">
+                <i popup data-mfp-src="#remove-user" class="fa fa-fw fa-times-circle" ng-click="vm.triggerRemove(user,$event)"></i>
+                <span class="hover-tip">删除好友</span>
+              </div>
+            </a>
           </div>
         </div>
         <div ng-hide="content|filter:vm.filter|size" class="text-center" style="margin:5px 0;">ooh~~ 没有搜到，换个关键词试试 ~~</div>
@@ -99,7 +105,7 @@
         </div>
         <div class="clearfix" style="margin-top:10px;">
           <a class="btn btn-primary btn-sm pull-right enter">确定</a>
-          <span class="error pull-right" style="display:none;">关系不能为空</span>
+          <span class="error pull-right" style="display:none;">关系不能为空哦...</span>
         </div>
     </div>
 </div>

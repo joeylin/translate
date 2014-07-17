@@ -50,12 +50,12 @@
           <div class="comment-editor" ng-show="global.user">
               <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="share.newComment"></textarea>
               <span class="input-group-btn">
-                  <button class="btn btn-primary pull-right btn-sm reply-submit" type="button" ng-click="vm.submitComment(share)">submit</button>
+                  <button class="btn btn-primary pull-right btn-sm reply-submit" type="button" ng-click="vm.submitComment(share)">评论</button>
               </span>
           </div>
           <hr class="reply-hr" ng-show="global.user">
           <div class="reply-placeholder text-center" ng-show="share.comments.length === 0">
-            no reply yet !
+            还没人回复呢，快啦回复一下吧 ... 
           </div>
           <hr class="reply-hr" ng-repeat-start="comment in share.comments" ng-class="{'displayNone': $first}">
           <div class="media reply-item" ng-repeat-end>
@@ -68,13 +68,13 @@
                 <span class="date pull-left"><a href="#">{{comment.date | formatDate:true}}</a></span>
                 <span class="pull-right media-control" ng-show="global.user">
                   <a href="#" class="comment" ng-show="comment.user.name === global.user.name || global.user.name === share.user.name || global.isAdmin || global.isCreator" ng-click="vm.delete(comment, share)"><i class="fa fa-fw fa-trash-o"></i></a>
-                  <a href="#" class="comment" ng-click="vm.reply(comment)">reply</a>
+                  <a href="#" class="comment" ng-click="vm.reply(comment)">回复</a>
                 </span>
               </div>
               <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
                   <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
                   <span class="input-group-btn">
-                      <button class="btn btn-primary btn-sm" type="button" ng-click="vm.submitInlineComment(comment,share)">submit</button>
+                      <button class="btn btn-primary btn-sm" type="button" ng-click="vm.submitInlineComment(comment,share)">评论</button>
                   </span>
               </div>
             </div>
@@ -90,8 +90,8 @@
     </div>
     <div ng-show="shareList.length > 0">
       <ul class="pager">
-        <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
-        <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">Next</a></li>
+        <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+        <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
       </ul>
     </div>
     <div ng-show="!isSearch && shareList.length === 0">

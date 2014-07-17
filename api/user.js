@@ -1293,7 +1293,6 @@ var getMysending = function(req, res) {
     var perPageItems = 30;
     var query = {
         type: 'job',
-        status: 'publish',
         is_delete: false,
         'resumes.user': user._id
     };
@@ -1325,6 +1324,9 @@ var getMysending = function(req, res) {
                     type: item.jobType,
                     date: item.createAt.getTime()
                 };
+                if (item.status == 'close') {
+                    obj.status = 'close';
+                }
                 results.push(obj);
             });
             if ((page - 1) * perPageItems + results.length < count) {

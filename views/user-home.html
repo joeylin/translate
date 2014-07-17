@@ -554,7 +554,35 @@
             padding-right: 0;
           }
           .people .thumbnail {
+            position: relative;
             padding: 0;
+          }
+          .people .thumbnail:hover .hover-remove {
+            display: block;
+          }
+          .people .thumbnail .hover-remove {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #000;
+            opacity: 0.5;
+            width: 100%;
+            height: 152px;
+            color: #fff;
+            text-align: right;
+            display: none;
+          }
+          .people .thumbnail .hover-remove i {
+            font-size: 20px;
+            margin-top: 4px;
+          }
+          .people .thumbnail .hover-remove .hover-container:hover .hover-tip {
+            display: block;
+          }
+          .people .thumbnail .hover-remove .hover-tip {
+            display: none;
+            position: absolute;
+            right: 0;
           }
           .people .thumbnail img {
             width: 152px;

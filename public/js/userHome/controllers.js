@@ -856,9 +856,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.title = '所有好友';
         $scope.content = [];
-
         var url = '/api/connects';
-
         $scope.searchByName = function() {
             if ($scope.inputName === '') {
                 return false;
@@ -879,8 +877,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             index: 1
         };
         var removeUser = null;
-        $scope.vm.triggerRemove = function(user) {
+        $scope.vm.triggerRemove = function(user, event) {
             removeUser = user;
+            return false;
         };
         $scope.vm.remove = function() {
             var url = '/api/connect/disconnect';
@@ -1148,7 +1147,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
     }
 ]).controller('newJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.type = 'full';
+        $scope.type = '全职';
         $scope.paymentStart = '';
         $scope.paymentEnd = '';
         $scope.degree = '';
@@ -1168,6 +1167,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             var check = $scope.type === '' || $scope.paymentStart === '' || $scope.paymentEnd === '' || $scope.degree === '' || $scope.position === '' || $scope.skills === '' || $scope.summary === '' || $scope.location === '' || $scope.company === '';
             if (check) {
                 $scope.showBlankError = true;
+                $scope.showNothingError = false;
                 return false;
             }
             var url = '/api/share/add';
@@ -1196,6 +1196,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             var check = $scope.paymentStart === '' && $scope.paymentEnd === '' && $scope.degree === '' && $scope.position === '' && $scope.summary === '' && $scope.location === '';
             if (check) {
                 $scope.showNothingError = true;
+                $scope.showBlankError = false;
                 return false;
             }
             var url = '/api/share/add';
@@ -1252,7 +1253,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         };
 
         if ($rootScope.current.path === 'editJob') {
-            $scope.title = 'Edit Job ' + $routeParams.id;
+            $scope.title = '编辑职位 ' + $routeParams.id;
             var url = '/api/job/' + $routeParams.id;
             $http.get(url).success(function(data) {
                 $scope.type = data.job.type;
@@ -1271,7 +1272,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 $scope.id = data.job.id;
             });
         } else {
-            $scope.title = 'Create New Job';
+            $scope.title = '创建职位';
         }
     }
 ]);

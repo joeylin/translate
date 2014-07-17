@@ -13,7 +13,7 @@
           <img class="media-object" alt="64x64" ng-src="{{job.owner.avatar}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">{{job.position}}</h4>
+          <h4 class="media-heading">{{job.position}} <small ng-show="job.status === 'close'">[已关闭]</small></h4>
           <div class="row">
             <div class="col-md-9">
               <div><a href="">{{job.company || '百度云服务部门'}}</a></div>
@@ -24,7 +24,6 @@
             </div>
             <div class="col-md-3">
               <div class="pull-right">
-                <a href="" ng-click="giveUp(job)">Give up</a>
                 <a href="/view/{{job.id}}" target="_self">查看 <i class="fa fa-fw fa-angle-double-right"></i></a>
               </div>
             </div>
@@ -106,8 +105,8 @@
       <hr>
       <div>
         <ul class="pager">
-          <li ng-class="{'disabled': vm.pager.current === 0}" ng-click="prev()"><a href="#">Previous</a></li>
-          <li ng-class="{'disabled': $scope.vm.pager.hasLast}" ng-click="next()"><a href="#">Next</a></li>
+          <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+          <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
         </ul>
       </div>
     </div>
@@ -115,7 +114,7 @@
 </div>
 <div class="profile-sidebar col-md-3">
   <div class="panel panel-default section job-recommend">
-    <div class="panel-heading">相关的职位</div>
+    <div class="panel-heading" style="font-weight:700;">相关的职位</div>
     <div class="panel-body">
       <div class="media" ng-repeat="job in recommend">
         <a class="pull-left" href="profile/{{job.owner.id}}" target="_self">
@@ -123,7 +122,7 @@
         </a>
         <div class="media-body">
           <div><a href="/view/{{job.id}}" target="_self">{{job.position}}</a></div>
-          <div>{{job.paymentStart}}-{{job.paymentEnd}}K | {{job.location}}</div>
+          <div>{{job.location}} | {{job.company || 'amazingSurge'}} </div>
         </div>
       </div>
       <!-- <div class="media">

@@ -10,25 +10,25 @@
     <div class="panel-body" ng-cloak>
       <div class="row">
         <div class="col-md-2">
-          <label>Position :</label>
+          <label>职位 :</label>
         </div>
         <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Enter position" ng-model="position" >
+          <input type="text" class="form-control" placeholder="招聘职位" ng-model="position" >
         </div>
       </div>
       
       <div class="row">
         <div class="col-md-2">
-          <label>location :</label>
+          <label>地点 :</label>
         </div>
         <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Enter location" ng-model="location">
+          <input type="text" class="form-control" placeholder="公司所在地" ng-model="location">
         </div>
       </div>
       <hr >
       <div class="row">
         <div class="col-md-2">
-          <label>Type :</label>
+          <label>种类 :</label>
         </div>
         <div class="col-md-6">
           <select class="form-control" ng-model="type">
@@ -40,136 +40,113 @@
       </div>
       <div class="row">
         <div class="col-md-2">
-          <label>Payment :</label>
+          <label>薪资 :</label>
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Enter Number" ng-model="paymentStart">
+          <input type="text" class="form-control" placeholder="最低" ng-model="paymentStart">
         </div>
         <div class="pull-left" style="line-height: 34px;">
-          to
+          到
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Enter Number" ng-model="paymentEnd" >
+          <input type="text" class="form-control" placeholder="最高" ng-model="paymentEnd" >
         </div>
         <div class="pull-left" style="line-height: 34px;">
-          ( k, only number )
+          k
         </div>
       </div>
       <hr >
       <div class="row">
         <div class="col-md-2">
-          <label>Degree :</label>
+          <label>学历 :</label>
         </div>
         <div class="col-md-6">
           <select class="form-control" ng-model="degree">
-              <option value="">noLimit</option>
-              <option value="diploma">diploma</option>
-              <option value="bachelor">bachelor</option>
-              <option value="master">master</option>
-              <option value="doctor">doctor</option>
+              <option value="">不限</option>
+              <option value="职高">职高</option>
+              <option value="专科">专科</option>
+              <option value="本科">本科</option>
+              <option value="硕士">硕士</option>
+              <option value="博士">博士</option>
           </select>
         </div>
       </div>
       <div class="row">
         <div class="col-md-2">
-          <label>Experience :</label>
+          <label>工作经验 :</label>
         </div>
         <div class="col-md-6">
           <select class="form-control" ng-model="workYears">
-              <option value="">noLimit</option>
-              <option value="graduating">graduating</option>
-              <option value="0-1">below 1</option>
-              <option value="1-3">1-3</option>
-              <option value="3-5">3-5</option>
-              <option value="5-10">5-10</option>
-              <option value="10+">10+</option>
+              <option value="">不限</option>
+              <option value="graduating">应届毕业生</option>
+              <option value="1-3">1-3年</option>
+              <option value="3-5">3-5年</option>
+              <option value="5-10">5-10年</option>
+              <option value="10+">10年以上</option>
           </select>
         </div>
       </div>
       <div class="row">
         <div class="col-md-2">
-          <label>skills :</label>
+          <label>要求技能 :</label>
         </div>
         <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Enter skills" ng-model="skills">
+          <input type="text" class="form-control" placeholder="职位所要求的技能" ng-model="skills">
         </div>
       </div>
       <hr >
       <div class="row">
         <div class="col-md-2">
-          <label>company :</label>
+          <label>公司名称 :</label>
         </div>
         <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Enter company name" ng-model="company">
+          <input type="text" class="form-control" placeholder="招聘公司的名称" ng-model="company">
         </div>
       </div>
       <div class="row">
         <div class="col-md-2">
-          <label>department :</label>
+          <label>所属部门 :</label>
         </div>
         <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Enter department" ng-model="department">
+          <input type="text" class="form-control" placeholder="所在的部门(可选)" ng-model="department">
         </div>
       </div>
       <div>
-        <label>Company Introduce :</label>
-        <textarea auto-height class="form-control" rows="3" placeholder="Enter detail..." ng-model="companyIntro"></textarea>
+        <label>公司简介 :</label>
+        <textarea auto-height class="form-control" rows="3" placeholder="公司简介" ng-model="companyIntro"></textarea>
       </div>
       <hr>
       <div>
-        <label>Summary :</label>
-        <textarea auto-height class="form-control" rows="3" placeholder="Enter detail..." ng-model="summary"></textarea>
+        <label>职位总结 :</label>
+        <textarea auto-height class="form-control" rows="3" placeholder="用几句话来描述你的职位吧" ng-model="summary"></textarea>
       </div>
       <div>
-        <label>Detail :</label>
-        <textarea auto-height class="form-control" rows="3" placeholder="Enter detail..." ng-model="detail"></textarea>
+        <label>职位细节 :</label>
+        <textarea auto-height class="form-control" rows="3" placeholder="岗位的具体要求" ng-model="detail"></textarea>
       </div>
     <div class="clearfix" style="margin-top:15px;" ng-if="current.path === 'newJob'">
-      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">Publish</a>
-      <a class="btn btn-default pull-right" role="button" ng-click="draft()" style="margin-right:10px;">Draft</a>
+      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">发布</a>
+      <a class="btn btn-default pull-right" role="button" ng-click="draft()" style="margin-right:10px;">存草稿</a>
     </div>
     <div class="clearfix" style="margin-top:15px;" ng-if="current.path === 'editJob'">
-      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">Publish</a>
-      <a class="btn btn-default pull-right" role="button" ng-click="save()" style="margin-right:10px;">Save</a>
+      <a class="btn btn-primary pull-right" role="button" ng-click="submit()">发布</a>
+      <a class="btn btn-default pull-right" role="button" ng-click="save()" style="margin-right:10px;">保存</a>
     </div>
     <div class="clearfix">
-      <span class="pull-right color-red" ng-show="showBlankError" style="color:red; padding-right: 15px; line-height: 35px; margin-top:10px;">pls complete form</span>
-      <span class="pull-right color-red" ng-show="showNothingError" style="color:red; padding-right: 15px; line-height: 35px; margin-top:10px;">you form is blank</span>
+      <span class="pull-right color-red" ng-show="showBlankError" style="color:red; padding-right: 15px; line-height: 35px; margin-top:10px;">哦，好像漏填了什么...</span>
+      <span class="pull-right color-red" ng-show="showNothingError" style="color:red; padding-right: 15px; line-height: 35px; margin-top:10px;">哎，你的职位信息什么都没填。</span>
     </div>
     </div>
   </div>  
 </div>
 <div class="profile-sidebar col-md-3">
   <div class="well">
-    <div class="user-header bg-modena clearfix">
-        <div class="pull-left">
-          <img ng-src="{{global.user.avatar}}" style="height: 85px;width: 85px">
-        </div>
-        <div class="pull-left">
-          <h3>{{global.user.name}}</h3>
-        </div>
-    </div>
-    <!-- Menu Body -->
-    <div class="user-body clearfix">
-        <div class="col-xs-6 text-center">
-            <a href="#" class="user_followers">{{global.user.share.length}}</a>
-        </div>
-        <div class="col-xs-6 text-center">
-            <a href="#" class="user_connects">{{global.user.connects.length}}</a>
-        </div>
-        <div class="col-xs-6 text-center">
-            <a href="#">share</a>
-        </div>
-        <div class="col-xs-6 text-center">
-            <a href="#">Connects</a>
-        </div>
-    </div>
-
+      内测期间，免费发布职位啦 !
   </div>
-  <div class="panel panel-default section">
+  <!-- <div class="panel panel-default section">
     <div class="panel-heading">Reading List</div>
     <div class="panel-body">
       Panel content
     </div>
-  </div>
+  </div> -->
 </div>
