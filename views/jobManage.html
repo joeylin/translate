@@ -72,9 +72,22 @@
           .panel-nav li.active {
             background-color: #464A4D;
           }
+          .panel-nav .nav>li>a {
+            padding: 0;
+            color: #ddd;
+          }
+          .panel-nav .nav>li.active>a {
+            color: #fff;
+          }
+          .panel-nav .nav>li>a:hover {
+            background-color: #303437;
+          }
+          .panel-nav .nav>li.active>a:hover {
+            background-color: #464A4D;
+          }
           .contact-panel {
             height: 810px;
-            background-color: #0b0b0b;
+            background-color: #eee;
             opacity: 0.8;
           }
           .chat-panel {
@@ -166,7 +179,7 @@
             border-bottom: 1px solid #A59D9A;
           }
           .contact-list >li .media {
-            padding: 12px;
+            padding: 14px 12px 14px 12px;
           }
           .contact-list >li .media .contact-desc {
             white-space: nowrap;
@@ -280,8 +293,8 @@
             <div class="media media-container">
                 <span class="pull-left panel-nav">
                    <ul class="nav nav-stacked" style="width: 80px;">
-                      <li class="active"><a ng-href="/view/{{global.job.id}}/members"><i class="fa fa-fw fa-users"></i></a></li>
-                      <li><a ng-href="/view/{{global.job.id}}/message"><i class="fa fa-fw fa-comments"></i></a></li>
+                      <li ng-class="{active: current.path === 'members'}"><a ng-href="/view/{{global.job.id}}/members"><i class="fa fa-fw fa-users"></i></a></li>
+                      <li ng-class="{active: current.path === 'message'}"><a ng-href="/view/{{global.job.id}}/message"><i class="fa fa-fw fa-comments"></i></a></li>
                     </ul>
                 </span>
                 <div class="media-body" ng-view>

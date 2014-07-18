@@ -64,7 +64,6 @@ controller('membersCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             $http.get(url, {
                 params: params,
             }).success(function(data) {
-                $scope.share.comments = data.comments;
                 $scope.pager.hasNext = data.hasNext;
             });
         };
@@ -74,7 +73,7 @@ controller('membersCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current += 1;
             params.page = $scope.pager.current;
-            getTrends();
+
         };
         $scope.prev = function() {
             if (!$scope.pager.current) {
@@ -82,7 +81,6 @@ controller('membersCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current -= 1;
             params.page = $scope.pager.current;
-            getTrends();
         };
 
         // init
