@@ -77,8 +77,56 @@
             background-color: #0b0b0b;
             opacity: 0.8;
           }
-          .content-panel {
+          .chat-panel {
             height: 810px;
+            position: relative;
+          }
+          .chat-container {
+            padding: 15px;
+            width: 100%;
+            height: 100%;
+          }
+          .chat-panel .chat-editor {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            padding: 20px 15px;
+            border-top: 1px solid #ddd;
+          }
+          .chat-panel .chat-content {
+            width: 100%;
+            height: 100%;
+            padding-bottom: 80px;
+            overflow: hidden;
+          }
+          .chat-panel .chat-editor .input-group {
+            padding-right: 15px;
+          }
+          .chat-panel .chat-editor .input-group-btn {
+            padding-left: 15px;
+          }
+          .chat-panel .chat-editor .input-group-btn  button {
+            padding-bottom: 16px;
+            padding-top: 16px;
+            border-radius: 3px;
+          }
+          .chat-panel .chat-look {
+            font-size: 36px;
+          }
+          .chat-inner .media-object {
+            width: 40px;
+            height: 40px;
+          }
+          .chat-msg {
+            padding: 10px;
+            background-color: #ddd;
+            border-radius: 10px;
+          }
+          .you .chat-msg {
+            width: 320px;
+          }
+          .me .chat-msg {
+            margin-left: 96px;
           }
           .contact-list >li {
             border-bottom: 1px solid #A59D9A;
@@ -193,7 +241,7 @@
             </div> 
           </div>
         </nav>
-        <div class="container" style="min-height:810px;">
+        <div class="container" style="min-height:810px;width:1140px;">
           <div class="col-md-9 clearfix" style="padding-right:0;">
             <div class="media media-container">
                 <span class="pull-left panel-nav">
@@ -202,7 +250,7 @@
                       <li><i class="fa fa-fw fa-comments"></i></li>
                     </ul>
                 </span>
-                <div class="media-body" style="display:none">
+                <div class="media-body">
                     <div class="row panel-main">
                       <div class="col-md-4 contact-panel" style="padding-right:0;">
                         <ul class="nav nav-stacked contact-list">
@@ -230,10 +278,48 @@
                           </li>
                         </ul>
                       </div>
-                      <div class="col-md-8 content-panel" style="padding-left:0;"></div>
+                      <div class="col-md-8 chat-panel" style="padding-left:0;">
+                        <div class="chat-container">
+                          <div class="chat-content">
+                            <div class="chat-inner">
+                              <div class="media you">
+                                    <a class="pull-left" target="_self" href="/profile/502120">
+                                        <img class="media-object img-circle" src="/public/imgs/nodejs.png" />
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="chat-msg">Hi，亲爱的joeylin，欢迎您来到慕课网，如果您在学习的过程中有任何建议或问题，可以发消息给我！</div>
+                                    </div>
+                                </div>
+                                <div class="media me">
+                                    <a class="pull-right" target="_self" href="/profile/502120">
+                                        <img class="media-object img-circle" src="/public/imgs/nodejs.png" />
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="chat-msg">Hi，亲爱的joeylin，欢迎您来到慕课网，如果您在学习的过程中有任何建议或问题，可以发消息给我！</div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="chat-editor">
+                            <div class="media">
+                                <span class="pull-left chat-look" target="_self" >
+                                    <i class="fa fa-fw fa-smile-o"></i>
+                                </span>
+                                <div class="media-body">
+                                    <div class="input-group">
+                                        <textarea class="form-control" rows="2" placeholder="输入内容......" ></textarea>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button">发送</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
-                <div class="media-body" ng-cloak>
+                <div class="media-body" style="display:none" ng-cloak>
                   <div class="clearfix" style="padding: 10px 15px;border-bottom: 1px solid #ddd;">
                     <span>职位申请：100人</span>
                     <span class="pull-right">
