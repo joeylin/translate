@@ -7,7 +7,7 @@ constant('app', {
 }).provider('getFile', ['app',
     function(app) {
         this.html = function(fileName) {
-            return '/public/tpl/companyHome/' + fileName + '?v=' + app.version;
+            return '/public/tpl/jobManage/' + fileName + '?v=' + app.version;
         };
         this.$get = function() {
             return {
@@ -17,19 +17,20 @@ constant('app', {
     }
 ]).config(['$routeProvider', '$locationProvider', 'getFileProvider',
     function($routeProvider, $locationProvider, getFileProvider) {
-        var jobManage = {
-            templateUrl: getFileProvider.html('jobManage.html'),
-            controller: 'jobManageCtrl',
-            path: 'jobManage'
+        var members = {
+            templateUrl: getFileProvider.html('members.html'),
+            controller: 'membersCtrl',
+            path: 'members'
         };
-        var view = {
-            templateUrl: getFileProvider.html('view.html'),
-            controller: 'viewCtrl',
-            path: 'view'
+        var message = {
+            templateUrl: getFileProvider.html('message.html'),
+            controller: 'messageCtrl',
+            path: 'message'
         };
 
         $routeProvider.
-        when('/view/:id/manage', jobManage);
+        when('/view/:id/message', message).
+        when('/view/:id/members', members);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }
 ]);

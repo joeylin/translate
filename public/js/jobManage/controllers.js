@@ -2,20 +2,16 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
+controller('membersCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.pager = {
             hasNext: false,
             current: 1
         };
-        $scope.share = app.share;
-        if (app.author && app.author._id === app.share._id) {
-            $scope.isMyShare = true;
-        }
         var params = {
             page: 1,
             perPageItems: 50,
-            shareId: $scope.share._id
+            shareId: app.share._id
         };
         var url;
         $scope.next = function() {
@@ -52,7 +48,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         // init
         getPostMember();
     }
-]).controller('jobManageCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
+]).controller('messageCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.pager = {
             hasNext: false,
@@ -61,7 +57,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         var params = {
             page: 1,
             perPageItems: 50,
-            shareId: $scope.share._id
+            shareId: app.share._id
         };
         var getPostMember = function() {
             var url = '/api/share/comments';

@@ -80,7 +80,14 @@ config(['$httpProvider', 'app',
         app.share = window.shareObj;
         app.author = window.author;
         $rootScope.global.author = window.author;
+        $rootScope.global.job = window.shareObj;
 
+        $rootScope.current = {};
+        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+            if (next && next.$$route) {
+                $rootScope.current.path = next.$$route.path;
+            }
+        });
         $http.get('/api/notify').success(function(data) {
             $rootScope.request = {};
             $rootScope.request.comment = data.comment;
@@ -88,5 +95,6 @@ config(['$httpProvider', 'app',
             $rootScope.request.connect = data.connect;
             $rootScope.request.group = data.group;
         });
+
     }
 ]);

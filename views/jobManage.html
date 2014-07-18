@@ -122,11 +122,45 @@
             background-color: #ddd;
             border-radius: 10px;
           }
+          .contact-list li.active .media {
+            background-color: #D5D7D6;
+          }
+          .media {
+            position: relative;
+          }
           .you .chat-msg {
             width: 320px;
           }
+          .you .chat-msg:after {
+            top: 12px;
+            left: 43px;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(255, 255, 255, 0);
+            border-right-color: #ddd;
+            border-width: 8px;
+            margin-left: -8px;
+          }
           .me .chat-msg {
             margin-left: 96px;
+          }
+          .me .chat-msg:after {
+            top: 12px;
+            left: 423px;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #ddd;
+            border-width: 8px;
+            margin-left: -8px;
           }
           .contact-list >li {
             border-bottom: 1px solid #A59D9A;
@@ -246,236 +280,11 @@
             <div class="media media-container">
                 <span class="pull-left panel-nav">
                    <ul class="nav nav-stacked" style="width: 80px;">
-                      <li class="active"><i class="fa fa-fw fa-users"></i></li>
-                      <li><i class="fa fa-fw fa-comments"></i></li>
+                      <li class="active"><a ng-href="/view/{{global.job.id}}/members"><i class="fa fa-fw fa-users"></i></a></li>
+                      <li><a ng-href="/view/{{global.job.id}}/message"><i class="fa fa-fw fa-comments"></i></a></li>
                     </ul>
                 </span>
-                <div class="media-body">
-                    <div class="row panel-main">
-                      <div class="col-md-4 contact-panel" style="padding-right:0;">
-                        <ul class="nav nav-stacked contact-list">
-                          <li class="active">
-                            <div class="media">
-                              <a class="pull-left" href="#">
-                                <img class="media-object img-circle" src="/public/imgs/nodejs.png" style="width:44px;height:44px;">
-                              </a>
-                              <div class="media-body">
-                                <div>Howell</div>
-                                <div class="contact-desc">北京 前端开发者</div>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="">
-                            <div class="media">
-                              <a class="pull-left" href="#">
-                                <img class="media-object img-circle" src="/public/imgs/nodejs.png" style="width:44px;height:44px;">
-                              </a>
-                              <div class="media-body">
-                                <div>Howell</div>
-                                <div class="contact-desc">北京 前端开发者</div>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-md-8 chat-panel" style="padding-left:0;">
-                        <div class="chat-container">
-                          <div class="chat-content">
-                            <div class="chat-inner">
-                              <div class="media you">
-                                    <a class="pull-left" target="_self" href="/profile/502120">
-                                        <img class="media-object img-circle" src="/public/imgs/nodejs.png" />
-                                    </a>
-                                    <div class="media-body">
-                                        <div class="chat-msg">Hi，亲爱的joeylin，欢迎您来到慕课网，如果您在学习的过程中有任何建议或问题，可以发消息给我！</div>
-                                    </div>
-                                </div>
-                                <div class="media me">
-                                    <a class="pull-right" target="_self" href="/profile/502120">
-                                        <img class="media-object img-circle" src="/public/imgs/nodejs.png" />
-                                    </a>
-                                    <div class="media-body">
-                                        <div class="chat-msg">Hi，亲爱的joeylin，欢迎您来到慕课网，如果您在学习的过程中有任何建议或问题，可以发消息给我！</div>
-                                    </div>
-                                </div>
-                            </div>
-                          </div>
-                          <div class="chat-editor">
-                            <div class="media">
-                                <span class="pull-left chat-look" target="_self" >
-                                    <i class="fa fa-fw fa-smile-o"></i>
-                                </span>
-                                <div class="media-body">
-                                    <div class="input-group">
-                                        <textarea class="form-control" rows="2" placeholder="输入内容......" ></textarea>
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button">发送</button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <div class="media-body" style="display:none" ng-cloak>
-                  <div class="clearfix" style="padding: 10px 15px;border-bottom: 1px solid #ddd;">
-                    <span>职位申请：100人</span>
-                    <span class="pull-right">
-                      <a href="" style="padding-right:15px;">上一页</a>
-                      <a href="">下一页</a>
-                    </span>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6" ng-repeat="user in postList">
-                      <div class="carbonad clearfix">
-                        <span class="carbonad-image pull-left">
-                          <a href="/profile/{{user.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" ng-src="{{user.avatar}}" title="user.name" >
-                          </a>
-                        </span>
-                        <div class="carbonad-info">
-                          <div class="carbonad-title">
-                            <a href="/profile/{{user.id}}" target="_self">{{user.name}}</a>
-                          </div>
-                          <div>
-                            <span>{{user.occupation}}</span>
-                          </div>
-                          <div>
-                            <span>{{user.school}} | </span>
-                            <span>{{user.workYear}}</span>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="carbonad clearfix">
-                        <span class="carbonad-image pull-left">
-                          <a href="/profile/{{user.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" src="/public/imgs/avatar.jpg" title="user.name" >
-                          </a>
-                        </span>
-                        <div class="carbonad-info">
-                          <div class="carbonad-title">
-                            <a href="/profile/{{user.id}}" target="_self">Joeylin</a>
-                          </div>
-                          <div>
-                            <span>前端开发者 | 北京</span>
-                          </div>
-                          <div>
-                            <span>北京邮电大学 | </span>
-                            <span>2年工作经验</span>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="carbonad clearfix">
-                        <span class="carbonad-image pull-left">
-                          <a href="/profile/{{user.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" src="/public/imgs/avatar.jpg" title="user.name" >
-                          </a>
-                        </span>
-                        <div class="carbonad-info">
-                          <div class="carbonad-title">
-                            <a href="/profile/{{user.id}}" target="_self">Joeylin</a>
-                          </div>
-                          <div>
-                            <span>前端开发者 | 北京</span>
-                          </div>
-                          <div>
-                            <span>北京邮电大学 | </span>
-                            <span>2年工作经验</span>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="carbonad clearfix">
-                        <span class="carbonad-image pull-left">
-                          <a href="/profile/{{user.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" src="/public/imgs/avatar.jpg" title="user.name" >
-                          </a>
-                        </span>
-                        <div class="carbonad-info">
-                          <div class="carbonad-title">
-                            <a href="/profile/{{user.id}}" target="_self">Joeylin</a>
-                          </div>
-                          <div>
-                            <span>前端开发者 | 北京</span>
-                          </div>
-                          <div>
-                            <span>北京邮电大学 | </span>
-                            <span>2年工作经验</span>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="carbonad clearfix">
-                        <span class="carbonad-image pull-left">
-                          <a href="/profile/{{user.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" src="/public/imgs/avatar.jpg" title="user.name" >
-                          </a>
-                        </span>
-                        <div class="carbonad-info">
-                          <div class="carbonad-title">
-                            <a href="/profile/{{user.id}}" target="_self">Joeylin</a>
-                          </div>
-                          <div>
-                            <span>前端开发者 | 北京</span>
-                          </div>
-                          <div>
-                            <span>北京邮电大学 | </span>
-                            <span>2年工作经验</span>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="carbonad clearfix">
-                        <span class="carbonad-image pull-left">
-                          <a href="/profile/{{user.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" src="/public/imgs/avatar.jpg" title="user.name" >
-                          </a>
-                        </span>
-                        <div class="carbonad-info">
-                          <div class="carbonad-title">
-                            <a href="/profile/{{user.id}}" target="_self">Joeylin</a>
-                          </div>
-                          <div>
-                            <span>前端开发者 | 北京</span>
-                          </div>
-                          <div>
-                            <span>北京邮电大学 | </span>
-                            <span>2年工作经验</span>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="carbonad clearfix">
-                        <span class="carbonad-image pull-left">
-                          <a href="/profile/{{user.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" src="/public/imgs/avatar.jpg" title="user.name" >
-                          </a>
-                        </span>
-                        <div class="carbonad-info">
-                          <div class="carbonad-title">
-                            <a href="/profile/{{user.id}}" target="_self">Joeylin</a>
-                          </div>
-                          <div>
-                            <span>前端开发者 | 北京</span>
-                          </div>
-                          <div>
-                            <span>北京邮电大学 | </span>
-                            <span>2年工作经验</span>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                  </div>
+                <div class="media-body" ng-view>
                 </div>
             </div>
           </div>

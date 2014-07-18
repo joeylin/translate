@@ -260,6 +260,73 @@ module.exports = function(app) {
                     result.user.share = count;
                     app.locals.share = result;
                     app.locals.author = author;
+                    res.render('job');
+                });
+            });
+        });
+    };
+    var jobManage = function(req, res) {
+        var id = req.params.id;
+        var author = req.session.user;
+        Share.findOne({
+            id: id
+        }).populate('user').exec(function(err, share) {
+            if (err || !share) {
+                return res.send({
+                    code: 404,
+                    info: 'cant find specified id'
+                });
+            }
+            if (share.user.id !== author.id) {
+                return res.send({
+                    code: 404,
+                    info: 'no auth'
+                });
+            }
+            var result = {};
+            result.type = share.type;
+            result.content = share.content;
+            result._id = share._id;
+            result.id = share.id;
+            result.createAt = share.createAt.getTime();
+            result.jobType = share.jobType;
+            result.paymentStart = share.paymentStart;
+            result.paymentEnd = share.paymentEnd;
+            result.department = share.department;
+            result.company = share.company;
+            result.companyIntro = share.companyIntro;
+            result.degree = share.degree;
+            result.position = share.position;
+            result.location = share.location;
+            result.workYears = share.workYears;
+            result.summary = share.summary;
+            result.detail = share.detail;
+            result.liked = false;
+
+            result.likes = share.likes.length;
+            result.total = share.comments.length;
+            result.join = share.resumes.length;
+
+            result.comments = [];
+            result.user = {
+                id: share.user.id,
+                _id: share.user._id,
+                avatar: share.user.avatar,
+                name: share.user.name,
+                role: share.user.role,
+                signature: share.user.signature,
+                connects: share.user.connects.length
+            };
+            Share.find({
+                user: share.user._id,
+                is_delete: false
+            }).count().exec(function(err, count) {
+                share.views = share.views + 1;
+                result.views = share.views;
+                share.save(function(err, share) {
+                    result.user.share = count;
+                    app.locals.share = result;
+                    app.locals.author = author;
                     res.render('jobManage');
                 });
             });
@@ -420,6 +487,11 @@ module.exports = function(app) {
     app.get('/jobs/new', middleware.check_login, getHome);
     app.get('/jobs/:id/edit', middleware.check_login, getHome);
 
+    // jobManage
+    app.get('/view/:id/message', middleware.check_login, jobManage);
+    app.get('/view/:id/members', middleware.check_login, jobManage);
+
+
     // notify
     app.get('/request/connect', middleware.check_login, getHome);
     app.get('/request/comment', middleware.check_login, getHome);
@@ -431,7 +503,7 @@ module.exports = function(app) {
     // login
     app.get('/login', getLogin);
 
-    //register
+    // register
     app.get('/register', middleware.check_login, registerStep);
     app.get('/register/step1', middleware.check_login, registerStep);
     app.get('/register/step2', middleware.check_login, registerStep);
