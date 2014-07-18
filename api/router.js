@@ -260,7 +260,7 @@ module.exports = function(app) {
                     result.user.share = count;
                     app.locals.share = result;
                     app.locals.author = author;
-                    res.render('job');
+                    res.render('jobManage');
                 });
             });
         });

@@ -31,56 +31,6 @@
           <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
-          <h4 class="media-heading"><a href="#">Joeylin</a></h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div class="search-people-signature">Think different</div>
-              <div>BUPT Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
-              </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
-            </div>
-            <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button">connect</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <div class="media-heading"><a href="#">司徒正美</a></div>
-          <div class="row">
-            <div class="col-md-9">
-              <div class="search-people-signature">Dream makes people great</div>
-              <div>BUPT Baidu 2years FuZhou</div>
-              <div class="search-people-skills">
-                <span class="label label-default">NodeJs</span>
-                <span class="label label-default">AngularJs</span>
-                <span class="label label-default">Css3</span> 
-                <span class="label label-default">Mongoose</span> 
-              </div>
-              <div class="search-people-relationship">Share:100 Connects:200 20 Common</div>
-            </div>
-            <div class="col-md-2">
-              <a class="btn btn-primary pull-right" role="button" >connect</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
           <h4 class="media-heading"><a href="#">Leoylin</a></h4>
           <div class="row">
             <div class="col-md-9">
@@ -108,7 +58,7 @@
             </a>
             <div class="caption">
               <div><a href="/profile/{{user.id}}" target="_self">{{user.name}}</a></div>
-              <div>{{user.location || '未知'}} | {{user.occupation}}</div>
+              <div style="white-space: nowrap;overflow: hidden;">{{user.location || '未知'}} | {{user.occupation}}</div>
               <div class="addBtn text-center" ng-show="!user.isConnected">
                 <span popup data-mfp-src="#connect-popup-content" ng-click="setRelative(user)"><i class="fa fa-fw fa-plus"></i>添加</span>
               </div>
@@ -167,7 +117,7 @@
           </div>
         </div>
       </div>
-      <hr>
+      <hr style="margin-top:0;">
       <div>
         <ul class="pager">
           <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
