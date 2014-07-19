@@ -20,7 +20,7 @@ controller('membersCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current += 1;
             params.page = $scope.pager.current;
-            getTrends();
+            getPostMember();
         };
         $scope.prev = function() {
             if (!$scope.pager.current) {
@@ -28,23 +28,17 @@ controller('membersCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             }
             $scope.pager.current -= 1;
             params.page = $scope.pager.current;
-            getTrends();
+            getPostMember();
         };
-
-        // manage
         var getPostMember = function() {
             url = '/api/job/postList';
-            params.page = 1;
             $http.get(url, {
                 params: params
             }).success(function(data) {
                 $scope.postList = data.content;
+                $scope.total = data.total;
             });
         };
-        $scope.manage = function() {
-            getPostMember();
-        };
-
         // init
         getPostMember();
     }

@@ -36,11 +36,11 @@
               <span><a href="" ng-click="remove(job)">删除</a></span>
             </div>
             <div class="col-md-3 job-op" ng-if="job.status==='publish'">
-              <span><a href="/view/{{job.id}}" target="_self">查看</a></span>
+              <span><a href="/job/{{job.id}}" target="_self">查看</a></span>
               <span><a href="" ng-click="close(job)">关闭</a></span>
             </div>
             <div class="col-md-3 job-op" ng-if="job.status==='close'">
-              <span><a href="/view/{{job.id}}" target="_self">查看</a></span>
+              <span><a href="/job/{{job.id}}" target="_self">查看</a></span>
               <span><a href="" ng-click="remove(job)">删除</a></span>
             </div>
           </div>

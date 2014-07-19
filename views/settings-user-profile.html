@@ -236,7 +236,15 @@
           .user-header input {
             background-color: transparent;
             display: inline-block;
+            padding-left: 1px;
             border: none;
+          }
+          .user-header .header-display {
+            border: 1px solid transparent;
+            padding: 1px 0;
+            padding-top: 2px;
+            position: relative;
+            top: 1px;
           }
           .user-header i {
             font-size: 18px;
@@ -381,7 +389,7 @@
                             <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
                             <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
                             <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
-                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">没有未处理的通知</li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
@@ -418,20 +426,20 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Account</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">退出</a>
                                 </div>
                             </li>
                         </ul>
                   </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li><a href="/home" target="_self">Home</a></li>
-                <li><a href="/profile/<%= locals.user.id %>" target="_self">profile</a></li>
-                <li><a href="/group" target="_self">Group</a></li>
-                <li><a href="/search/all" target="_self">search</a></li>
+                <li><a href="/home" target="_self">首页</a></li>
+                <li><a href="/profile" target="_self">个人主页</a></li>
+                <li><a href="/group" target="_self">群组</a></li>
+                <li><a href="/search/all" target="_self">搜索</a></li>
               </ul>
             </div>
           </div>
@@ -446,8 +454,8 @@
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
-              <h1><span ng-show="showNameContent">{{name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
-              <p class="desc"><span ng-show="showSignContent">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
+              <h1><span ng-show="showNameContent" class="header-display">{{name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
+              <p class="desc"><span ng-show="showSignContent" class="header-display">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
             </div>
             <div class="panel custom-box basic" ng-controller="basicCtrl">
               <div class="panel-heading">

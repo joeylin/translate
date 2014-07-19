@@ -281,9 +281,10 @@
                   <% } %>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li><a href="/home" target="_self">Home</a></li>
-                <li><a href="/profile" target="_self">Profile</a></li>
-                <li><a href="/search/all" target="_self">Search</a></li>
+                <li><a href="/home" target="_self">首页</a></li>
+                <li><a href="/profile" target="_self">个人主页</a></li>
+                <li><a href="/group" target="_self">群组</a></li>
+                <li><a href="/search/all" target="_self">搜索</a></li>
               </ul>
             </div> 
           </div>
@@ -293,8 +294,8 @@
             <div class="media media-container">
                 <span class="pull-left panel-nav">
                    <ul class="nav nav-stacked" style="width: 80px;">
-                      <li ng-class="{active: current.path === 'members'}"><a ng-href="/view/{{global.job.id}}/members"><i class="fa fa-fw fa-users"></i></a></li>
-                      <li ng-class="{active: current.path === 'message'}"><a ng-href="/view/{{global.job.id}}/message"><i class="fa fa-fw fa-comments"></i></a></li>
+                      <li ng-class="{active: current.path === 'members'}"><a ng-href="/job/{{global.job.id}}/members"><i class="fa fa-fw fa-users"></i></a></li>
+                      <li ng-class="{active: current.path === 'message'}"><a ng-href="/job/{{global.job.id}}/message"><i class="fa fa-fw fa-comments"></i></a></li>
                     </ul>
                 </span>
                 <div class="media-body" ng-view>

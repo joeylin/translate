@@ -59,8 +59,8 @@
             <div class="caption">
               <div><a href="/profile/{{user.id}}" target="_self">{{user.name}}</a></div>
               <div style="white-space: nowrap;overflow: hidden;">{{user.location || '未知'}} | {{user.occupation}}</div>
-              <div class="addBtn text-center" ng-show="!user.isConnected">
-                <span popup data-mfp-src="#connect-popup-content" ng-click="setRelative(user)"><i class="fa fa-fw fa-plus"></i>添加</span>
+              <div class="addBtn text-center" ng-show="!user.isConnected" popup data-mfp-src="#connect-popup-content" ng-click="setRelative(user)">
+                <span><i class="fa fa-fw fa-plus"></i>添加</span>
               </div>
               <div class="addBtn text-center" ng-show="user.isConnected">
                 <span style="padding-left:3px;padding-right:3px;"><i class="fa fa-fw fa-check"></i>已发送请求</span>

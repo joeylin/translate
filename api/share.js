@@ -648,25 +648,25 @@ var getPostJobList = function(req, res) {
         }
         var results = [];
         share.resumes.map(function(item) {
-            if (!item.isQuit) {
-                var user = item.user;
-                var obj = {
-                    sex: user.sex,
-                    name: user.name,
-                    id: user.id,
-                    _id: user._id,
-                    birth: user.birth,
-                    occupation: user.occupation,
-                    school: user.school || 'BUPT',
-                    workYear: user.workYear,
-                    avatar: user.avatar
-                };
-                results.push(obj);
-            }
+            // 暂时不做退出功能
+            var user = item.user;
+            var obj = {
+                sex: user.sex,
+                name: user.name,
+                id: user.id,
+                _id: user._id,
+                birth: user.birth,
+                occupation: user.occupation,
+                school: user.school || 'BUPT',
+                workYear: user.workYear,
+                avatar: user.avatar
+            };
+            results.push(obj);
         });
         res.send({
             code: 200,
-            content: results
+            content: results,
+            total: share.resumes.length
         });
     });
 };

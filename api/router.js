@@ -260,9 +260,140 @@ module.exports = function(app) {
                     result.user.share = count;
                     app.locals.share = result;
                     app.locals.author = author;
-                    res.render('job');
+                    res.render('share');
                 });
             });
+        });
+    };
+    var getJob = function(req, res) {
+        var id = req.params.id;
+        var author = req.session && req.session.user;
+        Share.findOne({
+            id: id
+        }).populate('user').exec(function(err, share) {
+            if (err || !share) {
+                res.send({
+                    code: 404,
+                    info: 'cant find specified id'
+                });
+            }
+            var result = {};
+            result.type = share.type;
+            result.content = share.content;
+            result._id = share._id;
+            result.id = share.id;
+            result.createAt = share.createAt.getTime();
+            result.jobType = share.jobType;
+            result.paymentStart = share.paymentStart;
+            result.paymentEnd = share.paymentEnd;
+            result.department = share.department;
+            result.company = share.company;
+            result.companyIntro = share.companyIntro;
+            result.degree = share.degree;
+            result.position = share.position;
+            result.location = share.location;
+            result.workYears = share.workYears;
+            result.summary = share.summary;
+            result.detail = share.detail;
+            result.liked = false;
+            result.hasPost = false;
+            app.locals.isJobCreator = false;
+            if ( !! author) {
+                share.likes.map(function(like) {
+                    if (like.toString() == author._id) {
+                        result.liked = true;
+                    }
+                });
+                share.resumes.map(function(item, key) {
+                    if (item.user.toString() == author._id) {
+                        result.hasPost = true;
+                    }
+                });
+                if (share.user._id.toString() == author._id) {
+                    app.locals.isJobCreator = true;
+                }
+            }
+
+            result.likes = share.likes.length;
+            result.total = share.comments.length;
+            result.join = share.resumes.length;
+
+            result.comments = [];
+            result.user = {
+                id: share.user.id,
+                _id: share.user._id,
+                avatar: share.user.avatar,
+                name: share.user.name,
+                role: share.user.role,
+                signature: share.user.signature,
+                connects: share.user.connects.length
+            };
+
+            if ( !! author) {
+                Request.find({
+                    to: author._id,
+                    hasDisposed: false
+                }, function(err, requests) {
+                    var comment = [];
+                    var reply = [];
+                    var group = [];
+                    var connect = [];
+                    var at = [];
+                    requests.map(function(request) {
+                        if (request.type === 'comment') {
+                            comment.push(request);
+                        }
+                        if (request.type === 'group') {
+                            group.push(request);
+                        }
+                        if (request.type === 'reply') {
+                            reply.push(request);
+                        }
+                        if (request.type === 'connect') {
+                            connect.push(request);
+                        }
+                        if (request.type === 'at') {
+                            at.push(request);
+                        }
+                    });
+                    var request = {
+                        comment: comment.length,
+                        reply: reply.length,
+                        group: group.length,
+                        connect: connect.length,
+                        at: at.length
+                    };
+                    app.locals.request = request;
+                    Share.find({
+                        user: share.user._id,
+                        is_delete: false
+                    }).count().exec(function(err, count) {
+                        share.views = share.views + 1;
+                        result.views = share.views;
+                        share.save(function(err, share) {
+                            result.user.share = count;
+                            app.locals.share = result;
+                            app.locals.author = author;
+                            res.render('job');
+                        });
+                    });
+                });
+            } else {
+                Share.find({
+                    user: share.user._id,
+                    is_delete: false
+                }).count().exec(function(err, count) {
+                    share.views = share.views + 1;
+                    result.views = share.views;
+                    share.save(function(err, share) {
+                        result.user.share = count;
+                        app.locals.share = result;
+                        app.locals.author = author;
+                        res.render('job');
+                    });
+                });
+            }
+
         });
     };
     var jobManage = function(req, res) {
@@ -488,8 +619,9 @@ module.exports = function(app) {
     app.get('/jobs/:id/edit', middleware.check_login, getHome);
 
     // jobManage
-    app.get('/view/:id/message', middleware.check_login, jobManage);
-    app.get('/view/:id/members', middleware.check_login, jobManage);
+    app.get('/job/:id', getJob);
+    app.get('/job/:id/message', middleware.check_login, jobManage);
+    app.get('/job/:id/members', middleware.check_login, jobManage);
 
 
     // notify
@@ -525,6 +657,7 @@ module.exports = function(app) {
     // view
     app.get('/view', getView);
     app.get('/view/:id', getView);
+
 
     // search 
     app.get('/search', middleware.check_login, getSearch);

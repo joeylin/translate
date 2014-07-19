@@ -29,8 +29,8 @@ constant('app', {
         };
 
         $routeProvider.
-        when('/view/:id/message', message).
-        when('/view/:id/members', members);
+        when('/job/:id/message', message).
+        when('/job/:id/members', members);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }
 ]);
