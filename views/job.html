@@ -459,44 +459,7 @@
                 <div class="col-md-3"></div>
               </div>
             </div>
-            <!-- <div class="well">
-              <% if (locals.share.type === 'job') { %>
-              <h3><%= locals.share.position %></h3>
-              <p>
-                <div><strong>Type : </strong><%= locals.share.jobType %></div>
-                <div><strong>Department : </strong><%= locals.share.department %></div>
-                <div><strong>Payment : </strong><%= locals.share.paymentStart %>k - <%= locals.share.paymentEnd %>k</div>
-                <div><strong>Experience : </strong><%= locals.share.workYears %></div>
-                <div><strong>Degree : </strong><%= locals.share.degree %></div>
-                <div><strong>Location : </strong><%= locals.share.location %></div>
-              </p>
-              <p><%= locals.share.summary || '' %></p>
-              <p><%= locals.share.detail || '' %></p>
-              <p><%= locals.share.company || '' %></p>
-              <div class="clearfix media-info" ng-cloak>
-                <span class="pull-left media-control">
-                  <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
-                  <span>View(<%= locals.share.views || 0 %>)</span>
-                  <span>Join({{share.join}})</span>
-                  <% if (locals.author) { %>
-                  <a href="" class="like" ng-class="{liked:share.liked}" ng-click="toggleLike()"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-                  <% if (locals.isJobCreator) { %>
-                  <span href="#" class="post btn" ng-click="manage()" ng-show="!isManage">Manage</span>
-                  <span href="#" class="post btn" ng-click="back()" ng-show="isManage">Back</span>
-                  <% } else { %>
-                  <span href="#" class="post btn" ng-show="!share.hasPost" ng-click="post()">Post Resume</span>
-                  <span href="#" class="post" ng-show="share.hasPost">has post</span>
-                  <% } %>
-                  <% } else { %>
-                  <a class="like checkLogin" href="#login-popup" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-                  <span href="#" class="post">login to post</span>
-                  <% } %>
-                </span>
-                <a href="" class="comment pull-right" style="line-height:28px;">comment({{share.total}})</a>
-              </div>
-              <% } %>             
-            </div> -->
-            
+    
             <div class="well" ng-cloak ng-if="isManage" style="padding-bottom: 30px;">
               <div class="row">
                 <div class="col-md-4" ng-repeat="user in postList">

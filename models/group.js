@@ -78,13 +78,15 @@ GroupSchema.statics.createNew = function(obj, cb) {
 };
 GroupSchema.statics.getJoined = function(id, limit, cb) {
     var count = limit || 8;
-    var query = [{
-        creator: id
-    }, {
-        admin: id
-    }, {
-        members: id
-    }];
+    var query = {
+        $or: [{
+            creator: id
+        }, {
+            admin: id
+        }, {
+            members: id
+        }]
+    };
     this.find(query).sort('-createAt').limit(count).exec(cb);
 };
 GroupSchema.statics.delete = function(id, userId, cb) {

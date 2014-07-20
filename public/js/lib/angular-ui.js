@@ -152,10 +152,10 @@ angular.module('ui.bootstrap.pagination', []).controller('PaginationController',
     itemsPerPage: 10,
     boundaryLinks: false,
     directionLinks: true,
-    firstText: 'First',
-    previousText: 'Prev',
-    nextText: 'Next',
-    lastText: 'Last',
+    firstText: '首页',
+    previousText: '上一页',
+    nextText: '下一页',
+    lastText: '末页',
     rotate: true
 }).directive('pagination', ['$parse', 'paginationConfig',
     function($parse, paginationConfig) {
@@ -267,8 +267,8 @@ angular.module('ui.bootstrap.pagination', []).controller('PaginationController',
     }
 ]).constant('pagerConfig', {
     itemsPerPage: 10,
-    previousText: '« Previous',
-    nextText: 'Next »',
+    previousText: '« 上一页',
+    nextText: '下一页 »',
     align: true
 }).directive('pager', ['pagerConfig',
     function(pagerConfig) {

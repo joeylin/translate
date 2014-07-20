@@ -304,15 +304,15 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         };
         // 构建模拟数据
         vm.columns = [{
-            label: 'name',
+            label: '名字',
             name: 'name',
             type: 'string'
         }, {
-            label: 'post',
+            label: '发文数',
             name: 'post',
             type: 'number'
         }, {
-            label: 'operate',
+            label: '管理',
             name: 'actions',
             sortable: false
         }];
