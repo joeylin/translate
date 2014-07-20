@@ -325,6 +325,7 @@ module.exports = function(app) {
                 avatar: share.user.avatar,
                 name: share.user.name,
                 role: share.user.role,
+                occupation: share.user.occupation,
                 signature: share.user.signature,
                 connects: share.user.connects.length
             };
