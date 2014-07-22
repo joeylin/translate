@@ -142,6 +142,45 @@ var join = function(req, res) {
         });
     });
 };
+var follow = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        var join = user.groups.join;
+        var follow = user.group.follow;
+        var result = [].concat(user,follow);
+        var index = -1;
+        result.map(function(item,key) {
+            if (item.toString() == user._id) {
+                index = -1;
+                return false;
+            }
+        }); 
+        if (index > -1) {
+            return res.send({
+                code: 404,
+                info: 'has followed'
+            });
+        } 
+        user.groups.follow.push(user._id);
+        user.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var unfollow = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        
+    });
+};
 var quit = function(req, res) {
     var user = req.session.user;
     var id = req.body.id;
@@ -619,11 +658,14 @@ var groupPostSearch = function(req, res) {
     });
 };
 
+
 module.exports = function(app) {
     app.post('/api/group/create', middleware.apiLogin, create);
     app.post('/api/group/joinRequest', middleware.apiLogin, joinRequest);
     app.post('/api/group/checkRequest', middleware.apiLogin, checkRequest);
     app.post('/api/group/join', middleware.apiLogin, join);
+    app.post('/api/group/follow', middleware.apiLogin, follow);
+    app.post('/api/group/unfollow', middleware.apiLogin, unfollow);
     app.post('/api/group/quit', middleware.apiLogin, quit);
     app.post('/api/group/member/delete', middleware.apiLogin, memberDelete);
     app.post('/api/group/admin/delete', middleware.apiLogin, adminDelete);

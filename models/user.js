@@ -123,6 +123,10 @@ var UserSchema = new Schema({
             type: ObjectId,
             ref: 'Group'
         }],
+        follow: [{
+            type: ObjectId,
+            ref: 'Group'
+        }],
         create: [{
             type: ObjectId,
             ref: 'Group'

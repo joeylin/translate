@@ -649,15 +649,15 @@
               <a href="#"><img src="<%= locals.group.avatar %>"></a>
             </div>
             <% if (locals.author) { %>
-            <div class="custom-well tip">
+            <!-- <div class="custom-well tip">
               <i class="fa fa-fw fa-volume-up"></i>
               您好: <%= locals.author.name %> !
-            </div>
+            </div> -->
             <% } else { %>
-            <div class="custom-well tip">
+            <!-- <div class="custom-well tip">
               <i class="fa fa-fw fa-volume-up"></i>
               你目前是访客 !
-            </div>
+            </div> -->
             <% } %>
             <div>
               <% if (locals.isJoined) { %>
@@ -701,7 +701,12 @@
                 <div><%= locals.group.announcement || 'please add announcement !' %></div>
               </div>
             </div>
+            <div class="panel">
+              <div class="panel-body">
+                <div style="margin-bottom:10px;">大家正在讨论什么 ?</div>
 
+              </div>
+            </div>
           </div>
         </div>
         <footer>
