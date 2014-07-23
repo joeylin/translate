@@ -248,6 +248,65 @@ var getShare = function(req, res) {
         });
     });
 };
+var getFollowGroupUpdate = function(req, res) {
+    var user = req.session.user;
+    var page = req.params.page || 0;
+    var perPageItems = 20;
+
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        var follows = user.groups.join.concat(user.groups.follow);
+        var query = {
+            group: {
+                $in: follows
+            },
+            type: 'view',
+            is_delete: false
+        };
+        Share.find(query).populate('group').populate('user').sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+            Share.find(query).count().exec(function(err,count) {
+                var content = [];
+                var hasNext;
+                shares.map(function(item, key) {
+                    var result = {};
+                    result.type = 'view';
+                    result._id = item._id;
+                    result.comments = item.comments;
+                    result.content = item.content;
+                    result.createAt = item.createAt.getTime();
+                    result.date = item.date;
+                    result.id = item.id;
+                    result.user = {
+                        name: item.user.name,
+                        avatar: item.user.avatar,
+                        _id: item.user._id,
+                        id: item.user.id
+                    };
+                    result.liked = false;
+                    item.likes.map(function(like) {
+                        if (like.toString() == user._id.toString()) {
+                            result.liked = true;
+                        }
+                    });
+                    result.likes = item.likes.length;
+                    content.push(result);
+                });
+                if ((page - 1) * perPageItems + content.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                res.send({
+                    code: 200,
+                    count: count,
+                    hasNext: hasNext,
+                    content: content
+                });
+            });
+        });
+    });
+};
 var getTrends = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
@@ -1549,8 +1608,9 @@ module.exports = function(app) {
     app.get('/api/notify/:op', middleware.check_login, getRequest);
     app.post('/api/notify/:op/read', middleware.check_login, readRequest);
 
-    // myGroup
-    app.get('/api/myGroup', middleware.apiLogin, middleware.check_login, getGroupByUser);
+    // Group
+    app.get('/api/myGroup', middleware.check_login, getGroupByUser);
+    app.get('/api/groupUpdate',middleware.check_login, getFollowGroupUpdate);
 
     // connect
     app.post('/api/connect/send', middleware.check_login, sendNotify);
