@@ -910,7 +910,6 @@ var getUserCard = function(req, res) {
         }
     });
 };
-
 var getNotifyCount = function(req, res) {
     var user = req.session.user;
     Request.find({
