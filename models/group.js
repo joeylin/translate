@@ -3,6 +3,10 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var GroupSchema = new Schema({
+    is_public: {
+        type: Boolean,
+        default: false
+    },
     id: {
         type: Number
     },
@@ -59,6 +63,7 @@ GroupSchema.statics.createNew = function(obj, cb) {
     var User = mongoose.model('User');
     group.name = obj.name;
     group.creator = obj.creator;
+    group.is_public = obj.is_public;
     group.announcement = obj.announcement;
     group.avatar = obj.avatar;
     group.industry = obj.industry;

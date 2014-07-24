@@ -522,38 +522,52 @@ module.exports = function(app) {
             if (!group) {
                 // here send 404 page
                 return res.send({
-                    code: 404
+                    code: 404,
+                    info: 'no found'
+                });
+            }
+            if (group.is_public) {
+                return res.send({
+                    code:404,
+                    info: 'it is privite group'
                 });
             }
             app.locals.group = group;
-            app.locals.author = user;
             app.locals.isJoined = false;
             app.locals.isAdmin = false;
             app.locals.isCreator = false;
             if (user) {
-                var adminIndex = -1;
-                var memberIndex = -1;
-                if (group.creator._id.toString() == user._id) {
-                    app.locals.isCreator = true;
-                }
-                group.admin.map(function(item, key) {
-                    if (item._id.toString() == user._id) {
-                        adminIndex = key;
+                User.findOne({
+                    _id: user._id
+                }).exec(function(err, user) {
+                    var adminIndex = -1;
+                    var memberIndex = -1;
+                    if (group.creator._id.toString() == user._id) {
+                        app.locals.isCreator = true;
                     }
-                });
-                group.members.map(function(item, key) {
-                    if (item._id.toString() == user._id) {
-                        memberIndex = key;
+                    group.admin.map(function(item, key) {
+                        if (item._id.toString() == user._id) {
+                            adminIndex = key;
+                        }
+                    });
+                    group.members.map(function(item, key) {
+                        if (item._id.toString() == user._id) {
+                            memberIndex = key;
+                        }
+                    });
+                    if (adminIndex > -1) {
+                        app.locals.isAdmin = true;
                     }
-                });
-                if (adminIndex > -1) {
-                    app.locals.isAdmin = true;
-                }
-                if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
-                    app.locals.isJoined = true;
-                }
+                    if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
+                        app.locals.isJoined = true;
+                    }
+                    app.locals.author = user;
+                    res.render('group');
+                });    
+            } else {
+                res.render('group');
             }
-            res.render('group');
+            
         });
     };
 

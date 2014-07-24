@@ -524,31 +524,31 @@
               </div>
               <div class="white-popup-block" ng-if="global.popup.type == 'check'" style="max-width: 450px;">
                 <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
-                <label>Validate message:</label>
+                <label>验证信息:</label>
                 <input class="form-control" type="text" placeholder="message" ng-model="global.inputMessage">
                 <div class="clearfix" style="margin-top:10px;">
-                    <button class="btn btn-primary pull-right" ng-click="global.joinSubmit()">Submit</button>
+                    <button class="btn btn-primary pull-right" ng-click="global.joinSubmit()">提交</button>
                 </div>
               </div>
               <div class="white-popup-block" ng-if="global.popup.type == 'shareDelete'">
-                <label>Are You Sure To Delete it ?</label>
+                <label>你确定要删除吗 ?</label>
                 <div class="clearfix">
-                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">No</button>
-                    <button class="btn btn-danger pull-right" ng-click="global.deleteShare()" style="margin-right:10px;">Yes</button>
+                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">否</button>
+                    <button class="btn btn-default pull-right" ng-click="global.deleteShare()" style="margin-right:10px;">是</button>
                 </div>
               </div>
               <div class="white-popup-block" ng-if="global.popup.type == 'memberDelete'">
-                <label>Are You Sure To Delete it ?</label>
+                <label>确定要删除吗 ?</label>
                 <div class="clearfix">
-                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">No</button>
-                    <button class="btn btn-danger pull-right" ng-click="global.deleteMember()" style="margin-right:10px;">Yes</button>
+                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">否</button>
+                    <button class="btn btn-default pull-right" ng-click="global.deleteMember()" style="margin-right:10px;">是</button>
                 </div>
               </div>
               <div class="white-popup-block" ng-if="global.popup.type == 'quit'">
-                <label>Are You Sure To Quit this group ?</label>
+                <label>是否要退出群组 ?</label>
                 <div class="clearfix">
-                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">No</button>
-                    <button class="btn btn-danger pull-right" ng-click="global.quit()" style="margin-right:10px;">Yes</button>
+                    <button class="btn btn-primary pull-right" ng-click="global.popup.close()">否</button>
+                    <button class="btn btn-default pull-right" ng-click="global.quit()" style="margin-right:10px;">是</button>
                 </div>
               </div>
             </div>
@@ -698,7 +698,7 @@
             <div class="panel panel-default section group-announcement">
               <div class="panel-body">
                 <div class="text-center group-announcement-title">公告</div>
-                <div><%= locals.group.announcement || 'please add announcement !' %></div>
+                <div><%= locals.group.announcement || '暂时还没有添加公告 ！' %></div>
               </div>
             </div>
             <div class="panel">
