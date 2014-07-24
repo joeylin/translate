@@ -7,15 +7,15 @@
             <textarea auto-height atwho="userList" class="form-control" rows="3" placeholder="Enter ..." ng-model="newShare"></textarea>
             <div class="share-success" id="submit-success">
               <i class="fa fa-fw fa-check-circle"></i>
-              <span>success !</span>
+              <span>发布成功 !</span>
             </div>
         </div>
         <div class="clearfix">
-          <a class="btn btn-primary pull-right" role="button" ng-click="submit()" ng-class="{'default': newShare === ''}">submit</a>
+          <a class="btn btn-primary pull-right" role="button" ng-click="submit()" ng-class="{'default': newShare === ''}">发布</a>
         </div>
     </div>
   </div>
-  <a class="btn btn-success" href="" ng-click="backPost()" ng-show="isSearch"><i class="fa fa-fw fa-angle-double-left"></i> Back Group Home</a>
+  <a class="btn btn-success" href="" ng-click="backPost()" ng-show="isSearch"><i class="fa fa-fw fa-angle-double-left"></i> 返回群主页</a>
   <div class="pull-right" style="width: 250px;">
     <div class="input-search">
         <input type="text" class="form-control" placeholder="Search" ng-model="keyword" ng-keydown="enter($event)">
@@ -65,7 +65,7 @@
             <div class="media-body">
               <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span><span md-content="comment.content"></span></p>
               <div class="clearfix media-info">
-                <span class="date pull-left"><a href="#">{{comment.date | formatDate:true}}</a></span>
+                <span class="date pull-left">{{comment.date | formatDate:true}}</span>
                 <span class="pull-right media-control" ng-show="global.user">
                   <a href="#" class="comment" ng-show="comment.user.name === global.user.name || global.user.name === share.user.name || global.isAdmin || global.isCreator" ng-click="vm.delete(comment, share)"><i class="fa fa-fw fa-trash-o"></i></a>
                   <a href="#" class="comment" ng-click="vm.reply(comment)">回复</a>
@@ -94,7 +94,7 @@
         <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
       </ul>
     </div>
-    <div ng-show="!isSearch && shareList.length === 0">
+    <div ng-show="!isSearch && shareList.length === 0" ng-cloak>
       <div class="no-result text-center">
         ooh...   还没有人发表博文，快来发表哦 ~~
       </div>
