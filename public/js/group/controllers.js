@@ -2,11 +2,13 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate', 'ui.bootstrap.pagination']).
-controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
-    function(app, $scope, $rootScope, $location, $http) {
+controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount',
+    function(app, $scope, $rootScope, $location, $http, wordCount) {
         $scope.isOpened = false;
         $scope.isSearch = false;
         $scope.keyword = '';
+        $scope.shareCount = 0;
+        $scope.toMyShare = false;
         $scope.open = function() {
             if (!app.author) {
                 return $scope.$emit('popup', 'login');
@@ -15,6 +17,9 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 return $scope.$emit('popup', 'join');
             }
             $scope.isOpened = !$scope.isOpened;
+        };
+        $scope.change = function(value) {
+            $scope.shareCount = wordCount(value);
         };
         $scope.pager = {
             hasNext: false,
@@ -26,6 +31,9 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.submit = function() {
             var url = '/api/share/add';
             if ($scope.newShare === '') {
+                return false;
+            }
+            if ($scope.shareCount > 140) {
                 return false;
             }
             $http.post(url, {
@@ -153,6 +161,35 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 });
             }
         };
+        $scope.vm.toggleCollect = function(share) {
+            var url;
+            if (!app.author) {
+                return false;
+            }
+            if (share.has_collect) {
+                url = '/api/user/uncollect';
+                $http.post(url, {
+                    id: share._id
+                }).success(function(data) {
+                    share.has_collect = false;
+                });
+            } else {
+                url = '/api/user/collect';
+                $http.post(url, {
+                    id: share._id
+                }).success(function(data) {
+                    share.has_collect = true;
+                });
+            }
+        };
+        $scope.vm.forkPopup = function(share) {
+            var forkObj = {
+                change: $scope.change,
+                share: share
+            };
+            $scope.$emit('popup', 'fork', forkObj);
+
+        };
         $scope.vm.toggleComment = function(share) {
             share.isShowComment = !share.isShowComment;
             if (share.isShowComment) {
@@ -241,6 +278,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.basic.name = app.group.name;
         $scope.basic.industry = app.group.industry;
         $scope.basic.announcement = app.group.announcement;
+        $scope.basic.intro = app.group.intro;
 
         $scope.clickMember = function() {
             if ($scope.current === 'm') {
@@ -268,7 +306,8 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 id: app.group._id,
                 name: $scope.basic.name,
                 industry: $scope.basic.industry,
-                announcement: $scope.basic.announcement
+                announcement: $scope.basic.announcement,
+                intro: $scope.basic.intro
             };
             $http.post(url, data).success(function(data) {
                 app.group.announcement = $scope.basic.announcement;

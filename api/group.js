@@ -148,12 +148,10 @@ var follow = function(req, res) {
     User.findOne({
         _id: user._id
     }).exec(function(err, user) {
-        var join = user.groups.join;
-        var follow = user.group.follow;
-        var result = [].concat(user,follow);
+        var follow = user.groups.follow;
         var index = -1;
-        result.map(function(item,key) {
-            if (item.toString() == user._id) {
+        follow.map(function(item,key) {
+            if (item.toString() == id) {
                 index = -1;
                 return false;
             }
@@ -165,6 +163,7 @@ var follow = function(req, res) {
             });
         } 
         user.groups.follow.push(user._id);
+        user.markModified('user.groups.follow');
         user.save(function(err) {
             res.send({
                 code: 200
@@ -177,8 +176,27 @@ var unfollow = function(req, res) {
     var id = req.body.id;
     User.findOne({
         _id: user._id
-    }).exec(function(err, user) {
-        
+    }, function(err, user) {
+        var index = -1;
+        user.groups.follow.map(function(item, key) {
+            if (item.toString() == id) {
+                index = -1;
+                return false;
+            }
+        });
+        if (index === -1) {
+            return res.send({
+                code: 404,
+                info: 'no followed'
+            });
+        }
+        user.groups.follow.splice(index, 1);
+        user.markModified('user.groups.follow');
+        user.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
     });
 };
 var quit = function(req, res) {
@@ -307,6 +325,7 @@ var getPost = function(req, res) {
                 result.content = item.content;
                 result.createAt = item.createAt.getTime();
                 result.id = item.id;
+                result.fork = item.fork;
                 result.user = {
                     name: item.user.name,
                     avatar: item.user.avatar,
@@ -318,6 +337,14 @@ var getPost = function(req, res) {
                     item.likes.map(function(like) {
                         if (like.toString() == user._id.toString()) {
                             result.liked = true;
+                        }
+                    });
+                }
+                result.has_collect = false;
+                if (user) {
+                    item.collects.map(function(collect) {
+                        if (collect.toString() == user._id.toString()) {
+                            result.has_collect = true;
                         }
                     });
                 }
@@ -344,6 +371,7 @@ var setBasic = function(req, res) {
     var name = req.body.name;
     var industry = req.body.industry;
     var announcement = req.body.announcement;
+    var intro = req.body.intro;
 
     Group.findOne({
         _id: id
@@ -357,6 +385,7 @@ var setBasic = function(req, res) {
         group.name = name;
         group.announcement = announcement;
         group.industry = industry;
+        group.intro = intro;
         group.save(function(err) {
             res.send({
                 code: 200

@@ -104,16 +104,6 @@ var UserSchema = new Schema({
             type: String
         }
     }],
-    collects: {
-        job: [{
-            type: ObjectId,
-            ref: 'Job'
-        }],
-        share: [{
-            type: ObjectId,
-            ref: 'Share'
-        }]
-    },
     groups: {
         pending: [{
             type: ObjectId,

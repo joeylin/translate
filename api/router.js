@@ -561,6 +561,13 @@ module.exports = function(app) {
                     if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
                         app.locals.isJoined = true;
                     }
+                    app.locals.is_followed = false;
+                    user.groups.follow.map(function(item, key) {
+                        if (item.toString() == group._id) {
+                            app.locals.is_followed = true;
+                            return false;
+                        }
+                    });
                     app.locals.author = user;
                     res.render('group');
                 });    

@@ -98,6 +98,33 @@ var addShare = function(req, res) {
         });
     });
 };
+var forkShare = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.from;
+    var shareObj = req.body;
+    shareObj.user = user._id;
+    Share.findOne({
+        _id: id
+    }).exec(function(err, share) {
+        if (!share) {
+            return res.send({
+                code: 404
+            });
+        }
+        Share.createNew(shareObj, function(err, data) {
+            share.fork += 1;
+            share.save(function() {
+                res.send({
+                    code: 200,
+                    content: {
+                        createAt: data.createAt.getTime(),
+                        _id: data._id
+                    }
+                });
+            });
+        });
+    });
+};
 var editShare = function(req, res) {
     var user = req.session.user;
     var id = req.body.id;
@@ -678,6 +705,7 @@ module.exports = function(app) {
     app.post('/api/share/like', middleware.check_login, shareLike);
     app.post('/api/share/delete', middleware.check_login, deleteShare);
     app.post('/api/share/add', middleware.check_login, addShare);
+    app.post('/api/share/fork', middleware.check_login, forkShare);
     app.post('/api/share/edit', middleware.check_login, editShare);
     app.get('/api/share/user', middleware.check_login, getShareByUser);
     app.get('/api/share/id/:id', getShareById);

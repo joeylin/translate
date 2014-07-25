@@ -40,7 +40,6 @@ app.configure(function() {
 // api
 require('./api/search')(app);
 require('./api/user')(app);
-require('./api/job')(app);
 require('./api/share')(app);
 require('./api/account')(app);
 require('./api/userProfile')(app);

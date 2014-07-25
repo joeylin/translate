@@ -34,6 +34,7 @@
            */
           html,body {
             background-color: #edeff0;
+            min-height: 960px;
           }
           .home-container {
             padding-top: 19px;
@@ -74,6 +75,12 @@
           }
           .media-info .date {
             color: #99a1a6;
+            font-size: 0.9em;
+            margin-right: 10px;
+          }
+          .media-info .pull-left {
+            position: relative;
+            top: 1px;
           }
           .media-info .media-control {
             padding-right: 16px;
@@ -83,6 +90,21 @@
           }
           .media-info .media-control .liked i {
             color: rgb(51, 51, 51);
+          }
+          .media-info .collect {
+            margin-right: 10px;
+            font-size: 0.9em;          }
+          .media-info .toMyFriends {
+            margin-right: 10px;
+            font-size: 0.9em;
+          }
+          .media-info .collect a,
+          .media-info .toMyFriends a {
+            color: #99a1a6;
+          }
+          .media-info .collect a:hover,
+          .media-info .toMyFriends a:hover {
+            color: #72AFD2;;
           }
           .pager li>a {
             border-radius: 3px;
@@ -184,10 +206,41 @@
           .group-title h3 {
             margin-top: 0;
             margin-bottom: 15px;
+            background-color: #ddd;
+            padding: 10px 10px 10px 20px;
+            line-height: 25px;
           }
           .group-title small {
             margin-left: 10px;
           }
+          .group-title .follow {
+            font-size: 14px;
+            position: relative;
+          }
+          .group-title .follow i {
+            cursor: pointer;
+          }
+          .group-title .follow:hover,
+          .group-title .manage:hover {
+            color: #428bca;
+          }
+          .group-title .manage {
+            font-size: 14px;
+            position: relative;
+            cursor: pointer;
+          }
+          .group-title .follow .option {
+            position: absolute;
+            right: 9px;
+            background-color: #fff;
+            color: #428bca;
+            padding: 0 6px;
+            cursor: pointer;
+          }
+          .group-title .follow .option:hover {
+            color: #333;
+          }
+
           .container.group .col-md-2 {
             padding-left: 0;
           }
@@ -214,6 +267,10 @@
           }
           .group-topic-add {
             margin-bottom: 10px;
+          }
+          .group-topic-add > .btn {
+            border-color: transparent;
+            box-shadow: none;
           }
 
           .group-announcement .panel-body {
@@ -301,7 +358,8 @@
             color: #fff;
           }
           .avatar-tip {
-            margin-top: 15px;
+            background-color: #ddd;
+            padding: 5px 0;
           }
           .section strong {
             width: 53px;
@@ -320,7 +378,7 @@
             padding: 15px;
             width: 80%;
             left: 0;
-            margin-top: 15px;
+            margin-top: 12px;
             background-color: #fff;
             border: 1px solid #999;
             border: 1px solid rgba(0,0,0,.2);
@@ -404,6 +462,10 @@
             width: 130px!important;
           }
           /* custom */
+          .shareCount {
+            font-style: italic;
+            font-size: 1.4em;
+          }
           .input-search {
             position: relative;
             /*display: none;*/
@@ -443,6 +505,17 @@
             width: 30px;
             font-size: 12px;
           }
+          .members-desc {
+            font-size: 12px;
+            margin-left: -3px;
+          }
+          .toMyShare {
+            line-height: 33px;
+            margin-right: 15px;
+            position: relative;
+            top: 1px;
+            cursor: pointer;
+          }
           /* for auto Height*/
           .comment-editor-inline .form-control {
             position: absolute;
@@ -480,7 +553,8 @@
             background-color: #edeff0;
           }
           .navbar {
-            border-radius: 0px;
+            border-radius: 0;
+            margin-bottom: 0;
           }
           .pager {
             font-size: 12px;
@@ -496,6 +570,7 @@
           window.isJoined = null;
           window.isAdmin = null;
           window.isCreator = null;
+          window.is_followed = null;
           <% if (locals.author) { %>
             window.author = <%- JSON.stringify(locals.author) %>;
           <% } %>
@@ -508,8 +583,11 @@
            <% if (locals.isAdmin) { %>
             window.isAdmin = <%= locals.isAdmin %>;
           <% } %>
-           <% if (locals.isCreator) { %>
+          <% if (locals.isCreator) { %>
             window.isCreator = <%= locals.isCreator %>;
+          <% } %>
+          <% if (locals.is_followed) { %>
+            window.is_followed = <%= locals.is_followed %>;
           <% } %>
         </script>    
     </head>
@@ -550,6 +628,18 @@
                     <button class="btn btn-primary pull-right" ng-click="global.popup.close()">否</button>
                     <button class="btn btn-default pull-right" ng-click="global.quit()" style="margin-right:10px;">是</button>
                 </div>
+              </div>
+              <div class="white-popup-block" ng-if="global.popup.type == 'fork'" style="width:560px;">
+                <label style="margin-bottom:10px;">分享到我的好友圈 : </label>
+                <div class="form-group newTopic">
+                    <textarea auto-height atwho="global.fork.userList" class="form-control" ng-model="global.fork.forkShare" ng-change="global.fork.change(global.fork.forkShare)"></textarea>
+                </div>
+                <div class="clearfix">
+                  <span class="pull-left" ng-show="global.fork.shareCount <= 140 && global.fork.showCount">你还可以输入<span class="shareCount">{{140 - global.fork.shareCount}}</span> 字</span>
+                  <span class="pull-left" ng-show="global.fork.shareCount > 140 && global.fork.showCount">你已经超过<span class="shareCount" style="color:#E44443;">{{global.fork.shareCount - 140}}</span> 字</span>
+                  <a class="btn btn-primary pull-right" role="button" ng-click="global.fork.submit()" ng-class="{'default': global.fork.forkShare === '' || (global.fork.shareCount > 140)}" style="padding-left:20px; padding-right:20px;">分享</a>
+                </div>
+                <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
               </div>
             </div>
             <div class="mfp-preloader">Loading...</div>
@@ -623,10 +713,10 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Account</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">退出</a>
                                 </div>
                             </li>
                         </ul>
@@ -642,37 +732,63 @@
             </div>
           </div>
         </nav>
-        <div class="container group-title"><h3><a href="/group/<%= locals.group.id %>" target="_self"><%= locals.group.name %></a><small><%= locals.group.industry %></small></h3></div>
+        <div class="container group-title">
+          <div class="col-md-12" style="padding-left:0;">
+            <h3 class="clearfix" ng-cloak>
+              <a href="/group/<%= locals.group.id %>"><%= locals.group.name %></a><small><%= locals.group.industry %></small>
+              <% if (locals.author) { %>
+              <span class="pull-right follow" style="padding:0 10px;" ng-if="global.is_followed">
+                已关注<i class="fa fa-fw fa-caret-down" ng-click="followSet = !followSet"></i>
+                <span class="option" ng-show="followSet" ng-click="global.unfollow()">取消关注</span>
+              </span>
+              <span class="pull-right follow" style="padding:0 10px;" ng-if="!global.is_followed">
+                <span ng-click="global.follow();" style="cursor:pointer;">关注</span>
+              </span>
+              <% } %>
+
+              <% if (locals.isJoined) { %>
+              <a href="/group/<%= locals.group.id %>/settings" type="button" class="pull-right manage" target="_self">设置</a>
+              <% } %>
+            </h3>
+          </div>
+        </div>
         <div class="container group" ng-cloak>
-          <div class="col-md-2" ng-show="current.path === 'topic'">
+          <div class="col-md-2" ng-show="current.path === 'topic'" ng-cloak>
             <div class="well custom-well siderbar-nav group-avatar">
               <a href="#"><img src="<%= locals.group.avatar %>"></a>
+              <!-- <div class="group-desc">
+                <div class="row">
+                  <div class="col-md-6 text-center" style="padding-right:0">
+                    <div>20</div>
+                    <div>成员</div>
+                  </div>
+                  <div class="col-md-6 text-center" style="padding-left:0">
+                    <div>100</div>
+                    <div>关注</div>
+                  </div>
+                </div>
+              </div> -->
             </div>
-            <% if (locals.author) { %>
-            <!-- <div class="custom-well tip">
-              <i class="fa fa-fw fa-volume-up"></i>
-              您好: <%= locals.author.name %> !
-            </div> -->
-            <% } else { %>
-            <!-- <div class="custom-well tip">
-              <i class="fa fa-fw fa-volume-up"></i>
-              你目前是访客 !
-            </div> -->
-            <% } %>
             <div>
-              <% if (locals.isJoined) { %>
-              <a ng-href="/group/<%= locals.group.id %>/settings" type="button" class="group-op-btn btn-block">群设置</a>
-              <% } %>
               <% if (locals.author && !locals.isJoined) { %>
               <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">加入该群</a>
               <% } %>
               <% if (!locals.author) { %>
-              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">加入该群</a>
+              <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">
+              加入该群</a>
               <% } %>
             </div>
-            <div class="panel panel-default section member-panel">
-              <div class="panel-heading">成员 (<%= locals.group.admin.length + locals.group.members.length + 1 %>/50)</div>
-              <div class="panel-body">
+            <div class="panel panel-default member-panel">
+              <div class="panel-heading" style="font-weight:700;">群名片</div>
+              <div class="panel-body" style="padding-top:10px;">
+                <div class="members-desc">
+                  <span class="title">成员 : </span>
+                  <span><%= locals.group.admin.length + locals.group.members.length + 1 %>/50</span>
+                </div>
+                <div class="members-desc" style="margin-bottom:5px;">
+                  <span class="title">关注 : </span>
+                  <span><%= locals.group.admin.length + locals.group.members.length + 1 %>/50</span>
+                </div>
                 <div class="members-item">
                   <span class="title">【创建者】</span>
                   <a href="/profile/<%= locals.group.creator.id %>" target="_self"><%= locals.group.creator.name %></a>
@@ -694,14 +810,14 @@
             </div>
           </div>
           <div class="col-md-7" ng-view></div>
-          <div class="col-md-3 pull-right" ng-show="current.path === 'topic'">
+          <div class="col-md-3 pull-right" ng-show="current.path === 'topic'" ng-cloak>
             <div class="panel panel-default section group-announcement">
               <div class="panel-body">
                 <div class="text-center group-announcement-title">公告</div>
                 <div><%= locals.group.announcement || '暂时还没有添加公告 ！' %></div>
               </div>
             </div>
-            <div class="panel">
+            <div class="panel panel-default">
               <div class="panel-body">
                 <div style="margin-bottom:10px;">大家正在讨论什么 ?</div>
 

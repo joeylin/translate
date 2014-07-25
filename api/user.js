@@ -1345,6 +1345,110 @@ var searchById = function(req, res) {
     });
 };
 
+var collect = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+
+    Share.findOne({
+        _id: id
+    }).exec(function(err, share) {
+        var index = -1;
+        share.collects.map(function(item, key) {
+            if (item.toString() == user._id) {
+                index = key;
+                return false;
+            }
+        });
+        if (index > -1) {
+            return res.send({
+                code: 404,
+                info: 'has collected'
+            });
+        }
+        share.collects.push(user._id);
+        share.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var unCollect = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+
+    Share.findOne({
+        _id: id
+    }).exec(function(err, share) {
+        var index = -1;
+        share.collects.map(function(item, key) {
+            if (item.toString() == user._id) {
+                index = key;
+                return false;
+            }
+        });
+        if (index === -1) {
+            return res.send({
+                code: 404,
+                info: 'no collected'
+            });
+        }
+        share.collects.splice(index, 1);
+        share.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var getMyCollectShare = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    
+    Share.find(query).populate('user').populate('group').exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            shares.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.comments = item.comments;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.date = item.date;
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                result.liked = false;
+                item.likes.map(function(like) {
+                    if (like.toString() == user._id.toString()) {
+                        result.liked = true;
+                    }
+                });
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });
+        });
+    })
+};
+
 var getMysending = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
@@ -1590,6 +1694,7 @@ module.exports = function(app) {
     app.get('/api/user/id', middleware.check_login, searchById);
     app.get('/api/user/sending', middleware.check_login, getMysending);
     app.get('/api/user/jobrecommend', middleware.check_login, getJobRecommend);
+    app.get('/api/user/mycollects', middleware.check_login, getMyCollectShare);
 
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);
@@ -1597,6 +1702,10 @@ module.exports = function(app) {
     app.post('/api/user/follow', middleware.check_login, companyFollow);
     app.post('/api/user/unfollow', middleware.check_login, companyUnfollow);
     app.get('/api/user/companyActive', getCompanyActive);
+
+    // collects
+    app.post('/api/user/collect', middleware.check_login, collect);
+    app.post('/api/user/uncollect', middleware.check_login, unCollect);
 
     // skills
     app.post('/api/user/skills/add', middleware.apiLogin, userSkillsAdd);

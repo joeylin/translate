@@ -19,6 +19,18 @@ var ShareSchema = new Schema({
         type: String,
         default: 'draft'
     },
+    fork: {
+        type: Number,
+        default: 0
+    },
+    from: {
+        type: ObjectId,
+        ref: 'Share'
+    },
+    isFork: {
+        type: Boolean,
+        default: false
+    },
     jobType: {
         type: String
     },
@@ -79,6 +91,10 @@ var ShareSchema = new Schema({
         }
     }],
     // common
+    collects: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
     likes: [{
         type: ObjectId,
         ref: 'User'
@@ -152,6 +168,9 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.detail = obj.detail;
     share.group = obj.group;
     share.status = obj.status;
+    share.fork = obj.fork;
+    share.isFork = obj.isFork;
+    share.from = obj.from;
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('share', function(err, doc) {
         share.id = doc.currentId;
@@ -181,6 +200,14 @@ ShareSchema.statics.addComment = function(shareId, obj, cb) {
             share.comments.push(comment._id);
             share.save(cb);
         });
+    });
+};
+ShareSchema.statics.fork = function(shareId, cb) {
+    this.findOne({
+        _id: shareId
+    }).exec(function(err, share) {
+        share.fork += 1;
+        share.save(cb); 
     });
 };
 

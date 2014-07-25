@@ -3,7 +3,6 @@
       <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>设置</li>
       <li ng-class="{active: current === 'b'}" ng-click="current = 'b'"><a href="#">基本</a></li>
       <li ng-class="{active: current === 'm'}" ng-click="clickMember()"><a href="#">成员</a></li>
-      <li class="pull-right" style="position: relative;top: 5px;margin-right: 15px;"><div><a href="/group/{{groupId}}" class="btn btn-success btn-sm" target="_self"><i class="fa fa-fw fa-angle-double-left"></i> 返回群组</a></div></li>
   </ul>
 </div>
 <div class="group-settings-basic row" ng-if="current === 'b'" ng-cloak>
@@ -24,7 +23,7 @@
 							<label>群名 :</label>
 						</div>
 						<div class="col-xs-8">
-							<input class="form-control" name="name" type="text" placeholder="group name" required="" ng-model="basic.name">
+							<input class="form-control" name="name" type="text" placeholder="群名" required="" ng-model="basic.name">
 						</div>
 					</div>
 					<div class="row">
@@ -32,7 +31,7 @@
 							<label>行业 :</label>
 						</div>
 						<div class="col-xs-8">
-							<input class="form-control" name="industry" type="text" placeholder="group industry" required="" ng-model="basic.industry">
+							<input class="form-control" name="industry" type="text" placeholder="所处的行业" required="" ng-model="basic.industry">
 						</div>
 					</div>
 					<div class="row">
@@ -40,7 +39,15 @@
 							<label>公告 :</label>
 						</div>
 						<div class="col-xs-8">
-							<textarea class="form-control" rows="5" placeholder="Enter announcement..." ng-model="basic.announcement"></textarea>
+							<textarea class="form-control" rows="5" placeholder="公告" ng-model="basic.announcement"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label>简介 :</label>
+						</div>
+						<div class="col-xs-8">
+							<textarea class="form-control" rows="3" placeholder="简单介绍一下群组吧..." ng-model="basic.intro"></textarea>
 						</div>
 					</div>
 					<div class="clearfix">
@@ -92,6 +99,14 @@
 						</div>
 						<div class="col-xs-8" style="line-height: 35px;">
 							<span>{{basic.announcement || '暂无公告'}}</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<label style="margin-bottom:0px;line-height:35px;">简介 :</label>
+						</div>
+						<div class="col-xs-8" style="line-height: 35px;">
+							<span>{{basic.intro || '什么都没有写哦'}}</span>
 						</div>
 					</div>
 				</div>

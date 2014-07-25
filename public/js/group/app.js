@@ -31,9 +31,9 @@ config(['$httpProvider', 'app',
         });
     }
 ]).run(['app', '$q', '$rootScope', '$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc', '$http',
+    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc', '$http', 'wordCount',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
-        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc, $http) {
+        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc, $http, wordCount) {
 
         var global = $rootScope.global = {
             isLogin: false,
@@ -117,6 +117,11 @@ config(['$httpProvider', 'app',
                 global.popup.show = false;
             }
         };
+        global.fork = {
+            forkShare: '',
+            shareCount: 0,
+            showCount: false
+        };
         $rootScope.$on('popup', function($event, type, execFuction) {
             global.popup.type = type;
             if (type === 'login') {
@@ -136,11 +141,39 @@ config(['$httpProvider', 'app',
                     });
                 };
             }
+            if (type === 'fork') {
+                global.fork.change = function() {
+                    global.fork.shareCount = wordCount(global.fork.forkShare);
+                    global.fork.showCount = true;
+                };
+                global.fork.forkShare = '//@' + execFuction.share.user.name + ': ' + execFuction.share.content;
+                global.fork.submit = function() {
+                    var url = '/api/share/fork';
+                    if (global.fork.forkShare === '') {
+                        return false;
+                    }
+                    if (global.fork.shareCount > 140) {
+                        return false;
+                    }
+                    $http.post(url, {
+                        type: 'view',
+                        isFork: true,
+                        group: app.group._id,
+                        from: execFuction.share._id,
+                        content: global.fork.forkShare,
+                    }).success(function(data) {
+                        global.popup.show = false;
+                        execFuction.share.fork += 1;
+                    });
+                }; 
+
+            }
             global.popup.show = true;
         });
         global.isJoined = window.isJoined;
         global.isAdmin = window.isAdmin;
         global.isCreator = window.isCreator;
+        global.is_followed = window.is_followed;
         global.join = function() {
             if (!app.author) {
                 global.popup.type = 'login';
@@ -173,6 +206,24 @@ config(['$httpProvider', 'app',
             };
             $http.post(url, data).success(function(data) {
                 global.popup.show = false;
+            });
+        };
+        global.follow = function() {
+            var url = '/api/group/follow';
+            var data = {
+                id: app.group._id
+            };
+            $http.post(url,data).success(function(data) {
+                global.is_followed = true;
+            });
+        };
+        global.unfollow = function() {
+            var url = '/api/group/unfollow';
+            var data = {
+                id: app.group._id
+            };
+            $http.post(url,data).success(function(data) {
+                global.is_followed = false;
             });
         };
         $rootScope.current = {};

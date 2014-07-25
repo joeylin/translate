@@ -7,6 +7,9 @@ var GroupSchema = new Schema({
         type: Boolean,
         default: false
     },
+    intro: {
+        type: String
+    },
     id: {
         type: Number
     },
@@ -65,6 +68,7 @@ GroupSchema.statics.createNew = function(obj, cb) {
     group.creator = obj.creator;
     group.is_public = obj.is_public;
     group.announcement = obj.announcement;
+    group.intro = obj.intro;
     group.avatar = obj.avatar;
     group.industry = obj.industry;
     var IdGenerator = mongoose.model('IdGenerator');
