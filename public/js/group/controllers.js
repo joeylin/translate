@@ -38,6 +38,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             }
             $http.post(url, {
                 type: 'group',
+                toMyShare: $scope.toMyShare || '',
                 group: app.group._id,
                 content: $scope.newShare
             }).success(function(data) {

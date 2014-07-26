@@ -26,6 +26,11 @@
           <h4 class="media-heading">{{share.user.name}}</h4>
           <div>
             <p md-content="share.content"></p>
+            <div class="forkContent" ng-if="share.isFork">
+              <p md-content="share.from.title"></p>
+              <p md-content="share.from.share.content"></p>
+              <div class="date" style="color:#99a1a6;font-size:0.9em;">{{share.from.share.createAt | formatDate:true}}</div>
+            </div>
           </div>
           <div class="clearfix media-info">
             <!-- <i class="fa fa-fw fa-clock-o" style="margin-right:3px; color:#999;"></i> -->

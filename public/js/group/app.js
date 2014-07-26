@@ -144,29 +144,54 @@ config(['$httpProvider', 'app',
             if (type === 'fork') {
                 global.fork.change = function() {
                     global.fork.shareCount = wordCount(global.fork.forkShare);
-                    global.fork.showCount = true;
                 };
-                global.fork.forkShare = '//@' + execFuction.share.user.name + ': ' + execFuction.share.content;
+                if (execFuction.share.isFork) {
+                    global.fork.title = execFuction.share.from.title;
+                    global.fork.content = execFuction.share.from.content;
+                    global.fork.forkShare = '//@' + execFuction.share.user.name + ' ' + execFuction.share.content;
+                } else {
+                    global.fork.title = '@' + execFuction.share.user.name + ' 发布于 @' + app.group.name;  
+                    global.fork.content = execFuction.share.content;
+                    global.fork.date = execFuction.share.createAt;
+                    global.fork.forkShare = '';
+                }
+                
                 global.fork.submit = function() {
                     var url = '/api/share/fork';
-                    if (global.fork.forkShare === '') {
-                        return false;
-                    }
                     if (global.fork.shareCount > 140) {
                         return false;
                     }
-                    $http.post(url, {
-                        type: 'view',
-                        isFork: true,
-                        group: app.group._id,
-                        from: execFuction.share._id,
-                        content: global.fork.forkShare,
-                    }).success(function(data) {
-                        global.popup.show = false;
-                        execFuction.share.fork += 1;
-                    });
+                    if (execFuction.share.isFork) {
+                        $http.post(url, {
+                            type: 'view',
+                            isFork: true,
+                            from: execFuction.share.from,
+                            content: global.fork.forkShare
+                        }).success(function(data) {
+                            global.popup.show = false;
+                            execFuction.share.fork += 1;
+                        });
+                    } else {
+                        $http.post(url, {
+                            type: 'view',
+                            isFork: true,
+                            from: {
+                                share: execFuction.share._id,
+                                user: execFuction.share.user._id,
+                                group: app.group._id,
+                                title: global.fork.title
+                            },
+                            content: global.fork.forkShare || '转发'
+                        }).success(function(data) {
+                            global.popup.show = false;
+                            execFuction.share.fork += 1;
+                        });
+                    }    
                 }; 
-
+                global.fork.change();
+                setTimeout(function() {
+                    $('#forkText').focus();
+                },200);
             }
             global.popup.show = true;
         });

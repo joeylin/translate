@@ -332,7 +332,7 @@ var getTrends = function(req, res) {
             is_delete: false
         }).sort({
             createAt: -1
-        }).populate('user').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
+        }).populate('user').populate('from.share').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
             if (!trends) {
                 return res.send({
                     code: 200,
@@ -363,6 +363,16 @@ var getTrends = function(req, res) {
                         _id: item.user._id,
                         id: item.user.id
                     };
+                    result.isFork = item.isFork;
+                    if (item.isFork) {
+                        result.from = {
+                            title: item.from.title,
+                            share: {
+                                createAt: item.from.share.createAt,
+                                content: item.from.share.content
+                            }
+                        }
+                    }
                     result.liked = false;
                     item.likes.map(function(like) {
                         if (like.toString() == user._id.toString()) {

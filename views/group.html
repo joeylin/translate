@@ -466,6 +466,14 @@
             font-style: italic;
             font-size: 1.4em;
           }
+          .forkContent {
+            background-color: #ddd;
+            padding: 10px;
+            margin-bottom: 15px;
+          }
+          .forkContent > p{
+            margin-bottom: 5px;
+          }
           .input-search {
             position: relative;
             /*display: none;*/
@@ -631,12 +639,17 @@
               </div>
               <div class="white-popup-block" ng-if="global.popup.type == 'fork'" style="width:560px;">
                 <label style="margin-bottom:10px;">分享到我的好友圈 : </label>
+                <div class="forkContent">
+                  <p md-content="global.fork.title"></p>
+                  <p md-content="global.fork.content"></p>
+                  <div class="date" style="color:#99a1a6;font-size:0.9em;">{{global.fork.date | formatDate:true}}</div>
+                </div>
                 <div class="form-group newTopic">
-                    <textarea auto-height atwho="global.fork.userList" class="form-control" ng-model="global.fork.forkShare" ng-change="global.fork.change(global.fork.forkShare)"></textarea>
+                    <textarea auto-height atwho="global.fork.userList" class="form-control" ng-model="global.fork.forkShare" ng-change="global.fork.change(global.fork.forkShare)" id="forkText"></textarea>
                 </div>
                 <div class="clearfix">
-                  <span class="pull-left" ng-show="global.fork.shareCount <= 140 && global.fork.showCount">你还可以输入<span class="shareCount">{{140 - global.fork.shareCount}}</span> 字</span>
-                  <span class="pull-left" ng-show="global.fork.shareCount > 140 && global.fork.showCount">你已经超过<span class="shareCount" style="color:#E44443;">{{global.fork.shareCount - 140}}</span> 字</span>
+                  <span class="pull-left" ng-show="global.fork.shareCount <= 140">你还可以输入<span class="shareCount">{{140 - global.fork.shareCount}}</span> 字</span>
+                  <span class="pull-left" ng-show="global.fork.shareCount > 140">你已经超过<span class="shareCount" style="color:#E44443;">{{global.fork.shareCount - 140}}</span> 字</span>
                   <a class="btn btn-primary pull-right" role="button" ng-click="global.fork.submit()" ng-class="{'default': global.fork.forkShare === '' || (global.fork.shareCount > 140)}" style="padding-left:20px; padding-right:20px;">分享</a>
                 </div>
                 <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
@@ -738,8 +751,7 @@
               <a href="/group/<%= locals.group.id %>"><%= locals.group.name %></a><small><%= locals.group.industry %></small>
               <% if (locals.author) { %>
               <span class="pull-right follow" style="padding:0 10px;" ng-if="global.is_followed">
-                已关注<i class="fa fa-fw fa-caret-down" ng-click="followSet = !followSet"></i>
-                <span class="option" ng-show="followSet" ng-click="global.unfollow()">取消关注</span>
+                <span ng-click="global.unfollow()" style="cursor:pointer;">取消关注</span>
               </span>
               <span class="pull-right follow" style="padding:0 10px;" ng-if="!global.is_followed">
                 <span ng-click="global.follow();" style="cursor:pointer;">关注</span>
@@ -756,18 +768,6 @@
           <div class="col-md-2" ng-show="current.path === 'topic'" ng-cloak>
             <div class="well custom-well siderbar-nav group-avatar">
               <a href="#"><img src="<%= locals.group.avatar %>"></a>
-              <!-- <div class="group-desc">
-                <div class="row">
-                  <div class="col-md-6 text-center" style="padding-right:0">
-                    <div>20</div>
-                    <div>成员</div>
-                  </div>
-                  <div class="col-md-6 text-center" style="padding-left:0">
-                    <div>100</div>
-                    <div>关注</div>
-                  </div>
-                </div>
-              </div> -->
             </div>
             <div>
               <% if (locals.author && !locals.isJoined) { %>
@@ -782,13 +782,22 @@
               <div class="panel-heading" style="font-weight:700;">群名片</div>
               <div class="panel-body" style="padding-top:10px;">
                 <div class="members-desc">
-                  <span class="title">成员 : </span>
-                  <span><%= locals.group.admin.length + locals.group.members.length + 1 %>/50</span>
+                  <span class="title">关注 : </span>
+                  <span><%= locals.followCount %></span>
                 </div>
                 <div class="members-desc" style="margin-bottom:5px;">
-                  <span class="title">关注 : </span>
-                  <span><%= locals.group.admin.length + locals.group.members.length + 1 %>/50</span>
+                  <span class="title">成员 : </span>
+                  <span> <%= locals.group.admin.length + locals.group.members.length + 1 %> / 50</span>
                 </div>
+                <div class="members-desc">
+                  <span class="title" style="font-weight:700;">简介 : </span>
+                  <span> <%= locals.group.intro || '哦，还没有添加介绍' %></span>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default member-panel">
+              <div class="panel-heading" style="font-weight:700;">群成员</div>
+              <div class="panel-body" style="padding-top:10px;">
                 <div class="members-item">
                   <span class="title">【创建者】</span>
                   <a href="/profile/<%= locals.group.creator.id %>" target="_self"><%= locals.group.creator.name %></a>

@@ -76,9 +76,6 @@
           .media-info .date {
             color: #99a1a6;
           }
-          .media-info .media-control {
-            padding-right: 16px;
-          }
           .media-info .media-control .like {
             margin-right: 10px;
           }
@@ -91,12 +88,18 @@
           .news .panel-heading {
             border-bottom: 1px solid #ddd;
           }
+          .news .media {
+            padding-right: 2px;
+          }
           .news .panel-title {
             font-weight: 700;
             /*font-size: 18px;*/
           }
+          .news p {
+            margin-bottom: 6px;
+          }
           .reply-container {
-            margin: 15px 15px 0 0;
+            margin: 15px 0 0 0;
             padding: 15px;
             border: 1px solid #e3e3e3;
           }
@@ -343,6 +346,14 @@
           }
           .error {
             color: red;
+          }
+          .forkContent {
+            background-color: #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+          }
+          .forkContent > p {
+            margin-bottom: 5px;
           }
           /* for auto Height*/
           .comment-editor-inline .form-control {
@@ -656,11 +667,11 @@
                             <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
                         </a>
                         <ul class="dropdown-menu" class="request-container">
-                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
-                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
-                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
-                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
-                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
+                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} 好友请求</a></li>
+                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} 群消息</a></li>
+                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} 回复</a></li>
+                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} 评论</a></li>
+                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} @我</a></li>
                             <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">没有未处理的通知</li>
                         </ul>
                   </li>

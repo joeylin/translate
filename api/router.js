@@ -536,44 +536,51 @@ module.exports = function(app) {
             app.locals.isJoined = false;
             app.locals.isAdmin = false;
             app.locals.isCreator = false;
-            if (user) {
-                User.findOne({
-                    _id: user._id
-                }).exec(function(err, user) {
-                    var adminIndex = -1;
-                    var memberIndex = -1;
-                    if (group.creator._id.toString() == user._id) {
-                        app.locals.isCreator = true;
-                    }
-                    group.admin.map(function(item, key) {
-                        if (item._id.toString() == user._id) {
-                            adminIndex = key;
+
+            User.find({
+                'groups.follow': group._id
+            }).count().exec(function(err, count) {
+                app.locals.followCount = count || 0;
+                if (user) {
+                    User.findOne({
+                        _id: user._id
+                    }).exec(function(err, user) {
+                        var adminIndex = -1;
+                        var memberIndex = -1;
+                        if (group.creator._id.toString() == user._id) {
+                            app.locals.isCreator = true;
                         }
-                    });
-                    group.members.map(function(item, key) {
-                        if (item._id.toString() == user._id) {
-                            memberIndex = key;
+                        group.admin.map(function(item, key) {
+                            if (item._id.toString() == user._id) {
+                                adminIndex = key;
+                            }
+                        });
+                        group.members.map(function(item, key) {
+                            if (item._id.toString() == user._id) {
+                                memberIndex = key;
+                            }
+                        });
+                        if (adminIndex > -1) {
+                            app.locals.isAdmin = true;
                         }
-                    });
-                    if (adminIndex > -1) {
-                        app.locals.isAdmin = true;
-                    }
-                    if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
-                        app.locals.isJoined = true;
-                    }
-                    app.locals.is_followed = false;
-                    user.groups.follow.map(function(item, key) {
-                        if (item.toString() == group._id) {
-                            app.locals.is_followed = true;
-                            return false;
+                        if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
+                            app.locals.isJoined = true;
                         }
-                    });
-                    app.locals.author = user;
+                        app.locals.is_followed = false;
+                        user.groups.follow.map(function(item, key) {
+                            if (item.toString() == group._id) {
+                                app.locals.is_followed = true;
+                                return false;
+                            }
+                        });
+                        app.locals.author = user;
+                        res.render('group');
+                    });    
+                } else {
                     res.render('group');
-                });    
-            } else {
-                res.render('group');
-            }
+                }
+            });
+                
             
         });
     };

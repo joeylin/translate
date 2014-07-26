@@ -88,19 +88,35 @@ var addShare = function(req, res) {
     var user = req.session.user;
     var share = req.body;
     share.user = user._id;
-    Share.createNew(share, function(err, data) {
-        res.send({
-            code: 200,
-            content: {
-                createAt: data.createAt.getTime(),
-                _id: data._id
-            }
+    if (share.toMyShare) {
+        Share.createNew(share, function(err, data) {
+            share.type = 'view';
+            share.group = undefined;
+            Share.createNew(share, function(err) {
+                res.send({
+                    code: 200,
+                    content: {
+                        createAt: data.createAt.getTime(),
+                        _id: data._id
+                    }
+                });
+            });
         });
-    });
+    } else {
+        Share.createNew(share, function(err, data) {
+            res.send({
+                code: 200,
+                content: {
+                    createAt: data.createAt.getTime(),
+                    _id: data._id
+                }
+            });
+        });
+    }
 };
 var forkShare = function(req, res) {
     var user = req.session.user;
-    var id = req.body.from;
+    var id = req.body.from.share;
     var shareObj = req.body;
     shareObj.user = user._id;
     Share.findOne({

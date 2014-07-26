@@ -162,9 +162,9 @@ var follow = function(req, res) {
                 info: 'has followed'
             });
         } 
-        user.groups.follow.push(user._id);
+        user.groups.follow.push(id);
         user.markModified('user.groups.follow');
-        user.save(function(err) {
+        user.save(function(err, user) {
             res.send({
                 code: 200
             });
@@ -180,7 +180,7 @@ var unfollow = function(req, res) {
         var index = -1;
         user.groups.follow.map(function(item, key) {
             if (item.toString() == id) {
-                index = -1;
+                index = key;
                 return false;
             }
         });

@@ -24,8 +24,21 @@ var ShareSchema = new Schema({
         default: 0
     },
     from: {
-        type: ObjectId,
-        ref: 'Share'
+        share: {
+            type: ObjectId,
+            ref: 'Share'
+        },
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        group: {
+            type: ObjectId,
+            ref: 'Group'
+        },
+        title: {
+            type: String
+        } 
     },
     isFork: {
         type: Boolean,
