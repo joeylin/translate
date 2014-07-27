@@ -59,6 +59,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 $scope.shareList = data.content;
                 $scope.pager.hasNext = data.hasNext;
                 $scope.total = data.count;
+                $scope.groupUpdate = data.groupUpdate || 0;
+
+                if ($scope.groupUpdate > 0) {
+                    $scope.showCircle = true;
+                }
             });
         };
         var getMyShare = function() {

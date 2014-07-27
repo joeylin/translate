@@ -15,9 +15,9 @@
   </div>
   <div class="panel news">
     <div class="panel-body" ng-cloak>
-      <div class="alert alert-info clearfix" role="alert" style="padding:7px 10px 7px 30px;margin-bottom:7px;margin-left:0;" ng-show="!hideCircle">
-        你关注的圈子有 10 条更新，<a href="/groupTrends" class="alert-link" target="_self">快去查看哦</a>
-        <a href="" class="pull-right" ng-click="hideCircle = true;"><i class="fa fa-fw fa-times"></i></a>
+      <div class="alert alert-info clearfix" role="alert" style="padding:7px 10px 7px 30px;margin-bottom:7px;margin-left:0;" ng-show="showCircle">
+        你关注的圈子有 {{groupUpdate}} 条更新，<a href="/groupTrends" class="alert-link" target="_self">快去查看哦</a>
+        <a href="" class="pull-right" ng-click="showCircle = false;"><i class="fa fa-fw fa-times"></i></a>
       </div>
       <div class="media" ng-repeat-start="share in shareList">
         <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">

@@ -398,19 +398,26 @@ var getTrends = function(req, res) {
                 }
 
                 // get groupTrends update count
+                var follow = [];
+                user.groups.follow.map(function(item) {
+                    follow.push(item.toString());
+                });
                 var groupQuery = {
+                    group: {
+                        $in: follow
+                    },
+                    is_delete: false,
 
                 };
-                Share.find(groupQuery).count().exec(function(err,groupCount) {
+                Share.find(groupQuery).count().exec(function(err, groupUpdate) {
                     res.send({
                         code: 200,
                         count: count,
-                        groupCount: groupCount,
+                        groupUpdate: groupUpdate,
                         hasNext: hasNext,
                         content: content
-                    });
-                });
-                    
+                    });   
+                });                                     
             });
         });
     });
