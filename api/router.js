@@ -634,12 +634,14 @@ module.exports = function(app) {
     app.get('/home', middleware.check_login, getHome);
     app.get('/message', middleware.check_login, getHome);
     app.get('/company', middleware.check_login, getHome);
+    app.get('/groupTrends', middleware.check_login, getHome);
     app.get('/share', middleware.check_login, getHome);
     app.get('/job', middleware.check_login, getHome);
     app.get('/people', middleware.check_login, getHome);
     app.get('/myPeople', middleware.check_login, getHome);
     app.get('/myCompany', middleware.check_login, getHome);
     app.get('/myShare', middleware.check_login, getHome);
+    app.get('/myCollect', middleware.check_login, getHome);
     app.get('/myJob', middleware.check_login, getHome);
     app.get('/mySending', middleware.check_login, getHome);
     app.get('/myGroup', middleware.check_login, getHome);

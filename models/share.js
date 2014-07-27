@@ -105,8 +105,13 @@ var ShareSchema = new Schema({
     }],
     // common
     collects: [{
-        type: ObjectId,
-        ref: 'User'
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        date: {
+            type: Date
+        }
     }],
     likes: [{
         type: ObjectId,

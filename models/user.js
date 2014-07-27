@@ -122,6 +122,10 @@ var UserSchema = new Schema({
             ref: 'Group'
         }]
     },
+    visit: {
+        home: Date,
+        groupTrends: Date
+    }, 
 
     // company 
     phase: String,
@@ -312,6 +316,7 @@ UserSchema.statics.joinGroup = function(id, groupId, cb) {
             cb(null, null);
         }
         user.groups.join.push(groupId);
+        user.groups.follow.push(groupId);
         user.save(cb);
     });
 };

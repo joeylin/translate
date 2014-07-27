@@ -296,50 +296,6 @@ var shareUnlike = function(req, res) {
         });
     });
 };
-var collectShare = function(req, res) {
-    var user = req.session.user;
-    var shareId = req.body.shareId;
-    User.findOne({
-        _id: user._id
-    }, function(err, user) {
-        var index = user.collects.share.indexOf(shareId);
-        if (index >= 0) {
-            return res.send({
-                code: 404,
-                info: 'has collected'
-            });
-        }
-        user.collects.share.push(shareId);
-        user.save(function(err) {
-            res.send({
-                code: 200,
-                info: 'success'
-            });
-        });
-    });
-};
-var unCollectShare = function(req, res) {
-    var user = req.session.user;
-    var shareId = req.body.shareId;
-    User.findOne({
-        _id: user._id
-    }, function(err, user) {
-        var index = user.collects.share.indexOf(shareId);
-        if (index < 0) {
-            return res.send({
-                code: 404,
-                info: 'never collected'
-            });
-        }
-        user.collects.share.splice(index, 1);
-        user.save(function(err) {
-            res.send({
-                code: 200,
-                info: 'success'
-            });
-        });
-    });
-};
 
 //jobs
 var getJobById = function(req, res) {
@@ -715,8 +671,6 @@ var getPostJobList = function(req, res) {
 };
 
 module.exports = function(app) {
-    app.post('/api/share/collect', middleware.check_login, collectShare);
-    app.post('/api/share/uncollect', middleware.check_login, unCollectShare);
     app.post('/api/share/unlike', middleware.check_login, shareUnlike);
     app.post('/api/share/like', middleware.check_login, shareLike);
     app.post('/api/share/delete', middleware.check_login, deleteShare);

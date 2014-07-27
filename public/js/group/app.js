@@ -118,9 +118,11 @@ config(['$httpProvider', 'app',
             }
         };
         global.fork = {
+            userName: '',
+            groupName: '',
+            groupId: '',
             forkShare: '',
-            shareCount: 0,
-            showCount: false
+            shareCount: 0
         };
         $rootScope.$on('popup', function($event, type, execFuction) {
             global.popup.type = type;
@@ -146,11 +148,17 @@ config(['$httpProvider', 'app',
                     global.fork.shareCount = wordCount(global.fork.forkShare);
                 };
                 if (execFuction.share.isFork) {
-                    global.fork.title = execFuction.share.from.title;
+                    global.fork.userName = execFuction.share.from.user.name;
+                    global.fork.userId = execFuction.share.from.user.id;
+                    global.fork.groupName = execFuction.share.from.group.name;
+                    global.fork.groupId = execFuction.share.from.group.id;
                     global.fork.content = execFuction.share.from.content;
                     global.fork.forkShare = '//@' + execFuction.share.user.name + ' ' + execFuction.share.content;
                 } else {
-                    global.fork.title = '@' + execFuction.share.user.name + ' 发布于 @' + app.group.name;  
+                    global.fork.userName = execFuction.share.user.name;
+                    global.fork.userId = execFuction.share.user.id;
+                    global.fork.groupName = app.group.name;
+                    global.fork.groupId = app.group.id;  
                     global.fork.content = execFuction.share.content;
                     global.fork.date = execFuction.share.createAt;
                     global.fork.forkShare = '';
@@ -178,8 +186,7 @@ config(['$httpProvider', 'app',
                             from: {
                                 share: execFuction.share._id,
                                 user: execFuction.share.user._id,
-                                group: app.group._id,
-                                title: global.fork.title
+                                group: app.group._id
                             },
                             content: global.fork.forkShare || '转发'
                         }).success(function(data) {

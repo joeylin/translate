@@ -42,6 +42,11 @@ constant('app', {
             controller: 'companyCtrl',
             path: 'company'
         };
+        var groupTrends = {
+            templateUrl: getFileProvider.html('groupTrends.html'),
+            controller: 'groupTrendsCtrl',
+            path: 'groupTrends'
+        };
         var message = {
             templateUrl: getFileProvider.html('message.html'),
             controller: 'messageCtrl',
@@ -56,6 +61,11 @@ constant('app', {
             templateUrl: getFileProvider.html('myShare.html'),
             controller: 'newsCtrl',
             path: 'myShare'
+        };
+        var myCollect = {
+            templateUrl: getFileProvider.html('myCollect.html'),
+            controller: 'newsCtrl',
+            path: 'myCollect'
         };
         var myJob = {
             templateUrl: getFileProvider.html('myJob.html'),
@@ -124,9 +134,11 @@ constant('app', {
         when('/share', share).
         when('/job', job).
         when('/company', company).
+        when('/groupTrends', groupTrends).
         when('/myPeople', myPeople).
         when('/myGroup', myGroup).
         when('/myShare', myShare).
+        when('/myCollect', myCollect).
         when('/myJob', myJob).
         when('/jobs/new', newJob).
         when('/jobs/:id/edit', editJob).

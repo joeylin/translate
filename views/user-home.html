@@ -75,12 +75,33 @@
           }
           .media-info .date {
             color: #99a1a6;
+            font-size: 0.9em;
           }
           .media-info .media-control .like {
             margin-right: 10px;
           }
           .media-info .media-control .liked i {
             color: rgb(51, 51, 51);
+          }
+          .media-info .collect {
+            margin-right: 10px;
+            font-size: 0.9em;          }
+          .media-info .toMyFriends {
+            margin-right: 10px;
+            font-size: 0.9em;
+          }
+          .media-info .collect a,
+          .media-info .toMyFriends a {
+            color: #99a1a6;
+          }
+          .media-info .collect a:hover,
+          .media-info .toMyFriends a:hover {
+            color: #72AFD2;;
+          }
+          .media-info .pull-left {
+            position: relative;
+            top: 1px;
+            margin-right: 10px;
           }
           .pager li>a {
             border-radius: 3px;
@@ -348,9 +369,10 @@
             color: red;
           }
           .forkContent {
-            background-color: #ddd;
-            padding: 10px;
+            background-color: #f5f5f5;
+            padding: 15px;
             margin-bottom: 10px;
+            border-radius: 6px;
           }
           .forkContent > p {
             margin-bottom: 5px;
@@ -525,6 +547,8 @@
             cursor: pointer;
           }
 
+          /* groupTrends */
+
           /* optimze */
           .shareCount {
             font-style: italic;
@@ -534,23 +558,28 @@
             margin-top: 0;
             margin-bottom: 15px;
           }
-          .extend-friends .media-body {
+          .extend-friends .media-body,
+          .myCollect .media-body {
             position: relative;
           }
-          .extend-friends .hover-tag {
+          .extend-friends .hover-tag,
+          .myCollect .hover-tag {
             display: none;
             position: absolute;
             top: 0;
             right: 0;
             color: #999;
           }
-          .extend-friends .hover-tag:hover {
+          .extend-friends .hover-tag:hover,
+          .myCollect .hover-tag:hover {
             background: #9C9C9C;
             color: #FFF !important;
           }
-          .extend-friends .media:hover .hover-tag {
+          .extend-friends .media:hover .hover-tag,
+          .myCollect .media:hover .hover-tag {
             display: block;
           }
+
           a.unStyle {
             color: rgb(51, 51, 51);
           }
@@ -628,6 +657,13 @@
           }
           .navbar {
             border-radius: 0px;
+          }
+          /* reset magnific popup */
+          .fork-popup .mfp-container:before {
+            content: '';
+            display: inline-block;
+            height: 20%;
+            vertical-align: middle;
           }
           
         </style>
@@ -735,9 +771,11 @@
                     <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>圈子</a></li>
                     <li ng-class="{active: ['job','myJob','newJob','editJob','mySending'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>职位</a></li>
                     <li ng-class="{active: ['connect','group','reply','comment','at','all'].indexOf(current.path) >= 0}"><a ng-href="/request/all"><i class="fa fa-fw fa-info-circle"></i>通知</a></li>
+                    <li ng-class="{active: current.path === 'groupTrends'}"><a ng-href="/groupTrends"><i class="fa fa-fw fa-rocket"></i>圈动态</a></li>
                     <!-- <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li> -->
                     <li ng-class="{active: current.path === 'myPeople' || current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>人脉</a></li>
                     <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>我的微说</a></li>
+                    <li ng-class="{active: current.path === 'myCollect'}"><a ng-href="/myCollect"><i class="fa fa-fw fa-asterisk"></i>我的收藏</a></li>
                     <!-- <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li> -->
                     
                   </ul>

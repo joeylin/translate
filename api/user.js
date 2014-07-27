@@ -332,7 +332,9 @@ var getTrends = function(req, res) {
             is_delete: false
         }).sort({
             createAt: -1
-        }).populate('user').populate('from.share').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
+        }).populate('user').populate('from.share')
+        .populate('from.user').populate('from.group')
+        .skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
             if (!trends) {
                 return res.send({
                     code: 200,
@@ -366,7 +368,14 @@ var getTrends = function(req, res) {
                     result.isFork = item.isFork;
                     if (item.isFork) {
                         result.from = {
-                            title: item.from.title,
+                            user: {
+                                name: item.from.user.name,
+                                id: item.from.user.id
+                            },
+                            group: {
+                                name: item.from.group.name,
+                                id: item.from.group.id
+                            },
                             share: {
                                 createAt: item.from.share.createAt,
                                 content: item.from.share.content
@@ -387,12 +396,21 @@ var getTrends = function(req, res) {
                 } else {
                     hasNext = false;
                 }
-                res.send({
-                    code: 200,
-                    count: count,
-                    hasNext: hasNext,
-                    content: content
+
+                // get groupTrends update count
+                var groupQuery = {
+
+                };
+                Share.find(groupQuery).count().exec(function(err,groupCount) {
+                    res.send({
+                        code: 200,
+                        count: count,
+                        groupCount: groupCount,
+                        hasNext: hasNext,
+                        content: content
+                    });
                 });
+                    
             });
         });
     });
@@ -553,7 +571,8 @@ var getMyShare = function(req, res) {
         user: user._id,
         type: 'view',
         is_delete: false
-    }).sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+    }).populate('from.share').populate('from.user').populate('from.group')
+    .sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
         Share.find({
             user: user._id,
             type: 'view',
@@ -576,6 +595,23 @@ var getMyShare = function(req, res) {
                     _id: item.user._id,
                     id: item.user.id
                 };
+                result.isFork = item.isFork;
+                if (item.isFork) {
+                    result.from = {
+                        user: {
+                            name: item.from.user.name,
+                            id: item.from.user.id
+                        },
+                        group: {
+                            name: item.from.group.name,
+                            id: item.from.group.id
+                        },
+                        share: {
+                            createAt: item.from.share.createAt,
+                            content: item.from.share.content
+                        }
+                    }
+                }
                 result.liked = false;
                 item.likes.map(function(like) {
                     if (like.toString() == user._id.toString()) {
@@ -634,12 +670,178 @@ var myShareSearch = function(req, res) {
                     _id: item.user._id,
                     id: item.user.id
                 };
+                result.isFork = item.isFork;
+                if (item.isFork) {
+                    result.from = {
+                        user: {
+                            name: item.from.user.name,
+                            id: item.from.user.id
+                        },
+                        group: {
+                            name: item.from.group.name,
+                            id: item.from.group.id
+                        },
+                        share: {
+                            createAt: item.from.share.createAt,
+                            content: item.from.share.content
+                        }
+                    }
+                }
                 result.liked = false;
                 item.likes.map(function(like) {
                     if (like.toString() == user._id.toString()) {
                         result.liked = true;
                     }
                 });
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });
+        });
+    });
+};
+var getMyCollect = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var query = {
+        'collects.user': user._id,
+        is_delete: false
+    };
+    Share.find(query).populate('group').populate('user')
+    .populate('from.share').populate('from.user').populate('from.group')
+    .sort('-collects.date').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            shares.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.comments = item.comments;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.date = item.date;
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                if (item.group) {
+                    result.group = {
+                        name: item.group.name,
+                        id: item.group.id,
+                        _id: item.group._id,
+                        avatar: item.group.avatar
+                    };
+                }
+                result.isFork = item.isFork;
+                if (item.isFork) {
+                    result.from = {
+                        user: {
+                            name: item.from.user.name,
+                            id: item.from.user.id
+                        },
+                        group: {
+                            name: item.from.group.name,
+                            id: item.from.group.id
+                        },
+                        share: {
+                            createAt: item.from.share.createAt,
+                            content: item.from.share.content
+                        }
+                    }
+                }
+                result.liked = false;
+                item.likes.map(function(like) {
+                    if (like.toString() == user._id.toString()) {
+                        result.liked = true;
+                    }
+                });
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });
+        });
+    });
+};
+var myCollectSearch = function(req, res) {
+    var user = req.session.user;
+    var keyword = req.query.keyword;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var re = new RegExp(keyword, 'ig');
+    var query = {
+        'collects.user': user._id,
+        is_delete: false,
+        content: re
+    };
+    Share.find(query).populate('group').populate('user')
+    .populate('from.share').populate('from.user').populate('from.group')
+    .sort('-collects.date').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            shares.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.comments = item.comments;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.date = item.date;
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                result.liked = false;
+                item.likes.map(function(like) {
+                    if (like.toString() == user._id.toString()) {
+                        result.liked = true;
+                    }
+                });
+                result.isFork = item.isFork;
+                if (item.isFork) {
+                    result.from = {
+                        user: {
+                            name: item.from.user.name,
+                            id: item.from.user.id
+                        },
+                        group: {
+                            name: item.from.group.name,
+                            id: item.from.group.id
+                        },
+                        share: {
+                            createAt: item.from.share.createAt,
+                            content: item.from.share.content
+                        }
+                    }
+                }
                 result.likes = item.likes.length;
                 content.push(result);
             });
@@ -1364,7 +1566,7 @@ var collect = function(req, res) {
     }).exec(function(err, share) {
         var index = -1;
         share.collects.map(function(item, key) {
-            if (item.toString() == user._id) {
+            if (item.user.toString() == user._id) {
                 index = key;
                 return false;
             }
@@ -1375,7 +1577,10 @@ var collect = function(req, res) {
                 info: 'has collected'
             });
         }
-        share.collects.push(user._id);
+        share.collects.push({
+            user: user._id,
+            date: new Date()
+        });
         share.save(function(err) {
             res.send({
                 code: 200
@@ -1392,7 +1597,7 @@ var unCollect = function(req, res) {
     }).exec(function(err, share) {
         var index = -1;
         share.collects.map(function(item, key) {
-            if (item.toString() == user._id) {
+            if (item.user.toString() == user._id) {
                 index = key;
                 return false;
             }
@@ -1410,53 +1615,6 @@ var unCollect = function(req, res) {
             });
         });
     });
-};
-var getMyCollectShare = function(req, res) {
-    var user = req.session.user;
-    var page = req.query.page || 1;
-    var perPageItems = 30;
-    
-    Share.find(query).populate('user').populate('group').exec(function(err, shares) {
-        Share.find(query).count().exec(function(err, count) {
-            var content = [];
-            var hasNext;
-            shares.map(function(item, key) {
-                var result = {};
-                result.type = 'view';
-                result._id = item._id;
-                result.comments = item.comments;
-                result.content = item.content;
-                result.createAt = item.createAt.getTime();
-                result.date = item.date;
-                result.id = item.id;
-                result.user = {
-                    name: item.user.name,
-                    avatar: item.user.avatar,
-                    _id: item.user._id,
-                    id: item.user.id
-                };
-                result.liked = false;
-                item.likes.map(function(like) {
-                    if (like.toString() == user._id.toString()) {
-                        result.liked = true;
-                    }
-                });
-                result.likes = item.likes.length;
-                content.push(result);
-            });
-            if ((page - 1) * perPageItems + content.length < count) {
-                hasNext = true;
-            } else {
-                hasNext = false;
-            }
-            res.send({
-                code: 200,
-                count: count,
-                hasNext: hasNext,
-                content: content
-            });
-        });
-    })
 };
 
 var getMysending = function(req, res) {
@@ -1704,8 +1862,7 @@ module.exports = function(app) {
     app.get('/api/user/id', middleware.check_login, searchById);
     app.get('/api/user/sending', middleware.check_login, getMysending);
     app.get('/api/user/jobrecommend', middleware.check_login, getJobRecommend);
-    app.get('/api/user/mycollects', middleware.check_login, getMyCollectShare);
-
+    
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);
     app.post('/api/user/unlike', middleware.check_login, companyUnlike);
@@ -1713,7 +1870,9 @@ module.exports = function(app) {
     app.post('/api/user/unfollow', middleware.check_login, companyUnfollow);
     app.get('/api/user/companyActive', getCompanyActive);
 
-    // collects
+    // collect
+    app.get('/api/user/myCollect', middleware.check_login, getMyCollect);
+    app.get('/api/user/myCollect/search', middleware.check_login, myCollectSearch);
     app.post('/api/user/collect', middleware.check_login, collect);
     app.post('/api/user/uncollect', middleware.check_login, unCollect);
 

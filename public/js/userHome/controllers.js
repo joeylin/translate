@@ -119,6 +119,24 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 });
             }
         };
+        $scope.vm.toggleCollect = function(share) {
+            var url;
+            if (share.has_collect) {
+                url = '/api/user/uncollect';
+                $http.post(url, {
+                    id: share._id
+                }).success(function(data) {
+                    share.has_collect = false;
+                });
+            } else {
+                url = '/api/user/collect';
+                $http.post(url, {
+                    id: share._id
+                }).success(function(data) {
+                    share.has_collect = true;
+                });
+            }
+        };
         $scope.vm.toggleComment = function(share) {
             share.isShowComment = !share.isShowComment;
             if (share.isShowComment) {
@@ -221,12 +239,56 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             getMyShare();
         };
 
+        // for mycollect
+        var getMyCollect = function() {
+            url = '/api/user/myCollect';
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.shareList = data.content;
+                $scope.hasNext = data.hasNext;
+                $scope.total = data.count;
+                $scope.collect.isSearch = false;
+            });
+        };
+        $scope.collect = {};
+        $scope.collect.isSearch = false;
+        $scope.collect.searchName = '';
+        $scope.collect.enter = function() {
+            url = '/api/user/myCollect/search';
+            params.keyword = $scope.collect.searchName;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.shareList = data.content;
+                $scope.hasNext = data.hasNext;
+                $scope.total = data.count;
+                $scope.collect.isSearch = true;
+            });
+        };
+        $scope.collect.cancel = function(share) {
+            var url = '/api/user/uncollect';
+            $http.post(url, {
+                id: share._id
+            }).success(function(data) {
+                var index = $scope.shareList.indexOf(share);
+                $scope.shareList.splice(index,1);
+            });
+        };
+        $scope.collect.getAll = function() {
+            getMyCollect();
+        }
+
         // init
         if ($rootScope.current.path === 'news') {
             getTrend();
             getUserList();
-        } else {
+        } 
+        if ($rootScope.current.path === 'myShare') {
             getMyShare();
+        }
+        if ($rootScope.current.path === 'myCollect') {
+            getMyCollect();
         }
     }
 ]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
@@ -1144,6 +1206,228 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         };
 
         getGroup();
+    }
+]).controller('groupTrendsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 'wordCount',
+    function(app, $scope, $routeParams, $location, $http, $rootScope, wordCount) {
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
+        $scope.shareList = [];
+        $scope.total = 0;
+        var url = '/api/group/trends';
+        var params = {
+            page: 1
+        };
+        var getTrend = function() {
+            $http.get(url, {
+                params: params,
+            }).success(function(data) {
+                $scope.shareList = data.content;
+                $scope.pager.hasNext = data.hasNext;
+                $scope.total = data.count;
+            });
+        };
+        $scope.next = function() {
+            if (!$scope.pager.hasNext) {
+                return false;
+            }
+            $scope.pager.current += 1;
+            params.page = $scope.pager.current;
+            getTrend();
+        };
+        $scope.prev = function() {
+            if ($scope.pager.current <= 1) {
+                return false;
+            }
+            $scope.pager.current -= 1;
+            params.page = $scope.pager.current;
+            getTrend();
+        };
+
+        // share item && item comments
+        $scope.vm = {};
+        $scope.vm.toggleLike = function(share) {
+            var url;
+            if (share.liked) {
+                url = '/api/share/unlike';
+                $http.post(url, {
+                    shareId: share._id
+                }).success(function(data) {
+                    share.liked = false;
+                    share.likes -= 1;
+                });
+            } else {
+                url = '/api/share/like';
+                $http.post(url, {
+                    shareId: share._id
+                }).success(function(data) {
+                    share.liked = true;
+                    share.likes += 1;
+                });
+            }
+        };
+        $scope.vm.toggleCollect = function(share) {
+            var url;
+            if (share.has_collect) {
+                url = '/api/user/uncollect';
+                $http.post(url, {
+                    id: share._id
+                }).success(function(data) {
+                    share.has_collect = false;
+                });
+            } else {
+                url = '/api/user/collect';
+                $http.post(url, {
+                    id: share._id
+                }).success(function(data) {
+                    share.has_collect = true;
+                });
+            }
+        };
+        $scope.fork = {
+            open: false,
+            shareCount: 0,
+            share: null,
+            close: function() {
+                $scope.fork.open = false;
+            }
+        };
+        $scope.fork.change = function() {
+            $scope.fork.shareCount = wordCount($scope.fork.forkShare);
+        };   
+        $scope.fork.submit = function() {
+            var url = '/api/share/fork';
+            if ($scope.fork.shareCount > 140) {
+                return false;
+            }
+            if ($scope.fork.share.isFork) {
+                $http.post(url, {
+                    type: 'view',
+                    isFork: true,
+                    from: $scope.fork.share.from,
+                    content: $scope.fork.forkShare
+                }).success(function(data) {
+                    $scope.fork.open = false;
+                    $scope.fork.share.fork += 1;
+                });
+            } else {
+                $http.post(url, {
+                    type: 'view',
+                    isFork: true,
+                    from: {
+                        share: $scope.fork.share._id,
+                        user: $scope.fork.share.user._id,
+                        group: $scope.fork.share.group._id,
+                        title: $scope.fork.title
+                    },
+                    content: $scope.fork.forkShare || '转发'
+                }).success(function(data) {
+                    $scope.fork.open = false;
+                    $scope.fork.share.fork += 1;
+                });
+            }
+        };
+        $scope.vm.forkPopup = function(share) {
+            $scope.fork.open = true;
+            $scope.fork.share = share;
+
+            if (share.isFork) {
+                $scope.fork.userName = share.from.user.name;
+                $scope.fork.userId = share.from.user.id;
+                $scope.fork.groupName = share.from.group.name;
+                $scope.fork.groupId = share.from.group.id;
+                $scope.fork.content = share.from.content;
+                $scope.fork.forkShare = '//@' + share.user.name + ' ' + share.content;
+            } else {
+                $scope.fork.userName = share.user.name;
+                $scope.fork.userId = share.user.id;
+                $scope.fork.groupName = share.group.name;
+                $scope.fork.groupId = share.group.id; 
+                $scope.fork.content = share.content;
+                $scope.fork.date = share.createAt;
+                $scope.fork.forkShare = '';
+            }
+            $scope.fork.change();
+            setTimeout(function() {
+                $('#forkText').focus();
+            },200);
+        };
+        $scope.vm.toggleComment = function(share) {
+            share.isShowComment = !share.isShowComment;
+            if (share.isShowComment) {
+                var params = {
+                    shareId: share._id
+                };
+                var url = '/api/share/comments';
+                $http.get(url, {
+                    params: params
+                }).success(function(data) {
+                    share.comments = data.comments;
+                });
+            }
+        };
+        $scope.vm.submitComment = function(share) {
+            if (share.newComment === '') {
+                return false;
+            }
+            var url = '/api/share/comments/add';
+            $http.post(url, {
+                shareId: share._id,
+                content: share.newComment,
+                replyTo: share.replyTo
+            }).success(function(data) {
+                var comment = {
+                    user: app.user,
+                    content: share.newComment,
+                    replyTo: share.replyTo,
+                    _id: data.content._id,
+                    date: data.content.createAt
+                };
+                share.comments.unshift(comment);
+                share.newComment = '';
+            });
+        };
+        $scope.vm.delete = function(comment, share) {
+            var index = share.comments.indexOf(comment);
+            var url = '/api/share/comments/delete';
+            $http.post(url, {
+                shareId: share._id,
+                commentIndex: index
+            }).success(function(data) {
+                share.comments.splice(index, 1);
+            });
+        };
+        $scope.vm.reply = function(comment) {
+            comment.isShowReply = !comment.isShowReply;
+            if (comment.isShowReply) {
+                comment.newComment = '@' + comment.user.name + ' ';
+            }
+        };
+        $scope.vm.submitInlineComment = function(comment, share) {
+            if (comment.newComment === '') {
+                return false;
+            }
+            var url = '/api/share/comments/add';
+            $http.post(url, {
+                shareId: share._id,
+                content: comment.newComment,
+                replyTo: comment.user._id
+            }).success(function(data) {
+                var result = {
+                    user: app.user,
+                    content: comment.newComment,
+                    replyTo: comment.user._id,
+                    _id: data.content._id,
+                    date: data.content.createAt
+                };
+                share.comments.unshift(result);
+                comment.isShowReply = false;
+            });
+        };
+
+        // init
+        getTrend();
     }
 ]).controller('newJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {

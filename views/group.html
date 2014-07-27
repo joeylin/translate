@@ -640,7 +640,7 @@
               <div class="white-popup-block" ng-if="global.popup.type == 'fork'" style="width:560px;">
                 <label style="margin-bottom:10px;">分享到我的好友圈 : </label>
                 <div class="forkContent">
-                  <p md-content="global.fork.title"></p>
+                  <p><a href="/profile/{{global.fork.userId}}" target="_self">{{'@' + global.fork.userName}}</a> 发布于 <a href="/group/{{global.fork.groupId}}" target="_self">{{global.fork.groupName}}</a></p>
                   <p md-content="global.fork.content"></p>
                   <div class="date" style="color:#99a1a6;font-size:0.9em;">{{global.fork.date | formatDate:true}}</div>
                 </div>
@@ -761,6 +761,15 @@
               <% if (locals.isJoined) { %>
               <a href="/group/<%= locals.group.id %>/settings" type="button" class="pull-right manage" target="_self">设置</a>
               <% } %>
+
+              <% if (locals.author && !locals.isJoined) { %>
+              <a  href="#" type="button" class="pull-right manage" ng-click="global.join()">申请加入</a>
+              <% } %>
+              <% if (!locals.author) { %>
+              <a  href="#" type="button" class="pull-right manage" ng-click="global.join()">
+              申请加入</a>
+              <% } %>
+
             </h3>
           </div>
         </div>
@@ -769,7 +778,7 @@
             <div class="well custom-well siderbar-nav group-avatar">
               <a href="#"><img src="<%= locals.group.avatar %>"></a>
             </div>
-            <div>
+            <!-- <div>
               <% if (locals.author && !locals.isJoined) { %>
               <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">加入该群</a>
               <% } %>
@@ -777,7 +786,7 @@
               <a  href="#" type="button" class="group-op-btn btn-block" ng-click="global.join()">
               加入该群</a>
               <% } %>
-            </div>
+            </div> -->
             <div class="panel panel-default member-panel">
               <div class="panel-heading" style="font-weight:700;">群名片</div>
               <div class="panel-body" style="padding-top:10px;">

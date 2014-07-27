@@ -343,7 +343,7 @@ var getPost = function(req, res) {
                 result.has_collect = false;
                 if (user) {
                     item.collects.map(function(collect) {
-                        if (collect.toString() == user._id.toString()) {
+                        if (collect.user.toString() == user._id.toString()) {
                             result.has_collect = true;
                         }
                     });
@@ -686,6 +686,98 @@ var groupPostSearch = function(req, res) {
         });
     });
 };
+var getTrends = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var size = req.query.size || 20;
+
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        var follow = [];
+        user.groups.follow.map(function(item) {
+            follow.push(item.toString());
+        });
+        var query = {
+            group: {
+                $in: follow
+            },
+            is_delete: false
+        };
+        Share.find(query).populate('user').populate('group').populate('from.share')
+        .populate('from.user')
+        .populate('from.group')
+        .sort('-createAt').skip((page - 1) * size).limit(size).exec(function(err, shares) {
+            if (!shares) {
+                return res.send({
+                    code: 200,
+                    content: [],
+                    hasNext: false,
+                    count: 0,
+                    info: 'no share'
+                });
+            }
+            Share.find(query).count().exec(function(err, count) {
+                var content = [];
+                var hasNext;
+                shares.map(function(item, key) {
+                    var result = {};
+                    result.type = 'view';
+                    result._id = item._id;
+                    result.comments = item.comments;
+                    result.content = item.content;
+                    result.createAt = item.createAt.getTime();
+                    result.id = item.id;
+                    result.fork = item.fork;
+                    result.user = {
+                        name: item.user.name,
+                        avatar: item.user.avatar,
+                        _id: item.user._id,
+                        id: item.user.id
+                    };
+                    result.group = {
+                        name: item.group.name,
+                        id: item.group.id,
+                        _id: item.group._id,
+                        avatar: item.group.avatar
+                    };
+                    result.liked = false;
+                    if (user) {
+                        item.likes.map(function(like) {
+                            if (like.toString() == user._id.toString()) {
+                                result.liked = true;
+                            }
+                        });
+                    }
+                    result.has_collect = false;
+                    if (user) {
+                        item.collects.map(function(collect) {
+                            if (collect.user.toString() == user._id.toString()) {
+                                result.has_collect = true;
+                            }
+                        });
+                    }
+                    result.likes = item.likes.length;
+                    content.push(result);
+                });
+                if ((page - 1) * size + content.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                user.visit.groupTrends = new Date();
+                user.save(function(err) {
+                    res.send({
+                        code: 200,
+                        count: count,
+                        hasNext: hasNext,
+                        content: content
+                    });
+                });
+            });
+        });
+    });
+};
 
 
 module.exports = function(app) {
@@ -704,6 +796,7 @@ module.exports = function(app) {
     app.post('/api/group/members', getMembers);
     app.post('/api/group/list', getMembersList);
     app.get('/api/group/search', middleware.apiLogin, searchGroup);
+    app.get('/api/group/trends', middleware.apiLogin, getTrends);
 
     app.get('/api/group/:id/post', getPost);
     app.get('/api/group/:id/search', groupPostSearch);

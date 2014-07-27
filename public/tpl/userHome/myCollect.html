@@ -1,17 +1,27 @@
 <div class="profile-body col-md-9">
-  <div class="panel search-result">
+  <div class="panel search-result myCollect">
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-8">
-          <h4 ng-show="!isSearch"><i class="fa fa-fw fa-asterisk" style="margin-right:10px;"></i><span>我的微说</span></h4>
-          <h4 ng-show="isSearch"><i class="fa fa-fw fa-search"></i> 搜索 <small><a href="" ng-click="vm.getAll()" style="padding-left:15px">返回我的微说 <i class="fa fa-fw fa-angle-double-right"></i></a></small></h4>
+          <h4 ng-show="!collect.isSearch"><i class="fa fa-fw fa-asterisk" style="margin-right:10px;"></i><span>我的收藏</span></h4>
+          <h4 ng-show="collect.isSearch"><i class="fa fa-fw fa-search"></i> 搜索 <small><a href="" ng-click="collect.getAll()" style="padding-left:15px">返回我的收藏 <i class="fa fa-fw fa-angle-double-right"></i></a></small></h4>
         </div>
       </div>
     </div>
     <div class="panel-body">
       <div class="media" ng-repeat-start="share in shareList">
+        <a class="pull-left" href="/group/{{share.group.id}}" target="_self" ng-if="share.group">
+          <img class="media-object" alt="64x64" ng-src="{{share.group.avatar}}" style="width: 50px; height: 50px;">
+        </a>
+        <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self" ng-if="!share.group">
+          <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
+        </a>
         <div class="media-body">
-          <h4 class="media-heading">{{share.user.name}}</h4>
+          <span class="hover-tag" ng-click="collect.cancel(share)"><i class="fa fa-fw fa-times"></i></span>
+          <h4 class="media-heading" ng-if="!share.group">{{share.user.name}}</h4>
+          <h4 class="media-heading clearfix" ng-if="share.group">
+            {{share.group.name}} <small style="padding-left:5px;">来自 <a href="/profile/{{share.user.id}}" target="_self">{{share.user.name}}</a> 的发布</small>
+          </h4>
           <div>
             <p md-content="share.content"></p>
             <div class="forkContent" ng-if="share.isFork">
@@ -24,7 +34,6 @@
             <!-- <i class="fa fa-fw fa-clock-o" style="margin-right:3px; color:#999;"></i> -->
             <span class="date pull-left">{{share.createAt | formatDate:true }}</span>
             <span class="pull-right media-control">
-              <a href="#" class="delete" ng-click="vm.deleteShare(share)"><i class="fa fa-fw fa-trash-o"></i></a>
               <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(share)"></i>({{share.likes}})</a>
               <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.comments.length}})</a>
             </span>
@@ -76,10 +85,10 @@
     <div class="panel-body">
       <div class="form-group">
           <label> 关键字</label>
-          <input type="text" class="form-control" placeholder="输入关键字" ng-model="vm.searchName">
+          <input type="text" class="form-control" placeholder="输入关键字" ng-model="collect.searchName">
       </div>
       <div class="clearfix">
-        <a class="btn btn-primary pull-right" role="button" ng-click="vm.enter()">搜索</a>
+        <a class="btn btn-primary pull-right" role="button" ng-click="collect.enter()">搜索</a>
       </div>
     </div>
   </div>
