@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var random = require('mongoose-random');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var moment = require('moment');
@@ -127,6 +128,10 @@ var ShareSchema = new Schema({
     },
     id: {
         type: Number
+    },
+    random: {
+        type: Number,
+        default: Math.random()
     },
     content: {
         type: String

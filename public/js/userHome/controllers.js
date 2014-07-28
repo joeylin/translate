@@ -102,6 +102,26 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             getTrend();
         };
 
+        // news sidebar
+        $scope.sidebar = {};
+        var getSidebar = function() {
+            var url = '/api/user/getSidebar';
+            $http.get(url).success(function(data) {
+                $scope.sidebar.weekVisit = data.weekVisit;
+                $scope.sidebar.jobs = data.jobs || [];
+                $scope.sidebar.connects = data.connects || [];
+            });
+        };
+        $scope.sidebar.addConnect = function(item) {
+
+        };
+        $scope.sidebar.removeConnect = function(item) {
+
+        };
+        $scope.sidebar.removeJob = function(item) {
+
+        };
+
         // share item && item comments
         $scope.vm = {};
         $scope.vm.toggleLike = function(share) {
@@ -288,6 +308,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         if ($rootScope.current.path === 'news') {
             getTrend();
             getUserList();
+            getSidebar();
         } 
         if ($rootScope.current.path === 'myShare') {
             getMyShare();

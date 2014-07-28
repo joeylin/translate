@@ -404,10 +404,12 @@ var getTrends = function(req, res) {
                 });
                 var groupQuery = {
                     group: {
-                        $in: follow
+                        '$in': follow
                     },
                     is_delete: false,
-
+                    createAt: {
+                        '$gt': Date.now() - user.visit.groupTrends.getTime() >= 10 * 60 * 1000 ?  user.visit.groupTrends : Date.now()
+                    }
                 };
                 Share.find(groupQuery).count().exec(function(err, groupUpdate) {
                     res.send({
@@ -1850,6 +1852,57 @@ var userSkillsRemove = function(req, res) {
 var userSkillsVote = function(req, res) {
     var user = req.session.user;
 };
+var getSidebarList = function(req, res) {
+    var user = req.session.user;
+    UserProfile.findOne({
+        _id: user.profile
+    }).exec(function(err, profile) {
+        profile.getWeekVisit(function(err, count) {
+            Share.find({
+                type: 'job'
+            }).limit(2).populate('user').exec(function(err, shares) {
+                var jobs = [];
+                shares.map(function(item, key) {
+                    var result = {};
+                    result.company = item.company;
+                    result.position = item.position;
+                    result.location = item.location;
+                    result.date = item.createAt;
+                    result.id = item.id;
+                    result._id = item._id;
+                    result.user = {
+                        name: item.user.name,
+                        avatar: item.user.avatar,
+                        id: item.user.id,
+                        _id: item.user._id
+                    };
+                    jobs.push(result);
+                });
+
+                User.find({
+                    role: 'user'
+                }).limit(2).exec(function(err, users) {
+                    var connects = [];
+                    users.map(function(item, key) {
+                        var result = {};
+                        result.id = item.id;
+                        result._id = item._id;
+                        result.name = item.name;
+                        result.occupation = item.occupation;
+                        result.location = item.location;
+                        connects.push(result);
+                    });
+                    res.send({
+                        code: 200,
+                        weekVisit: count,
+                        users: connects,
+                        jobs: jobs
+                    });
+                });
+            });     
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -1869,6 +1922,7 @@ module.exports = function(app) {
     app.get('/api/user/id', middleware.check_login, searchById);
     app.get('/api/user/sending', middleware.check_login, getMysending);
     app.get('/api/user/jobrecommend', middleware.check_login, getJobRecommend);
+    app.get('/api/user/getSidebar', middleware.check_login, getSidebarList);
     
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);

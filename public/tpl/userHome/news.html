@@ -122,20 +122,31 @@
         </div>
     </div> -->
   </div>
-  <div class="panel panel-default section">
+  <div class="panel panel-default section" ng-cloak>
     <div class="panel-heading">最近一周</div>
     <div class="panel-body" style="padding-top: 12px;">
       <div>
-        <a href="">被专业人士浏览了 <span style="font-size: 16px;color: #333;">4</span> 次</a>
+        <a href="">被专业人士浏览了 <span style="font-size: 16px;color: #333;">{{sidebar.weekVisit}}</span> 次</a>
       </div>
       <div>
-        <a href="">被猎头搜索了 <span style="font-size: 16px;color: #333;">5</span> 次</a>
+        <a href="">被猎头搜索了 <span style="font-size: 16px;color: #333;">{{sidebar.weekSearch || 0}}</span> 次</a>
       </div>
     </div>
   </div>
   <div class="panel panel-default section extend-friends">
     <div class="panel-heading clearfix">扩展人脉</div>
     <div class="panel-body">
+      <div class="media" ng-repeat="item in sidebar.connects">
+          <a class="pull-left" target="_self" href="/profile/{{item.id}}">
+              <img class="media-object" alt="64x64" ng-src="{{item.avatar}}" style="width: 50px; height: 50px;" >
+          </a>
+          <div class="media-body">
+              <span class="hover-tag" ng-click="sidebar.removeConnect(item)"><i class="fa fa-fw fa-times"></i></span>
+              <a target="_self" href="profile/{{item.id}}" target="_self">{{item.name}}</a>
+              <div>{{item.location}} | {{item.occupation}}</div>
+              <div ><a href="" popup data-mfp-src="#connect-popup-content" ng-click="sidebar.addConnect(item)"><i class="fa fa-fw fa-plus"></i>添加人脉</a></div>
+          </div>
+      </div>
       <div class="media">
           <a class="pull-left" target="_self" href="/profile/502120">
               <img class="media-object" alt="64x64" ng-src="/public/imgs/avatar.jpg" style="width: 50px; height: 50px;" >
@@ -163,20 +174,20 @@
   <div class="panel panel-default section extend-friends">
     <div class="panel-heading">推荐职位</div>
     <div class="panel-body">
-      <div class="media">
-          <a class="pull-left" target="_self" href="/profile/502120">
-              <img class="media-object" alt="64x64" ng-src="/public/imgs/nodejs.png" style="width: 50px; height: 50px;" >
+      <div class="media" ng-repeat="item in sidebar.jobs">
+          <a class="pull-left" target="_self" href="/profile/{{item.user.id}}">
+              <img class="media-object" alt="64x64" ng-src="{{item.user.avatar}}" style="width: 50px; height: 50px;" >
           </a>
           <div class="media-body">
-              <span class="hover-tag"><i class="fa fa-fw fa-times"></i></span>
-              <a target="_self" href="profile/502120">web开发者</a>
-              <div>北京 | IBM</div>
-              <div><span></span></div>
+              <span class="hover-tag" ng-click="sidebar.removeJob(item)"><i class="fa fa-fw fa-times"></i></span>
+              <a target="_self" href="/job/{{item.id}}" target="_self">{{item.position}}</a>
+              <div>{{item.location}} | {{item.company}}</div>
+              <div><span style="color:#99a1a6;">{{item.date | formatDate:true }}</span></div>
           </div>
       </div>
       <div class="media">
           <a class="pull-left" target="_self" href="/profile/502120">
-              <img class="media-object" alt="64x64" ng-src="/public/imgs/baidu_log.jpg" style="width: 50px; height: 50px;" >
+              <img class="media-object" alt="64x64" ng-src="/public/imgs/nodejs.png" style="width: 50px; height: 50px;" >
           </a>
           <div class="media-body">
               <span class="hover-tag"><i class="fa fa-fw fa-times"></i></span>

@@ -51,7 +51,7 @@
             <a href="" ng-show="!share.has_collect">收藏</a>
             <a href="" ng-show="share.has_collect">已收藏</a>
           </span>
-          <span class="toMyFriends pull-left"><a href="" ng-click="vm.forkPopup(share)">分享({{share.fork}})</a></span>
+          <span class="toMyFriends pull-left"><a href="" ng-click="vm.forkPopup(share)">分享({{share.fork || 0}})</a></span>
           <span class="pull-right media-control">
             <a href="#" class="delete" ng-show="global.user.name === share.user.name || global.isAdmin || global.isCreator" ng-click="vm.deletePopup(share)"><i class="fa fa-fw fa-trash-o"></i></a>
             <a href="#" class="like" ng-class="{liked:share.liked}" ng-click="vm.toggleLike(share)"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>

@@ -107,7 +107,7 @@ module.exports = function(app) {
                             Group.getJoined(user._id.toString(), 8, function(err, groups) {
                                 app.locals.groups = groups || [];
                                 app.locals.request = request;
-                                res.render('user-profile');
+                                res.render('user-profile');  
                             });
                         });
                     });

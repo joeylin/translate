@@ -1,31 +1,32 @@
 {
-    "name": "application-name",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "start": "node app"
-    },
-    "dependencies": {
-        "async": "*",
-        "blueimp-file-upload-node": "*",
-        "connect-mongo": "latest",
-        "debug": "*",
-        "moment": "latest",
-        "ejs": "*",
-        "qiniu": "latest",
-        "nodemailer": "latest",
-        "express": "3.1.0",
-        "imager": "latest",
-        "marked": "~0.1.9",
-        "mongoose": "latest",
-        "passport": "latest",
-        "passport-facebook": "latest",
-        "passport-github": "latest",
-        "passport-google-oauth": "latest",
-        "passport-linkedin": "latest",
-        "passport-local": "latest",
-        "passport-twitter": "latest",
-        "thenjs": "latest",
-        "xss": "*"
-    }
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "async": "*",
+    "blueimp-file-upload-node": "*",
+    "connect-mongo": "latest",
+    "debug": "*",
+    "ejs": "*",
+    "express": "3.1.0",
+    "imager": "latest",
+    "marked": "~0.1.9",
+    "moment": "latest",
+    "mongoose": "latest",
+    "mongoose-random": "0.0.2",
+    "nodemailer": "latest",
+    "passport": "latest",
+    "passport-facebook": "latest",
+    "passport-github": "latest",
+    "passport-google-oauth": "latest",
+    "passport-linkedin": "latest",
+    "passport-local": "latest",
+    "passport-twitter": "latest",
+    "qiniu": "latest",
+    "thenjs": "latest",
+    "xss": "*"
+  }
 }

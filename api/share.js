@@ -342,19 +342,18 @@ var getLatestJobs = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
     var perPageItems = 30;
-
-    Share.find({
+    var query = {
         type: 'job',
         status: 'publish',
+        user: {
+            $nin:[user._id]
+        },
         is_delete: false
-    }).sort({
+    };
+    Share.find().sort({
         createAt: -1
     }).populate('user').sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
-        Share.find({
-            type: 'job',
-            status: 'publish',
-            is_delete: false
-        }).count().exec(function(err, count) {
+        Share.find(query).count().exec(function(err, count) {
             User.findOne({
                 _id: user._id
             }, function(err, user) {
@@ -387,17 +386,17 @@ var getLatestJobs = function(req, res) {
                         join: item.resumes.length,
                         type: item.jobType,
                         date: item.createAt.getTime(),
-                        isSaved: false
+                        // isSaved: false
                     };
-                    var index = -1;
-                    user.collects.job.map(function(job, key) {
-                        if (job.toString() == item._id.toString()) {
-                            index = key;
-                        }
-                    });
-                    if (index > -1) {
-                        obj.isSaved = true;
-                    }
+                    // var index = -1;
+                    // user.collects.job.map(function(job, key) {
+                    //     if (job.toString() == item._id.toString()) {
+                    //         index = key;
+                    //     }
+                    // });
+                    // if (index > -1) {
+                    //     obj.isSaved = true;
+                    // }
                     results.push(obj);
                 });
                 if ((page - 1) * perPageItems + results.length < count) {

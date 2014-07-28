@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var random = require('mongoose-random');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var crypto = require('crypto');
@@ -123,8 +124,14 @@ var UserSchema = new Schema({
         }]
     },
     visit: {
-        home: Date,
-        groupTrends: Date
+        home: {
+            type: Date,
+            default: Date.now
+        },
+        groupTrends: {
+            type: Date,
+            default: Date.now
+        }
     }, 
 
     // company 
@@ -162,6 +169,10 @@ var UserSchema = new Schema({
     salt: {
         type: String,
         default: 'ts'
+    },
+    random: {
+        type: Number,
+        default: Math.random()
     },
     authToken: {
         type: String,
@@ -295,7 +306,10 @@ UserSchema.statics.getProfile = function(id, cb) {
             UserProfile.findOne({
                 _id: user.profile
             }, function(err, profile) {
-                cb(err, profile, user);
+                profile.view += 1;
+                profile.save(function(err,profile) {
+                    cb(err, profile, user);
+                });
             });
         }
         if (user.role === 'company') {
@@ -303,7 +317,10 @@ UserSchema.statics.getProfile = function(id, cb) {
             CompanyProfile.findOne({
                 _id: user.profile
             }, function(err, profile) {
-                cb(err, profile, user);
+                profile.view += 1;
+                profile.save(function(err,profile) {
+                    cb(err, profile, user);
+                });
             });
         }
     });
