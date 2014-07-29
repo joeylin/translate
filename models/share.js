@@ -136,6 +136,7 @@ var ShareSchema = new Schema({
         index: '2d',
         default: [Math.random(), 0]
     },
+    tags: String,
     createAt: {
         type: Date,
         default: Date.now
@@ -195,6 +196,10 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.fork = obj.fork;
     share.isFork = obj.isFork;
     share.from = obj.from;
+
+    if (obj.type === 'job') {
+        share.tags = obj.position + ' ' + obj.skills + ' ' + obj.degree + ' ' + obj.location;
+    }
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('share', function(err, doc) {
         share.id = doc.currentId;
@@ -248,6 +253,9 @@ ShareSchema.methods.unlike = function(userId, cb) {
 // middleware
 ShareSchema.pre('save', function(next) {
     this.updateAt = new Date();
+    if (this.type === 'job') {
+        this.tags = this.position + ' ' + this.skills + ' ' + this.degree + ' ' + this.location;
+    }
     next();
 });
 

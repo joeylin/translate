@@ -762,6 +762,83 @@ var getIntern = function(req, res) {
         });
     });
 };
+var latestJobsFilter = function(req, res) {
+    var user = req.session.user;
+    var keyword = req.query.keyword;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var str = '/';
+    var array = keyword.split(' ');
+    array.map(function(item,key) {
+        str += item;
+        if (key !== array.length - 1 ) {
+            str += '|';
+        }
+    });
+    str += '/';
+    var re = new RegExp(str, 'ig');
+    var query = {
+        type: 'job',
+        status: 'publish',
+        is_delete: false,
+        tags: re
+    };
+    Share.find(query).sort({
+        createAt: -1
+    }).populate('user').sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
+            User.findOne({
+                _id: user._id
+            }, function(err, user) {
+                var results = [];
+                var hasNext;
+                shares.map(function(item) {
+                    // test
+                    if (!item.user) {
+                        return;
+                    }
+                    var obj = {
+                        owner: {
+                            avatar: item.user.avatar,
+                            name: item.user.name,
+                            id: item.user.id,
+                            _id: item.user._id
+                        },
+                        _id: item._id,
+                        id: item.id,
+                        summary: item.summary,
+                        position: item.position,
+                        paymentStart: item.paymentStart,
+                        paymentEnd: item.paymentEnd,
+                        workYears: item.workYears,
+                        number: item.number,
+                        skills: item.skills,
+                        company: item.company,
+                        location: item.location,
+                        degree: item.degree,
+                        views: item.views,
+                        join: item.resumes.length,
+                        type: item.jobType,
+                        date: item.createAt.getTime(),
+                    };
+                    results.push(obj);
+                });
+                if ((page - 1) * perPageItems + results.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+
+                res.send({
+                    code: 200,
+                    count: count,
+                    content: results,
+                    hasNext: hasNext
+                });
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/share/unlike', middleware.check_login, shareUnlike);
