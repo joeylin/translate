@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var random = require('mongoose-random');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var moment = require('moment');
@@ -129,12 +128,13 @@ var ShareSchema = new Schema({
     id: {
         type: Number
     },
-    random: {
-        type: Number,
-        default: Math.random()
-    },
     content: {
         type: String
+    },
+    random: {
+        type: [Number],
+        index: '2d',
+        default: [Math.random(), 0]
     },
     createAt: {
         type: Date,
@@ -145,6 +145,7 @@ var ShareSchema = new Schema({
         default: Date.now
     }
 });
+
 ShareSchema.virtual('date').get(function() {
     moment.lang('zh-cn');
     var date = moment(this.createAt);

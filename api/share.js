@@ -116,7 +116,7 @@ var addShare = function(req, res) {
 };
 var forkShare = function(req, res) {
     var user = req.session.user;
-    var id = req.body.from.share;
+    var id = req.body.forkId;
     var shareObj = req.body;
     shareObj.user = user._id;
     Share.findOne({
@@ -345,12 +345,9 @@ var getLatestJobs = function(req, res) {
     var query = {
         type: 'job',
         status: 'publish',
-        user: {
-            $nin:[user._id]
-        },
         is_delete: false
     };
-    Share.find().sort({
+    Share.find(query).sort({
         createAt: -1
     }).populate('user').sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
         Share.find(query).count().exec(function(err, count) {
@@ -380,6 +377,7 @@ var getLatestJobs = function(req, res) {
                         workYears: item.workYears,
                         number: item.number,
                         skills: item.skills,
+                        company: item.company,
                         location: item.location,
                         degree: item.degree,
                         views: item.views,
@@ -470,6 +468,7 @@ var jobsSearch = function(req, res) {
                     paymentEnd: item.paymentEnd,
                     workYears: item.workYears,
                     number: item.number,
+                    company: item.company,
                     skills: item.skills,
                     location: item.location,
                     degree: item.degree,
@@ -668,6 +667,101 @@ var getPostJobList = function(req, res) {
         });
     });
 };
+var getRandomJob = function(req, res) {
+    var user = req.session.user;
+    Share.find({
+        type: 'job',
+        is_delete: false,
+        random: {
+            $near: [Math.random(), 0]
+        }
+    }).limit(1).populate('user').exec(function(err, share) {
+        var job = share[0];
+        var result = {};
+        result.company = job.company;
+        result.position = job.position;
+        result.location = job.location;
+        result.date = job.createAt;
+        result.id = job.id;
+        result._id = job._id;
+        result.user = {
+            name: job.user.name,
+            avatar: job.user.avatar,
+            id: job.user.id,
+            _id: job.user._id
+        };
+        res.send({
+            code: 200,
+            job: result
+        });
+    });
+};
+var getIntern = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var query = {
+        type: 'job',
+        status: 'publish',
+        jobType: '实习',
+        is_delete: false
+    };
+    Share.find(query).sort({
+        createAt: -1
+    }).populate('user').sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
+            User.findOne({
+                _id: user._id
+            }, function(err, user) {
+                var results = [];
+                var hasNext;
+                shares.map(function(item) {
+                    // test
+                    if (!item.user) {
+                        return;
+                    }
+                    var obj = {
+                        owner: {
+                            avatar: item.user.avatar,
+                            name: item.user.name,
+                            id: item.user.id,
+                            _id: item.user._id
+                        },
+                        _id: item._id,
+                        id: item.id,
+                        summary: item.summary,
+                        position: item.position,
+                        paymentStart: item.paymentStart,
+                        paymentEnd: item.paymentEnd,
+                        workYears: item.workYears,
+                        number: item.number,
+                        skills: item.skills,
+                        company: item.company,
+                        location: item.location,
+                        degree: item.degree,
+                        views: item.views,
+                        join: item.resumes.length,
+                        type: item.jobType,
+                        date: item.createAt.getTime(),
+                    };
+                    results.push(obj);
+                });
+                if ((page - 1) * perPageItems + results.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+
+                res.send({
+                    code: 200,
+                    count: count,
+                    content: results,
+                    hasNext: hasNext
+                });
+            });
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/share/unlike', middleware.check_login, shareUnlike);
@@ -677,8 +771,9 @@ module.exports = function(app) {
     app.post('/api/share/fork', middleware.check_login, forkShare);
     app.post('/api/share/edit', middleware.check_login, editShare);
     app.get('/api/share/user', middleware.check_login, getShareByUser);
-    app.get('/api/share/id/:id', getShareById);
-    app.get('/api/share/comments', getShareComments);
+    app.get('/api/share/id/:id', middleware.check_login, getShareById);
+    app.get('/api/share/comments', middleware.check_login, getShareComments);
+    app.get('/api/share/randomOne', middleware.check_login, getRandomJob);
 
     // comments
     app.post('/api/share/comments/add', middleware.check_login, addComment);
@@ -688,10 +783,11 @@ module.exports = function(app) {
     app.get('/api/job/latest', getLatestJobs);
     app.get('/api/job/search', jobsSearch);
     app.get('/api/job/postList', getPostJobList);
-    app.get('/api/job/:id', getJobById);
     app.post('/api/job/close', closeJob);
     app.post('/api/job/remove', removeJob);
     app.post('/api/job/publish', publishJob);
     app.post('/api/job/post', postJob);
+    app.get('/api/job/intern', getIntern);
     app.post('/api/job/giveup', giveUpJob);
+    app.get('/api/jobs/:id', getJobById);
 };

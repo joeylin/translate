@@ -71,6 +71,15 @@ module.exports = function(app) {
                             app.locals.isMe = false;
                         }
 
+                        if (req.session.user && (req.session.user.id !== user.id)) {
+                            UserProfile.findOne({
+                                _id: req.session.user.profile
+                            }).exec(function(err, profile) {
+                                profile.view += 1;
+                                profile.save();
+                            });
+                        }
+
                         Request.find({
                             to: user._id,
                             hasDisposed: false

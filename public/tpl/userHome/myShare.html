@@ -15,7 +15,8 @@
           <div>
             <p md-content="share.content"></p>
             <div class="forkContent" ng-if="share.isFork">
-              <p><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a> 发布于 <a href="/group/{{share.from.group.id}}" target="_self">{{share.from.group.name}}</a></p>
+              <p ng-if="share.from.group"><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a> 发布于 <a href="/group/{{share.from.group.id}}" target="_self">{{share.from.group.name}}</a></p>
+              <p ng-if="!share.from.group"><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a></p>
               <p md-content="share.from.share.content"></p>
               <div class="date" style="color:#99a1a6;font-size:0.9em;">{{share.from.share.createAt | formatDate:true}}</div>
             </div>

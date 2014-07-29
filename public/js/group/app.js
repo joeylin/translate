@@ -173,7 +173,12 @@ config(['$httpProvider', 'app',
                         $http.post(url, {
                             type: 'view',
                             isFork: true,
-                            from: execFuction.share.from,
+                            forkId: execFuction.share._id,
+                            from: {
+                                share: execFuction.share.from.share._id,
+                                user: execFuction.share.from.user._id,
+                                group: execFuction.share.from.group && execFuction.share.from.group.id
+                            },
                             content: global.fork.forkShare
                         }).success(function(data) {
                             global.popup.show = false;
@@ -183,6 +188,7 @@ config(['$httpProvider', 'app',
                         $http.post(url, {
                             type: 'view',
                             isFork: true,
+                            forkId: execFuction.share._id,
                             from: {
                                 share: execFuction.share._id,
                                 user: execFuction.share.user._id,
@@ -193,7 +199,11 @@ config(['$httpProvider', 'app',
                             global.popup.show = false;
                             execFuction.share.fork += 1;
                         });
-                    }    
+                    } 
+
+
+
+
                 }; 
                 global.fork.change();
                 setTimeout(function() {

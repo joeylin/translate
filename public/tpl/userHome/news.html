@@ -28,7 +28,8 @@
           <div>
             <p md-content="share.content"></p>
             <div class="forkContent" ng-if="share.isFork">
-              <p><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a> 发布于 <a href="/group/{{share.from.group.id}}" target="_self">{{share.from.group.name}}</a></p>
+              <p ng-if="share.from.group"><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a> 发布于 <a href="/group/{{share.from.group.id}}" target="_self">{{share.from.group.name}}</a></p>
+              <p ng-if="!share.from.group"><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a></p>
               <p md-content="share.from.share.content"></p>
               <div class="date" style="color:#99a1a6;font-size:0.9em;">{{share.from.share.createAt | formatDate:true}}</div>
             </div>
@@ -40,6 +41,7 @@
               <a href="" ng-show="!share.has_collect">收藏</a>
               <a href="" ng-show="share.has_collect">已收藏</a>
             </span>
+            <span class="toMyFriends pull-left"><a href="" ng-click="vm.forkPopup(share)">分享({{share.fork}})</a></span>
             <span class="pull-right media-control">
               <a href="#" class="delete" ng-show="global.user.name === share.user.name" ng-click="vm.deleteShare(share)"><i class="fa fa-fw fa-trash-o"></i></a>
               <a href="#" class="like" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up" ng-click="vm.toggleLike(share)"></i>({{share.likes}})</a>
@@ -106,21 +108,6 @@
           <div style="margin-left: 12px;"><a class="unStyle" href="/myPeople">人脉 : {{global.user.connects.length}}</a></div>
         </div>
     </div>
-    <!-- Menu Body -->
-    <!-- <div class="user-body clearfix">
-        <div class="col-xs-6 text-center">
-            <a href="#" class="user_followers">{{global.shareCount}}</a>
-        </div>
-        <div class="col-xs-6 text-center">
-            <a href="#" class="user_connects">{{global.user.connects.length}}</a>
-        </div>
-        <div class="col-xs-6 text-center">
-            <a href="#">share</a>
-        </div>
-        <div class="col-xs-6 text-center">
-            <a href="#">Connects</a>
-        </div>
-    </div> -->
   </div>
   <div class="panel panel-default section" ng-cloak>
     <div class="panel-heading">最近一周</div>
@@ -144,29 +131,7 @@
               <span class="hover-tag" ng-click="sidebar.removeConnect(item)"><i class="fa fa-fw fa-times"></i></span>
               <a target="_self" href="profile/{{item.id}}" target="_self">{{item.name}}</a>
               <div>{{item.location}} | {{item.occupation}}</div>
-              <div ><a href="" popup data-mfp-src="#connect-popup-content" ng-click="sidebar.addConnect(item)"><i class="fa fa-fw fa-plus"></i>添加人脉</a></div>
-          </div>
-      </div>
-      <div class="media">
-          <a class="pull-left" target="_self" href="/profile/502120">
-              <img class="media-object" alt="64x64" ng-src="/public/imgs/avatar.jpg" style="width: 50px; height: 50px;" >
-          </a>
-          <div class="media-body">
-              <span class="hover-tag"><i class="fa fa-fw fa-times"></i></span>
-              <a target="_self" href="profile/502120">howell</a>
-              <div>北京 | 前端工程师</div>
-              <div class=""><a href="" class=""><i class="fa fa-fw fa-plus"></i>添加人脉</a></div>
-          </div>
-      </div>
-      <div class="media">
-          <a class="pull-left" target="_self" href="/profile/502120">
-              <img class="media-object" alt="64x64" ng-src="/public/imgs/avatar.jpg" style="width: 50px; height: 50px;" >
-          </a>
-          <div class="media-body">
-              <span class="hover-tag"><i class="fa fa-fw fa-times"></i></span>
-              <a target="_self" href="profile/502120">Joeylin</a>
-              <div>福州 | PHP程序员</div>
-              <div class=""><a href="" class=""><i class="fa fa-fw fa-plus"></i>添加人脉</a></div>
+              <div ><a href="" ng-click="sidebar.addConnect(item)"><i class="fa fa-fw fa-plus"></i>添加人脉</a></div>
           </div>
       </div>
     </div>
@@ -185,16 +150,32 @@
               <div><span style="color:#99a1a6;">{{item.date | formatDate:true }}</span></div>
           </div>
       </div>
-      <div class="media">
-          <a class="pull-left" target="_self" href="/profile/502120">
-              <img class="media-object" alt="64x64" ng-src="/public/imgs/nodejs.png" style="width: 50px; height: 50px;" >
-          </a>
-          <div class="media-body">
-              <span class="hover-tag"><i class="fa fa-fw fa-times"></i></span>
-              <a target="_self" href="profile/502120">web开发者</a>
-              <div>北京 | IBM</div>
-              <div><span></span></div>
-          </div>
+    </div>
+  </div>
+</div>
+
+<!-- fork popup -->
+<div class="mfp-bg mfp-ready" ng-cloak ng-if="fork.open"></div>
+<div class="mfp-wrap mfp-close-btn-in mfp-ready fork-popup" style="overflow-y: auto; overflow-x: hidden;" ng-cloak ng-if="fork.open">
+  <div class="mfp-container mfp-s-ready mfp-inline-holder">
+    <div class="mfp-content">
+      <div class="white-popup-block" style="width:560px;max-width:560px;">
+        <label style="margin-bottom:10px;">分享到我的好友圈 : </label>
+        <div class="forkContent" style="background-color:#ddd;">
+          <p ng-if="fork.groupName"><a href="/profile/{{fork.userId}}" target="_self">{{'@' + fork.userName}}</a> 发布于 <a href="/group/{{fork.groupId}}" target="_self">{{fork.groupName}}</a></p>
+          <p ng-if="!fork.groupName"><a href="/profile/{{fork.userId}}" target="_self">{{'@' + fork.userName}}</a></p>
+          <p md-content="fork.content"></p>
+          <div class="date" style="color:#99a1a6;font-size:0.9em;">{{fork.date | formatDate:true}}</div>
+        </div>
+        <div class="form-group newTopic">
+            <textarea auto-height atwho="fork.userList" class="form-control" ng-model="fork.forkShare" ng-change="fork.change(fork.forkShare)" id="forkText"></textarea>
+        </div>
+        <div class="clearfix">
+          <span class="pull-left" ng-show="fork.shareCount <= 140">你还可以输入<span class="shareCount">{{140 - fork.shareCount}}</span> 字</span>
+          <span class="pull-left" ng-show="fork.shareCount > 140">你已经超过<span class="shareCount" style="color:#E44443;">{{fork.shareCount - 140}}</span> 字</span>
+          <a class="btn btn-primary pull-right" role="button" ng-click="fork.submit()" ng-class="{'default': fork.forkShare === '' || (fork.shareCount > 140)}" style="padding-left:20px; padding-right:20px;">分享</a>
+        </div>
+        <button title="Close" type="button" class="mfp-close" ng-click="fork.close()">×</button>
       </div>
     </div>
   </div>

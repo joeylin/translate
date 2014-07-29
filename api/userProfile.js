@@ -209,7 +209,7 @@ var editSocial = function(req, res) {
 var getWeekVist = function(req, res) {
     var user = req.session.user;
     UserProfile.findOne({
-        _id: user.profile
+        _id: user.profile,
     }).exec(function(err, profile) {
         profile.getWeekVist(function(err, count) {
             res.send({

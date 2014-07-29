@@ -359,6 +359,7 @@ var getTrends = function(req, res) {
                     result.createAt = item.createAt.getTime();
                     result.date = item.date;
                     result.id = item.id;
+                    result.fork = item.fork;
                     result.user = {
                         name: item.user.name,
                         avatar: item.user.avatar,
@@ -370,16 +371,21 @@ var getTrends = function(req, res) {
                         result.from = {
                             user: {
                                 name: item.from.user.name,
-                                id: item.from.user.id
-                            },
-                            group: {
-                                name: item.from.group.name,
-                                id: item.from.group.id
+                                id: item.from.user.id,
+                                _id: item.from.user._id
                             },
                             share: {
                                 createAt: item.from.share.createAt,
-                                content: item.from.share.content
+                                content: item.from.share.content,
+                                _id: item.from.share._id
                             }
+                        };
+                        if (item.from.group) {
+                            result.from.group = {
+                                name: item.from.group.name,
+                                id: item.from.group.id,
+                                _id: item.from.group._id
+                            };
                         }
                     }
                     result.liked = false;
@@ -609,16 +615,21 @@ var getMyShare = function(req, res) {
                     result.from = {
                         user: {
                             name: item.from.user.name,
-                            id: item.from.user.id
-                        },
-                        group: {
-                            name: item.from.group.name,
-                            id: item.from.group.id
+                            id: item.from.user.id,
+                            _id: item.from.user._id
                         },
                         share: {
                             createAt: item.from.share.createAt,
-                            content: item.from.share.content
+                            content: item.from.share.content,
+                            _id: item.from.share._id
                         }
+                    };
+                    if (item.from.group) {
+                        result.from.group = {
+                            name: item.from.group.name,
+                            id: item.from.group.id,
+                            _id: item.from.group._id
+                        };
                     }
                 }
                 result.liked = false;
@@ -650,18 +661,15 @@ var myShareSearch = function(req, res) {
     var page = req.query.page || 1;
     var perPageItems = 30;
     var re = new RegExp(keyword, 'ig');
-    Share.find({
+    var query = {
         user: user._id,
         content: re,
         type: 'view',
         is_delete: false
-    }).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
-        Share.find({
-            user: user._id,
-            content: re,
-            type: 'view',
-            is_delete: false
-        }).count().exec(function(err, count) {
+    }
+    Share.find(query).populate('from.share').populate('from.user').populate('from.group')
+    .sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+        Share.find(query).count().exec(function(err, count) {
             var content = [];
             var hasNext;
             shares.map(function(item, key) {
@@ -684,16 +692,21 @@ var myShareSearch = function(req, res) {
                     result.from = {
                         user: {
                             name: item.from.user.name,
-                            id: item.from.user.id
-                        },
-                        group: {
-                            name: item.from.group.name,
-                            id: item.from.group.id
+                            id: item.from.user.id,
+                            _id: item.from.user._id
                         },
                         share: {
                             createAt: item.from.share.createAt,
-                            content: item.from.share.content
+                            content: item.from.share.content,
+                            _id: item.from.share._id
                         }
+                    };
+                    if (item.from.group) {
+                        result.from.group = {
+                            name: item.from.group.name,
+                            id: item.from.group.id,
+                            _id: item.from.group._id
+                        };
                     }
                 }
                 result.liked = false;
@@ -729,7 +742,7 @@ var getMyCollect = function(req, res) {
     };
     Share.find(query).populate('group').populate('user')
     .populate('from.share').populate('from.user').populate('from.group')
-    .sort('-collects.date').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+    .sort('collects.date').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
         Share.find(query).count().exec(function(err, count) {
             var content = [];
             var hasNext;
@@ -761,16 +774,21 @@ var getMyCollect = function(req, res) {
                     result.from = {
                         user: {
                             name: item.from.user.name,
-                            id: item.from.user.id
-                        },
-                        group: {
-                            name: item.from.group.name,
-                            id: item.from.group.id
+                            id: item.from.user.id,
+                            _id: item.from.user._id
                         },
                         share: {
                             createAt: item.from.share.createAt,
-                            content: item.from.share.content
+                            content: item.from.share.content,
+                            _id: item.from.share._id
                         }
+                    };
+                    if (item.from.group) {
+                        result.from.group = {
+                            name: item.from.group.name,
+                            id: item.from.group.id,
+                            _id: item.from.group._id
+                        };
                     }
                 }
                 result.liked = false;
@@ -809,7 +827,7 @@ var myCollectSearch = function(req, res) {
     };
     Share.find(query).populate('group').populate('user')
     .populate('from.share').populate('from.user').populate('from.group')
-    .sort('-collects.date').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
+    .sort('collects.date').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
         Share.find(query).count().exec(function(err, count) {
             var content = [];
             var hasNext;
@@ -839,16 +857,21 @@ var myCollectSearch = function(req, res) {
                     result.from = {
                         user: {
                             name: item.from.user.name,
-                            id: item.from.user.id
-                        },
-                        group: {
-                            name: item.from.group.name,
-                            id: item.from.group.id
+                            id: item.from.user.id,
+                            _id: item.from.user._id
                         },
                         share: {
                             createAt: item.from.share.createAt,
-                            content: item.from.share.content
+                            content: item.from.share.content,
+                            _id: item.from.share._id
                         }
+                    };
+                    if (item.from.group) {
+                        result.from.group = {
+                            name: item.from.group.name,
+                            id: item.from.group.id,
+                            _id: item.from.group._id
+                        };
                     }
                 }
                 result.likes = item.likes.length;
@@ -1859,8 +1882,15 @@ var getSidebarList = function(req, res) {
     }).exec(function(err, profile) {
         profile.getWeekVisit(function(err, count) {
             Share.find({
-                type: 'job'
+                type: 'job',
+                is_delete: false,
+                random: {
+                    $near: [Math.random(), 0]
+                }
             }).limit(2).populate('user').exec(function(err, shares) {
+                if (err) {
+                    console.log(err);
+                }
                 var jobs = [];
                 shares.map(function(item, key) {
                     var result = {};
@@ -1880,14 +1910,22 @@ var getSidebarList = function(req, res) {
                 });
 
                 User.find({
-                    role: 'user'
+                    role: 'user',
+                    is_delete: false,
+                    random: {
+                        $near: [Math.random(), 0]
+                    }
                 }).limit(2).exec(function(err, users) {
+                    if (err) {
+                        console.log(err);
+                    }
                     var connects = [];
                     users.map(function(item, key) {
                         var result = {};
                         result.id = item.id;
                         result._id = item._id;
                         result.name = item.name;
+                        result.avatar = item.avatar;
                         result.occupation = item.occupation;
                         result.location = item.location;
                         connects.push(result);
@@ -1899,10 +1937,34 @@ var getSidebarList = function(req, res) {
                         jobs: jobs
                     });
                 });
-            });     
+            });    
         });
     });
 };
+var getRandomUser = function(req, res) {
+    var user = req.session.user;
+    User.find({
+        role: 'user',
+        is_delete: false,
+        random: {
+            $near: [Math.random(), 0]
+        }
+    }).limit(1).exec(function(err, users) {
+        var user = users[0];
+        var result = {};
+        result.id = user.id;
+        result._id = user._id;
+        result.name = user.name;
+        result.avatar = user.avatar;
+        result.occupation = user.occupation;
+        result.location = user.location;
+        res.send({
+            code: 200,
+            user: result
+        });
+    });
+};
+
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -1959,6 +2021,7 @@ module.exports = function(app) {
     app.get('/api/connects', middleware.check_login, getConnects);
     app.get('/api/myConnects/name', middleware.check_login, myConnnectsNameQuery);
     app.get('/api/myConnects/classify', middleware.check_login, myConnectsByClassify);
+    app.get('/api/connects/randomOne', middleware.check_login, getRandomUser);
 
     // message
     app.post('/api/message/send', sendMessage);

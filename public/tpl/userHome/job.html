@@ -3,12 +3,19 @@
     <div class="panel-heading custom-heading">
       <div class="row">
         <div class="col-md-12">
-          <div class="alert alert-info" role="alert" style="padding:7px 30px 7px 30px;margin-bottom:7px;margin-left:0;">
+          <div class="alert alert-info clearfix" role="alert" style="padding:7px 15px 7px 30px;margin-bottom:7px;margin-left:0;" ng-show="showBanner">
             <strong>Heads up!</strong> 快来看看你好友的公司正在招聘哪些职位, 或者 <a href="#" class="alert-link">搜索更多职位</a>
+            <a href="" class="pull-right" ng-click="showBanner = false;"><i class="fa fa-fw fa-times"></i></a>
           </div>
         </div>
         <div class="col-md-6">
-          <div><span class="pull-left group-check" ng-click="isIntern = !isIntern" style="line-height: 37px;">我要找实习： <i class="fa fa-fw" ng-class="{true:'fa-check-square-o', false:'fa-square-o'}[isIntern]"></i>实习</span></div>
+          <div>
+            <span class="pull-left group-check" ng-click="getIntern()" style="line-height: 37px;">我要找实习： 
+              <i class="fa fa-fw" ng-class="{true:'fa-check-square-o', false:'fa-square-o'}[isIntern]"></i>实习
+              <div class="group-check-loading" ng-show="internLoading" ng-click="$event.stopPropagation();"></div>
+            </span>
+            
+          </div>
         </div>
         <div class="col-md-6 pull-right">
           <div class="input-group custom-input-group" >
@@ -29,7 +36,7 @@
           <h4 class="media-heading">{{job.position}}</h4>
           <div class="row">
             <div class="col-md-9">
-              <div><a href="">{{job.company || '百度云服务部门'}}</a></div>
+              <div><a href="">{{job.company || '还未填写'}}</a></div>
               <div> {{job.location}} | {{job.type}} | <span style="color:#99a1a6;">{{job.date | formatDate:true}}</span></div>
               <div>
                 <div>人脉圈中<a target="_self" href="/profile/{{job.owner.id}}"> {{job.owner.name}} </a>相关</div>

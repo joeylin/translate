@@ -109,17 +109,39 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.get(url).success(function(data) {
                 $scope.sidebar.weekVisit = data.weekVisit;
                 $scope.sidebar.jobs = data.jobs || [];
-                $scope.sidebar.connects = data.connects || [];
+                $scope.sidebar.connects = data.users || [];
             });
         };
         $scope.sidebar.addConnect = function(item) {
-
+            var url = '/api/connect/send';
+            $http.post(url, {
+                id: item._id,
+                content: ['朋友'].join(','),
+                type: 'connect'
+            }).success(function(data) {
+                var index = $scope.sidebar.connects.indexOf(item);
+                $scope.sidebar.connects.splice(index, 1);
+                var url = '/api/connects/randomOne';
+                $http.get(url).success(function(data) {
+                    $scope.sidebar.connects.push(data.user);
+                });
+            });
         };
         $scope.sidebar.removeConnect = function(item) {
-
+            var index = $scope.sidebar.connects.indexOf(item);
+            $scope.sidebar.connects.splice(index, 1);
+            var url = '/api/connects/randomOne';
+            $http.get(url).success(function(data) {
+                $scope.sidebar.connects.push(data.user);
+            });
         };
         $scope.sidebar.removeJob = function(item) {
-
+            var index = $scope.sidebar.jobs.indexOf(item);
+            $scope.sidebar.jobs.splice(index, 1);
+            var url = '/api/share/randomOne';
+            $http.get(url).success(function(data) {
+                $scope.sidebar.jobs.push(data.job);
+            });
         };
 
         // share item && item comments
@@ -243,6 +265,81 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 share.comments.unshift(result);
                 comment.isShowReply = false;
             });
+        };
+
+        // fork popup
+        $scope.fork = {
+            open: false,
+            shareCount: 0,
+            share: null,
+            close: function() {
+                $scope.fork.open = false;
+            }
+        };
+        $scope.fork.change = function() {
+            $scope.fork.shareCount = wordCount($scope.fork.forkShare);
+        };   
+        $scope.fork.submit = function() {
+            var url = '/api/share/fork';
+            if ($scope.fork.shareCount > 140) {
+                return false;
+            }
+            if ($scope.fork.share.isFork) {
+                $http.post(url, {
+                    type: 'view',
+                    isFork: true,
+                    forkId: $scope.fork.share._id,
+                    from: {
+                        share: $scope.fork.share.from.share._id,
+                        user: $scope.fork.share.from.user._id,
+                        group: $scope.fork.share.from.group && $scope.fork.share.from.group._id
+                    },
+                    content: $scope.fork.forkShare
+                }).success(function(data) {
+                    $scope.fork.open = false;
+                    $scope.fork.share.fork += 1;
+                });
+            } else {
+                $http.post(url, {
+                    type: 'view',
+                    isFork: true,
+                    forkId: $scope.fork.share._id,
+                    from: {
+                        share: $scope.fork.share._id,
+                        user: $scope.fork.share.user._id,
+                        group: $scope.fork.share.group && $scope.fork.share.group._id
+                    },
+                    content: $scope.fork.forkShare || '转发'
+                }).success(function(data) {
+                    $scope.fork.open = false;
+                    $scope.fork.share.fork += 1;
+                });
+            }
+        };
+        $scope.vm.forkPopup = function(share) {
+            $scope.fork.open = true;
+            $scope.fork.share = share;
+
+            if (share.isFork) {
+                $scope.fork.userName = share.from.user.name;
+                $scope.fork.userId = share.from.user.id;
+                $scope.fork.groupName = share.group && share.from.group.name;
+                $scope.fork.groupId = share.group && share.from.group.id;
+                $scope.fork.content = share.from.share.content;
+                $scope.fork.forkShare = '//@' + share.user.name + ' ' + share.content;
+            } else {
+                $scope.fork.userName = share.user.name;
+                $scope.fork.userId = share.user.id;
+                $scope.fork.groupName =  share.group && share.group.name;
+                $scope.fork.groupId = share.group && share.group.id; 
+                $scope.fork.content = share.content;
+                $scope.fork.date = share.createAt;
+                $scope.fork.forkShare = '';
+            }
+            $scope.fork.change();
+            setTimeout(function() {
+                $('#forkText').focus();
+            },200);
         };
 
         // for myshare search
@@ -679,6 +776,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.content = [];
         $scope.title = '最新职位';
         $scope.isIntern = false;
+        $scope.showBanner = true;
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -692,21 +790,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             location: $scope.location,
             keyword: $scope.keyword
         };
-        var timeout = null;
-        // todo need move to directive
-        $('#keyword').on('focus', function() {
-            app.applyFn(function() {
-                $scope.showSubmitBtn = true;
-            });
-        });
-        $('#keyword').on('blur', function() {
-            clearTimeout(timeout);
-            timeout = setTimeout(function() {
-                app.applyFn(function() {
-                    $scope.showSubmitBtn = false;
-                });
-            }, 200);
-        });
         $scope.submit = function() {
             // reset the config before submit
             url = '/api/job/search';
@@ -759,6 +842,26 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 job.isSaved = true;
             });
         };
+        $scope.getIntern = function() {
+            var url = '/api/job/intern';
+            params.page = 1;
+            $scope.isIntern = !$scope.isIntern;
+            if ($scope.isIntern) {
+                $scope.internLoading = true;
+                $http.get(url, {
+                    params: params
+                }).success(function(data) {
+                    $scope.lastContent = $scope.content;
+                    $scope.content = data.content;
+                    $scope.pager.hasNext = data.hasNext;
+                    $scope.internLoading = false;
+                });  
+            } else {
+                if ($scope.lastContent) {
+                    $scope.content = $scope.lastContent;
+                }
+            }               
+        };  
 
         function get(cb) {
             $http.get(url, {
@@ -779,8 +882,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.degree = '';
         $scope.location = '';
         get();
-
-
     }
 ]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
@@ -1331,7 +1432,12 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 $http.post(url, {
                     type: 'view',
                     isFork: true,
-                    from: $scope.fork.share.from,
+                    forkId: $scope.fork.share._id,
+                    from: {
+                        share: $scope.fork.share.from.share._id,
+                        user: $scope.fork.share.from.user._id,
+                        group: $scope.fork.share.from.group && $scope.fork.share.from.group._id
+                    },
                     content: $scope.fork.forkShare
                 }).success(function(data) {
                     $scope.fork.open = false;
@@ -1341,11 +1447,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 $http.post(url, {
                     type: 'view',
                     isFork: true,
+                    forkId: $scope.fork.share._id,
                     from: {
                         share: $scope.fork.share._id,
                         user: $scope.fork.share.user._id,
-                        group: $scope.fork.share.group._id,
-                        title: $scope.fork.title
+                        group: $scope.fork.share.group && $scope.fork.share.group._id
                     },
                     content: $scope.fork.forkShare || '转发'
                 }).success(function(data) {
@@ -1361,15 +1467,15 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             if (share.isFork) {
                 $scope.fork.userName = share.from.user.name;
                 $scope.fork.userId = share.from.user.id;
-                $scope.fork.groupName = share.from.group.name;
-                $scope.fork.groupId = share.from.group.id;
-                $scope.fork.content = share.from.content;
+                $scope.fork.groupName = share.group && share.from.group.name;
+                $scope.fork.groupId = share.group && share.from.group.id;
+                $scope.fork.content = share.from.share.content;
                 $scope.fork.forkShare = '//@' + share.user.name + ' ' + share.content;
             } else {
                 $scope.fork.userName = share.user.name;
                 $scope.fork.userId = share.user.id;
-                $scope.fork.groupName = share.group.name;
-                $scope.fork.groupId = share.group.id; 
+                $scope.fork.groupName = share.group && share.group.name;
+                $scope.fork.groupId = share.group && share.group.id; 
                 $scope.fork.content = share.content;
                 $scope.fork.date = share.createAt;
                 $scope.fork.forkShare = '';
