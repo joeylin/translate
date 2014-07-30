@@ -53,6 +53,10 @@ var ShareSchema = new Schema({
     company: {
         type: String
     },
+    companyLogo: {
+        type: String,
+        default: '/public/imgs/company.jpg'
+    },
     companyIntro: {
         type: String
     },
@@ -103,6 +107,12 @@ var ShareSchema = new Schema({
             type: Date
         }
     }],
+    contact: {
+        email: String,
+        phone: String,
+        qq: Number,
+        message: String
+    },
     // common
     collects: [{
         user: {
@@ -191,11 +201,13 @@ ShareSchema.statics.createNew = function(obj, cb) {
     share.location = obj.location;
     share.summary = obj.summary;
     share.detail = obj.detail;
+    share.companyLogo = obj.companyLogo;
     share.group = obj.group;
     share.status = obj.status;
     share.fork = obj.fork;
     share.isFork = obj.isFork;
     share.from = obj.from;
+    share.contact = obj.contact;
 
     if (obj.type === 'job') {
         share.tags = obj.position + ' ' + obj.skills + ' ' + obj.degree + ' ' + obj.location;

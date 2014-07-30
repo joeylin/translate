@@ -432,7 +432,7 @@ var getTrends = function(req, res) {
 };
 var getConnects = function(req, res) {
     var user = req.session.user;
-    var perPageItems = 30;
+    var perPageItems = 20;
     var page = req.query.page || 1;
     User.findOne({
         _id: user._id
@@ -444,11 +444,10 @@ var getConnects = function(req, res) {
                 _id: connect.user._id,
                 name: connect.user.name,
                 id: connect.user.id,
+                location: connect.user.location,
                 avatar: connect.user.avatar,
                 relate: connect.relate,
-                occupation: connect.user.occupation,
-                signature: connect.user.signature,
-                connects: connect.user.connects.length
+                occupation: connect.user.occupation
             };
             results.push(result);
         });
@@ -1480,6 +1479,7 @@ var getMyJob = function(req, res) {
                     location: item.location,
                     degree: item.degree,
                     views: item.views,
+                    company: item.company,
                     join: item.resumes.length,
                     type: item.jobType,
                     date: item.createAt.getTime(),
@@ -1506,14 +1506,15 @@ var getMyJob = function(req, res) {
 var getMayKnowConnects = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
-    var perPageItems = 30;
+    var perPageItems = 20;
 
     User.findOne({
         _id: user._id
     }, function(err, user) {
         var array = [];
         var query = {
-            role: 'user'
+            role: 'user',
+            is_delete: false
         };
         user.connects.map(function(item) {
             array.push(item.user.toString());
@@ -1523,11 +1524,9 @@ var getMayKnowConnects = function(req, res) {
         query._id = {
             $nin: array
         };
-        query.$or = [{
-            company: user.company
-        }, {
-            school: user.school
-        }];
+        query.random = {
+            $near: [Math.random(), 0]
+        };
 
         User.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, users) {
             User.find(query).count().exec(function(err, count) {
@@ -1539,6 +1538,7 @@ var getMayKnowConnects = function(req, res) {
                         _id: item._id,
                         name: item.name,
                         avatar: item.avatar,
+                        location: item.location,
                         school: item.school,
                         company: item.company,
                         connects: item.connects.length,
@@ -1677,6 +1677,8 @@ var getMysending = function(req, res) {
                     paymentStart: item.paymentStart,
                     paymentEnd: item.paymentEnd,
                     workYears: item.workYears,
+                    company: item.company,
+                    companyLogo: item.companyLogo,
                     number: item.number,
                     skills: item.skills,
                     location: item.location,
@@ -1711,7 +1713,10 @@ var getJobRecommend = function(req, res) {
     var query = {
         type: 'job',
         status: 'publish',
-        is_delete: false
+        is_delete: false,
+        'resumes.user': {
+            $nin: [user._id]
+        }
     };
     Share.find(query).populate('user').sort('-createAt').limit(6).exec(function(err, shares) {
         var results = [];
@@ -1726,8 +1731,7 @@ var getJobRecommend = function(req, res) {
                 position: item.position,
                 _id: item._id,
                 id: item.id,
-                paymentStart: item.paymentStart,
-                paymentEnd: item.paymentEnd,
+                company: item.company,
                 location: item.location
             };
             results.push(obj);
@@ -1895,6 +1899,7 @@ var getSidebarList = function(req, res) {
                 shares.map(function(item, key) {
                     var result = {};
                     result.company = item.company;
+                    result.companyLogo = item.companyLogo;
                     result.position = item.position;
                     result.location = item.location;
                     result.date = item.createAt;

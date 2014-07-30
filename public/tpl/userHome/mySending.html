@@ -9,18 +9,15 @@
     </div>
     <div class="panel-body">
       <div class="media" ng-repeat-start="job in content">
-        <a class="pull-left" href="/profile/{{job.owner.id}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{job.owner.avatar}}" style="width: 64px; height: 64px;">
+        <a class="pull-left" href="/job/{{job.id}}" target="_self">
+          <img class="media-object" alt="64x64" ng-src="{{job.companyLogo}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
           <h4 class="media-heading">{{job.position}} <small ng-show="job.status === 'close'">[已关闭]</small></h4>
           <div class="row">
             <div class="col-md-9">
-              <div><a href="">{{job.company || '百度云服务部门'}}</a></div>
+              <div><a href="">{{job.company}}</a></div>
               <div> {{job.location}} | {{job.type}} | <span style="color:#99a1a6;">{{job.date | formatDate:true}}</span></div>
-              <div>
-                <div>人脉圈中<a target="_self" href="/profile/{{job.owner.id}}"> {{job.owner.name}} </a>相关</div>
-              </div>
             </div>
             <div class="col-md-3">
               <div class="pull-right">
@@ -31,78 +28,6 @@
         </div>
       </div>
       <hr ng-repeat-end>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading">SmashMagzine</h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer(FuZhou | shixi)</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-default" role="button">Give up</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading">CssTrick</h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer(FuZhou)</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-default" role="button">Give up</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading">CssTrick</h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer(FuZhou)</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="pull-right">
-                <a class="btn btn-default" role="button">Give up</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
       <div>
         <ul class="pager">
           <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
@@ -114,7 +39,7 @@
 </div>
 <div class="profile-sidebar col-md-3">
   <div class="panel panel-default section job-recommend">
-    <div class="panel-heading" style="font-weight:700;">相关的职位</div>
+    <div class="panel-heading" style="font-weight:700;">相似的职位</div>
     <div class="panel-body">
       <div class="media" ng-repeat="job in recommend">
         <a class="pull-left" href="profile/{{job.owner.id}}" target="_self">
@@ -122,26 +47,8 @@
         </a>
         <div class="media-body">
           <div><a href="/view/{{job.id}}" target="_self">{{job.position}}</a></div>
-          <div>{{job.location}} | {{job.company || 'amazingSurge'}} </div>
+          <div>{{job.location}} | {{job.company}} </div>
         </div>
-      </div>
-      <!-- <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" src="//joeylin.qiniudn.com/2014/06/18/18qezat53t3ccdzzlainj184bq0ci" style="width: 36px; height: 36px;">
-        </a>
-        <div class="media-body">
-          <div><a href="">web developer</a></div>
-          <div>15-25K | FuZhou</div>
-        </div>
-      </div>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" src="//joeylin.qiniudn.com/2014/06/18/18qezat53t3ccdzzlainj184bq0ci" style="width: 36px; height: 36px;">
-        </a>
-        <div class="media-body">
-         <div><a href="">PHP</a></div>
-          <div>15-25K | FuZhou</div>
-        </div> -->
       </div>
     </div>
   </div>

@@ -202,6 +202,7 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    tags: String,
     facebook: {},
     twitter: {},
     github: {},
@@ -287,6 +288,9 @@ UserSchema.path('hashedPassword').validate(function(hashedPassword) {
  */
 
 UserSchema.pre('save', function(next) {
+    if (this.role === 'user') {
+        this.tags = this.name + ' ' + this.company + ' ' + this.school + ' ' + this.occupation + ' ' + this.location;
+    }
     if (!this.isNew) {
         return next();
     }

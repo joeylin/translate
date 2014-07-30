@@ -550,11 +550,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
     }
 ]).controller('peopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.name = '';
-        $scope.id = '';
-        $scope.school = '';
-        $scope.company = '';
-        $scope.location = '';
         $scope.content = [];
         $scope.pager = {
             hasNext: false,
@@ -562,7 +557,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         };
         $scope.showSubmitBtn = false;
         $scope.title = '你可能认识的好友';
-        var url = '/api/search/people';
+        var url;
         var params = {
             page: 1,
             name: $scope.name,
@@ -571,15 +566,19 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             company: $scope.company
         };
         $scope.submit = function() {
-            $scope.id = '';
-            var params = {
+            url = '/api/search/people'
+            params = {
                 page: 1,
-                name: $scope.name,
-                school: $scope.school,
-                company: $scope.company,
-                location: $scope.location
+                name: $scope.name || undefined,
+                school: $scope.school || undefined,
+                company: $scope.company || undefined,
+                location: $scope.location || undefined
             };
-            getConnects();
+            if (!$scope.name && !$scope.school && !$scope.company && !$scope.location) {
+                getMayKnowConnects();
+            } else {
+                getConnects();
+            }
         };
         $scope.next = function() {
             if (!$scope.pager.hasNext) {
@@ -601,6 +600,10 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         var getMayKnowConnects = function() {
             url = '/api/user/mayknow';
             params.page = 1;
+            params.name = undefined;
+            params.school = undefined;
+            params.company = undefined;
+            params.location = undefined;
             getConnects();
         };
         var getConnects = function() {
@@ -612,80 +615,41 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             });
         };
 
-        // id btn
-        var timeout = null;
-        // todo need move to directive
-        $('#id').on('focus', function() {
-            app.applyFn(function() {
-                $scope.showSubmitBtn = true;
-            });
-        });
-        $('#id').on('blur', function() {
-            clearTimeout(timeout);
-            timeout = setTimeout(function() {
-                app.applyFn(function() {
-                    $scope.showSubmitBtn = false;
-                });
-            }, 200);
-        });
-        $scope.idSubmit = function() {
-            url = '/api/user/id';
-            clearTimeout(timeout);
-            if ($scope.id === '') {
-                $('#id').focus();
-                $scope.showSubmitBtn = true;
-                return false;
-            }
-            params.page = 1;
-            params.id = $scope.id;
-            $scope.name = '';
-            $scope.school = '';
-            $scope.company = '';
-            $scope.location = '';
-            $http.get(url, {
-                params: params
-            }).success(function(data) {
-                $('#id').focus();
-                $scope.showSubmitBtn = true;
-                $scope.content = data.user;
-            });
-        };
-
         // connect relative
         resetRelative();
         $scope.toggleMate = function() {
             if ($scope.isClassmate) {
-                var index = $scope.relative.indexOf('classmate');
+                var index = $scope.relative.indexOf('同学');
                 $scope.relative.splice(index, 1);
             } else {
-                $scope.relative.push('classmate');
+                $scope.relative.push('同学');
             }
             $scope.isClassmate = !$scope.isClassmate;
         };
         $scope.toggleFellow = function() {
             if ($scope.isFellow) {
-                var index = $scope.relative.indexOf('fellow');
+                var index = $scope.relative.indexOf('同事');
                 $scope.relative.splice(index, 1);
             } else {
-                $scope.relative.push('fellow');
+                $scope.relative.push('同事');
             }
             $scope.isFellow = !$scope.isFellow;
         };
         $scope.toggleFriend = function() {
             if ($scope.isFriend) {
-                var index = $scope.relative.indexOf('friend');
+                var index = $scope.relative.indexOf('朋友');
                 $scope.relative.splice(index, 1);
             } else {
-                $scope.relative.push('friend');
+                $scope.relative.push('朋友');
             }
             $scope.isFriend = !$scope.isFriend;
         };
         $scope.toggleInterest = function() {
             if ($scope.isInterest) {
-                var index = $scope.relative.indexOf('interest');
+                var index = $scope.relative.indexOf('共同爱好');
                 $scope.relative.splice(index, 1);
             } else {
-                $scope.relative.push('interest');
+                $scope.relative.push('共同爱好');
             }
             $scope.isInterest = !$scope.isInterest;
         };
@@ -774,36 +738,39 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
         var url = '/api/job/latest';
         $scope.content = [];
-        $scope.title = '最新职位';
         $scope.isIntern = false;
         $scope.showBanner = true;
+
+        $scope.payment = '';
+        $scope.years = '';
+        $scope.type = '';
+        $scope.degree = '';
+        $scope.location = '';
+
         $scope.pager = {
             hasNext: false,
             current: 1
         };
+
+        $scope.vm = {};
+        $scope.vm.keyword = '';
         var params = {
             page: 1,
-            payment: $scope.payment,
-            degree: $scope.degree,
-            years: $scope.years,
-            type: $scope.type,
-            location: $scope.location,
-            keyword: $scope.keyword
+            isIntern: $scope.isIntern,
+            keyword: $scope.vm.keyword
         };
         $scope.submit = function() {
-            // reset the config before submit
-            url = '/api/job/search';
-            clearTimeout(timeout);
+            if ($scope.vm.keyword === '') {
+                return get();
+            }
+            url = '/api/job/latestFilter';
             params.page = 1;
-            params.keyword = $scope.keyword;
-            $scope.payment = '';
-            $scope.years = '';
-            $scope.type = '';
-            $scope.degree = '';
-            $scope.location = '';
-            get(function() {
-                $('#keyword').focus();
-                $scope.showSubmitBtn = true;
+            params.keyword = $scope.vm.keyword;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.next = function() {
@@ -822,16 +789,10 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             params.page = $scope.pager.current;
             get();
         };
-        var addFilter = function(key, value) {
-            params[key] = value;
-            params.pager = 1;
-            get();
-        };
-        $scope.addFilter = addFilter;
         $scope.enter = function(e, key, value) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) {
-                addFilter(key, value);
+                $scope.submit();
             }
         };
         $scope.save = function(job) {
@@ -863,15 +824,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             }               
         };  
 
-        function get(cb) {
+        function get() {
+            url = '/api/job/latest';
             $http.get(url, {
                 params: params
             }).success(function(data) {
                 $scope.content = data.content;
                 $scope.pager.hasNext = data.hasNext;
-                if (cb) {
-                    cb();
-                }
+                $scope.isIntern = false;
             });
         }
 
@@ -1062,7 +1022,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
 
         $scope.vm = {};
         $scope.vm.page = {
-            size: 30,
+            size: 28,
             index: 1
         };
         var removeUser = null;
@@ -1576,6 +1536,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.summary = '';
         $scope.workYears = '';
         $scope.skills = '';
+        $scope.contact = {};
+        $scope.companyLogo = '/public/imgs/company.jpg';
 
         $scope.showBlankError = false;
         $scope.showNothingError = false;
@@ -1597,12 +1559,19 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 companyIntro: $scope.companyIntro,
                 detail: $scope.detail,
                 department: $scope.department,
+                companyLogo: $scope.companyLogo,
                 degree: $scope.degree,
                 position: $scope.position,
                 location: $scope.location,
                 summary: $scope.summary,
                 skills: $scope.skills,
-                workYears: $scope.workYears
+                workYears: $scope.workYears,
+                contact: {
+                    qq: $scope.contact.qq,
+                    phone: $scope.contact.phone,
+                    email: $scope.contact.email,
+                    message: $scope.contact.message
+                }
             };
             $http.post(url, data).success(function(data) {
                 $location.path('/job');
@@ -1626,12 +1595,19 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 position: $scope.position,
                 department: $scope.department,
                 company: $scope.company,
+                companyLogo: $scope.companyLogo,
                 companyIntro: $scope.companyIntro,
                 detail: $scope.detail,
                 location: $scope.location,
                 summary: $scope.summary,
                 skills: $scope.skills,
-                workYears: $scope.workYears
+                workYears: $scope.workYears,
+                contact: {
+                    qq: $scope.contact.qq,
+                    phone: $scope.contact.phone,
+                    email: $scope.contact.email,
+                    message: $scope.contact.message
+                }
             };
             $http.post(url, data).success(function(data) {
                 $location.path('/myJob');
@@ -1653,12 +1629,19 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 position: $scope.position,
                 location: $scope.location,
                 company: $scope.company,
+                companyLogo: $scope.companyLogo,
                 companyIntro: $scope.companyIntro,
                 detail: $scope.detail,
                 department: $scope.department,
                 summary: $scope.summary,
                 skills: $scope.skills,
-                workYears: $scope.workYears
+                workYears: $scope.workYears,
+                contact: {
+                    qq: $scope.contact.qq,
+                    phone: $scope.contact.phone,
+                    email: $scope.contact.email,
+                    message: $scope.contact.message
+                }
             };
             $http.post(url, data).success(function(data) {
                 $location.path('/myJob');
@@ -1686,9 +1669,18 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 $scope.workYears = data.job.workYears;
                 $scope.skills = data.job.skills;
                 $scope.id = data.job.id;
+                $scope.contact.qq = data.contact && data.contact.qq;
+                $scope.contact.email = data.contact && data.contact.email;
+                $scope.contact.phone = data.contact && data.contact.phone;
+                $scope.contact.message = data.contact && data.contact.message;
             });
         } else {
             $scope.title = '创建职位';
         }
+
+        // companyLogo upload
+        $scope.$on('putFinish', function(event, imageUrl) {
+            $scope.companyLogo = imageUrl;
+        });
     }
 ]);

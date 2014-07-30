@@ -249,62 +249,6 @@
             font-size: 14px;
             line-height: 18px;
           }
-          .timeline-v {
-            position: relative;
-            margin-top: 10px;
-            margin-bottom: 0;
-            padding: 0;
-            list-style: none;
-          }
-          .timeline-v:before {
-            content: '';
-            position: absolute;
-            top: 13px;
-            left: 0;
-            height: 5px;
-            width: 100%;
-            background: #ddd;
-            border: 1px solid #eee;
-            margin: 0;
-            -webkit-border-radius: 2px;
-            -moz-border-radius: 2px;
-            border-radius: 2px;
-          }
-          .timeline-v > li {
-            position: relative;
-            display: inline-block;
-          }
-          .timeline-v > .active .post,
-          .timeline-v > .active .reading, 
-          .timeline-v > .active .interview,
-          .timeline-v > .active .offer {
-            background-color: #0073b7;
-            color: #fff;
-          }
-          .timeline-v > li > .fa{
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-            width: 30px;
-            height: 30px;
-            font-size: 15px;
-            line-height: 30px;
-            color: #666;
-            background: #eee;
-            border-radius: 50%;
-            text-align: center;
-          }
-          .timeline-v > .fail > .post,
-          .timeline-v > .fail > .reading,
-          .timeline-v > .fail > .interview,
-          .timeline-v > .fail > .offer {
-            background-color: #f4543c;
-            color: #fff;
-          }
-          .timeline-v > li > .reading {
-            margin-left: -30%;
-          }
-          .timeline-v > li > .interview {
-            margin-right: -23%;
-          }
           .sending.popover {
             display: none;
             width: 470px;
@@ -531,6 +475,39 @@
           }
           .newJob .panel-body label {
             line-height: 35px;
+          }
+          .logo-container {
+            display: inline-block;
+            position: relative;
+          }
+          .logo-container .avatar-tip {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #99a1a6;
+          }
+          .logo-container input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 0;
+            cursor: pointer;
+          }
+          .logo-container .upload-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            line-height: 64px;
+            text-align: center;
+            background-color: #0b0b0b;
+            opacity: 0.8;
+            color: #fff;
+
           }
           /* group */
           .group-check {
@@ -865,6 +842,8 @@
             '/public/js/lib/flexText/jquery.flexText.min.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/lib/typeahead/typeahead.bundle.min.js',
+            '/public/js/lib/qiniu.uploader.js',
+            '/public/js/upload.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',

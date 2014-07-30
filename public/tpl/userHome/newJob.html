@@ -111,6 +111,21 @@
           <input type="text" class="form-control" placeholder="所在的部门(可选)" ng-model="department">
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>公司Logo :</label>
+        </div>
+        <div class="col-md-6">
+          <span class="logo-container">
+            <a href="#">
+                <img ng-src="{{companyLogo}}" id="changeAvatar" style="width:64px;height:64px;">
+            </a>
+            <input type="file" id="avatar-upload" />
+            <div class="upload-progress" id="upload-progress"></div>
+            <div class="avatar-tip text-center">点击上传</div>
+          </span>
+        </div>
+      </div>
       <div>
         <label>公司简介 :</label>
         <textarea auto-height class="form-control" rows="3" placeholder="公司简介" ng-model="companyIntro"></textarea>
@@ -123,6 +138,35 @@
       <div>
         <label>任职要求 :</label>
         <textarea auto-height class="form-control" rows="3" placeholder="岗位的具体要求" ng-model="detail"></textarea>
+      </div>
+      <hr>
+      <div>
+        <label style="margin-bottom:10px;">联系方式(选填) :</label>
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-md-2 text-center" style="line-height:34px;">邮箱:</div>
+          <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="用于接收简历的邮箱" ng-model="contact.email">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-md-2 text-center" style="line-height:34px;">QQ:</div>
+          <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="QQ" ng-model="contact.qq">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-md-2 text-center" style="line-height:34px;">电话:</div>
+          <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="联系的电话" ng-model="contact.phone">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+          <div class="col-md-2 text-center" style="line-height:34px;">留言:</div>
+          <div class="col-md-5">
+            <textarea row="5" class="form-control" placeholder="简历投递的注意点等等" ng-model="contact.message"></textarea>
+          </div>
+        </div>
+
       </div>
     <div class="clearfix" style="margin-top:15px;" ng-if="current.path === 'newJob'">
       <a class="btn btn-primary pull-right" role="button" ng-click="submit()">发布</a>

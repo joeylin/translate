@@ -18,55 +18,88 @@ var getPeople = function(req, res) {
     var company = req.query.company;
     var name = req.query.name;
     var page = req.query.page || 1;
-    var perPageItems = 30;
+    var perPageItems = 20;
     
     var query = {
-        role: 'user'
+        role: 'user',
+        is_delete: false
     };
-    if (company) {
-        query.company = company;
+    query.$or = [];
+    if (name) {
+        query.$or.push({
+            name: new RegExp(name, 'i')
+        });
     }
     if (school) {
-        query.school = school;
+        query.$or.push({
+            school: new RegExp(school, 'i')
+        });
     }
     if (location) {
-        query.location = location;
+        query.$or.push({
+            location: new RegExp(location, 'i')
+        });
     }
-    if (name) {
-        var re = new RegExp(name,'ig');
-        query.name = re;
+    if (company) {
+        query.$or.push({
+            company: new RegExp(company, 'i')
+        });
     }
-    User.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, users) {
-        User.find(query).count().exec(function(err, count) {
-            var results = [];
-            var hasNext;
-            users.map(function(item) {
-                var obj = {
-                    id: item.id,
-                    _id: item._id,
-                    name: item.name,
-                    avatar: item.avatar,
-                    school: item.school,
-                    company: item.company,
-                    connects: item.connects.length,
-                    occupation: item.occupation
-                };
-                results.push(obj);
-            });
-            if ((page - 1) * perPageItems + results.length < count) {
-                hasNext = true;
-            } else {
-                hasNext = false;
-            }
-            res.send({
-                code: 200,
-                content: results,
-                count: count,
-                hasNext: hasNext
+
+    if (query.$or.length === 0) {
+        return res.send({
+            code: 200,
+            content: [],
+            count: 0,
+            hasNext: false
+        });
+    }
+
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        var array = [];
+        user.connects.map(function(item) {
+            array.push(item.user.toString());
+        });
+        array.push(user._id.toString());
+        query._id = {
+            $nin: array
+        };
+        User.find(query).skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, users) {
+            User.find(query).count().exec(function(err, count) {
+                var results = [];
+                var hasNext;
+                users.map(function(item) {
+                    var obj = {
+                        id: item.id,
+                        _id: item._id,
+                        name: item.name,
+                        avatar: item.avatar,
+                        school: item.school,
+                        location: item.location,
+                        company: item.company,
+                        connects: item.connects.length,
+                        occupation: item.occupation
+                    };
+                    results.push(obj);
+                });
+                if ((page - 1) * perPageItems + results.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                res.send({
+                    code: 200,
+                    content: results,
+                    count: count,
+                    hasNext: hasNext
+                });
             });
         });
-    });
+    }); 
 };
+
 var getJobs = function(req, res) {
     var query = req.query;
     console.log(query);
@@ -80,42 +113,8 @@ var getShare = function(req, res) {
     console.log(query);
 };
 module.exports = function(app) {
-    app.get('/api/search/people', getPeople);
+    app.get('/api/search/people', middleware.check_login, getPeople);
     app.get('/api/search/jobs', getJobs);
     app.get('/api/search/company', getCompany);
     app.get('/api/search/share', getShare);
 };
-
-// helper
-function setRelate(users, meId, cb) {
-    var results = [];
-    if (!meId) {
-        return users;
-    }
-    User.findOne({
-        _id: meId
-    }, function(err, me) {
-        users.map(function(user, key) {
-            var obj = {
-                avatar: user.avatar,
-                _id: user._id,
-                name: user.name,
-                desc: user.desc
-            };
-            obj.isMe = false;
-            obj.isConnected = false;
-            if (user._id.toString() === meId) {
-                obj.isMe = true;
-                obj.isConnected = true;
-            } else {
-                me.connects.map(function(connect, key) {
-                    if (connect.user.toString() === user._id.toString()) {
-                        obj.isConnected = true;
-                    }
-                });
-            }
-            results.push(obj);
-        });
-        cb(results);
-    });
-}

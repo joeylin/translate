@@ -19,6 +19,7 @@ var async = require('async');
 var marked = require('marked');
 var config = require('../config/config').config;
 var middleware = require('./middleware');
+var moment = require('moment');
 
 module.exports = function(app) {
     var getLogin = function(req, res) {
@@ -291,12 +292,12 @@ module.exports = function(app) {
             result.content = share.content;
             result._id = share._id;
             result.id = share.id;
-            result.createAt = share.createAt.getTime();
             result.jobType = share.jobType;
             result.paymentStart = share.paymentStart;
             result.paymentEnd = share.paymentEnd;
             result.department = share.department;
             result.company = share.company;
+            result.companyLogo = share.companyLogo;
             result.companyIntro = share.companyIntro;
             result.degree = share.degree;
             result.position = share.position;
@@ -304,8 +305,10 @@ module.exports = function(app) {
             result.workYears = share.workYears;
             result.summary = share.summary;
             result.detail = share.detail;
+            result.contact = share.contact || {};
             result.liked = false;
             result.hasPost = false;
+            result.date = formatDate(share.createAt.getTime());
             app.locals.isJobCreator = false;
             if ( !! author) {
                 share.likes.map(function(like) {
@@ -322,7 +325,16 @@ module.exports = function(app) {
                     app.locals.isJobCreator = true;
                 }
             }
-
+            function formatDate(date) {
+                var today = Date.now();
+                if (today - date >= 31 * 24 * 3600 * 1000) {
+                    return '一个月前';
+                } else if (today - date >= 24 * 3600 * 1000) {
+                    return moment(today - date).date() + '天前';
+                } else {
+                    return moment(today - date).hour() + '小时前';
+                }
+            }
             result.likes = share.likes.length;
             result.total = share.comments.length;
             result.join = share.resumes.length;

@@ -236,6 +236,14 @@
           .color-card:hover {
             background-color: #fff;
           }
+          /* contact */
+          .contact strong {
+            width: 60px;
+            display: inline-block;
+          }
+          .contact > div {
+            margin-top: 5px;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -358,15 +366,13 @@
               <div class="panel-body">
                 <div class="media job-header">
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="/public/imgs/nodejs.png" style="width: 146px; height: 146px;">
+                        <img class="media-object" src="<%= locals.share.companyLogo %>" style="width: 146px; height: 146px;">
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading" style="margin-bottom:15px;margin-top:5px;"><%= locals.share.position %></h3>
-                        <div style="font-size:18px;margin-bottom:3px;"><a href="#"><%= locals.share.company || 'amazingSurge' %></a>北京</div>
-                        <div style="color:#999;">7天之前发布</div>
+                        <div style="font-size:18px;margin-bottom:3px;"><a href="#"><%= locals.share.company %></a><%= locals.share.location %></div>
+                        <div style="color:#999;"><%= locals.share.date %></div>
                         <div class="job-op">
-                          <!-- <a href="" class="btn btn-primary btn-sm">投递简历</a>
-                          <span style="color:#999;">已有 <span style="color:#333;"><%= locals.share.join %></span> 人投递</span> -->
                           <% if (locals.author) { %>
                           <% if (locals.isJobCreator) { %>
                           <a href="/job/<%= locals.share.id %>/members" class="btn btn-primary btn-sm">管理简历</a>
@@ -423,9 +429,9 @@
               </div>
             </div>
             <div class="well" style="padding-top:15px;">
-              <h5 style="font-size:16px;font-weight:700;">公司简介</h5>
+              <h5 style="font-size:16px;font-weight:700;">团队简介</h5>
               <div><%= locals.share.companyIntro %></div>
-              <hr style="border-top: 1px solid #e3e3e3;">
+              <!-- <hr style="border-top: 1px solid #e3e3e3;">
               <h5 style="font-size:16px;font-weight:700;margin-bottom:20px;"><%= locals.share.company %>正在招聘的其他职位</h5>
               <div class="row" style="margin-bottom:15px;">
                 <div class="col-md-3">
@@ -453,15 +459,15 @@
                   </div>
                 </div>
               </div>
-              <div class="text-right"><a href="">查看更多职位 <i class="fa fa-fw fa-angle-double-right"></i></a></div>
+              <div class="text-right"><a href="">查看更多职位 <i class="fa fa-fw fa-angle-double-right"></i></a></div> -->
             </div>
-            <div class="well" style="padding-top:15px;">
+            <!-- <div class="well" style="padding-top:15px;">
               <h5 style="font-size:16px;font-weight:700;">相似职位</h5>
               <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
               </div>
-            </div>
+            </div> -->
     
             <div class="well" ng-cloak ng-if="isManage" style="padding-bottom: 30px;">
               <div class="row">
@@ -469,7 +475,7 @@
                   <div class="carbonad clearfix">
                     <span class="carbonad-image pull-left">
                       <a href="/profile/{{user.id}}" target="_self">
-                        <img class="carbonad-image carbonad-img" ng-src="{{user.avatar}}" title="user.name" >
+                        <img class="carbonad-image carbonad-img" ng-src="{{user.avatar}}" title="user.name">
                       </a>
                     </span>
                     <div class="carbonad-info">
@@ -560,12 +566,27 @@
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
-        <div id="login-popup" class="white-popup-block mfp-hide">
-          You need Login First !
+        <div id="login-popup" class="white-popup-block mfp-hide" style="max-width:560px;">
+          你还未登陆，不能进行这个操作哦。
         </div>
-        <div id="account-update" class="white-popup-block mfp-hide">
-          <div>555，你是普通账户，无法享受改功能哦。</div>
-          <div>升级账户，获得优先主动权 ！</div>
+        <div id="account-update" class="white-popup-block mfp-hide contact" style="max-width:560px;">
+          <% if (locals.share.contact.qq) { %>
+          <div><strong>QQ ：</strong><%= locals.share.contact.qq %></div>
+          <% } %>
+          <% if (locals.share.contact.email) { %>
+          <div><strong>邮箱 ：</strong><%= locals.share.contact.email %></div>
+          <% } %>
+          <% if (locals.share.contact.phone) { %>
+          <div><strong>电话 ：</strong><%= locals.share.contact.phone %></div>
+          <% } %>
+          <% if (locals.share.contact.message) { %>
+          <div><strong>信息 ：</strong></div>
+          <div style="margin-top: 0px;"><%= locals.share.contact.message %></div>
+          <% } %>
+          <% if (!locals.share.contact.email) { %>
+          <div style="margin-top:10px;">
+          <strong style="display:inline;">站内申请 : </strong>通过站内申请，你个人主页的资料将会发至招聘方，注意完善个人资料的联系信息跟简历信息哦。</div>
+          <% } %>
         </div>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>

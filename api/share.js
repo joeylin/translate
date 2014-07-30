@@ -378,6 +378,7 @@ var getLatestJobs = function(req, res) {
                         number: item.number,
                         skills: item.skills,
                         company: item.company,
+                        companyLogo: item.companyLogo,
                         location: item.location,
                         degree: item.degree,
                         views: item.views,
@@ -469,6 +470,7 @@ var jobsSearch = function(req, res) {
                     workYears: item.workYears,
                     number: item.number,
                     company: item.company,
+                    companyLogo: item.companyLogo,
                     skills: item.skills,
                     location: item.location,
                     degree: item.degree,
@@ -737,6 +739,7 @@ var getIntern = function(req, res) {
                         number: item.number,
                         skills: item.skills,
                         company: item.company,
+                        companyLogo: item.companyLogo,
                         location: item.location,
                         degree: item.degree,
                         views: item.views,
@@ -767,7 +770,7 @@ var latestJobsFilter = function(req, res) {
     var keyword = req.query.keyword;
     var page = req.query.page || 1;
     var perPageItems = 30;
-    var str = '/';
+    var str = '';
     var array = keyword.split(' ');
     array.map(function(item,key) {
         str += item;
@@ -775,7 +778,6 @@ var latestJobsFilter = function(req, res) {
             str += '|';
         }
     });
-    str += '/';
     var re = new RegExp(str, 'ig');
     var query = {
         type: 'job',
@@ -814,6 +816,7 @@ var latestJobsFilter = function(req, res) {
                         number: item.number,
                         skills: item.skills,
                         company: item.company,
+                        companyLogo: item.companyLogo,
                         location: item.location,
                         degree: item.degree,
                         views: item.views,
@@ -859,6 +862,7 @@ module.exports = function(app) {
     // jobs
     app.get('/api/job/latest', getLatestJobs);
     app.get('/api/job/search', jobsSearch);
+    app.get('/api/job/latestFilter', latestJobsFilter);
     app.get('/api/job/postList', getPostJobList);
     app.post('/api/job/close', closeJob);
     app.post('/api/job/remove', removeJob);

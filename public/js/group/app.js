@@ -200,10 +200,6 @@ config(['$httpProvider', 'app',
                             execFuction.share.fork += 1;
                         });
                     } 
-
-
-
-
                 }; 
                 global.fork.change();
                 setTimeout(function() {

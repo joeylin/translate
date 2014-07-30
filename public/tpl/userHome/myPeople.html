@@ -11,29 +11,6 @@
       </div>
     </div>
     <div class="panel-body">
-      <!-- <div class="media" ng-repeat-start="user in content|filter:vm.filter">
-        <a class="pull-left" ng-href="/profile/{{user.id}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{user.avatar}}" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body user-connects">
-          <div popup data-mfp-src="#remove-user" class="pull-right remove-btn" ng-click="vm.triggerRemove(user)"><i class="fa fa-fw fa-times"></i></div>
-          <h4 class="media-heading"><a ng-href="profile/{{user.id}}" target="_self">{{user.name}}</a></h4>
-          <div class="row">
-            <div class="col-md-9">
-              <div>{{user.occupation || 'no occupation yet'}}</div>
-              <div class="search-people-info">Intro: {{user.signature || 'no introduce yet'}}</div>
-              <div>Realte: {{user.relate}}</div>
-              <div class="search-people-relationship">Connects:{{user.connects}}</div>
-            </div>
-            <div class="col-md-2">
-              <div relselect user="user">
-                <a class="btn btn-default pull-right btn-sm" role="button">change relate</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr ng-repeat-end> -->
       <div class="row">
         <div class="col-md-3" ng-repeat="user in content|filter:vm.filter" >
           <div class="thumbnail">
@@ -42,7 +19,7 @@
             </a>
             <div class="caption">
               <div><a href="/profile/{{user.id}}" target="_self">{{user.name}}</a></div>
-              <div>{{user.location || '未知'}} | {{user.occupation}}</div>
+              <div style="white-space: nowrap;overflow: hidden;">{{user.location || '未知'}} | {{user.occupation}}</div>
               <div relselect user="user" class="addBtn text-center" style="width:100%;overflow:hidden;height:24px;">
                 <span>{{user.relate}}</span>
               </div>

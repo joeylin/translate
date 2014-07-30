@@ -15,16 +15,16 @@
     <div class="panel-body">
       <div class="media" ng-repeat-start="job in content">
         <div class="media-body">
-          <h4 class="media-heading">{{job.position}} <small>[{{job.status | statusCn}}]</small></h4>
+          <h4 class="media-heading">{{job.position}} <small><span>{{job.company}}</span> [{{job.status | statusCn}}]</small></h4>
           <div class="row">
             <div class="col-md-9">
               <div>{{job.summary}}</div>
-              <div> <strong>Payment</strong>: {{job.paymentStart}}k-{{job.paymentEnd}}k</div>
-              <div> <strong>Experience</strong>: {{job.workYears}}</div>
-              <div> <strong>Type</strong>: {{job.type}} </div>
-              <div> <strong>Degree</strong>: {{job.degree}}</div>
-              <div class="search-job-location"><strong>location</strong>: {{job.location}}</div>
-              <div> <strong>Skills</strong>: {{job.skills}}</div>
+              <div> <strong>薪资</strong>: {{job.paymentStart}}k-{{job.paymentEnd}}k</div>
+              <div> <strong>工作经验</strong>: {{job.workYears}}</div>
+              <div> <strong>工作性质</strong>: {{job.type}} </div>
+              <div> <strong>最低学历</strong>: {{job.degree}}</div>
+              <div class="search-job-location"><strong>工作地点</strong>: {{job.location}}</div>
+              <div> <strong>要求技能</strong>: {{job.skills}}</div>
               <div>
                 <a href="#" class="search-job-date">{{job.date | formatDate:true}} </a>
                 <span> 查阅: {{job.views}}</span>
@@ -47,112 +47,6 @@
         </div>
       </div>
       <hr ng-repeat-end>
-      <!-- <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">{{job.date | formatDate:true}} </a>
-                <span> Views: {{job.views}}</span>
-                <span> Join: {{job.join}}</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op" ng-if="job.status==='draft'">
-              <span><a href="/jobs/{{job.id}}/edit" target="_self">edit</a></span>
-              <span><a href="" ng-click="remove(job)">remove</a></span>
-            </div>
-            <div class="col-md-4 job-op" ng-if="job.status==='publish'">
-              <span><a href="/view/{{job.id}}" target="_self">view</a></span>
-              <span><a href="" ng-click="close(job)">close</a></span>
-            </div>
-            <div class="col-md-4 job-op" ng-if="job.status==='close'">
-              <span><a href="/view/{{job.id}}" target="_self">view</a></span>
-              <span><a href="" ng-click="remove(job)">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op">
-              <span><a href="#">view</a></span>
-              <span><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op">
-              <span><a href="#">view</a></span>
-              <span><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <div class="media-body">
-          <div class="row">
-            <div class="col-md-8">
-              <div>Ask for nodejs developer, code review, write document, communicate with customer</div>
-              <div> <strong>Payment</strong>: 10k-20k</div>
-              <div> <strong>Experience</strong>: 2-8</div>
-              <div> <strong>Type</strong>: full-time</div>
-              <div> <strong>Skills</strong>: nodejs html5 css js angular</div>
-              <div class="search-job-location"><strong>location</strong>: FuZhou</div>
-              <div>
-                <a href="#" class="search-job-date">Posted at 2 hours ago </a>
-                <span> Views: 1000</span>
-                <span> Join: 53</span>
-              </div>
-            </div>
-            <div class="col-md-4 job-op">
-              <span><a href="#">view</a></span>
-              <span><a href="#">edit</a></span>
-              <span><a href="#">remove</a></span>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <div>
         <ul class="pager">

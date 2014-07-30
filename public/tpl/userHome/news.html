@@ -147,7 +147,7 @@
               <span class="hover-tag" ng-click="sidebar.removeJob(item)"><i class="fa fa-fw fa-times"></i></span>
               <a target="_self" href="/job/{{item.id}}" target="_self">{{item.position}}</a>
               <div>{{item.location}} | {{item.company}}</div>
-              <div><span style="color:#99a1a6;">{{item.date | formatDate:true }}</span></div>
+              <div><a href="/profile/{{item.user.id}}" style="color:#99a1a6;" target="_self">由 {{item.user.name}} 发布</a></div>
           </div>
       </div>
     </div>
