@@ -842,6 +842,38 @@ var latestJobsFilter = function(req, res) {
         });
     });
 };
+var visitorRecord = function(req, res) {
+    var user = req.session.uesr;
+    var query = {
+        type: 'job',
+        is_delete: false,
+        random: {
+            $near: [Math.random(), 0]
+        },
+        _id: {
+            $nin: [user._id]
+        }
+    };
+    Share.find(query).populate('user').limit(6).exec(function(err, shares) {
+        var results = [];
+        var hasNext;
+        shares.map(function(item) {
+            var obj = {
+                id: item.id,
+                position: item.position,
+                company: item.company,
+                companyLogo: item.companyLogo,
+                location: item.location,
+                date: item.createAt.getTime(),
+            };
+            results.push(obj);
+        });
+        res.send({
+            code: 200,
+            content: results
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/share/unlike', middleware.check_login, shareUnlike);

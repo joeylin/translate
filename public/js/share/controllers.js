@@ -2,8 +2,8 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
-    function(app, $scope, $rootScope, $location, $http) {
+controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount',
+    function(app, $scope, $rootScope, $location, $http, wordCount) {
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -63,6 +63,24 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 }).success(function(data) {
                     $scope.share.liked = true;
                     $scope.share.likes += 1;
+                });
+            }
+        };
+        $scope.toggleCollect = function() {
+            var url;
+            if ($scope.share.has_collect) {
+                url = '/api/user/uncollect';
+                $http.post(url, {
+                    id: $scope.share._id
+                }).success(function(data) {
+                    $scope.share.has_collect = false;
+                });
+            } else {
+                url = '/api/user/collect';
+                $http.post(url, {
+                    id: $scope.share._id
+                }).success(function(data) {
+                    $scope.share.has_collect = true;
                 });
             }
         };
@@ -144,65 +162,84 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             });
         };
 
-        // manage
-        var getPostMember = function() {
-            url = '/api/job/postList';
-            params.page = 1;
-            $http.get(url, {
-                params: params
-            }).success(function(data) {
-                $scope.postList = data.content;
-            });
+        // fork popup
+        var global = app.rootScope.global;
+        global.fork = {
+            open: false,
+            shareCount: 0,
+            forkShare: '',
+            share: null,
+            close: function() {
+                global.fork.open = false;
+            }
         };
-        $scope.manage = function() {
-            $scope.isManage = true;
-            getPostMember();
+        global.fork.change = function() {
+            global.fork.shareCount = wordCount(global.fork.forkShare);
+        };   
+        global.fork.submit = function() {
+            var url = '/api/share/fork';
+            if (global.fork.shareCount > 140) {
+                return false;
+            }
+            if (global.fork.share.isFork) {
+                $http.post(url, {
+                    type: 'view',
+                    isFork: true,
+                    forkId: global.fork.share._id,
+                    from: {
+                        share: global.fork.share.from.share._id,
+                        user: global.fork.share.from.user._id,
+                        group: global.fork.share.from.group && global.fork.share.from.group._id
+                    },
+                    content: global.fork.forkShare
+                }).success(function(data) {
+                    global.fork.open = false;
+                    global.fork.share.fork += 1;
+                });
+            } else {
+                $http.post(url, {
+                    type: 'view',
+                    isFork: true,
+                    forkId: global.fork.share._id,
+                    from: {
+                        share: global.fork.share._id,
+                        user: global.fork.share.user._id,
+                        group: global.fork.share.group && global.fork.share.group._id
+                    },
+                    content: global.fork.forkShare || '转发'
+                }).success(function(data) {
+                    global.fork.open = false;
+                    global.fork.share.fork += 1;
+                });
+            }
         };
-        $scope.back = function() {
-            $scope.isManage = false;
+        $scope.forkPopup = function() {
+            global.fork.open = true;
+            global.fork.share = $scope.share;
+
+            if ($scope.share.isFork) {
+                global.fork.userName = $scope.share.from.user.name;
+                global.fork.userId = $scope.share.from.user.id;
+                global.fork.groupName = $scope.share.group && share.from.group.name;
+                global.fork.groupId = $scope.share.group && share.from.group.id;
+                global.fork.content = $scope.share.from.share.content;
+                global.fork.forkShare = '//@' + $scope.share.user.name + ' ' + $scope.share.content;
+            } else {
+                global.fork.userName = $scope.share.user.name;
+                global.fork.userId = $scope.share.user.id;
+                global.fork.groupName =  $scope.share.group && $scope.share.group.name;
+                global.fork.groupId = $scope.share.group && $scope.share.group.id; 
+                global.fork.content = $scope.share.content;
+                global.fork.date = $scope.share.createAt;
+                global.fork.forkShare = '';
+            }
+            global.fork.change();
+            setTimeout(function() {
+                $('#forkText').focus();
+            },200);
         };
 
         // init
         getTrends();
-    }
-]).controller('jobManageCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
-    function(app, $scope, $rootScope, $location, $http) {
-        $scope.pager = {
-            hasNext: false,
-            current: 1
-        };
-        var params = {
-            page: 1,
-            perPageItems: 50,
-            shareId: $scope.share._id
-        };
-        var getPostMember = function() {
-            var url = '/api/share/comments';
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.share.comments = data.comments;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.next = function() {
-            if (!$scope.pager.hasNext) {
-                return false;
-            }
-            $scope.pager.current += 1;
-            params.page = $scope.pager.current;
-            getTrends();
-        };
-        $scope.prev = function() {
-            if (!$scope.pager.current) {
-                return false;
-            }
-            $scope.pager.current -= 1;
-            params.page = $scope.pager.current;
-            getTrends();
-        };
-
-        // init
-        getPostMember();
     }
 ]);

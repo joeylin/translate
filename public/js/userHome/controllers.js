@@ -1680,7 +1680,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
 
         // companyLogo upload
         $scope.$on('putFinish', function(event, imageUrl) {
-            $scope.companyLogo = imageUrl;
+            $scope.$apply(function() {
+                $scope.companyLogo = imageUrl;
+            });
         });
     }
 ]);

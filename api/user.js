@@ -388,6 +388,14 @@ var getTrends = function(req, res) {
                             };
                         }
                     }
+                    result.has_collect = false;
+                    if (user) {
+                        item.collects.map(function(collect) {
+                            if (collect.user.toString() == user._id.toString()) {
+                                result.has_collect = true;
+                            }
+                        });
+                    }
                     result.liked = false;
                     item.likes.map(function(like) {
                         if (like.toString() == user._id.toString()) {
@@ -800,7 +808,7 @@ var getMyCollect = function(req, res) {
                 content.push(result);
             });
             if ((page - 1) * perPageItems + content.length < count) {
-                hasNext = true;
+                Next = true;
             } else {
                 hasNext = false;
             }
@@ -1605,7 +1613,7 @@ var collect = function(req, res) {
         });
         if (index > -1) {
             return res.send({
-                code: 404,
+                code: 200,
                 info: 'has collected'
             });
         }
@@ -1636,7 +1644,7 @@ var unCollect = function(req, res) {
         });
         if (index === -1) {
             return res.send({
-                code: 404,
+                code: 200,
                 info: 'no collected'
             });
         }

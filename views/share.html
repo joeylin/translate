@@ -16,6 +16,10 @@
         <link rel="stylesheet" href="/public/css/main.css">
         <!-- magnific popup style -->
         <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
+        <!-- atwho -->
+        <link rel="stylesheet" href="/public/js/lib/atwho/jquery.atwho.css">
+        <!-- flexText -->
+        <link rel="stylesheet" href="/public/js/lib/flexText/jquery.flexText.css">
 
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -32,6 +36,9 @@
             padding-left: 15px;
             padding-right: 15px;
             background-color: #fff;
+          }
+          .container {
+            max-width: 970px;
           }
           .section {
             margin-bottom: 20px;
@@ -62,8 +69,7 @@
             margin-top: 10px;
           }
           .well h4 {
-            margin-bottom: 20px;
-            font-weight: 700;
+            margin-top: 2px;
           }
           .company-about .btn {
             margin-top: 10px;
@@ -74,7 +80,8 @@
             margin-bottom: 0px;
           }
           .media-info .date {
-            font-style: italic;
+            color: #99a1a6;
+            font-size: 0.9em;
           }
           .media-info .media-controll {
             padding-right: 16px;
@@ -96,7 +103,7 @@
             color: #3c8dbc;
           }
           .media-info .media-control .like {
-            margin-right: 15px;
+            margin-right: 5px;
           }
           .media-info .media-control .liked {
             color: rgb(51, 51, 51);
@@ -135,7 +142,6 @@
           }
           .view-sidebar .well .user-signature {
             margin-top: 15px;
-            font-weight: 700;
           }
           .view-sidebar .find-btn  {
             border: 1px solid #ddd;
@@ -165,7 +171,7 @@
             background-color: #00694e;
           }
           .container .well {
-            padding: 30px 30px 15px 30px;
+            
           }
           .container .well h3 {
             margin-top: 0;
@@ -182,6 +188,29 @@
           }
           .no-notify {
             padding: 15px;
+          }
+
+          .forkContent {
+            background-color: #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+          }
+          .well > .title {
+            font-weight: 700;
+            margin-bottom: 15px;
+          }
+          .at {
+            color: #428bca;
+          }
+          .fork-popup .mfp-container:before {
+            content: '';
+            display: inline-block;
+            height: 20%;
+            vertical-align: middle;
+          }
+          .fork-popup .flex-text-wrap > pre {
+            min-height: 74px;
           }
 
           /* reset adminTLE carbonad */
@@ -297,77 +326,49 @@
                   <% } %>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li><a href="/home" target="_self">Home</a></li>
-                <li><a href="/profile" target="_self">Profile</a></li>
-                <li><a href="/search/all" target="_self">Search</a></li>
+                <li><a href="/home" target="_self">首页</a></li>
+                <li><a href="/profile" target="_self">个人主页</a></li>
+                <li><a href="/group" target="_self">群组</a></li>
+                <li><a href="/search/all" target="_self">搜索</a></li>
               </ul>
             </div> 
           </div>
         </nav>
         <div class="container">
           <div class="profile-body col-md-9" ng-controller="indexCtrl">
-            <div class="well">
-              <% if (locals.share.type === 'view') { %>
-              <p><%= locals.share.content %></p>
+            <div class="well" ng-cloak>
+              <div class="title" ng-if="share.group">来自 <a href="/group/{{share.group.id}}" target="_self" style="color:#333;"> {{share.group.name}}</a> 兴趣圈</div>
+              <p md-content="share.content"></p>
+              <div class="forkContent" ng-if="share.isFork">
+                <p ng-if="share.from.group"><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a> 发布于 <a href="/group/{{share.from.group.id}}" target="_self">{{share.from.group.name}}</a></p>
+                <p ng-if="!share.from.group"><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a></p>
+                <p md-content="share.from.share.content"></p>
+                <div class="date" style="color:#99a1a6;font-size:0.9em;">{{share.from.share.createAt | formatDate:true}}</div>
+              </div>
               <div class="clearfix media-info" ng-cloak>
                 <span class="pull-left media-control">
                   <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
-                  <span>View(<%= locals.share.views || 0 %>)</span>
-                  <span>Join({{share.join}})</span>
-                  <% if (locals.author) { %>
                   <a href="" class="like" ng-class="{liked:share.liked}" ng-click="toggleLike()"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-                  <% } else { %>
-                  <a class="like checkLogin" href="#login-popup" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-                  <% } %>
+
+                  <span class="collect" ng-click="toggleCollect()" style="margin-right:5px;">
+                    <a href="" ng-show="!share.has_collect">收藏</a>
+                    <a href="" ng-show="share.has_collect">已收藏</a>
+                  </span>
+                  <span class="toMyFriends"><a href="" ng-click="forkPopup()">分享({{share.fork}})</a></span>
+
                 </span>
-                <a href="" class="comment pull-right" style="line-height:28px;">comment({{share.total}})</a>
-              </div>
-              <% } %>
-              <% if (locals.share.type === 'job') { %>
-              <h3><%= locals.share.position %></h3>
-              <p>
-                <div><strong>Type : </strong><%= locals.share.jobType %></div>
-                <div><strong>Department : </strong><%= locals.share.department %></div>
-                <div><strong>Payment : </strong><%= locals.share.paymentStart %>k - <%= locals.share.paymentEnd %>k</div>
-                <div><strong>Experience : </strong><%= locals.share.workYears %></div>
-                <div><strong>Degree : </strong><%= locals.share.degree %></div>
-                <div><strong>Location : </strong><%= locals.share.location %></div>
-              </p>
-              <p><%= locals.share.summary || '' %></p>
-              <p><%= locals.share.detail || '' %></p>
-              <p><%= locals.share.company || '' %></p>
-              <div class="clearfix media-info" ng-cloak>
-                <span class="pull-left media-control">
-                  <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
-                  <span>View(<%= locals.share.views || 0 %>)</span>
-                  <span>Join({{share.join}})</span>
-                  <% if (locals.author) { %>
-                  <a href="" class="like" ng-class="{liked:share.liked}" ng-click="toggleLike()"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-                  <% if (locals.isJobCreator) { %>
-                  <span href="#" class="post btn" ng-click="manage()" ng-show="!isManage">Manage</span>
-                  <span href="#" class="post btn" ng-click="back()" ng-show="isManage">Back</span>
-                  <% } else { %>
-                  <span href="#" class="post btn" ng-show="!share.hasPost" ng-click="post()">Post Resume</span>
-                  <span href="#" class="post" ng-show="share.hasPost">has post</span>
-                  <% } %>
-                  <% } else { %>
-                  <a class="like checkLogin" href="#login-popup" ng-class="{liked:share.liked}"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-                  <span href="#" class="post">login to post</span>
-                  <% } %>
-                </span>
-                <a href="" class="comment pull-right" style="line-height:28px;">comment({{share.total}})</a>
-              </div>
-              <% } %>             
+                <a href="" class="comment pull-right" style="line-height:28px;"><i class="fa fa-fw fa-comments"></i>({{share.total}})</a>
+              </div>        
             </div>
-            <div class="panel reply-panel" ng-cloak ng-show="!isManage">
+            <div class="panel reply-panel" ng-cloak>
               <div class="panel-body reply-container">
                 <div class="input-group comment-editor">
                     <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="share.newComment"></textarea>
                     <span class="input-group-btn">
                         <% if (locals.author) { %>
-                        <button class="btn btn-primary reply-submit" type="button" ng-click="submitComment()">submit</button>
+                        <button class="btn btn-primary reply-submit btn-sm" type="button" ng-click="submitComment()">评论</button>
                         <% } else { %>
-                        <a class="btn btn-primary reply-submit checkLogin" href="#login-popup" type="button">submit</a>
+                        <a class="btn btn-primary reply-submit checkLogin btn-sm" href="#login-popup" type="button">评论</a>
                         <% } %>
                     </span>
                 </div>
@@ -379,18 +380,18 @@
                   <div class="media-body">
                     <p class="reply-content"><span class="reply-user"><a ng-href="/profile/{{comment.user.id}}" target="_self">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
                     <div class="clearfix media-info">
-                      <span class="date pull-left"><a href="#">{{comment.date | formatDate:true}}</a></span>
+                      <span class="date pull-left">{{comment.date | formatDate:true}}</span>
                       <span class="pull-right media-control">
                         <% if (locals.author) { %>
                         <a href="#" class="comment" ng-click="delete(comment)" ng-show="isMyShare || comment.user._id === global.author._id"><i class="fa fa-fw fa-trash-o"></i></a>
-                        <a href="#" class="comment" ng-click="reply(comment)">reply</a>
+                        <a href="#" class="comment" ng-click="reply(comment)">回复</a>
                         <% } %>
                       </span>
                     </div>
                     <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
                         <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
                         <span class="input-group-btn">
-                            <button class="btn btn-primary btn-sm" type="button" ng-click="submitInlineComment(comment)">submit</button>
+                            <button class="btn btn-primary btn-sm" type="button" ng-click="submitInlineComment(comment)">评论</button>
                         </span>
                     </div>
                   </div>
@@ -399,58 +400,23 @@
                 <hr ng-show="share.comments.length > 0 && share.comments.length < total">
                 <div ng-show="share.comments.length > 0 && share.comments.length < total">
                   <ul class="pager">
-                    <li ng-class="{'disabled': page.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
-                    <li ng-class="{'disabled': !page.hasNext}" ng-click="next()"><a href="#">Next</a></li>
+                    <li ng-class="{'disabled': page.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+                    <li ng-class="{'disabled': !page.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
                   </ul>
                 </div>
-              </div>
-            </div>
-            <div class="well" ng-cloak ng-if="isManage" style="padding-bottom: 30px;">
-              <div class="row">
-                <div class="col-md-4" ng-repeat="user in postList">
-                  <div class="carbonad clearfix">
-                    <span class="carbonad-image pull-left">
-                      <a href="/profile/{{user.id}}" target="_self">
-                        <img class="carbonad-image carbonad-img" ng-src="{{user.avatar}}" title="user.name" >
-                      </a>
-                    </span>
-                    <div class="carbonad-info">
-                      <div class="carbonad-title">
-                        <a href="/profile/{{user.id}}" target="_self">{{user.name}}</a>
-                      </div>
-                      <div>
-                        <span>{{user.occupation}}</span>
-                      </div>
-                      <div>
-                        <span>{{user.school}} | </span>
-                        <span>{{user.workYear}}</span>
-                      </div>
-                      
-                    </div>  
-                  </div>
-
-
-                </div>
-              </div>
-              <hr ng-show="postList.length > 0 && postList.length < total">
-              <div ng-show="postList.length > 0 && postList.length < total">
-                <ul class="pager">
-                  <li ng-class="{'disabled': page.current === 1}" ng-click="prev()"><a href="#">Previous</a></li>
-                  <li ng-class="{'disabled': !page.hasNext}" ng-click="next()"><a href="#">Next</a></li>
-                </ul>
               </div>
             </div>
           </div>
           <div class="profile-sidebar col-md-3 view-sidebar">
             <div class="well" ng-cloak>
-              <div class="user-header bg-modena clearfix">
-                  <div class="pull-left">
-                    <img src="/public/imgs/avatar.jpg" style="height: 85px;width: 85px">
-                  </div>
-                  <div class="user-basic">
-                    <h3><%= locals.share.user.name %></h3>
-                    <div>share: <%= locals.share.user.share %></div>
-                    <div>connect: <%= locals.share.user.connects %></div>
+              <div class="media">
+                  <a class="pull-left" target="_self" href="/profile/<%= locals.share.user.id %>">
+                      <img class="media-object" alt="64x64" src="<%= locals.share.user.avatar %>"  style="width: 74px; height: 74px;" >
+                  </a>
+                  <div class="media-body">
+                      <h4><%= locals.share.user.name %></h4>
+                      <div>微说: <%= locals.share.user.share %></div>
+                      <div>人脉: <%= locals.share.user.connects %></div>
                   </div>
               </div>
               <!-- Menu Body -->
@@ -460,77 +426,12 @@
                   <i class="fa fa-fw fa-quote-right" style="font-size:11px;"></i>
               </div>
             </div>
-            <% if (locals.share.user.role === 'company') { %>
             <div class="panel panel-default section">
-              <div class="panel-heading">Company Card</div>
-              <div class="panel-body">
-                <div>
-                  <strong>Number:</strong>
-                  18650330482
-                </div>
-                <div>
-                  <strong>Adress:</strong>
-                  Fujian,Fuzhou,JinAn
-                </div>
-                <div>
-                  <strong>Build:</strong>
-                  2012/12/10
-                </div>
-                <div>
-                  <strong>email:</strong>
-                  amazingSurge@163.com
-                </div>
-                <div>
-                  <strong>website:</strong>
-                  www.amazingSurge.com
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Other Jobs this company</div>
+              <div class="panel-heading">相关微说</div>
               <div class="panel-body">
                 Panel content
               </div>
             </div>
-            <div>
-              <a type="button" class="find-btn btn-block" target="_self">Find More Jobs >></a>
-            </div>
-            <% } else { %>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Connects</div>
-              <div class="panel-body">
-                <div>
-                  <strong>Number:</strong>
-                  18650330482
-                </div>
-                <div>
-                  <strong>Adress:</strong>
-                  Fujian,Fuzhou,JinAn
-                </div>
-                <div>
-                  <strong>Build:</strong>
-                  2012/12/10
-                </div>
-                <div>
-                  <strong>email:</strong>
-                  amazingSurge@163.com
-                </div>
-                <div>
-                  <strong>website:</strong>
-                  www.amazingSurge.com
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Relative Topic</div>
-              <div class="panel-body">
-                Panel content
-              </div>
-            </div>
-            <div>
-              <a type="button" class="find-btn btn-block" target="_self">Find Professional >></a>
-            </div>
-            <% } %>
           </div>     
         </div>
         <footer>
@@ -538,6 +439,31 @@
         </footer>
         <div id="login-popup" class="white-popup-block mfp-hide">
           You need Login First !
+        </div>
+        <div class="mfp-bg mfp-ready" ng-cloak ng-if="global.fork.open"></div>
+        <div class="mfp-wrap mfp-close-btn-in mfp-ready fork-popup" style="overflow-y: auto; overflow-x: hidden;" ng-cloak ng-if="global.fork.open">
+          <div class="mfp-container mfp-s-ready mfp-inline-holder">
+            <div class="mfp-content">
+              <div class="white-popup-block" style="width:560px;max-width:560px;">
+                <label style="margin-bottom:10px;">分享到我的好友圈 : </label>
+                <div class="forkContent" style="background-color:#ddd;">
+                  <p ng-if="global.fork.groupName"><a href="/profile/{{global.fork.userId}}" target="_self">{{'@' + global.fork.userName}}</a> 发布于 <a href="/group/{{global.fork.groupId}}" target="_self">{{global.fork.groupName}}</a></p>
+                  <p ng-if="!global.fork.groupName"><a href="/profile/{{global.fork.userId}}" target="_self">{{'@' + global.fork.userName}}</a></p>
+                  <p md-content="global.fork.content"></p>
+                  <div class="date" style="color:#99a1a6;font-size:0.9em;">{{global.fork.date | formatDate:true}}</div>
+                </div>
+                <div class="form-group newTopic">
+                    <textarea auto-height atwho="global.fork.userList" class="form-control" ng-model="global.fork.forkShare" ng-change="global.fork.change(global.fork.forkShare)" id="forkText"></textarea>
+                </div>
+                <div class="clearfix">
+                  <span class="pull-left" ng-show="global.fork.shareCount <= 140">你还可以输入<span class="shareCount">{{140 - global.fork.shareCount}}</span> 字</span>
+                  <span class="pull-left" ng-show="global.fork.shareCount > 140">你已经超过<span class="global.shareCount" style="color:#E44443;">{{global.fork.shareCount - 140}}</span> 字</span>
+                  <a class="btn btn-primary pull-right" role="button" ng-click="global.fork.submit()" ng-class="{'default': global.fork.forkShare === '' || (global.fork.shareCount > 140)}" style="padding-left:20px; padding-right:20px;">分享</a>
+                </div>
+                <button title="Close" type="button" class="mfp-close" ng-click="global.fork.close()">×</button>
+              </div>
+            </div>
+          </div>
         </div>
         <script>
           reserveLoad(
@@ -557,6 +483,9 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/lib/atwho/jquery.caret.min.js',
+            '/public/js/lib/atwho/jquery.atwho.js',
+            '/public/js/lib/flexText/jquery.flexText.min.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',

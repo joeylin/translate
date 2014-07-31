@@ -202,7 +202,11 @@ module.exports = function(app) {
         var author = req.session && req.session.user;
         Share.findOne({
             id: id
-        }).populate('user').exec(function(err, share) {
+        }).populate('user')
+        .populate('group')
+        .populate('from.group')
+        .populate('from.user')
+        .populate('from.share').exec(function(err, share) {
             if (err || !share) {
                 res.send({
                     code: 404,
@@ -215,40 +219,49 @@ module.exports = function(app) {
             result._id = share._id;
             result.id = share.id;
             result.createAt = share.createAt.getTime();
-            result.jobType = share.jobType;
-            result.paymentStart = share.paymentStart;
-            result.paymentEnd = share.paymentEnd;
-            result.department = share.department;
-            result.company = share.company;
-            result.companyIntro = share.companyIntro;
-            result.degree = share.degree;
-            result.position = share.position;
-            result.location = share.location;
-            result.workYears = share.workYears;
-            result.summary = share.summary;
-            result.detail = share.detail;
             result.liked = false;
-            result.hasPost = false;
-            app.locals.isJobCreator = false;
             if ( !! author) {
                 share.likes.map(function(like) {
                     if (like.toString() == author._id) {
                         result.liked = true;
                     }
                 });
-                share.resumes.map(function(item, key) {
-                    if (item.user.toString() == author._id) {
-                        result.hasPost = true;
+            }
+
+            result.fork = share.fork;
+            result.isFork = share.isFork;
+            if (share.isFork) {
+                result.from = {
+                    user: {
+                        name: share.from.user.name,
+                        id: share.from.user.id,
+                        _id: share.from.user._id
+                    },
+                    share: {
+                        createAt: share.from.share.createAt,
+                        content: share.from.share.content,
+                        _id: share.from.share._id
+                    }
+                };
+                if (share.from.group) {
+                    result.from.group = {
+                        name: share.from.group.name,
+                        id: share.from.group.id,
+                        _id: share.from.group._id
+                    };
+                }
+            }
+            result.has_collect = false;
+            if (!!author) {
+                share.collects.map(function(collect) {
+                    if (collect.user.toString() == author._id.toString()) {
+                        result.has_collect = true;
                     }
                 });
-                if (share.user._id.toString() == author._id) {
-                    app.locals.isJobCreator = true;
-                }
             }
 
             result.likes = share.likes.length;
             result.total = share.comments.length;
-            result.join = share.resumes.length;
 
             result.comments = [];
             result.user = {
@@ -256,22 +269,26 @@ module.exports = function(app) {
                 _id: share.user._id,
                 avatar: share.user.avatar,
                 name: share.user.name,
-                role: share.user.role,
                 signature: share.user.signature,
                 connects: share.user.connects.length
             };
+            if (share.group) {
+                result.group = {
+                    name: share.group.name,
+                    id: share.group.id,
+                    _id: share.group._id,
+                    avatar: share.group.avatar
+                };
+            }
             Share.find({
                 user: share.user._id,
+                type: 'view',
                 is_delete: false
             }).count().exec(function(err, count) {
-                share.views = share.views + 1;
-                result.views = share.views;
-                share.save(function(err, share) {
-                    result.user.share = count;
-                    app.locals.share = result;
-                    app.locals.author = author;
-                    res.render('share');
-                });
+                result.user.share = count;
+                app.locals.share = result;
+                app.locals.author = author;
+                res.render('share');
             });
         });
     };
@@ -298,13 +315,13 @@ module.exports = function(app) {
             result.department = share.department;
             result.company = share.company;
             result.companyLogo = share.companyLogo;
-            result.companyIntro = share.companyIntro;
+            result.companyIntro = marked(share.companyIntro);
             result.degree = share.degree;
             result.position = share.position;
             result.location = share.location;
             result.workYears = share.workYears;
-            result.summary = share.summary;
-            result.detail = share.detail;
+            result.summary = marked(share.summary);
+            result.detail = marked(share.detail);
             result.contact = share.contact || {};
             result.liked = false;
             result.hasPost = false;
@@ -351,41 +368,80 @@ module.exports = function(app) {
                 connects: share.user.connects.length
             };
 
-            if ( !! author) {
-                Request.find({
-                    to: author._id,
-                    hasDisposed: false
-                }, function(err, requests) {
-                    var comment = [];
-                    var reply = [];
-                    var group = [];
-                    var connect = [];
-                    var at = [];
-                    requests.map(function(request) {
-                        if (request.type === 'comment') {
-                            comment.push(request);
-                        }
-                        if (request.type === 'group') {
-                            group.push(request);
-                        }
-                        if (request.type === 'reply') {
-                            reply.push(request);
-                        }
-                        if (request.type === 'connect') {
-                            connect.push(request);
-                        }
-                        if (request.type === 'at') {
-                            at.push(request);
-                        }
-                    });
-                    var request = {
-                        comment: comment.length,
-                        reply: reply.length,
-                        group: group.length,
-                        connect: connect.length,
-                        at: at.length
+            Share.find({
+                type: 'job',
+                is_delete: false,
+                random: {
+                    $near: [Math.random(), 0]
+                },
+                _id: {
+                    $nin: [share._id]
+                }
+            }).populate('user').limit(6).exec(function(err, shares) {
+                var visitorRecord = [];
+                shares.map(function(item) {
+                    var obj = {
+                        id: item.id,
+                        position: item.position,
+                        company: item.company,
+                        companyLogo: item.companyLogo,
+                        location: item.location,
+                        date: formatDate(item.createAt.getTime()),
                     };
-                    app.locals.request = request;
+                    visitorRecord.push(obj);
+                });
+
+                if ( !! author) {
+                    Request.find({
+                        to: author._id,
+                        hasDisposed: false
+                    }, function(err, requests) {
+                        var comment = [];
+                        var reply = [];
+                        var group = [];
+                        var connect = [];
+                        var at = [];
+                        requests.map(function(request) {
+                            if (request.type === 'comment') {
+                                comment.push(request);
+                            }
+                            if (request.type === 'group') {
+                                group.push(request);
+                            }
+                            if (request.type === 'reply') {
+                                reply.push(request);
+                            }
+                            if (request.type === 'connect') {
+                                connect.push(request);
+                            }
+                            if (request.type === 'at') {
+                                at.push(request);
+                            }
+                        });
+                        var request = {
+                            comment: comment.length,
+                            reply: reply.length,
+                            group: group.length,
+                            connect: connect.length,
+                            at: at.length
+                        };
+                        app.locals.request = request;
+                        Share.find({
+                            user: share.user._id,
+                            is_delete: false
+                        }).count().exec(function(err, count) {
+                            share.views = share.views + 1;
+                            result.views = share.views;
+                            share.save(function(err, share) {
+                                result.user.share = count;
+                                app.locals.share = result;
+                                app.locals.author = author;
+                                app.locals.visitorRecord = visitorRecord;
+                                res.render('job');
+                            });
+                        });
+                    });
+                } else {
                     Share.find({
                         user: share.user._id,
                         is_delete: false
@@ -396,25 +452,15 @@ module.exports = function(app) {
                             result.user.share = count;
                             app.locals.share = result;
                             app.locals.author = author;
+                            app.locals.visitorRecord = visitorRecord;
                             res.render('job');
                         });
                     });
-                });
-            } else {
-                Share.find({
-                    user: share.user._id,
-                    is_delete: false
-                }).count().exec(function(err, count) {
-                    share.views = share.views + 1;
-                    result.views = share.views;
-                    share.save(function(err, share) {
-                        result.user.share = count;
-                        app.locals.share = result;
-                        app.locals.author = author;
-                        res.render('job');
-                    });
-                });
-            }
+                }
+                
+            });
+
+                
 
         });
     };

@@ -223,11 +223,12 @@
             margin-bottom: 5px;
           }
           .job-desc, .job-require {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
           }
           .job-desc h5, .job-require h5 {
             font-size: 16px;
             font-weight: 700;
+            margin-bottom: 20px;
           }
           .color-card {
             background-color: #fafafa;
@@ -238,7 +239,7 @@
           }
           /* contact */
           .contact strong {
-            width: 60px;
+            width: 53px;
             display: inline-block;
           }
           .contact > div {
@@ -421,16 +422,16 @@
               </div>
               <div  class="job-desc">
                 <h5>职务描述</h5>
-                <div><%= locals.share.summary || '' %></div>
+                <div><%- locals.share.summary || '' %></div>
               </div>
               <div class="job-require">
                 <h5>任职要求</h5>
-                <div><%= locals.share.detail %></div>
+                <div><%- locals.share.detail %></div>
               </div>
             </div>
             <div class="well" style="padding-top:15px;">
-              <h5 style="font-size:16px;font-weight:700;">团队简介</h5>
-              <div><%= locals.share.companyIntro %></div>
+              <h5 style="font-size:16px;font-weight:700;margin-bottom:15px;">团队简介</h5>
+              <div><%- locals.share.companyIntro %></div>
               <!-- <hr style="border-top: 1px solid #e3e3e3;">
               <h5 style="font-size:16px;font-weight:700;margin-bottom:20px;"><%= locals.share.company %>正在招聘的其他职位</h5>
               <div class="row" style="margin-bottom:15px;">
@@ -528,36 +529,19 @@
               <div class="panel-body">
                 <div style="font-weight:400;margin-bottom:15px;">访客还查看过 : </div>
                 <div class="visitor-jobs">
-                  <div class="media">
-                      <a class="pull-left" href="/profile/<%= locals.share.user.id %>" target="_self">
-                          <img class="media-object" src="/public/imgs/company.jpg" style="width: 54px; height: 54px;">
-                      </a>
-                      <div class="media-body">
-                          <div><a href="" style="font-size:13px;">产品经理</a></div>
-                          <div style="font-size:12px;">北京 阿里事业集团</div>
-                          <div style="font-size:12px;color:#999;">7天前发布</div>
+                  <% locals.visitorRecord.forEach(function(item,key){ %>
+                      <div class="media">
+                          <a class="pull-left" href="/job/<%= item.id %>" target="_self">
+                              <img class="media-object" src="<%= item.companyLogo %>" style="width: 54px; height: 54px;">
+                          </a>
+                          <div class="media-body">
+                              <div><a href="" style="font-size:13px;"><%= item.position %></a></div>
+                              <div style="font-size:12px;"><%= item.location %> <%= item.company %></div>
+                              <div style="font-size:12px;color:#999;"><%= item.date %></div>
+                          </div>
                       </div>
-                  </div>
-                  <div class="media">
-                      <a class="pull-left" href="/profile/<%= locals.share.user.id %>" target="_self">
-                          <img class="media-object" src="/public/imgs/baidu_log.jpg" style="width: 54px; height: 54px;">
-                      </a>
-                      <div class="media-body">
-                          <div><a href="" style="font-size:13px;">前端开发</a></div>
-                          <div style="font-size:12px;">福州 阿里事业集团</div>
-                          <div style="font-size:12px;color:#999;">8天前发布</div>
-                      </div>
-                  </div>
-                  <div class="media">
-                      <a class="pull-left" href="/profile/<%= locals.share.user.id %>" target="_self">
-                          <img class="media-object" src="/public/imgs/angularjs.png" style="width: 54px; height: 54px;">
-                      </a>
-                      <div class="media-body">
-                          <div><a href="" style="font-size:13px;">PHP程序员</a></div>
-                          <div style="font-size:12px;">厦门 阿里事业集团</div>
-                          <div style="font-size:12px;color:#999;">5天前发布</div>
-                      </div>
-                  </div>
+
+                  <% }) %>  
                 </div>
               </div>
             </div>
@@ -566,27 +550,37 @@
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
-        <div id="login-popup" class="white-popup-block mfp-hide" style="max-width:560px;">
+        <div id="login-popup" class="white-popup-block mfp-hide" style="max-width:480px;">
           你还未登陆，不能进行这个操作哦。
         </div>
-        <div id="account-update" class="white-popup-block mfp-hide contact" style="max-width:560px;">
-          <% if (locals.share.contact.qq) { %>
-          <div><strong>QQ ：</strong><%= locals.share.contact.qq %></div>
-          <% } %>
-          <% if (locals.share.contact.email) { %>
-          <div><strong>邮箱 ：</strong><%= locals.share.contact.email %></div>
-          <% } %>
-          <% if (locals.share.contact.phone) { %>
-          <div><strong>电话 ：</strong><%= locals.share.contact.phone %></div>
-          <% } %>
-          <% if (locals.share.contact.message) { %>
-          <div><strong>信息 ：</strong></div>
-          <div style="margin-top: 0px;"><%= locals.share.contact.message %></div>
-          <% } %>
-          <% if (!locals.share.contact.email) { %>
-          <div style="margin-top:10px;">
-          <strong style="display:inline;">站内申请 : </strong>通过站内申请，你个人主页的资料将会发至招聘方，注意完善个人资料的联系信息跟简历信息哦。</div>
-          <% } %>
+        <div id="account-update" class="white-popup-block mfp-hide contact" style="max-width:480px;">
+            <div class="media">
+                <a class="pull-left" href="/profile/502104" target="_self" style="margin-right:15px;">
+                    <img class="media-object" src="/public/imgs/avatar.jpg" style="width: 64px; height: 64px;">
+                </a>
+                <div class="media-body">
+                    <h4 style="margin-top: 0;font-size: 16px;">联系信息</h4>
+                    <% if (locals.share.contact.qq) { %>
+                    <div><strong>QQ  ：</strong><%= locals.share.contact.qq %></div>
+                    <% } %>
+                    <% if (locals.share.contact.email) { %>
+                    <div><strong>邮箱 ：</strong><%= locals.share.contact.email %></div>
+                    <% } %>
+                    <% if (locals.share.contact.phone) { %>
+                    <div><strong>电话 ：</strong><%= locals.share.contact.phone %></div>
+                    <% } %>
+                    <% if (locals.share.contact.message) { %>
+                    <div class="clearfix">
+                      <strong class="pull-left">信息 ：</strong>
+                      <div class="pull-left"><%= locals.share.contact.message %></div>
+                    </div>
+                    <% } %>
+                    <% if (!locals.share.contact.email) { %>
+                    <div style="margin-top:10px;">
+                    <strong style="display:inline;">站内申请 : </strong>通过站内申请，你个人主页的资料将会发至招聘方，注意完善个人资料的联系信息跟简历信息哦。</div>
+                    <% } %>
+                </div>
+            </div>
         </div>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
