@@ -704,7 +704,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- todo have custom user image -->
                             <img ng-src="{{global.user.avatar}}" alt="" class="nav-user-pic img-responsive">
-                            <span id="lblUsername" style="margin-left: 5px;"></span>
+                            <span id="lblUsername" style="margin-left: 5px;">{{global.user.name}}</span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -721,13 +721,13 @@
                                     <a href="#">{{global.shareCount || 0}}</a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">{{global.user.connects.length}}</a>
+                                    <a href="#">{{global.user.connectsCount}}</a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">share</a>
+                                    <a href="#">微说</a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">Connects</a>
+                                    <a href="#">人脉</a>
                                 </div>
                             </li>
                             <!-- Menu Footer-->
@@ -841,10 +841,8 @@
             '/public/js/lib/atwho/jquery.atwho.js',
             '/public/js/lib/flexText/jquery.flexText.min.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
-            '/public/js/lib/typeahead/typeahead.bundle.min.js',
             '/public/js/lib/qiniu.uploader.js',
             '/public/js/upload.js',
-            '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',
             '/public/js/tools.js',
             '/public/js/userHome/router.js',
@@ -859,6 +857,17 @@
               } else {
                 angular.bootstrap(document, ['jsGen']);
               }
+              $('#btnLogout').click(function() {
+                  $.ajax({
+                      url: "/api/user/logout",
+                      type: "post",
+                      success: function(data) {
+                          if (data.code === 200) {
+                              window.location.href = '/login';
+                          }
+                      }
+                  });
+              });
             }
           );
         </script>

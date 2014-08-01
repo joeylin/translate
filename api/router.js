@@ -146,7 +146,14 @@ module.exports = function(app) {
         User.findOne({
             _id: user._id
         }, function(err, user) {
-            app.locals.user = user;
+            var author = {
+                _id: user._id,
+                id: user.id,
+                name: user.name,
+                avatar: user.avatar,
+                connectsCount: user.connects.length
+            }
+            app.locals.user = author;
             if (user.role === 'user') {
                 Share.find({
                     user: user._id,
@@ -766,5 +773,5 @@ module.exports = function(app) {
     app.get('/group/home', getGroupHome);
     app.get('/group/search', getGroupHome);
     app.get('/group/:id', getGroup);
-    app.get('/group/:id/settings', getGroup);
+    app.get('/group/:id/settings', middleware.check_login, getGroup);
 };

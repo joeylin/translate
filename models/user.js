@@ -133,6 +133,12 @@ var UserSchema = new Schema({
         }
     }, 
 
+    // auth
+    isPubicBasic: {
+        type: Boolean,
+        default: false
+    },
+
     // company 
     phase: String,
     industry: String,

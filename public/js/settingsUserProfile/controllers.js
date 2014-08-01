@@ -353,6 +353,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
         $scope.phone = app.user.phone || 'your cellphone';
         $scope.email = app.user.email || 'your email';
         $scope.avatar = app.user.avatar;
+        $scope.isPublic = app.user.isPubicBasic || false;
 
         $scope.showEditIcon = true;
         $scope.showContent = true;
@@ -369,6 +370,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
             $scope.inputWorkYear = parseInt($scope.workYear, 10);
             $scope.inputPhone = $scope.phone;
             $scope.inputEmail = $scope.email;
+            $scope.isInputPublic = $scope.isPublic;
         };
         $scope.save = function() {
             $scope.showEditIcon = true;
@@ -381,7 +383,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 degree: $scope.inputDegree,
                 workYear: $scope.inputWorkYear,
                 phone: $scope.inputPhone,
-                email: $scope.inputEmail
+                isPubicBasic: $scope.isInputPublic
             });
         };
         $scope.cancel = function() {
@@ -409,7 +411,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter
                 $scope.degree = obj.degree;
                 $scope.workYear = obj.workYear;
                 $scope.phone = obj.phone;
-                $scope.email = obj.email;
+                $scope.isPublic = obj.isPubicBasic;
             });
         }
     }

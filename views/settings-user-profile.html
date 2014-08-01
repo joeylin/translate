@@ -454,7 +454,7 @@
               </span>
             </div>
             <div class="jumbotron user-header" ng-controller="headerCtrl">
-              <h1><span ng-show="showNameContent" class="header-display">{{name}}</span> <input ng-show="showNameInput" ng-blur="enterName()" ng-keydown="enterName($event)" ng-model="name" /><i class="fa fa-edit" ng-show="showNameEdit" ng-click="editName()"></i></h1>
+              <h1><span ng-show="showNameContent" class="header-display">{{name}}</span></h1>
               <p class="desc"><span ng-show="showSignContent" class="header-display">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
             </div>
             <div class="panel custom-box basic" ng-controller="basicCtrl">
@@ -469,6 +469,7 @@
                   </a>
                 </div>
                 <div class="media-body user-info">
+                  <p>状态 : {{isPublic ? '已公开' : '未公开'}}</p>
                   <p>{{real_name}} | {{sex}} | {{degree}} | {{workYear && workYear + '年工作经验'}}</p>
                   <p> {{phone}}  {{email}}</p>
                 </div>
@@ -476,6 +477,17 @@
               <div class="panel-body basic-settings" ng-show="showSettings">
                 <div class="row">
                   <div class="col-md-9 form-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group custom-input">
+                                <span class="input-group-addon">是否公开:</span>
+                                <span style="line-height:26px;">
+                                  <span ng-click="isInputPublic = true;" style="cursor:pointer;"><i class="fa fa-fw" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[isInputPublic]"></i> 是</span>
+                                  <span ng-click="isInputPublic = false;" style="cursor:pointer;"><i class="fa fa-fw fa-circle-o" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[!isInputPublic]"></i> 否</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-group custom-input">
@@ -528,7 +540,7 @@
                         <div class="col-md-6">
                             <div class="input-group custom-input">
                                 <span class="input-group-addon">邮箱:</span>
-                                <input type="email" class="form-control" ng-model="inputEmail" placeholder="常用邮箱">
+                                <input disabled type="email" class="form-control" ng-model="inputEmail">
                             </div>
                             
                         </div>

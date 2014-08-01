@@ -34,6 +34,47 @@
             padding-right: 15px;
             background-color: #fff;
           }
+          .container {
+            max-width: 980px;
+          }
+          .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+          }
+          .jumbotron.user-header {
+            position: relative;
+            border-radius: 0;
+            height: 300px;  
+            background-image:url(http://img.t.sinajs.cn/t5/skin/public/profile_cover/006.jpg);
+            margin-bottom: 0;
+          }
+          .jumbotron.user-header .profile-main {
+            position: absolute;
+            width: 100%;
+            bottom: -116px;
+            left: 20px;
+          }
+          .jumbotron.user-header .profile-main .media img {
+            padding: 5px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+          }
+          .jumbotron.user-header .profile-main .media .pull-left {
+            margin-right: 20px;
+          }
+          .jumbotron.user-header .profile-main .media-body {
+            margin-top: 76px;
+          }
+          .basic .basicContent {
+            display: none;
+            padding-left: 35px;
+            padding-right: 35px;
+            padding-top: 0;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #999;
+          }
 
           .skin-blue .navbar {
             background-color: #222;
@@ -86,15 +127,10 @@
             margin-top: 15px;
           }
           .custom-box .panel-heading i {
-            font-size: 26px;
-            line-height: 36px;
-            display: none;
-          }
-          .custom-box:hover .panel-heading i {
-            display: block;
+            cursor: pointer;
           }
           .custom-box .panel-heading i:hover {
-            color: blue;
+            color: #72afd2;
           }
           .custom-box .media {
             padding: 0 15px 35px 35px;
@@ -442,244 +478,203 @@
           </div>
         </nav>
         <div class="container"> 
-          <div class="profile-sidebar col-md-3">
-            <div class="section">
-              <div class="user-header bg-modena text-center profile-avatar " style="height:255px;">
-                  <img src="<%= locals.user.avatar %>" alt="User Image">
-                  <div class="profile-avatar-popover text-center">
-                    <% if (!locals.isMe) { %>
-                    <% if (locals.isConnected) { %>
-                    <span class="add-icon"><i class="fa fa-fw fa-check"></i>已添加</span>
-                    <% } else { %>
-                    <span class="add-icon" id="add-friend"><i class="fa fa-fw fa-plus"></i>添加好友</span>
-                    <% } %> 
-                    <% } %> 
-                  </div>
-              </div>
-              <!-- Menu Body -->
-              <!-- <div class="user-body clearfix text-center">
-                  <div class="col-xs-6" style="border-right: 1px solid #eee; font-size:0.9em;padding-left: 30px;">
-                      <div> 微文 : <span style="margin-left:5px;"><%= locals.shareCount %></span></div>
-                      <div> 人脉 : <span style="margin-left:5px;"><%= locals.user.connects.length %></span></div>
-                  </div>  
-              </div> -->
-            </div>
-            <div class="panel">
-              <div class="panel-body clearfix">
-                <div class="text-left" style="font-size:0.9em; display:inline-block;">
-                    <div><span style="color:#999;">基本状态： </span> <span><%= locals.user.location %> | <%= locals.user.occupation %></span></div>
-                    <% if (locals.user.isStudent) { %>
-                    <div><span style="color:#999;">教育背景： </span> <span>目前就读于 <%= locals.user.school %></span></div>
-                    <% } else { %>
-                    <div><span style="color:#999;">目前就职： </span> <span><%= locals.user.isFreelance ? 'freelance' : locals.user.company %></span></div>
-                    <% if (locals.user.school) { %>
-                    <div><span style="color:#999;">教育背景： </span> <span>毕业于  <%= locals.user.school %></span></div>
-                    <% } %> 
-                    <% } %> 
-
-                    <!-- <a href="#" class="btn btn-primary btn-sm">Connect</a> -->
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading clearfix">
-                人脉圈
-              </div>
-              <div class="panel-body">
-                <div class="images">
-                  <% locals.connects.forEach(function(item,key){ %>
-                  <a href="/profile/<%= item.id %>" class="userCard" title="<%= item.name %>"><img src="<%= item.avatar %>" alt="laolei"></a>
-                  <% }) %>  
-                  <% if (locals.connects.length === 0) { %>
-                  <p> He has not any Connects yet !</p>
-                  <% } %> 
-                </div>
-              </div>
-            </div>
-            <!-- <div class="panel panel-default section circle">
-              <div class="panel-heading clearfix">
-                人脉圈
-              </div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <span class="circle-item">产品经理 (2)</span>
-                  </div>
-                  <div class="col-md-6">
-                    <span class="circle-item">前端开发 (5)</span>
-                  </div>
-                  <div class="col-md-6">
-                    <span class="circle-item">PHP开发 (5)</span>
-                  </div>
-                  <div class="col-md-6">
-                    <span class="circle-item">页面重构 (7)</span>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-md-6">
-                    <span class="circle-item">百度云开发部 (9)</span>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-            <div class="panel panel-default section tags">
-              <div class="panel-heading clearfix">
-                擅长技能
-              </div>
-              
-              <div class="panel-body">
-                <% if (locals.user.skills.length === 0) { %>
-                暂时还没有添加任何技能!
-                <% } %>
-                <div class="clearfix">
-                  <% locals.user.skills.forEach(function(item,key){ %>
-                  <span class="tags-item"><%= item.name %></span>
-                  <% }) %>  
-                </div>
-                <!-- <div class="clearfix">
-                  <span class="tags-item">NodeJS (2)</span>
-                  <span class="tags-item">AngularJS (3)</span>
-                  <span class="tags-item">HTML5 (6)</span>
-                  <span class="tags-item">CSS3 (2)</span>
-                </div>
-                <hr>
-                <div class="tags-myCircle">
-                  <div>你的人脉圈中 :</div>
-                  <div><a href="">laolei </a>等<a href=""> 5人 </a>认同他的 <span class="tag">nodeJS</span></div>
-                  <div><a href="">howell </a>等<a href=""> 3人 </a>认同他的 <span class="tag">angularJS</span></div>
-                </div> -->
-              </div>
-              
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">最近关注</div>
-              <div class="panel-body">
-                最近没有关注
-              </div>
-            </div>
-          </div>   
-          <div class="profile-body col-md-9">
-            <div class="jumbotron user-header">
-              <% if (locals.author && locals.author.id === locals.user.id) { %>
-              <a class="btn btn-primary pull-right" href="/settings/profile" target="_self">编辑</a>
-              <% } %>
-              <h1><span><%= locals.user.name %></span></h1>
-              <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
-            </div>
-            <!-- <div class="panel custom-box group">
-              <div class="panel-heading">
-                <h3>文章</h3>
-              </div>
-              <div class="panel-body">
-                <div class="row">
-                  
-                </div>
-              </div>
-            </div> -->
-            <div class="panel custom-box basic">
-              <div class="panel-heading">
-                <h3>基本资料</h3>
-              </div>
+          <div class="jumbotron user-header">
+            <% if (locals.author && locals.author.id === locals.user.id) { %>
+            <a class="btn btn-primary pull-right" href="/settings/profile" target="_self">编辑</a>
+            <% } %>
+            <h1><span><%= locals.user.name %></span></h1>
+            <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
+          </div>
+          <div class="panel">
+            <div class="panel-body" style="background-color:#ddd;">  
               <div class="media">
-                <div class="media-body user-info">
-                  <p><%= locals.user.real_name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> 年工作经验</p>
-                  <p> <%= locals.user.phone %>  <%= locals.user.email %></p>
-                </div>
-              </div>
-            </div>
-            <div class="panel custom-box">
-              <div class="panel-heading">
-                <h3>自我描述</h3>
-              </div>
-              <div class="panel-body">
-                <div class="section">
-                  <p><%= locals.profile.desc || 'go to edit your describe' %></p>
-                </div>
-              </div>
-            </div>
-            <div class="panel custom-box">
-              <div class="panel-heading">
-                <h3>经验</h3>
-              </div>
-              <div class="panel-body">    
-                <% locals.profile.experience.forEach(function(item,key){ %>
-                    <div class="section">
-                      <h4><%= item.company %>-<%= item.title %> <small><%= item.startYear %>/<%= item.startMonth %>-<%= item.endYear %>/<%= item.endMonth %></small></h4>
-                      <p><%= item.desc %></p>
+                <span class="pull-left" style="width:207px;margin-right:15px;">
+                  <div class="section">
+                    <div class="user-header bg-modena text-center profile-avatar " style="height:180px;">
+                        <img src="<%= locals.user.avatar %>" alt="User Image">
+                        <!-- <div class="profile-avatar-popover text-center">
+                          <% if (!locals.isMe) { %>
+                          <% if (locals.isConnected) { %>
+                          <span class="add-icon"><i class="fa fa-fw fa-check"></i>已添加</span>
+                          <% } else { %>
+                          <span class="add-icon" id="add-friend"><i class="fa fa-fw fa-plus"></i>添加好友</span>
+                          <% } %> 
+                          <% } %> 
+                        </div> -->
                     </div>
-                    <hr class="<%if(key === locals.profile.experience.length -1){%> displayNone <%}%>">
-                <% }) %>  
-              </div>
-            </div> 
-            <div class="panel custom-box">
-              <div class="panel-heading">
-                <h3>作品</h3>
-              </div>
-              <div class="panel-body">
-                <% locals.profile.works.forEach(function(item,key){ %>
-                    <div class="section">
-                      <h4>URL: <a href="#"><%= item.url %></a></h4>
-                      <p><%= item.desc %></p>
-                    </div>
-                    <hr class="<%if(key === locals.profile.works.length -1){%> displayNone <%}%>">
-                <% }) %>  
-              </div>
-            </div>  
-            <div class="panel custom-box education">
-              <div class="panel-heading">
-                <h3>教育经历</h3>
-              </div>
-              <div class="panel-body edu-box">
-                <div class="row">
-                  <% locals.profile.edu.forEach(function(item,key){ %>
-                    <div class="col-md-6 section">
-                      <span class="edu-date"><%= item.startYear %>/<%= item.startMonth %>--<%= item.endYear %>/<%= item.endMonth %></span>
-                      <div class="content">
-                        <div class="edu-school"> <%= item.school %></div>
-                        <div class="edu-info">
-                          <span><%= item.field %> | <%= item.degree %></span>
-                        </div>
-                        <div class="edu-desc"><%= item.desc %></div>
+                  </div>
+                  <div class="panel">
+                    <div class="panel-body clearfix">
+                      <div class="text-left" style="font-size:0.9em; display:inline-block;">
+                          <div style="margin-bottom:3px;"><span style="color:#999;">状态： </span> <span><%= locals.user.location %> | <%= locals.user.occupation %></span></div>
+                          <% if (locals.user.isStudent) { %>
+                          <div><span style="color:#999;">教育： </span> <span><%= locals.user.school %></span></div>
+                          <% } else { %>
+                          <div><span style="color:#999;">目前就职： </span> <span><%= locals.user.isFreelance ? 'freelance' : locals.user.company %></span></div>
+                          <% if (locals.user.school) { %>
+                          <div><span style="color:#999;">教育： </span> <span><%= locals.user.school %></span></div>
+                          <% } %> 
+                          <% } %> 
+
+                          <!-- <a href="#" class="btn btn-primary btn-sm">Connect</a> -->
                       </div>
                     </div>
-                  <% }) %>
-                </div>
-              </div>
-            </div>   
-            <div class="panel custom-box social">
-              <div class="panel-heading">
-                <h3>社交网络</h3>
-              </div>
-              <div class="panel-body social-info">
-                <% locals.profile.social.forEach(function(item,key){ %>
-                    <div class="clearfix section">
-                      <div class="row">
-                        <div class="col-md-3"><%= item.name %>:</div>
-                        <div class="col-md-6"><a href="#"><%= item.id %></a></div>
-                      </div>  
+                  </div>
+                  <div class="panel panel-default section">
+                    <div class="panel-heading clearfix">
+                      人脉圈
                     </div>
-                <% }) %>
-              </div>
-            </div>
-            <div class="panel custom-box group">
-              <div class="panel-heading">
-                <h3>群组</h3>
-              </div>
-              <div class="panel-body">
-                <% if (locals.groups.length === 0) { %>
-                <p class="no-join text-center" style="display:none;"> 你还没加入任何群 ！</p>
-                <% } %> 
-                <div class="collects">
-                  <div class="collects-container">
-                    <% locals.groups.forEach(function(item,key){ %>
-                        <a href="/group/<%= item.id %>" title="<%= item.name %>"><img src="<%= item.avatar %>"></a>
-                    <% }) %>  
+                    <div class="panel-body">
+                      <div class="images">
+                        <% locals.connects.forEach(function(item,key){ %>
+                        <a href="/profile/<%= item.id %>" class="userCard" title="<%= item.name %>"><img src="<%= item.avatar %>" alt="laolei"></a>
+                        <% }) %>  
+                        <% if (locals.connects.length === 0) { %>
+                        <p> He has not any Connects yet !</p>
+                        <% } %> 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default section tags">
+                    <div class="panel-heading clearfix">
+                      擅长技能
+                    </div>
+                    
+                    <div class="panel-body">
+                      <% if (locals.user.skills.length === 0) { %>
+                      暂时还没有添加任何技能!
+                      <% } %>
+                      <div class="clearfix">
+                        <% locals.user.skills.forEach(function(item,key){ %>
+                        <span class="tags-item"><%= item.name %></span>
+                        <% }) %>  
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default section">
+                    <div class="panel-heading">最近关注</div>
+                    <div class="panel-body">
+                      最近没有关注
+                    </div>
+                  </div>
+                </span>
+                <div class="media-body">           
+                  <div class="panel custom-box basic">
+                    <div class="panel-heading">
+                      <h3 class="clearfix">基本资料
+                        <span class="pull-right" id="basicTrigger"><i class="fa fa-fw fa-chevron-down"></i></span>
+                      </h3>
+                    </div>
+                    <% if (locals.user.isPubicBasic) { %>
+                    <div class="media basicContent basicHide" id='basicContent'>
+                      <div class="media-body user-info">
+                        <p><%= locals.user.real_name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> 年工作经验</p>
+                        <p> <%= locals.user.phone %>  <%= locals.user.email %></p>
+                      </div>
+                    </div>
+                    <% } else { %>
+                    <div class="basicContent basicHide" id="basicContent">用户未公开基本资料 !</div>
+                    <% } %>
+                  </div>
+                  
+                  <% if (locals.profile.desc) { %>
+                  <div class="panel custom-box">
+                    <div class="panel-heading">
+                      <h3>自我描述</h3>
+                    </div>
+                    <div class="panel-body">
+                      <div class="section">
+                        <p><%= locals.profile.desc %></p>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+
+                  <div class="panel custom-box">
+                    <div class="panel-heading">
+                      <h3>经验</h3>
+                    </div>
+                    <div class="panel-body">    
+                      <% locals.profile.experience.forEach(function(item,key){ %>
+                          <div class="section">
+                            <h4><%= item.company %>-<%= item.title %> <small><%= item.startYear %>/<%= item.startMonth %>-<%= item.endYear %>/<%= item.endMonth %></small></h4>
+                            <p><%= item.desc %></p>
+                          </div>
+                          <hr class="<%if(key === locals.profile.experience.length -1){%> displayNone <%}%>">
+                      <% }) %>  
+                    </div>
+                  </div> 
+                  <div class="panel custom-box">
+                    <div class="panel-heading">
+                      <h3>作品</h3>
+                    </div>
+                    <div class="panel-body">
+                      <% locals.profile.works.forEach(function(item,key){ %>
+                          <div class="section">
+                            <h4>URL: <a href="#"><%= item.url %></a></h4>
+                            <p><%= item.desc %></p>
+                          </div>
+                          <hr class="<%if(key === locals.profile.works.length -1){%> displayNone <%}%>">
+                      <% }) %>  
+                    </div>
+                  </div>  
+                  <div class="panel custom-box education">
+                    <div class="panel-heading">
+                      <h3>教育经历</h3>
+                    </div>
+                    <div class="panel-body edu-box">
+                      <div class="row">
+                        <% locals.profile.edu.forEach(function(item,key){ %>
+                          <div class="col-md-6 section">
+                            <span class="edu-date"><%= item.startYear %>/<%= item.startMonth %>--<%= item.endYear %>/<%= item.endMonth %></span>
+                            <div class="content">
+                              <div class="edu-school"> <%= item.school %></div>
+                              <div class="edu-info">
+                                <span><%= item.field %> | <%= item.degree %></span>
+                              </div>
+                              <div class="edu-desc"><%= item.desc %></div>
+                            </div>
+                          </div>
+                        <% }) %>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="panel custom-box social">
+                    <div class="panel-heading">
+                      <h3>社交网络</h3>
+                    </div>
+                    <div class="panel-body social-info">
+                      <% locals.profile.social.forEach(function(item,key){ %>
+                          <div class="clearfix section">
+                            <div class="row">
+                              <div class="col-md-3"><%= item.name %>:</div>
+                              <div class="col-md-6"><a href="#"><%= item.id %></a></div>
+                            </div>  
+                          </div>
+                      <% }) %>
+                    </div>
+                  </div>
+                  <div class="panel custom-box group">
+                    <div class="panel-heading">
+                      <h3>参与群组</h3>
+                    </div>
+                    <div class="panel-body">
+                      <% if (locals.groups.length === 0) { %>
+                      <p class="no-join text-center" style="display:none;"> 你还没加入任何群 ！</p>
+                      <% } %> 
+                      <div class="collects">
+                        <div class="collects-container">
+                          <% locals.groups.forEach(function(item,key){ %>
+                              <a href="/group/<%= item.id %>" title="<%= item.name %>"><img src="<%= item.avatar %>"></a>
+                          <% }) %>  
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </div> 
             </div>
-          </div>            
+          </div>                      
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
@@ -699,9 +694,19 @@
                     }
                 });
             });
-            $('#add-friend').on('click', function() {
-
-              return false;
+            $('#basicTrigger').on('click', function() {
+              var $content = $('#basicContent');
+              if ($content.hasClass('basicHide')) {
+                $('#basicTrigger i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                $content.slideDown(function() {
+                  $content.removeClass('basicHide');
+                });
+              } else {
+                $('#basicTrigger i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                $content.slideUp(function() {
+                  $content.addClass('basicHide');
+                });
+              }
             });
             
           });
