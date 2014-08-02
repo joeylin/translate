@@ -126,6 +126,9 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
         // share item && item comments
         $scope.vm = {};
         $scope.vm.deletePopup = function(share) {
+            if (!app.author) {
+                return false;
+            }
             var shareDelete = function(cb) {
                 var url = '/api/group/post/delete';
                 var data = {
@@ -184,14 +187,19 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             }
         };
         $scope.vm.forkPopup = function(share) {
+            if (!app.author) {
+                return false;
+            }
             var forkObj = {
                 change: $scope.change,
                 share: share
             };
             $scope.$emit('popup', 'fork', forkObj);
-
         };
         $scope.vm.toggleComment = function(share) {
+            if (!app.author) {
+                return false;
+            }
             share.isShowComment = !share.isShowComment;
             if (share.isShowComment) {
                 var params = {
@@ -206,6 +214,9 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             }
         };
         $scope.vm.submitComment = function(share) {
+            if (!app.author) {
+                return false;
+            }
             if (share.newComment === '') {
                 return false;
             }

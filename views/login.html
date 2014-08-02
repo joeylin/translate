@@ -51,6 +51,9 @@
           .form-inline {
             line-height: 84px;
           }
+          .form-inline > .form-group {
+            margin-right: 5px;
+          }
           .signUpContainer {
             margin-top: 60px;
             margin-bottom: 60px;
@@ -76,7 +79,7 @@
             border: 0;
           }
           .signupTab .tab-content {
-            margin-top: 30px;
+            margin-top: 25px;
           }
           .signupTab .tab-content label {
             line-height: 37px;
@@ -85,14 +88,15 @@
             font-weight: 400;
           }
           .signupTab .tab-pane form > div {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
           }
           .signupTab label.error {
             position: absolute;
-            top: -27px;
+            top: -31px;
             left: 28px;
             color: red;
             text-align: left; 
+            font-size: 13px;
           }
           .signUpContainer .promoteContainer {
             padding-left: 30px;
@@ -113,6 +117,14 @@
             width: 100%;
           }
           /*reset style*/
+          .form-control {
+            -webkit-border-radius: 4px !important; 
+            -moz-border-radius: 4px !important;
+            border-radius: 4px !important; 
+          }
+          .iradio_minimal {
+            margin-right: 5px;
+          }
           .form-group .radio {
             margin-bottom: 0;
             margin-top: 0;
@@ -136,19 +148,19 @@
                 <li>
                   <form class="form-inline" role="form" id="formLogin">
                     <div class="form-group">
-                      <input type="email" class="form-control" id="loginEmail" placeholder="Enter email">
+                      <input type="email" class="form-control" id="loginEmail" placeholder="邮箱">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                      <input type="password" class="form-control" id="loginPassword" placeholder="密码">
                     </div>
-                    <div class="form-group">
-                      <button type="button" id="btnLogin" class="btn btn-primary">Login</button>
+                    <div class="form-group" style="margin-right: 0;">
+                      <button type="button" id="btnLogin" class="btn btn-primary">登录</button>
                     </div>
                   </form>
                 </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li class="subTile">Make Yourself Valuable</li>
+                <li class="subTile">全面提升你的职业价值</li>
               </ul>
             </div>
           </div>
@@ -157,93 +169,67 @@
           <div class="row">
             <div class="col-md-4">
               <div class="nav-tabs-custom signupTab">
-                  <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_1" data-toggle="tab">User</a></li>
-                      <li class=""><a href="#tab_2" data-toggle="tab">Company</a></li>
-                  </ul>
+                  <h3 class="text-center">注册新用户</h3>
                   <div class="tab-content">
-                      <div class="tab-pane active" id="tab_1">
+                      <div class="tab-pane active" >
                           <form action="" method="post" id="formUser">
                             <div class="row">
                               <div class="col-xs-3">
-                                <label>Email</label>
+                                <label>邀请码 :</label>
                               </div>
                               <div class="col-xs-9">
-                                <input class="form-control" name="email" id="inputEmail" type="email" placeholder="Email" required="" required="">
+                                <input class="form-control" name="inviteCode" id="inviteCode" type="text" placeholder="邀请码" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" required="">
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-xs-3">
-                                <label>RealName</label>
+                                <label>用户名 :</label>
                               </div>
                               <div class="col-xs-9">
-                                <input class="form-control" name="name" id="inputName" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" required="">
+                                <input class="form-control" name="name" id="inputName" type="text" placeholder="用户名" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" required="">
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-xs-3">
-                                <label>Password</label>
+                                <label>邮箱 :</label>
                               </div>
                               <div class="col-xs-9">
-                                <input class="form-control" name="password" id="inputPassword" type="password" placeholder="Password" required="">
+                                <input class="form-control" name="email" id="inputEmail" type="email" placeholder="邮箱" required="" required="">
                               </div>
-                            </div>
+                            </div>   
                             <div class="row">
                               <div class="col-xs-3">
-                                <label>Sex</label>
+                                <label>密码 :</label>
+                              </div>
+                              <div class="col-xs-9">
+                                <input class="form-control" name="password" id="inputPassword" type="password" placeholder="密码" required="">
+                              </div>
+                            </div>
+                            <div class="row" style="margin-bottom:0px;">
+                              <div class="col-xs-3">
+                                <label>性别 :</label>
                               </div>
                               <div class="col-xs-9">
                                 <div class="form-group clearfix"> 
-                                    <div class="radio pull-left" style="margin-right: 10px;">
+                                    <div class="radio pull-left" style="margin-right: 15px;">
                                         <label>
                                             <input type="radio" class="inputRadio" name="userSex" id="userSex" value="Male" checked="">
-                                            Male
+                                            男
                                         </label>
                                     </div>
                                     <div class="radio pull-left">
                                         <label>
                                             <input type="radio" class="inputRadio" name="userSex" value="Female">
-                                            Female
+                                            女
                                         </label>
                                     </div>               
                                 </div>
                               </div>
                             </div>
                             <div class="clearfix signupFooter">
-                                <button type="submit" class="btn btn-primary pull-right" id="btnRegister">Join Us</button>
+                                <button type="submit" class="btn btn-success pull-right" id="btnRegister">立即加入</button>
                             </div>
                           </form>
-                      </div>
-                      <div class="tab-pane" id="tab_2">
-                          <form action="" method="post" id="formCompany">
-                            <div class="row">
-                              <div class="col-xs-3">
-                                <label>Company</label>
-                              </div>
-                              <div class="col-xs-9">
-                                <input class="form-control" name="name" id="inputCompanyName" type="text" placeholder="company name" required="">
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-xs-3">
-                                <label>Email</label>
-                              </div>
-                              <div class="col-xs-9">
-                                <input class="form-control" name="email" id="inputCompanyEmail" type="email" placeholder="Email" required="">
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-xs-3">
-                                <label>Password</label>
-                              </div>
-                              <div class="col-xs-9">
-                                <input class="form-control" name="password" id="inputCompanyPassword" type="password" placeholder="Password" required="">
-                              </div>
-                            </div>
-                            <div class="clearfix signupFooter">
-                                <button type="submit" class="btn btn-primary pull-right" id="btnCompanyRegister">Build</button>
-                            </div>
-                          </form> 
                       </div>
                   </div>
               </div>

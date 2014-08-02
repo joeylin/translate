@@ -21,7 +21,7 @@
           <div class="row">
             <div class="col-md-8">
               <div>{{group.industry}}</div>
-              <div class="search-company-relationship">{{group.count}}/{{group.total}}</div>
+              <div class="search-company-relationship">成员: {{group.count}} | 关注: {{group.followCount}}</div>
             </div>
             <div class="col-md-3" ng-show="group.update > 0">
               <a href="/group/{{group.id}}" target="_self" class="pull-right">查看<i class="fa fa-fw fa-angle-double-right"></i></a>
@@ -33,41 +33,7 @@
         </div>
       </div>
       <hr ng-repeat-end ng-class="{displayNone:$last}">
-      <!-- <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading">AmazingSurge</h4>
-          <div class="row">
-            <div class="col-md-8">
-              <div>Computer Software</div>
-              <div class="search-company-relationship">100/500</div>
-            </div>
-            <div class="col-md-3">
-              <a href="#" class="pull-right">9 share add <i class="fa fa-fw fa-angle-double-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading">Snapchat</h4>
-          <div class="row">
-            <div class="col-md-8">
-              <div>Computer Software</div>
-              <div class="search-company-relationship">100/500</div>
-            </div>
-            <div class="col-md-3">
-              <a href="#" class="pull-right">9 share add <i class="fa fa-fw fa-angle-double-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div> -->
+     
     </div>
   </div>
 </div>
@@ -87,8 +53,8 @@
 </div>
 
 <!-- magnifi popup -->
-<div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-if="global.user.groups.create.length <= 4">
-    <div><h3 class="text-center">创建兴趣圈({{global.user.groups.create.length + 1}}/5)</h3></div>
+<div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-if="groupCount <= 4">
+    <div><h3 class="text-center">创建兴趣圈({{groupCount + 1}}/5)</h3></div>
     <div class="row">
       <div class="col-md-3">
         <label class="inline-label">圈名 :</label>
@@ -110,6 +76,6 @@
       <span class="pull-right error" ng-show="error" style="line-height: 35px; margin-right:15px;">信息填写不完整</span>
     </div>
 </div>
-<div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-if="global.user.groups.create.length > 4">
+<div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-if="groupCount > 4">
     普通会员只能创建5个圈子
 </div>

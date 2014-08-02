@@ -1286,6 +1286,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.get(url).success(function(data) {
                 $scope.content = data.content;
                 $scope.isSearch = false;
+                $scope.groupCount = data.count;
             });
         };
         $scope.refresh = function() {

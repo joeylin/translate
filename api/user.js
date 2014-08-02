@@ -1408,14 +1408,14 @@ var getGroupByUser = function(req, res) {
                 _id: group._id,
                 industry: group.industry,
                 name: group.name,
-                count: group.count,
-                total: 100,
-                update: 9
+                followCount: group.followCount,
+                count: group.count
             };
             results.push(result);
         });
         res.send({
             code: 200,
+            count: results.length,
             content: results
         });
     });

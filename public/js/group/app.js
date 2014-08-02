@@ -215,7 +215,7 @@ config(['$httpProvider', 'app',
         global.join = function() {
             if (!app.author) {
                 global.popup.type = 'login';
-                global.popup.text = 'You Need Login First !';
+                global.popup.text = '';
                 global.popup.show = true;
             } else {
                 global.popup.type = 'check';

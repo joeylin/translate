@@ -31,6 +31,9 @@
           .home-container {
             padding-top: 19px;
           }
+          .container {
+            max-width: 980px;
+          }
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -111,11 +114,16 @@
             display: none;
           }
           /*group*/
-          .group {
-            margin-top: 75px;
+          .group > .col-md-9 {
+            background-color: #ddd;
+            border-radius: 4px;
           }
           .search {
             margin-bottom: 30px;
+          }
+          .search .form-control {
+            margin-top: 30px;
+            border-radius: 4px!important;
           }
           .create {
             margin-bottom: 15px;
@@ -137,6 +145,7 @@
           .main > .row {
             margin-right: 0;
             margin-left: 0;
+            margin-bottom: 15px;
           }
           .group-line {
             margin-top: 0;
@@ -161,10 +170,10 @@
             margin-bottom: 15px;
           }
           .carbonad {
-            border: 1px solid #866ab3;
+            background-color: #fff;
             padding: 15px;
             border-radius: 4px;
-            height: 107px;
+            margin-bottom: 15px;
           }
           .carbonad-image img {
             width: 75px;
@@ -175,6 +184,14 @@
           }
           .carbonad-info .carbonad-title {
             font-size: 16px;
+            position: relative;
+            top: -3px;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+          .carbonad-info .carbonad-desc > div {
+            white-space: nowrap;
+            overflow: hidden;
           }
           .white-popup-block {
             max-width: 420px;
@@ -233,7 +250,7 @@
               <ul class="nav navbar-nav navbar-right">
                   <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="/login?re=/group/" target="_self">Login</a>
+                      <a class="dropdown-toggle" href="/login?re=/group/" target="_self">登录</a>
                   </li>
                   <% } else { %>
                   <li class="dropdown notifications-menu user-menu" id="menuNotify" ng-cloak>
@@ -247,7 +264,7 @@
                             <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
                             <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
                             <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
-                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
+                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">没有未处理的通知</li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu">
@@ -269,25 +286,25 @@
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center">
-                                    <a href="#" ><%= locals.author.share.length %></a>
+                                    <a href="#" ><%= locals.author.share %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#"><%= locals.author.connects.length %></a>
+                                    <a href="#"><%= locals.author.connects %></a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">share</a>
+                                    <a href="#">微说</a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="#">Connects</a>
+                                    <a href="#">人脉</a>
                                 </div>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Account</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">退出</a>
                                 </div>
                             </li>
                         </ul>
@@ -297,69 +314,114 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
-                <li><a href="/group" target="_self">群组</a></li>
+                <li><a href="/group" target="_self">圈子</a></li>
                 <li><a href="/search/all" target="_self">搜索</a></li>
               </ul>
             </div>
           </div>
         </nav>
         <div class="container group">
-          <div class="col-md-9">
+          <div class="col-md-9" ng-controller="homeCtrl">
             <div class='row search'>
-              <div class="col-md-8 col-md-offset-2">
-                <input type="text" class="form-control" placeholder="Search groups" ng-model="keywords">
+              <div class="col-md-6 col-md-offset-3">
+                <input type="text" class="form-control" placeholder="输入 圈号/圈名/关键词 来搜索" ng-model="keyword" ng-keydown="enter($event)">
               </div>
             </div>
-            <div class="main" ng-view>
-            </div>
-            
+            <hr style="background-color:#fff;">
+            <div class="main" ng-cloak>
+              <h4 style="padding-left: 5px;margin-bottom: 15px;font-size:16px;" ng-show="!isSearch">推荐圈子 :</h4>
+              <h4 style="padding-left: 5px;margin-bottom: 15px;font-size:16px;" ng-show="isSearch">搜索结果 :</h4>
+              <div class="row">
+                <div class="group-collects">
+                  <div class="row">
+                    <div class="col-md-6" ng-repeat="item in content">
+                      <div class="carbonad clearfix">
+                        <span class="carbonad-image pull-left">
+                          <a href="/group/{{item.id}}" target="_self">
+                            <img class="carbonad-image carbonad-img" ng-src="{{item.avatar}}" title="Hack Reactor" alt="Hack Reactor">
+                          </a>
+                        </span>
+                        <div class="carbonad-info">
+                          <div class="carbonad-title">
+                            <a href="/group/{{item.id}}" target="_self">{{item.name}}</a>
+                          </div>
+                          <div classs="carbonad-desc" style="font-size:0.9em">
+                            <div class="industry">
+                              <span>{{item.industry}}</span>
+                            </div>
+                            <div>
+                              <span>成员: {{item.count}} | 关注: {{item.followCount || 0}}</span>
+                            </div>
+                            <div style="color:#99a1a6;white-space: nowrap;overflow: hidden;">
+                              <span>简介:</span> {{item.intro}}
+                            </div>
+                          </div>
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr style="background-color:#fff;" ng-show="content.length > 0 && isSearch">
+              <div ng-show="content.length > 0 && isSearch">
+                <ul class="pager">
+                  <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+                  <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
+                </ul>
+              </div>
+
+            </div>   
           </div>
           <div class="col-md-3 pull-right">
-            <div class="create">
-              <% if (locals.author) { %>
-              <a popup href="#create-popup" type="button" class="create-btn btn-block">Create New Group</a>
-              <% } else { %>
-              <a popup href="#login-popup" type="button" class="create-btn btn-block">Create New Group</a>
-              <% } %>
-            </div>
-            <div class="panel panel-default section">
-              <div class="panel-heading">Members(500/100)</div>
-              <div class="panel-body">
-                Panel content (creator and admin)
+            <div class="panel">
+              <div class="panel-body text-center">
+                <% if (locals.author) { %>
+                <a popup href="#create-popup" type="button" class="btn btn-primary btn-sm">创建圈子</a>
+                <% } else { %>
+                <a popup href="#login-popup" type="button" class="btn btn-primary btn-sm">创建圈子</a>
+                <% } %>
               </div>
+                
             </div>
+            
           </div>
         </div>
         <footer>
           <p class="pull-right">© Founded by Joeylin !</p>
         </footer>
         <% if (locals.author) { %>
+        <% if (locals.groupCount < 5) { %>
         <div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-controller="CreateCtrl">
-          <div><h3 class="text-center">Create Group</h3></div>
+          <div><h3 class="text-center">创建兴趣圈(<%= locals.groupCount + 1 %>/5)</h3></div>
           <div class="row">
             <div class="col-md-3">
-              <label class="inline-label">Name :</label>
+              <label class="inline-label">圈名 :</label>
             </div>
             <div class="col-md-9">
-              <input type="text" class="form-control" placeholder="Enter name" ng-model="name" ng-change="change()">
+              <input type="text" class="form-control" placeholder="圈名" ng-model="name" ng-change="change()">
             </div>
           </div>
           <div class="row">
             <div class="col-md-3">
-              <label class="inline-label">Industry :</label>
+              <label class="inline-label">行业 :</label>
             </div>
             <div class="col-md-9">
-              <input type="text" class="form-control" placeholder="industry" ng-model="industry" ng-change="change()">
+              <input type="text" class="form-control" placeholder="所处行业" ng-model="industry" ng-change="change()">
             </div>
           </div>
           <div class="clearfix">
-            <a href="#" class="btn btn-primary pull-right" ng-click="create()">Create</a>
-            <span class="pull-right error" ng-show="error" style="line-height: 35px; margin-right:15px;">can't be blank</span>
+            <a href="#" class="btn btn-primary pull-right" ng-click="create()">创建</a>
+            <span class="pull-right error" ng-show="error" style="line-height:34px;margin-right:15px;">不能为空</span>
           </div>
         </div>
         <% } else { %>
+        <div id="create-popup" class="white-popup-block mfp-hide">
+          你已经创建满5个圈子了，不能够再创建了。
+        </div>
+        <% } %>
+        <% } else { %>
         <div id="login-popup" class="white-popup-block mfp-hide">
-          You need Login First !
+          你还未登录，不能够创建圈子哦。
         </div>
         <% } %>
         <script>

@@ -2,60 +2,64 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate', 'ui.bootstrap.pagination']).
-controller('searchCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
+controller('homeCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.keyword = '';
-        $scope.content = [];
-        var url = '/api/group/search';
+        $scope.isSearch = false;
+        $scope.content = app.popular || [];
+        var url = '/api/group/homeSearch';
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
         var params = {
-            pager: 0,
-            keyword: $scope.keyword
+            page: 1
         };
         $scope.submit = function() {
-            // reset the config before submit
             var params = {
-                pager: 0,
+                page: 1,
                 keyword: $scope.keyword
             };
             $http.get(url, {
                 params: params,
             }).success(function(data) {
+                $scope.isSearch = true;
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
+        $scope.enter = function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                $scope.submit();
+            }
+        };
         $scope.next = function() {
-            if (!$scope.vm.pager.hasLast) {
+            if (!$scope.pager.hasNext) {
                 return false;
             }
-            $scope.vm.pager.current += 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current += 1;
+            params.page = $scope.pager.current;
+            $http.get(url, {
+                params: params,
+            }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
         $scope.prev = function() {
-            if (!$scope.vm.pager.current) {
+            if ($scope.pager.current <= 1) {
                 return false;
             }
-            $scope.vm.pager.current -= 1;
-            params.pager = $scope.vm.pager.current;
-            $scope.vm.pager.link(url, params, function(data) {
+            $scope.pager.current -= 1;
+            params.page = $scope.pager.current;
+            $http.get(url, {
+                params: params,
+            }).success(function(data) {
                 $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
+                $scope.pager.hasNext = data.hasNext;
             });
         };
-    }
-]).controller('homeCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
-    function(app, $scope, $rootScope, $location, $http) {
-        // var url = '/api/group/home';
-        // $http.get(url).success(function(data) {
-        //     $scope.popular = data.popular;
-        //     $scope.newGroup = data.newGroup;
-        // });
-        $scope.popular = app.popular;
-        $scope.newGroup = app.newGroup;
     }
 ]).controller('CreateCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
@@ -67,7 +71,7 @@ controller('searchCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
                 $scope.error = true;
                 return false;
             }
-            if (app.user.groups.create.length > 4) {
+            if (app.author.groupCount > 4) {
                 return false;
             }
             var url = '/api/group/create';

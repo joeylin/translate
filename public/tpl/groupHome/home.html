@@ -1,9 +1,7 @@
 <div class="row" style="margin-bottom:30px;">
-  <h4>Most Activity Groups</h4>
-  <hr class="group-line">
   <div class="group-collects">
     <div class="row">
-    	<div class="col-md-4" ng-repeat="item in popular">
+    	<div class="col-md-6" ng-repeat="item in content">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">
 					<a href="/group/{{item.id}}" target="_self">
@@ -12,18 +10,23 @@
 				</span>
 				<div class="carbonad-info">
 					<div class="carbonad-title">
-						{{item.name}}
+						<a href="/group/{{item.id}}" target="_self">{{item.name}}</a>
 					</div>
-					<div>
-						<span>{{item.industry}}</span>
-					</div>
-					<div>
-						<span>{{item.count}}/{{item.total}}</span>
+					<div classs="carbonad-desc" style="font-size:0.9em">
+						<div class="industry">
+							<span>{{item.industry}}</span>
+						</div>
+						<div>
+							<span>关注: 10 | 成员: {{item.count}}</span>
+						</div>
+						<div style="color:#99a1a6;white-space: nowrap;overflow: hidden;">
+							<span>简介:</span> 这个群不错哦这个群不错哦这个群不错哦这个群不错哦。。。
+						</div>
 					</div>
 				</div>	
     		</div>
     	</div>
-    	<div class="col-md-4">
+    	<div class="col-md-6">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">
 					<a href="#">
@@ -43,7 +46,7 @@
 				</div>	
     		</div>
     	</div>
-    	<div class="col-md-4">
+    	<div class="col-md-6">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">
 					<a href="#">
@@ -63,7 +66,7 @@
 				</div>	
     		</div>
     	</div>
-    	<div class="col-md-4">
+    	<div class="col-md-6">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">
 					<a href="#">
@@ -83,7 +86,7 @@
 				</div>	
     		</div>
     	</div>
-    	<div class="col-md-4">
+    	<div class="col-md-6">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">
 					<a href="#">
@@ -103,135 +106,7 @@
 				</div>	
     		</div>
     	</div>
-    	<div class="col-md-4">
-    		<div class="carbonad clearfix">
-				<span class="carbonad-image pull-left">
-					<a href="#">
-						<img class="carbonad-image carbonad-img" src="/public/imgs/angularjs.png" title="Hack Reactor" alt="Hack Reactor">
-					</a>
-				</span>
-				<div class="carbonad-info">
-					<div class="carbonad-title">
-						AngularJS
-					</div>
-					<div>
-						<span>frontend</span>
-					</div>
-					<div>
-						<span>500/100</span>
-					</div>
-				</div>	
-    		</div>
-    	</div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <h4>Groups You May Like</h4>
-  <hr class="group-line">
-  <div class="group-collects">
-    <div class="row">
-    	<div class="col-md-4" ng-repeat="item in newGroup">
-    		<div class="carbonad clearfix">
-				<span class="carbonad-image pull-left">
-					<a href="/group/{{item.id}}" target="_self">
-						<img class="carbonad-image carbonad-img" src="{{item.avatar}}" title="Hack Reactor" alt="Hack Reactor">
-					</a>
-				</span>
-				<div class="carbonad-info">
-					<div class="carbonad-title">
-						{{item.name}}
-					</div>
-					<div>
-						<span>{{item.industry}}</span>
-					</div>
-					<div>
-						<span>100/{{item.members.length}}</span>
-					</div>
-				</div>	
-    		</div>
-    	</div>
-    	<div class="col-md-4">
-    		<div class="carbonad clearfix">
-				<span class="carbonad-image pull-left">
-					<a href="#">
-						<img class="carbonad-image carbonad-img" src="/public/imgs/angularjs.png" title="Hack Reactor" alt="Hack Reactor">
-					</a>
-				</span>
-				<div class="carbonad-info">
-					<div class="carbonad-title">
-						AngularJS
-					</div>
-					<div>
-						<span>frontend</span>
-					</div>
-					<div>
-						<span>500/100</span>
-					</div>
-				</div>	
-    		</div>
-    	</div>
-    	<div class="col-md-4">
-    		<div class="carbonad clearfix">
-				<span class="carbonad-image pull-left">
-					<a href="#">
-						<img class="carbonad-image carbonad-img" src="/public/imgs/angularjs.png" title="Hack Reactor" alt="Hack Reactor">
-					</a>
-				</span>
-				<div class="carbonad-info">
-					<div class="carbonad-title">
-						AngularJS
-					</div>
-					<div>
-						<span>frontend</span>
-					</div>
-					<div>
-						<span>500/100</span>
-					</div>
-				</div>	
-    		</div>
-    	</div>
-    	<div class="col-md-4">
-    		<div class="carbonad clearfix">
-				<span class="carbonad-image pull-left">
-					<a href="#">
-						<img class="carbonad-image carbonad-img" src="/public/imgs/angularjs.png" title="Hack Reactor" alt="Hack Reactor">
-					</a>
-				</span>
-				<div class="carbonad-info">
-					<div class="carbonad-title">
-						AngularJS
-					</div>
-					<div>
-						<span>frontend</span>
-					</div>
-					<div>
-						<span>500/100</span>
-					</div>
-				</div>	
-    		</div>
-    	</div>
-    	<div class="col-md-4">
-    		<div class="carbonad clearfix">
-				<span class="carbonad-image pull-left">
-					<a href="#">
-						<img class="carbonad-image carbonad-img" src="/public/imgs/angularjs.png" title="Hack Reactor" alt="Hack Reactor">
-					</a>
-				</span>
-				<div class="carbonad-info">
-					<div class="carbonad-title">
-						AngularJS
-					</div>
-					<div>
-						<span>frontend</span>
-					</div>
-					<div>
-						<span>500/100</span>
-					</div>
-				</div>	
-    		</div>
-    	</div>
-    	<div class="col-md-4">
+    	<div class="col-md-6">
     		<div class="carbonad clearfix">
 				<span class="carbonad-image pull-left">
 					<a href="#">

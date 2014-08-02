@@ -41,6 +41,10 @@ var GroupSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
+    followCount: {
+        type: Number,
+        default: 0
+    },
     is_delete: {
         type: Boolean,
         default: false
@@ -161,20 +165,10 @@ GroupSchema.statics.quit = function(id, userId, cb) {
         }
     });
 };
-GroupSchema.statics.getLastest = function(cb) {
-    this.find().sort({
-        createAt: -1
-    }).limit(6).exec(function(err, groups) {
-        if (!groups || err) {
-            cb(err, null);
-        }
-        cb(err, groups);
-    });
-};
 GroupSchema.statics.getPopular = function(cb) {
     this.find().sort({
         'members.length': -1
-    }).limit(6).exec(function(err, groups) {
+    }).limit(20).exec(function(err, groups) {
         cb(err, groups);
     });
 };

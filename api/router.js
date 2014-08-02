@@ -29,7 +29,11 @@ module.exports = function(app) {
     // public
     var getProfile = function(req, res) {
         var id = req.params.id;
-        if (!id) {
+        if (!id && !req.session.user) {
+            return res.redirect('/login');
+        }
+        var id = req.params.id;
+        if (!id && req.session.user) {
             id = req.session.user.id;
             return res.redirect('/profile/' + id);
         }
@@ -538,53 +542,51 @@ module.exports = function(app) {
             });
         });
     };
-
     var getGroupHome = function(req, res) {
         var author = req.session && req.session.user;
-        Group.getLastest(function(err, lastest) {
-            Group.getPopular(function(err, popular) {
-                var groupPopular = [];
-                popular.map(function(item) {
-                    var result = {
-                        id: item.id,
-                        _id: item._id,
-                        avatar: item.avatar,
-                        count: item.count,
-                        name: item.name,
-                        industry: item.industry,
-                        total: 100
-                    };
-                    groupPopular.push(result);
-                });
-                var groupLatest = [];
-                lastest.map(function(item) {
-                    var result = {
-                        id: item.id,
-                        _id: item._id,
-                        avatar: item.avatar,
-                        count: item.count,
-                        name: item.name,
-                        industry: item.industry,
-                        total: 100
-                    };
-                    groupLatest.push(result);
-                });
-                if (!author) {
-                    app.locals.popular = groupPopular;
-                    app.locals.newGroup = groupLatest;
-                    res.render('group-home');
-                } else {
-                    User.findOne({
-                        _id: author._id
-                    }, function(err, user) {
-                        app.locals.popular = groupPopular;
-                        app.locals.newGroup = groupLatest;
-                        app.locals.author = user;
-                        res.render('group-home');
-                    });
-                }
-
+        Group.getPopular(function(err, popular) {
+            var groupPopular = [];
+            popular.map(function(item) {
+                var result = {
+                    id: item.id,
+                    _id: item._id,
+                    avatar: item.avatar,
+                    count: item.count,
+                    followCount: item.followCount,
+                    name: item.name,
+                    intro: item.intro,
+                    industry: item.industry,
+                    total: 100
+                };
+                groupPopular.push(result);
             });
+            if (!author) {
+                app.locals.popular = groupPopular;
+                res.render('group-home');
+            } else {
+                User.findOne({
+                    _id: author._id
+                }, function(err, user) {
+                    Share.find({
+                        user: user._id,
+                        type: 'view',
+                        is_delete: false
+                    }).count().exec(function(err, count) {
+                        app.locals.popular = groupPopular;
+                        app.locals.groupCount = user.groups.create.length;
+                        app.locals.author = {
+                            id: user.id,
+                            _id: user._id,
+                            name: user.name,
+                            avatar: user.avatar,
+                            share: count,
+                            groupCount: user.groups.create.length,
+                            connects: user.connects.length
+                        };
+                        res.render('group-home');
+                    }); 
+                });
+            }
         });
     };
     var getGroup = function(req, res) {
@@ -615,6 +617,8 @@ module.exports = function(app) {
                 'groups.follow': group._id
             }).count().exec(function(err, count) {
                 app.locals.followCount = count || 0;
+                group.followCount = count;
+                group.save();
                 if (user) {
                     User.findOne({
                         _id: user._id

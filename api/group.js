@@ -165,9 +165,16 @@ var follow = function(req, res) {
         user.groups.follow.push(id);
         user.markModified('user.groups.follow');
         user.save(function(err, user) {
-            res.send({
-                code: 200
-            });
+            Group.findOne({
+                _id: id
+            }).exec(function(err, group) {
+                group.followCount += 1;
+                group.save(function(err) {
+                    res.send({
+                        code: 200
+                    });
+                });
+            }); 
         });
     });
 };
@@ -193,9 +200,16 @@ var unfollow = function(req, res) {
         user.groups.follow.splice(index, 1);
         user.markModified('user.groups.follow');
         user.save(function(err) {
-            res.send({
-                code: 200
-            });
+            Group.findOne({
+                _id: id
+            }).exec(function(err, group) {
+                group.followCount -= 1;
+                group.save(function(err) {
+                    res.send({
+                        code: 200
+                    });
+                });
+            }); 
         });
     });
 };
@@ -572,9 +586,8 @@ var searchGroup = function(req, res) {
                             _id: group._id,
                             industry: group.industry,
                             name: group.name,
-                            count: group.count,
-                            total: 100,
-                            update: 9
+                            followCount: group.followCount,
+                            count: group.count
                         };
                         results.push(result);
                     });
@@ -605,9 +618,8 @@ var searchGroup = function(req, res) {
                         _id: group._id,
                         industry: group.industry,
                         name: group.name,
-                        count: group.count,
-                        total: 100,
-                        update: 9
+                        followCount: group.followCount,
+                        count: group.count
                     };
                     results.push(result);
                 });
@@ -626,6 +638,74 @@ var searchGroup = function(req, res) {
             });
         });
     }
+};
+var groupHomeSearch = function(req, res) {
+    var page = req.query.page || 1;
+    var perPageItems = 20;
+    var keyword = req.query.keyword;
+    var query = {
+        is_delete: false
+    };
+
+    if (!keyword) {
+        return res.send({
+            code: 404,
+        });
+    }
+
+    var id = parseInt(keyword, 10);
+
+    var str = '';
+    var array = keyword.split(' ');
+    array.map(function(item,key) {
+        str += item;
+        if (key !== array.length - 1 ) {
+            str += '|';
+        }
+    });
+    if (id) {
+        query.id = id;
+    } else {
+        var re = new RegExp(str, 'ig');
+        query.$or = [{
+            name: re
+        }, {
+            industry: re
+        }];
+    }
+        
+    Group.find(query).skip((page - 1) * perPageItems)
+    .limit(perPageItems).exec(function(err, groups) {
+        Group.find(query).count().exec(function(err, count) {
+            var results = [];
+            var hasNext;
+            groups.map(function(group) {
+                var result = {
+                    avatar: group.avatar,
+                    id: group.id,
+                    _id: group._id,
+                    industry: group.industry,
+                    name: group.name,
+                    count: group.count,
+                    intro: group.intro,
+                    followCount: group.followCount
+                };
+                results.push(result);
+            });
+
+            if ((page - 1) * perPageItems + results.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                content: results,
+                count: count,
+                hasNext: hasNext,
+            });
+        });
+    });
 };
 var groupPostSearch = function(req, res) {
     var user = req.session.user;
@@ -840,6 +920,7 @@ module.exports = function(app) {
     app.post('/api/group/members', getMembers);
     app.post('/api/group/list', getMembersList);
     app.get('/api/group/search', middleware.apiLogin, searchGroup);
+    app.get('/api/group/homeSearch', groupHomeSearch);
     app.get('/api/group/trends', middleware.apiLogin, getTrends);
 
     app.get('/api/group/:id/post', getPost);
