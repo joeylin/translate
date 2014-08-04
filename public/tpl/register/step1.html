@@ -5,7 +5,7 @@
     <form id="formUser" ng-cloak>
         <div class="row">
             <div class="col-xs-3">
-                <label>Location</label>
+                <label>常住地 :</label>
             </div>
             <div class="col-xs-9">
                 <div class="row">
@@ -30,55 +30,55 @@
         </div>
         <div class="row" style="margin-bottom:13px;">
             <div class="col-xs-3">
-                <label>Professional</label>
+                <label>是否工作 :</label>
             </div>
             <div class="col-xs-9">
                 <div class="radioInput">
-                    <span ng-click="professional = true" style="margin-right:5px;"><i class="fa fa-fw" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[professional]"></i>Yes</span>
-                    <span ng-click="professional = false"><i class="fa fa-fw" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[!professional]"></i>I am a student</span>
+                    <span ng-click="professional = true" style="margin-right:5px;"><i class="fa fa-fw" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[professional]"></i>是</span>
+                    <span ng-click="professional = false"><i class="fa fa-fw" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[!professional]"></i>我是学生</span>
                 </div>
             </div>
         </div>
         <!-- professional student -->
         <div class="row" ng-show="!professional">
             <div class="col-xs-3">
-                <label>School</label>
+                <label>就读院校 :</label>
             </div>
             <div class="col-xs-9">
-                <input class="form-control" ng-model="school" type="text" placeholder="Your school" required="">
+                <input class="form-control" ng-model="school" type="text" placeholder="就读学校" required="">
             </div>
         </div>
         <div class="row" ng-show="professional">
             <div class="col-xs-3">
-                <label>Company</label>
+                <label>就职公司 :</label>
             </div>
             <div class="col-xs-9">
-                <input class="form-control disabled" ng-disabled="isFreelance" ng-model="company" type="text" placeholder="company" required="">
+                <input class="form-control disabled" ng-disabled="isFreelance" ng-model="company" type="text" placeholder="公司名称" required="">
                 <span class="checkInput" ng-click="isFreelance = !isFreelance">
                     <i class="fa fa-fw" ng-class="{true:'fa-check-square-o',false:'fa-square-o'}[isFreelance]"></i>
-                    Freelance
+                    自由职业者
                 </span>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-3">
-                <label>Occupation</label>
+                <label>职业 :</label>
             </div>
             <div class="col-xs-9">
-                <input class="form-control" ng-model="occupation" type="text" placeholder="your occupation" required="">
+                <input class="form-control" ng-model="occupation" type="text" placeholder="从事的职业" required="">
             </div>
         </div>
         <div class="row" ng-show="professional">
             <div class="col-xs-3">
-                <label>workYear</label>
+                <label>工作年限 :</label>
             </div>
             <div class="col-xs-9">
-                <input class="form-control" ng-model="workYear" type="Number" placeholder="workYear" required="">
+                <input class="form-control" ng-model="workYear" type="Number" placeholder="工作年限" required="">
             </div>
         </div>
         <div class="row" ng-show="!professional">
             <div class="col-xs-3">
-                <label>School Date</label>
+                <label>就读时间 :</label>
             </div>
             <div class="col-xs-9">
                 <div class="row">
@@ -326,9 +326,9 @@
             </div>
         </div>
         <div class="clearfix signupFooter">
-            <a type="buttom" class="btn btn-primary pull-right" ng-click="submit()">Join Us</a>
+            <a type="buttom" class="btn btn-primary pull-right" ng-click="submit()">创建</a>
             <div class="form-group has-error pull-right" ng-show="showBlankError">
-                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Input with error</label>
+                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>你的信息填写不完整哦。</label>
             </div>
         </div>
     </form>

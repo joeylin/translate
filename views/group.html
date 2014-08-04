@@ -32,9 +32,13 @@
            * Style tweaks
            * --------------------------------------------------
            */
-          html,body {
+          /*html,body {
             background-color: #edeff0;
             min-height: 960px;
+          }*/
+          html,body {
+            font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
+            background: url("/public/imgs/bg.png") 0 0 repeat;
           }
           .home-container {
             padding-top: 19px;
@@ -206,7 +210,7 @@
           .group-title h3 {
             margin-top: 0;
             margin-bottom: 15px;
-            background-color: #ddd;
+            background-color: #fff;
             padding: 10px 10px 10px 20px;
             line-height: 25px;
           }
@@ -311,7 +315,7 @@
             margin-right: 15px;
           }
           .group-settings-basic .success {
-            line-height: 35px;
+            line-height: 33px;
             margin-right: 15px;
             color: #5cb85c;
           }
@@ -323,6 +327,32 @@
           }
           .tip {
             margin-bottom: 10px;
+          }
+          .addHirePanel > .row {
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 10px;
+            line-height: 33px;
+          }
+          .hire-item {
+            margin-bottom: 8px;
+            position: relative;
+            background-color: #f5f5f5;
+            padding: 5px 10px;
+          }
+          .hire-item:hover .hover-tag {
+            display: block;
+          }
+          .hire-item .hover-tag {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #999;
+          }
+          .hire-item .hover-tag:hover {
+            background: #9C9C9C;
+            color: #FFF !important;
           }
 
           /* upload */
@@ -524,6 +554,11 @@
             top: 1px;
             cursor: pointer;
           }
+          .hire-list {
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+          }
           /* for auto Height*/
           .comment-editor-inline .form-control {
             position: absolute;
@@ -567,6 +602,14 @@
           .pager {
             font-size: 12px;
           }
+          /* footer */
+          footer {
+            border-top: 1px solid #E0E0E0;
+            padding: 10px 0;
+            text-align: left;
+            background: #fff;
+            color: #999;
+          }
         </style>
         <!-- for angular ng-cloak -->
         <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}
@@ -606,6 +649,10 @@
             <div class="mfp-content">
               <div class="white-popup-block" ng-if="global.popup.type == 'login'" style="max-width:560px;">
                 对不起，你还没登录哦 ！
+                <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
+              </div>
+              <div class="white-popup-block" ng-if="global.popup.type == 'join'" style="max-width:560px;">
+                只有圈子成员才有权限发表哦 !
                 <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
               </div>
               <div class="white-popup-block" ng-if="global.popup.type == 'check'" style="max-width: 450px;">
@@ -740,14 +787,14 @@
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
                 <li><a href="/group" target="_self">圈子</a></li>
-                <li><a href="/search/all" target="_self">搜索</a></li>
+                
               </ul>
             </div>
           </div>
         </nav>
         <div class="container group-title">
           <div class="col-md-12" style="padding-left:0;">
-            <h3 class="clearfix" ng-cloak>
+            <h3 class="clearfix" ng-cloak style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;">
               <a href="/group/<%= locals.group.id %>"><%= locals.group.name %></a><small><%= locals.group.industry %></small>
               <% if (locals.author) { %>
               <span class="pull-right follow" style="padding:0 10px;" ng-if="global.is_followed">
@@ -829,12 +876,15 @@
             <div class="panel panel-default">
               <div class="panel-body">
                 <div style="margin-bottom:10px;">相关招聘</div>
+                <% locals.hire.forEach(function(item,key){ %>
+                <div class="hire-list"><a href="<%= item.link %>" target="_self">[<%= item.location %>] <%= item.position %></a></div>
+                <% }) %> 
               </div>
             </div>
           </div>
         </div>
-        <footer>
-          <p class="pull-right">©2014 Joeylin 331547274@qq.com</p>
+        <footer class="text-center">
+          <p class="">© by Joeylin 331547274@qq.com <a href="/about/feedback" target="_blank">意见与反馈</a></p>
         </footer>
         <script>
           reserveLoad(

@@ -674,6 +674,10 @@ var getRandomJob = function(req, res) {
     Share.find({
         type: 'job',
         is_delete: false,
+        // status: 'public',
+        // createAt: {
+        //     $gt: Date.now() - 30 * 24 * 3600
+        // },
         random: {
             $near: [Math.random(), 0]
         }

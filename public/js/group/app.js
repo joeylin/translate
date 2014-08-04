@@ -126,9 +126,6 @@ config(['$httpProvider', 'app',
         };
         $rootScope.$on('popup', function($event, type, execFuction) {
             global.popup.type = type;
-            if (type === 'login') {
-                global.popup.text = 'You Need Login First !';
-            }
             if (type === 'shareDelete') {
                 global.deleteShare = function() {
                     execFuction(function() {

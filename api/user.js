@@ -9,7 +9,7 @@ var Request = Models.Request;
 var Share = Models.Share;
 var Group = Models.Group;
 var IdGenerator = Models.IdGenerator;
-
+var Invitation = Models.Invitation;
 
 var middleware = require('./middleware');
 var async = require('async');
@@ -24,42 +24,60 @@ var create = function(req, res) {
         sex: req.body.sex,
         role: req.body.role || 'user'
     };
-    var user = new User(options);
-    var profile;
-    if (options.role === 'user') {
-        profile = new UserProfile({
-            user: user._id,
-            name: 'user'
-        });
-    }
-    if (options.role === 'company') {
-        profile = new CompanyProfile({
-            user: user._id,
-            name: 'company'
-        });
-    }
-    user.provider = 'local';
-    profile.save(function(err, _profile) {
-        IdGenerator.getNewId('user', function(err, doc) {
-            user.id = doc.currentId;
-            user.profile = _profile._id;
-            user.save(function(err, user) {
-                if (err) {
-                    var message = err.message;
-                    return res.send({
-                        code: 404,
-                        user: null,
-                        info: message
+    var code = req.body.code;
+
+    Invitation.findOne({
+        code: code
+    }).exec(function(err, invitation) {
+        if (!invitation) {
+            return res.send({
+                code: 404,
+                info: '邀请码无效'
+            });
+        }
+        if (invitation.is_delete) {
+            return res.send({
+                code: 404,
+                info: '邀请码已使用过'
+            });
+        }
+        var user = new User(options);
+        var profile;
+        if (options.role === 'user') {
+            profile = new UserProfile({
+                user: user._id,
+                name: 'user'
+            });
+        }
+        if (options.role === 'company') {
+            profile = new CompanyProfile({
+                user: user._id,
+                name: 'company'
+            });
+        }
+        user.provider = 'local';
+        profile.save(function(err, _profile) {
+            IdGenerator.getNewId('user', function(err, doc) {
+                user.id = doc.currentId;
+                user.profile = _profile._id;
+                user.save(function(err, user) {
+                    if (err) {
+                        var message = err.message;
+                        return res.send({
+                            code: 404,
+                            user: null,
+                            info: message
+                        });
+                    }
+                    req.session.user = user;
+                    res.send({
+                        code: 200,
+                        user: req.session.user
                     });
-                }
-                req.session.user = user;
-                res.send({
-                    code: 200,
-                    user: req.session.user
                 });
             });
         });
-    });
+    });       
 };
 var login = function(req, res) {
     var email = req.body.email;
@@ -68,21 +86,19 @@ var login = function(req, res) {
         email: email
     }, function(err, user) {
         if (err) {
-            console.log('xxxnone users');
+            console.log(err);
             return false;
         }
         if (!user) {
             return res.send({
-                code: 404,
-                user: null,
-                info: 'unkown user'
+                code: 200,
+                info: '该邮箱尚未注册'
             });
         }
         if (!user.authenticate(password)) {
             return res.send({
-                code: 404,
-                user: null,
-                info: 'error user or password'
+                code: 200,
+                info: '密码错误'
             });
         }
         req.session.user = user;
@@ -1976,6 +1992,10 @@ var getRandomUser = function(req, res) {
             user: result
         });
     });
+};
+
+var groupGenerateCode = function(req, res) {
+
 };
 
 

@@ -376,4 +376,5 @@ img.mfp-img {
   max-width: 650px;
   margin: 40px auto;
   position: relative;
+  border-radius: 4px;
 }

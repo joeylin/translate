@@ -300,6 +300,22 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
                 getMembers();
             }
         };
+        $scope.clickHire = function() {
+            if ($scope.current === 'h') {
+                return false;
+            } else {
+                $scope.current = 'h';
+                getHire();
+            }
+        };
+        $scope.clickCode = function() {
+            if ($scope.current === 'c') {
+                return false;
+            } else {
+                $scope.current = 'c';
+                getCode();
+            }
+        };
         // basic
         $scope.isSuccess = false;
         $scope.$on('putFinish', function(event, imageUrl) {
@@ -355,7 +371,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
         };
         // 构建模拟数据
         vm.columns = [{
-            label: '名字',
+            label: '用户名',
             name: 'name',
             type: 'string'
         }, {
@@ -368,6 +384,89 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             sortable: false
         }];
 
+        // hire
+        $scope.hires = [];
+        $scope.hire = {};
+        $scope.vm.openHire = function() {
+            if ($scope.hires.length >= 5) {
+                clearTimeout(timer);
+                $('#maxLimit').css({display:'inline-block'});
+                var timer = setTimeout(function() {
+                    $('#maxLimit').css({display:'none'});
+                }, 500);
+                return false;
+            }
+            $scope.hire.location = '';
+            $scope.hire.position = '';
+            $scope.hire.link = '';
+            $scope.showAddHire = true;
+        };
+        $scope.vm.hireCancel = function() {
+            $scope.showAddHire = false;
+        };
+        $scope.vm.addHire = function() {
+            var url = '/api/group/addHire';
+            if ($scope.hires.length >= 5) {
+                return false;
+            }
+            var data = {
+                id: app.group.id,
+                location: $scope.hire.location,
+                position: $scope.hire.position,
+                link: $scope.hire.link,
+                by: app.author._id
+            };
+            $http.post(url, data).success(function(result) {
+                $scope.showAddHire = false;
+                $scope.hires.push({
+                    location: data.location,
+                    position: data.position,
+                    link: data.link,
+                    by: {
+                        name: app.author.name,
+                        id: app.author.id
+                    }
+                });
+            });
+        };
+        $scope.vm.delHire = function(item) {
+            var url = '/api/group/delHire';
+            var data = {
+                id: app.group.id,
+                location: item.location,
+                position: item.position,
+                link: item.link
+            };
+            $http.post(url, data).success(function(result) {
+                var index = $scope.hires.indexOf(item);
+                $scope.hires.splice(index, 1);
+            });
+        };
+
+        // invitation code
+        $scope.code = {};
+        $scope.code.unUsed = [];
+        $scope.generateCode = function() {
+            var url = '/api/group/generateCode';
+            var data = {
+                type: 'group',
+                id: app.group.id
+            };
+            $http.post(url, data).success(function(data) {
+                if (data.msg === 1) {
+                    clearTimeout(timer);
+                    $('#maxCode').css({display: 'inline-block'});
+                    var timer = setTimeout(function() {
+                        $('#maxCode').css({display: 'none'});
+                    }, 500);
+                    return false;
+                }
+                $scope.code.unUsed.push({
+                    code: data.inviteCode
+                });
+            });
+        };
+
         function getMembers() {
             var url = '/api/group/members';
             var data = {
@@ -377,6 +476,30 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
                 $scope.creator = data.creator;
                 $scope.admin = data.admin;
                 $scope.members = data.members;
+            });
+        }
+        function getHire() {
+            var url = '/api/group/getHire';
+            var params = {
+                id: app.group.id
+            };
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.hires = data.hire;
+            });
+        }
+        function getCode() {
+            var url = '/api/group/getGroupCode';
+            var params = {
+                id: app.group.id
+            };
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.code.total = data.total;
+                $scope.code.used = data.used;
+                $scope.code.unUsed = data.unUsed || [];
             });
         }
         $scope.refresh = function() {

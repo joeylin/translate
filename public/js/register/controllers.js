@@ -8,7 +8,7 @@ controller('step1Ctrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.company = '';
         $scope.school = '';
         $scope.occupation = '';
-        $scope.workYear = 0;
+        $scope.workYear = 1;
         $scope.isFreelance = false;
         $scope.cities = [];
 
@@ -53,7 +53,7 @@ controller('step1Ctrl', ['app', '$scope', '$rootScope', '$location', '$http',
                     schoolEnd: $scope.vm.schoolDateEnd
                 };
                 $http.post(url, data).success(function(data) {
-                    $location.path('/register/step2');
+                    window.location.href = '/register/step2';
                     app.user.registerStage = 2;
                 });
             }

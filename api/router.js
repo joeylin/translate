@@ -613,53 +613,123 @@ module.exports = function(app) {
             app.locals.isAdmin = false;
             app.locals.isCreator = false;
 
-            User.find({
-                'groups.follow': group._id
-            }).count().exec(function(err, count) {
-                app.locals.followCount = count || 0;
-                group.followCount = count;
-                group.save();
-                if (user) {
-                    User.findOne({
-                        _id: user._id
-                    }).exec(function(err, user) {
-                        var adminIndex = -1;
-                        var memberIndex = -1;
-                        if (group.creator._id.toString() == user._id) {
-                            app.locals.isCreator = true;
+            if (!group.hire.length) {
+                Share.find({
+                    type: 'job',
+                    is_delete: false,
+                    // status: 'public',
+                    // createAt: {
+                    //     $gt: Date.now() - 30 * 24 * 3600
+                    // },
+                    random: {
+                        $near: [Math.random(), 0]
+                    }
+                }).limit(5).exec(function(err, shares) {
+                    var hire = [];
+                    shares.map(function(item, key) {
+                        var result = {
+                            id: item.id,
+                            location: item.location,
+                            position: item.position,
+                            link: '/job/' + item.id
+                        };
+                        hire.push(result);
+                    });
+                    app.locals.hire = hire;
+                    User.find({
+                        'groups.follow': group._id
+                    }).count().exec(function(err, count) {
+                        app.locals.followCount = count || 0;
+                        group.followCount = count;
+                        group.save();
+                        if (user) {
+                            User.findOne({
+                                _id: user._id
+                            }).exec(function(err, user) {
+                                var adminIndex = -1;
+                                var memberIndex = -1;
+                                if (group.creator._id.toString() == user._id) {
+                                    app.locals.isCreator = true;
+                                }
+                                group.admin.map(function(item, key) {
+                                    if (item._id.toString() == user._id) {
+                                        adminIndex = key;
+                                    }
+                                });
+                                group.members.map(function(item, key) {
+                                    if (item._id.toString() == user._id) {
+                                        memberIndex = key;
+                                    }
+                                });
+                                if (adminIndex > -1) {
+                                    app.locals.isAdmin = true;
+                                }
+                                if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
+                                    app.locals.isJoined = true;
+                                }
+                                app.locals.is_followed = false;
+                                user.groups.follow.map(function(item, key) {
+                                    if (item.toString() == group._id) {
+                                        app.locals.is_followed = true;
+                                        return false;
+                                    }
+                                });
+                                app.locals.author = user;
+                                res.render('group');
+                            });    
+                        } else {
+                            res.render('group');
                         }
-                        group.admin.map(function(item, key) {
-                            if (item._id.toString() == user._id) {
-                                adminIndex = key;
+                    }); 
+                });
+            } else {
+                app.locals.hire = group.hire.slice(0, 5);
+                User.find({
+                    'groups.follow': group._id
+                }).count().exec(function(err, count) {
+                    app.locals.followCount = count || 0;
+                    group.followCount = count;
+                    group.save();
+                    if (user) {
+                        User.findOne({
+                            _id: user._id
+                        }).exec(function(err, user) {
+                            var adminIndex = -1;
+                            var memberIndex = -1;
+                            if (group.creator._id.toString() == user._id) {
+                                app.locals.isCreator = true;
                             }
-                        });
-                        group.members.map(function(item, key) {
-                            if (item._id.toString() == user._id) {
-                                memberIndex = key;
+                            group.admin.map(function(item, key) {
+                                if (item._id.toString() == user._id) {
+                                    adminIndex = key;
+                                }
+                            });
+                            group.members.map(function(item, key) {
+                                if (item._id.toString() == user._id) {
+                                    memberIndex = key;
+                                }
+                            });
+                            if (adminIndex > -1) {
+                                app.locals.isAdmin = true;
                             }
-                        });
-                        if (adminIndex > -1) {
-                            app.locals.isAdmin = true;
-                        }
-                        if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
-                            app.locals.isJoined = true;
-                        }
-                        app.locals.is_followed = false;
-                        user.groups.follow.map(function(item, key) {
-                            if (item.toString() == group._id) {
-                                app.locals.is_followed = true;
-                                return false;
+                            if (memberIndex > -1 || adminIndex > -1 || app.locals.isCreator) {
+                                app.locals.isJoined = true;
                             }
-                        });
-                        app.locals.author = user;
+                            app.locals.is_followed = false;
+                            user.groups.follow.map(function(item, key) {
+                                if (item.toString() == group._id) {
+                                    app.locals.is_followed = true;
+                                    return false;
+                                }
+                            });
+                            app.locals.author = user;
+                            res.render('group');
+                        });    
+                    } else {
                         res.render('group');
-                    });    
-                } else {
-                    res.render('group');
-                }
-            });
-                
-            
+                    }
+                }); 
+            }        
         });
     };
 
@@ -706,6 +776,10 @@ module.exports = function(app) {
             });
         });
     };
+
+    var feedback = function(req, res) {
+        res.render('feedback');
+    }
 
     // home
     app.get('/', middleware.check_login, getMain);
@@ -778,4 +852,7 @@ module.exports = function(app) {
     app.get('/group/search', getGroupHome);
     app.get('/group/:id', getGroup);
     app.get('/group/:id/settings', middleware.check_login, getGroup);
+
+    // feedback
+    app.get('/about/feedback', feedback);
 };

@@ -3,6 +3,8 @@
       <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>设置</li>
       <li ng-class="{active: current === 'b'}" ng-click="current = 'b'"><a href="#">基本</a></li>
       <li ng-class="{active: current === 'm'}" ng-click="clickMember()"><a href="#">成员</a></li>
+      <li ng-class="{active: current === 'h'}" ng-click="clickHire()"><a href="#">职位</a></li>
+      <li ng-class="{active: current === 'c'}" ng-click="clickCode()"><a href="#">邀请码</a></li>
   </ul>
 </div>
 <div class="group-settings-basic row" ng-if="current === 'b'" ng-cloak>
@@ -11,23 +13,23 @@
 			<div class="row" ng-if="global.isCreator || global.isAdmin">
 				<div class="col-md-8 form-container">
 					<div class="row">
-						<div class="col-xs-4">
-							<label style="margin-bottom:0px;line-height:35px;">群号 :</label>
+						<div class="col-xs-2">
+							<label style="margin-bottom:0px;line-height:35px;">圈号 :</label>
 						</div>
 						<div class="col-xs-8" style="line-height: 35px;">
 							<span>{{groupId}}</span>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4">
-							<label>群名 :</label>
+						<div class="col-xs-2">
+							<label>圈名 :</label>
 						</div>
 						<div class="col-xs-8">
 							<input class="form-control" name="name" type="text" placeholder="群名" required="" ng-model="basic.name">
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-2">
 							<label>行业 :</label>
 						</div>
 						<div class="col-xs-8">
@@ -35,7 +37,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-2">
 							<label>公告 :</label>
 						</div>
 						<div class="col-xs-8">
@@ -43,7 +45,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-2">
 							<label>简介 :</label>
 						</div>
 						<div class="col-xs-8">
@@ -51,8 +53,8 @@
 						</div>
 					</div>
 					<div class="clearfix">
-				      <a class="btn btn-primary pull-right" role="button" ng-click="save()">保存</a>
-				      <span class="pull-right error" ng-show="basic.name ==='' || basic.industry ===''">群名和行业不能为空哦。</span>
+				      <a class="btn btn-primary pull-right" role="button" ng-click="save()" style="margin-right:71px">保存</a>
+				      <span class="pull-right error" ng-show="basic.name ==='' || basic.industry ===''">圈名和行业不能为空哦。</span>
 				      <span class="pull-right success" ng-show="isSuccess">保存成功</span>
 				    </div>
 				</div>
@@ -71,7 +73,7 @@
 				<div class="col-md-8">
 					<div class="row">
 						<div class="col-xs-4">
-							<label style="margin-bottom:0px;line-height:35px;">群号 :</label>
+							<label style="margin-bottom:0px;line-height:35px;">圈号 :</label>
 						</div>
 						<div class="col-xs-8" style="line-height: 35px;">
 							<span>{{groupId}}</span>
@@ -79,7 +81,7 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-4">
-							<label style="margin-bottom:0px;line-height:35px;">群名 :</label>
+							<label style="margin-bottom:0px;line-height:35px;">圈名 :</label>
 						</div>
 						<div class="col-xs-8" style="line-height: 35px;">
 							<span>{{basic.name}}</span>
@@ -105,7 +107,7 @@
 						<div class="col-xs-4">
 							<label style="margin-bottom:0px;line-height:35px;">简介 :</label>
 						</div>
-						<div class="col-xs-8" style="line-height: 35px;">
+						<div class="col-xs-8" style="line-height: 34px;">
 							<span>{{basic.intro || '什么都没有写哦'}}</span>
 						</div>
 					</div>
@@ -115,13 +117,13 @@
 			<div class="row">
 				<div class="col-xs-7">
 					<div>
-						群管理员人数最多为5个
+						圈管理员人数最多为5个
 					</div>
 					<div>
-						创建者退出，群组自动移交到等级最高的管理员
+						创建者退出，圈子自动移交到等级最高的管理员
 					</div>
 					<div>
-				    	退出群组: <a class="quit" role="button" ng-click="quit()">退出</a>
+				    	退出圈子: <a class="quit" role="button" ng-click="quit()">退出</a>
 				    </div>
 				</div>
 			</div>
@@ -234,5 +236,86 @@
 			  </div>
 			</div>
 		</div>
+	</div>
+</div>
+<div class="group-settings-hire row" ng-if="current === 'h'" ng-cloak>
+	<div class="panel col-md-12" ng-if="global.isCreator || global.isAdmin">
+		<div class="panel-body">
+			<div ng-if="hires.length > 0">
+				<h4 style="margin-bottom:15px;">已发布职位 <span style="color:#999;margin-left:10px;">({{hires.length + '/5'}})</span></h4>
+				<div ng-repeat="hire in hires" class="hire-item">
+					<div>{{hire.location}} | {{hire.position}} | <a href="{{hire.link}}" target="_self">{{hire.link}}</a></div>
+					<div>由 <a href="/profile/{{hire.by.id}}" target="_self">{{hire.by.name}}</a> 编辑
+						<!-- <span style="color:#999;font-size:0.9em;margin-left: 10px;">{{item.date || '刚刚发布'}}</span> -->
+					</div>
+					<span class="hover-tag" ng-click="vm.delHire(hire)"><i class="fa fa-fw fa-times"></i></span>
+				</div>
+			</div>
+			<div ng-if="hires.length === 0">
+				<div>该群未发布任何职位，由系统自动筛选发布</div>
+			</div>
+			<hr>
+			<div ng-show="!showAddHire">
+				<a href="" class="btn btn-primary btn-sm" ng-click="vm.openHire();"><i class="fa fa-fw fa-plus"></i> 添加</a>
+				<span id="maxLimit" style="margin-left:10px;color:red; display:none;">你已经添加了5个职位了，不能再添加了。</span>
+			</div>
+			<div ng-show="showAddHire" class="addHirePanel">
+				<div class="row">
+					<div class="col-md-2 text-center">地点 :</div>
+					<div class="col-md-5">
+						 <input type="text" class="form-control" placeholder="地点" ng-model="hire.location" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2 text-center">职位 :</div>
+					<div class="col-md-5">
+						 <input type="text" class="form-control" placeholder="职位" ng-model="hire.position" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2 text-center">链接 :</div>
+					<div class="col-md-5">
+						 <input type="text" class="form-control" placeholder="链接" ng-model="hire.link" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="clearfix col-md-7">
+						<a href="" class="btn btn-primary btn-sm pull-right" ng-click="vm.addHire();">确定</a>
+						<a href="" class="btn btn-default btn-sm pull-right" style="margin-right:10px;" ng-click="vm.hireCancel();">取消</a>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel col-md-12" ng-if="global.isJoined && !global.isCreator && !global.isAdmin">
+		<div class="panel-body">对不起，你没有权限查看该内容 !</div>
+	</div>
+</div>
+<div class="group-settings-code row" ng-if="current === 'c'" ng-cloak>
+	<div class="panel col-md-12" ng-if="global.isCreator || global.isAdmin">
+		<div class="panel-body">
+			<h4 style="margin-bottom:15px;">邀请码</h4>
+			<div>已获得 : {{code.total}}</div>
+			<div>已使用 : {{code.used}}</div>
+			<div style="margin-bottom:10px;">未使用 : {{code.unUsed.length}}</div>
+			<div ng-if="code.unUsed.length > 0">
+				<div style="font-weight:700;">未使用列表 :</div>
+				<div ng-repeat="invite in code.unUsed">
+					{{invite.code}}
+				</div>
+			</div>
+			<div ng-if="code.unUsed.length === 0">
+				没有已生成未使用的邀请码，重新生成一下试试 ~~
+			</div>
+			<hr>
+			<div class="clearfix">
+				<a href="" class="btn btn-primary btn-sm" ng-click="generateCode();">生成新的邀请码</a>
+				<span id="maxCode" style="color:red; margin-left:10px; display:none;">所有的邀请码都已生成 ！</span>
+			</div>
+		</div>
+	</div>
+	<div class="panel col-md-12" ng-if="global.isJoined && !global.isCreator && !global.isAdmin">
+		<div class="panel-body">对不起，你没有权限查看该内容 !</div>
 	</div>
 </div>

@@ -61,6 +61,11 @@
           .nav-tabs-custom {
             box-shadow: none;
           }
+          .signupTab > h3 {
+            opacity: 0.7;
+            position: relative;
+            left: -8px;
+          }
           .signupTab .nav-tabs>li>a {
             border: 0;
             font-size: 18px;
@@ -107,8 +112,14 @@
             position: relative;
           }
           .signupFooter label.error {
-            line-height: 18px;
-            text-align: right;
+            position: relative;
+            top: 0;
+            left: 0;
+            line-height: 33px;
+            float: right;
+            display: inline-block;
+            width: inherit;
+            margin-right: 10px;
           }
           .pageFooter {
             height: 86px;
@@ -116,7 +127,14 @@
           .pageFooter p {
             width: 100%;
           }
+          .subTile {
+            color: #999;
+            margin-left: 15px;
+          }
           /*reset style*/
+          .navbar {
+             border-radius: 0; 
+          }
           .form-control {
             -webkit-border-radius: 4px !important; 
             -moz-border-radius: 4px !important;
@@ -132,6 +150,14 @@
           .form-inline input.error:focus {
             border-color: red!important;
           }
+          /* footer */
+          footer {
+            border-top: 1px solid #E0E0E0;
+            padding: 10px 0;
+            text-align: left;
+            background: #f9f9f9;
+            color: #999;
+          }
         </style>
         
     </head>
@@ -141,7 +167,7 @@
         <nav class="navbar" role="navigation">
           <div class="container">
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">Forin</a>
+              <a class="navbar-brand" href="#">forin</a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
@@ -160,7 +186,7 @@
                 </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li class="subTile">全面提升你的职业价值</li>
+                <li class="subTile">提升你的职业价值</li>
               </ul>
             </div>
           </div>
@@ -169,7 +195,7 @@
           <div class="row">
             <div class="col-md-4">
               <div class="nav-tabs-custom signupTab">
-                  <h3 class="text-center">注册新用户</h3>
+                  <h3 class="text-right">注册新用户</h3>
                   <div class="tab-content">
                       <div class="tab-pane active" >
                           <form action="" method="post" id="formUser">
@@ -197,7 +223,7 @@
                                 <input class="form-control" name="email" id="inputEmail" type="email" placeholder="邮箱" required="" required="">
                               </div>
                             </div>   
-                            <div class="row">
+                            <div class="row" style="margin-bottom:10px;">
                               <div class="col-xs-3">
                                 <label>密码 :</label>
                               </div>
@@ -236,13 +262,13 @@
             </div>
             <div class="col-md-8">
               <div class="promoteContainer pull-right">
-                <img src="/public/imgs/promote.jpg" style="width:100%">
+                <img src="/public/imgs/promote.jpg" style="width:100%;height:100%;border-radius:7px;">
               </div>
             </div>
           </div>
         </div>
-        <footer class="clearfix pageFooter">
-          <p class="pull-right text-center">© Found by Joeylin</p>
+        <footer class="text-center">
+          <p class="">© by Joeylin 331547274@qq.com <a href="/about/feedback" target="_blank">意见与反馈</a></p>
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/icheck.min.js"></script>
@@ -267,6 +293,7 @@
                         name: $('#inputName').val(),
                         email: $('#inputEmail').val(),
                         password: $('#inputPassword').val(),
+                        code: $('#inviteCode').val(),
                         sex: $('#userSex').prop('checked')? 'Male':'Female',
                         role: 'user'
                     };
@@ -278,16 +305,16 @@
                         success: function (data) {
                             if (data.code === 200) {
                                 $('#btnRegister').attr("disabled","disabled");
-                                $('#btnRegister').text("Sign Up");
+                                $('#btnRegister').text("立即加入");
                                 window.location.href = '/register/step1';
                             }
                             else {
-                                $('#btnRegister').text("Sign Up");
+                                $('#btnRegister').text("立即加入");
                                 $(errorHtml).text(data.info).appendTo('.signupFooter');
                             }
                         },
                         error: function (e) {
-                            $('#btnRegister').text("Sign Up");
+                            $('#btnRegister').text("立即加入");
                             $(errorHtml).text(data.info).appendTo('.signupFooter');
                         }
                     });

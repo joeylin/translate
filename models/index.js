@@ -19,6 +19,7 @@ require('./trend');
 require('./request');
 require('./group');
 require('./idGenerator');
+require('./invitation');
 
 exports.User = mongoose.model('User');
 exports.UserProfile = mongoose.model('UserProfile');
@@ -30,3 +31,4 @@ exports.Trend = mongoose.model('Trend');
 exports.Request = mongoose.model('Request');
 exports.Group = mongoose.model('Group');
 exports.IdGenerator = mongoose.model('IdGenerator');
+exports.Invitation = mongoose.model('Invitation');

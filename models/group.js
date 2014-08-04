@@ -41,6 +41,16 @@ var GroupSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
+    hire: [{
+        location: String,
+        position: String,
+        link: String,
+        by: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        date: Date
+    }],
     followCount: {
         type: Number,
         default: 0

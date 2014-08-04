@@ -7,6 +7,7 @@ var Comment = Models.Comment;
 var Share = Models.Share;
 var Request = Models.Request;
 var Group = Models.Group;
+var Invitation = Models.Invitation;
 var middleware = require('./middleware');
 
 var async = require('async');
@@ -903,6 +904,235 @@ var getTrends = function(req, res) {
     });
 };
 
+var getHire = function(req, res) {
+    var user = req.session.user;
+    var id = req.query.id;
+
+    Group.findOne({
+        id: id
+    }).populate('hire.by').exec(function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'wrong id'
+            });
+        }
+        var hire = [];
+        if (group.hire.length) {
+            group.hire.slice(0, 5).map(function(item ,key) {
+                var result = {
+                    location: item.location,
+                    position: item.position,
+                    link: item.link,
+                    by: {
+                        name: item.by.name,
+                        id: item.by.id
+                    },
+                    date: item.date
+                };
+                hire.push(result);
+            });
+        }
+        res.send({
+            code: 200,
+            hire: hire
+        });
+    });
+};
+var addHire = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    var location = req.body.location;
+    var position = req.body.position;
+    var by = req.body.by;
+    var link = req.body.link;
+
+    if (!location || !position || !link) {
+        return res.send({
+            code: 404,
+            info: 'incomplete info'
+        });
+    }
+
+    Group.findOne({
+        id: id
+    }).exec(function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'no group'
+            });
+        }
+        var admin = group.admin;
+        var creator = group.creator;
+        var auth = false;
+        [creator].concat(admin).map(function(item, key) {
+            if (item.toString() == user._id) {
+                return auth = true;
+            }
+        });
+        if (!auth) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
+        if (group.hire.length >= 5) {
+            return res.send({
+                code: 404,
+                info: 'max hire number'
+            });
+        }
+        group.hire.push({
+            location: location,
+            position: position,
+            link: link,
+            by: by,
+            date: new Date()
+        });
+        group.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+var delHire = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    var location = req.body.location;
+    var position = req.body.position;
+    var link = req.body.link;
+
+    Group.findOne({
+        id: id
+    }).exec(function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'no group'
+            });
+        }
+        var admin = group.admin;
+        var creator = group.creator;
+        var auth = false;
+        [creator].concat(admin).map(function(item, key) {
+            if (item.toString() == user._id) {
+                auth = true;
+                return false;
+            }
+        });
+        if (!auth) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
+        var index = -1;
+        group.hire.map(function(item, key) {
+            if (item.location == location && item.position == position && item.link == link) {
+                index = key;
+            }
+        });
+        if (index === -1) {
+            return res.send({
+                code: 200,
+                info: 'had delete'
+            });
+        }
+        group.hire.splice(index, 1);
+        group.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+
+var getGroupInviteCode = function(req, res) {
+    var user = req.session.user;
+    var id = req.query.id;
+    Group.findOne({
+        id: id
+    }).exec(function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 200,
+                info: 'no group'
+            });
+        }
+        Invitation.find({
+            group: group._id
+        }).exec(function(err, invites) {
+            var used = 0;
+            var unUsed = [];
+            invites.map(function(item, key) {
+                if (item.is_delete) {
+                    used++;
+                } else {
+                    unUsed.push({
+                        code: item.code
+                    });
+                }
+            });
+            res.send({
+                code: 200,
+                total: 10,
+                used: used,
+                unUsed: unUsed
+            });
+        });
+    })
+};
+var groupGenerateCode = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    var type = req.body.type;
+    Group.findOne({
+        id: id
+    }).exec(function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'no group'
+            });
+        }
+        if (group.isCreator(user._id) && group.isAdmin(user._id)) {
+            Invitation.find({
+                group: group._id
+            }).exec(function(err, invites) {
+                if (!invites) {
+                    return res.send({
+                        code: 404,
+                        info: 'error happens'
+                    })
+                }
+                if (invites && invites.length > 10) {
+                    return res.send({
+                        code: 200,
+                        msg: 1,
+                        info: 'max invite'
+                    });
+                }
+                Invitation.createNew({
+                    group: group._id,
+                    user: user._id,
+                    type: type
+                }, function(err, invite) {
+                    res.send({
+                        code: 200,
+                        inviteCode: invite.code
+                    });
+                });
+            });
+        } else {
+            res.send({
+                code: 404,
+                info: 'no group auth'
+            });
+        }
+    })
+};
 
 module.exports = function(app) {
     app.post('/api/group/create', middleware.apiLogin, create);
@@ -922,6 +1152,13 @@ module.exports = function(app) {
     app.get('/api/group/search', middleware.apiLogin, searchGroup);
     app.get('/api/group/homeSearch', groupHomeSearch);
     app.get('/api/group/trends', middleware.apiLogin, getTrends);
+
+    app.post('/api/group/addHire', middleware.apiLogin, addHire);
+    app.post('/api/group/delHire', middleware.apiLogin, delHire);
+    app.get('/api/group/getHire', middleware.apiLogin, getHire);
+
+    app.get('/api/group/getGroupCode', middleware.apiLogin, getGroupInviteCode);
+    app.post('/api/group/generateCode', middleware.apiLogin, groupGenerateCode);
 
     app.get('/api/group/:id/post', getPost);
     app.get('/api/group/:id/search', groupPostSearch);
