@@ -321,49 +321,6 @@
                     return false;
                 }
             });
-            $('#formCompany').validate({
-                onkeyup: false,
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    password: {
-                        required: true,
-                        minlength: 5
-                    }
-                },
-                submitHandler:function(form) {
-                    var data = {
-                        name: $('#inputCompanyName').val(),
-                        email: $('#inputCompanyEmail').val(),
-                        password: $('#inputCompanyPassword').val(),
-                        role: 'company'
-                    };
-                    var errorHtml = '<label class="error" id="customError"></label>';
-                    $.ajax({
-                        url: "/api/user/register",
-                        type: "post",
-                        data: data,
-                        success: function (data) {
-                            if (data.code === 200) {
-                                $('#btnCompanyRegister').attr("disabled","disabled");
-                                window.location.href = '/settings/profile';
-                            }
-                            else {
-                                $(errorHtml).text(data.info).appendTo('.signupFooter');
-                            }
-                        },
-                        error: function (e) {
-                            $(errorHtml).text(data.info).appendTo('.signupFooter');
-                        }
-                    });
-                    return false;
-                }
-            }); 
-            $('#inputCompanyEmail').add('#inputCompanyName').on('keydown', function() {
-                $('#customError').remove();
-            });
             $('#inputEmail').add('#inputName').on('keydown', function() {
                 $('#customError').remove();
             });

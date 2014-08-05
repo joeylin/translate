@@ -44,9 +44,9 @@
             margin-top: 50px;
             margin-bottom: 50px;
           }
-          textarea.form-control,
-          input.form-control {
-            border-radius: 4px;
+          #feedbackForm textarea.form-control,
+          #feedbackForm input.form-control {
+            border-radius: 4px!important;
           }
           /* footer */
           footer {
@@ -75,39 +75,127 @@
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
                 <li><a href="/group" target="_self">圈子</a></li>
-                
               </ul>
             </div>
           </div>
         </nav>
         <div class="container"> 
-          <div class="panel">
+          <div class="panel" id="formPanel">
             <div class="panel-body" style="padding-bottom: 40px;">  
               <h3 class="text-center">意见与反馈</h3>
               <h5 class="text-center" style="margin-bottom: 50px;">感谢您的关注与支持，我们还不完美，但是我们从不放弃追求完美。</h5>
-              <div>
+              <form id="feedbackForm" role="form">
+                <div class="clearfix" style="margin-bottom:15px;">
+                  <span class="pull-left" style="line-height:33px;margin-right:15px;margin-left: 249px;">名字 :</span>
+                  <span class="pull-left" style="width: 220px;">
+                    <input name="name" id="name" class="form-control" placeholder="输入你的名字" required />
+                  </span>
+                </div>
                 <div class="clearfix" style="margin-bottom:15px;">
                   <span class="pull-left" style="line-height:33px;margin-right:15px;margin-left: 249px;">邮箱 :</span>
                   <span class="pull-left" style="width: 220px;">
-                    <input class="form-control" placeholder="输入你的邮箱" />
+                    <input name="email" id="email" class="form-control" placeholder="输入你的邮箱" required />
                   </span>
                 </div>
                 <div class="clearfix">
                   <span class="pull-left" style="margin-right:15px;margin-left: 249px;">内容 :</span>
                   <span class="pull-left" style="width: 418px;">
-                    <textarea class="form-control" rows="7" placeholder="请描述遇到的疑问或发现的问题（500字以内）。我们会尽快的回复和处理你的请求。" ng-model="newShare" ></textarea>
-                    <a class="btn btn-sm btn-primary" style="margin-top:15px;padding-left:15px;padding-right:15px;">提交</a>
+                    <textarea name="content" id="content" class="form-control" rows="7" placeholder="请描述遇到的疑问或发现的问题（500字以内）。我们会尽快的回复和处理你的请求。" ng-model="newShare" required></textarea>
+                    <a type="submit" id="submit" class="btn btn-sm btn-primary" style="margin-top:15px;padding-left:15px;padding-right:15px;">提交</a>
                   </span>
                 </div>
-              </div>
+              </form>
             </div>
-          </div>                      
+          </div>  
+          <div class="alert alert-success" role="alert" id="success" style="display:none;margin: 80px 0;">
+            <strong>提交成功!</strong> 感谢您的意见，您的支持和反馈是我们前进的动力 ！
+          </div>                    
         </div>
         <footer class="text-center">
           <p class="">© by Joeylin 331547274@qq.com <a href="/about/feedback" target="_blank">意见与反馈</a></p>
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/jquery-validate.js"></script>
+        
+        <script type="text/javascript">
+              
+          (function($, document, window, undefined) {
+              var nameFlag = false;
+              var emailFlag = false;
+              var contentFlag = false;
+              $('#name').on('blur', function() {
+                if (this.value == '') {
+                  $('#name').css({'border-color': 'red'});
+                } else {
+                  nameFlag = true;
+                }
+              });
+              $('#name').on('focus', function() {
+                $('#name').css({'border-color': '#ccc'});
+              });
+              $('#email').on('blur', function() {
+                var pattern = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+                emailFlag = pattern.test(this.value);
+                if (!emailFlag) {
+                  $('#email').css({'border-color': 'red'});
+                }
+                return false;
+              });
+              $('#email').on('focus', function() {
+                $('#email').css({'border-color': '#ccc'});
+              });
+              $('#content').on('focus', function() {
+                $('#content').css({'border-color': '#ccc'});
+              });
+              $('#content').on('blur', function() {
+                if (this.value.length <= 5 || this.value.length > 700) {
+                  $('#content').css({'border-color': 'red'});
+                } else {
+                  contentFlag = true;
+                }
+              });
+              $('#submit').on('click', function() {
+                if (!nameFlag) {
+                  return $('#name').focus();
+                }
+                if (!emailFlag) {
+                  return $('#email').focus();
+                }
+                if (!contentFlag) {
+                  return $('#content').focus();
+                }
+                if ($('#submit').prop('disbaled')) {
+                  return false;
+                } else {
+                  $('#submit').prop('disbaled', true);
+                }
+                if (nameFlag && emailFlag && contentFlag) {
+                  var data = {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    content: $('#content').val()
+                  };
+                  $.ajax({
+                      url: '/api/feedback',
+                      type: "post",
+                      data: data,
+                      success: function (data) {
+                          if (data.code == 200) {
+                            $('#formPanel').css({display:'none'});
+                            $('#success').css({display:'block'});
+                          }
+                      },
+                      error: function (e) {
+                          
+                      }
+                  });
+                }
+              });
+
+          })(jQuery, document, window);
+          
+        </script>
     </body>
 </html>
       

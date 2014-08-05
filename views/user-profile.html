@@ -411,19 +411,19 @@
                         </a>
                         <ul class="dropdown-menu" class="request-container">
                             <% if (locals.request.connect > 0) { %>
-                            <li><a href="/request/connect" target="_self"><%= locals.request.connect %> friends request</a></li>
+                            <li><a href="/request/connect" target="_self"><%= locals.request.connect %>好友请求</a></li>
                             <% } %>
                             <% if (locals.request.group > 0) { %>
-                            <li><a href="/request/group" target="_self"><%= locals.request.group %> group request</a></li>
+                            <li><a href="/request/group" target="_self"><%= locals.request.group %> 圈请求</a></li>
                             <% } %>
                             <% if (locals.request.reply > 0) { %>
-                            <li><a href="/request/reply" target="_self"><%= locals.request.reply %> reply</a></li>
+                            <li><a href="/request/reply" target="_self"><%= locals.request.reply %> 回复</a></li>
                             <% } %>
                             <% if (locals.request.comment > 0) { %>
-                            <li><a href="/request/comment" target="_self"><%= locals.request.comment %> comment</a></li>
+                            <li><a href="/request/comment" target="_self"><%= locals.request.comment %> 评论</a></li>
                             <% } %>
                             <% if (locals.request.at > 0) { %>
-                            <li><a href="/request/at" target="_self"><%= locals.request.at %> at</a></li>
+                            <li><a href="/request/at" target="_self"><%= locals.request.at %> @</a></li>
                             <% } %>
                             <% if (locals.request.group + locals.request.connect + locals.request.reply + locals.request.comment + locals.request.at === 0) { %>
                             <li class="no-notify">没有未处理的通知</li>
@@ -498,15 +498,6 @@
                   <div class="section">
                     <div class="user-header bg-modena text-center profile-avatar " style="height:180px;">
                         <img src="<%= locals.user.avatar %>" alt="User Image">
-                        <!-- <div class="profile-avatar-popover text-center">
-                          <% if (!locals.isMe) { %>
-                          <% if (locals.isConnected) { %>
-                          <span class="add-icon"><i class="fa fa-fw fa-check"></i>已添加</span>
-                          <% } else { %>
-                          <span class="add-icon" id="add-friend"><i class="fa fa-fw fa-plus"></i>添加好友</span>
-                          <% } %> 
-                          <% } %> 
-                        </div> -->
                     </div>
                   </div>
                   <div class="panel">
@@ -536,7 +527,7 @@
                         <a href="/profile/<%= item.id %>" class="userCard" title="<%= item.name %>"><img src="<%= item.avatar %>" alt="laolei"></a>
                         <% }) %>  
                         <% if (locals.connects.length === 0) { %>
-                        <p> He has not any Connects yet !</p>
+                        <p> 还没有添加好友 !</p>
                         <% } %> 
                       </div>
                     </div>
@@ -545,7 +536,6 @@
                     <div class="panel-heading clearfix">
                       擅长技能
                     </div>
-                    
                     <div class="panel-body">
                       <% if (locals.user.skills.length === 0) { %>
                       暂时还没有添加任何技能!

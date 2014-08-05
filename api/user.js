@@ -10,6 +10,7 @@ var Share = Models.Share;
 var Group = Models.Group;
 var IdGenerator = Models.IdGenerator;
 var Invitation = Models.Invitation;
+var Feedback = Models.Feedback;
 
 var middleware = require('./middleware');
 var async = require('async');
@@ -70,10 +71,13 @@ var create = function(req, res) {
                         });
                     }
                     req.session.user = user;
-                    res.send({
-                        code: 200,
-                        user: req.session.user
-                    });
+                    invitation.is_delete = true;
+                    invitation.save(function(err, invitation) {
+                        res.send({
+                            code: 200,
+                            user: req.session.user
+                        });
+                    }); 
                 });
             });
         });
@@ -1994,8 +1998,45 @@ var getRandomUser = function(req, res) {
     });
 };
 
-var groupGenerateCode = function(req, res) {
+// feedback
+var feedback = function(req, res) {
+    var userEmail = req.body.email;
+    var content = req.body.content;
+    var name = req.body.name;
 
+    if (!userEmail) {
+        return res.send({
+            code: 404,
+            info: 'email incomplete'
+        });
+    }
+    if (!content) {
+        return res.send({
+            code: 404,
+            info: 'content is blank'
+        });
+    }
+    if (!name) {
+        return res.send({
+            code: 404,
+            info: 'name is blank'
+        });
+    }
+
+    Feedback.createNew({
+        name: name,
+        email: userEmail,
+        content: content
+    }, function(err, feedback) {
+        res.send({
+            code: 200
+        });
+        email({
+            name: name,
+            email: userEmail,
+            content: content
+        }, true);
+    });
 };
 
 
@@ -2063,6 +2104,9 @@ module.exports = function(app) {
     // user operation
     app.get('/api/user/:id/card', getUserCard);
     app.get('/api/user/userList', getConnectList);
+
+    // feedback
+    app.post('/api/feedback', feedback);
 };
 
 // check request status

@@ -43,7 +43,6 @@ require('./api/user')(app);
 require('./api/share')(app);
 require('./api/account')(app);
 require('./api/userProfile')(app);
-require('./api/companyProfile')(app);
 require('./api/group')(app);
 require('./api/router')(app);
 require('./api/json')(app);
