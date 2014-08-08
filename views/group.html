@@ -13,7 +13,7 @@
         <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="/public/css/main.css">
+        <link rel="stylesheet" href="/public/css/common.css">
         <!-- magnific popup -->
         <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
         <!-- atwho -->
@@ -596,7 +596,7 @@
           }
           .nav-tabs-custom > .nav-tabs {
             width: 100%;
-            background-color: #edeff0;
+            border-bottom-color: transparent;
           }
           .navbar {
             border-radius: 0;
@@ -661,7 +661,7 @@
               <div class="white-popup-block" ng-if="global.popup.type == 'check'" style="max-width: 450px;">
                 <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
                 <label>验证信息:</label>
-                <input class="form-control" type="text" placeholder="message" ng-model="global.inputMessage">
+                <input class="form-control" type="text" placeholder="验证信息" ng-model="global.inputMessage">
                 <div class="clearfix" style="margin-top:10px;">
                     <button class="btn btn-primary pull-right" ng-click="global.joinSubmit()">提交</button>
                 </div>
@@ -789,7 +789,7 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
-                <li><a href="/group" target="_self">圈子</a></li>
+                <li class="active"><a href="/group" target="_self">圈子</a></li>
                 
               </ul>
             </div>
@@ -829,7 +829,7 @@
               <a href="#"><img src="<%= locals.group.avatar %>"></a>
             </div>
             <div class="panel panel-default member-panel">
-              <div class="panel-heading" style="font-weight:700;">群名片</div>
+              <div class="panel-heading" style="font-weight:700;">圈名片</div>
               <div class="panel-body" style="padding-top:10px;">
                 <div class="members-desc">
                   <span class="title">关注 : </span>
@@ -846,7 +846,7 @@
               </div>
             </div>
             <div class="panel panel-default member-panel">
-              <div class="panel-heading" style="font-weight:700;">群成员</div>
+              <div class="panel-heading" style="font-weight:700;">圈成员</div>
               <div class="panel-body" style="padding-top:10px;">
                 <div class="members-item">
                   <span class="title">【创建者】</span>
@@ -878,9 +878,9 @@
             </div>
             <div class="panel panel-default">
               <div class="panel-body">
-                <div style="margin-bottom:10px;">相关招聘</div>
+                <div style="margin-bottom:10px;">相关职位</div>
                 <% locals.hire.forEach(function(item,key){ %>
-                <div class="hire-list"><a href="<%= item.link %>" target="_self">[<%= item.location %>] <%= item.position %></a></div>
+                <div class="hire-list"><a href="<%= item.link %>" target="_blank">[<%= item.location %>] <%= item.position %></a></div>
                 <% }) %> 
               </div>
             </div>
@@ -906,6 +906,7 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/lib/xss.js',
             '/public/js/lib/atwho/jquery.caret.min.js',
             '/public/js/lib/atwho/jquery.atwho.js',
             '/public/js/lib/flexText/jquery.flexText.min.js',

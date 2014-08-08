@@ -7,6 +7,9 @@ var GroupSchema = new Schema({
         type: Boolean,
         default: false
     },
+    total: {
+        type: Number // 限制成员的总人数
+    },
     intro: {
         type: String
     },

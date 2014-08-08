@@ -1,4 +1,4 @@
-<div class="nav-tabs-custom row" ng-cloak style="margin-bottom:0;">
+<div class="nav-tabs-custom row" ng-cloak style="margin-bottom:0;background-color:transparent">
   <ul class="nav nav-tabs pull-left">
       <li class="pull-left header"><i class="fa fa-fw fa-gear"></i>设置</li>
       <li ng-class="{active: current === 'b'}" ng-click="current = 'b'"><a href="#">基本</a></li>
@@ -244,15 +244,16 @@
 			<div ng-if="hires.length > 0">
 				<h4 style="margin-bottom:15px;">已发布职位 <span style="color:#999;margin-left:10px;">({{hires.length + '/5'}})</span></h4>
 				<div ng-repeat="hire in hires" class="hire-item">
-					<div>{{hire.location}} | {{hire.position}} | <a href="{{hire.link}}" target="_self">{{hire.link}}</a></div>
-					<div>由 <a href="/profile/{{hire.by.id}}" target="_self">{{hire.by.name}}</a> 编辑
+					<div>{{hire.location}} | {{hire.position}} | <a href="{{hire.link}}" target="_blank">{{hire.link}}</a></div>
+					<div>由 <a href="/profile/{{hire.by.id}}" target="_self">{{hire.by.name}}</a> 发布
 						<!-- <span style="color:#999;font-size:0.9em;margin-left: 10px;">{{item.date || '刚刚发布'}}</span> -->
 					</div>
 					<span class="hover-tag" ng-click="vm.delHire(hire)"><i class="fa fa-fw fa-times"></i></span>
 				</div>
 			</div>
 			<div ng-if="hires.length === 0">
-				<div>该群未发布任何职位，由系统自动筛选发布</div>
+				<div>该圈未发布任何职位，由系统自动筛选发布</div>
+				<div>你可以发布5个职位，快来添加吧。</div>
 			</div>
 			<hr>
 			<div ng-show="!showAddHire">
@@ -295,7 +296,7 @@
 <div class="group-settings-code row" ng-if="current === 'c'" ng-cloak>
 	<div class="panel col-md-12" ng-if="global.isCreator || global.isAdmin">
 		<div class="panel-body">
-			<h4 style="margin-bottom:15px;">邀请码</h4>
+			<h4 style="margin-bottom:20px;font-weight:700;">邀请码</h4>
 			<div>已获得 : {{code.total}}</div>
 			<div>已使用 : {{code.used}}</div>
 			<div style="margin-bottom:10px;">未使用 : {{code.unUsed.length}}</div>

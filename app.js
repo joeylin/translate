@@ -21,6 +21,7 @@ app.configure(function() {
     app.engine('html', ejs.__express);
     app.use(express.favicon());
     app.use(express.logger('dev'));
+    app.use(express.compress()); 
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser(config.cookie.secret));

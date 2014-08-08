@@ -15,10 +15,6 @@ factory('restAPI', ['$resource',
             doc: $cacheFactory('doc', {
                 capacity: 10
             }),
-            // waiting for better way
-            // chapter: $cacheFactory('chapter', {
-            //     capacity: 100
-            // }),
             user: $cacheFactory('user', {
                 capacity: 20
             }),
@@ -174,48 +170,6 @@ factory('restAPI', ['$resource',
             return defer.promise;
         };
     }
-]).factory('getChapter', ['restAPI', 'cache', 'promiseGet',
-    function(restAPI, cache, promiseGet) {
-        return function(doc, chapter) {
-            return promiseGet({
-                DOC: doc,
-                CHAPTER: chapter
-            }, restAPI.chapter, doc + '/' + chapter, cache.chapter);
-        };
-    }
-]).factory('getToc', ['restAPI', 'cache', 'promiseGet',
-    function(restAPI, cache, promiseGet) {
-        return function(doc) {
-            return promiseGet({
-                DOC: doc
-            }, restAPI.doc, doc, cache.doc);
-        };
-    }
-]).factory('getList', ['restAPI', 'cache', 'promiseGet',
-    function(restAPI, cache, promiseGet) {
-        return function(listType) {
-            return promiseGet({
-                ID: listType,
-                s: 10
-            }, restAPI.article, listType, cache.list);
-        };
-    }
-]).factory('getArticle', ['restAPI', 'cache', 'promiseGet',
-    function(restAPI, cache, promiseGet) {
-        return function(ID) {
-            return promiseGet({
-                ID: ID
-            }, restAPI.article, ID, cache.article);
-        };
-    }
-]).factory('getUser', ['restAPI', 'cache', 'promiseGet',
-    function(restAPI, cache, promiseGet) {
-        return function(ID) {
-            return promiseGet({
-                ID: ID
-            }, restAPI.user, ID, cache.user);
-        };
-    }
 ]).factory('toast', ['$log', 'tools',
     function($log, tools) {
         var toast = {},
@@ -270,29 +224,6 @@ factory('restAPI', ['$resource',
             innerDOM.innerHTML = tools.toStr(html);
             outerDOM.appendChild(sanitize[level].clean_node(innerDOM));
             return outerDOM.innerHTML;
-        };
-    }
-]).factory('mdEditor', ['mdParse', 'sanitize', 'pretty', 'tools',
-    function(mdParse, sanitize, pretty, tools) {
-        return function(idPostfix, level) {
-            idPostfix = tools.toStr(idPostfix);
-            var editor = new Markdown.Editor({
-                makeHtml: function(text) {
-                    return sanitize(mdParse(text), level);
-                }
-            }, idPostfix);
-            var element = angular.element(document.getElementById('wmd-preview' + idPostfix));
-            editor.hooks.chain('onPreviewRefresh', function() {
-                angular.forEach(element.find('code'), function(value) {
-                    value = angular.element(value);
-                    if (!value.parent().is('pre')) {
-                        value.addClass('prettyline');
-                    }
-                });
-                element.find('pre').addClass('prettyprint'); // linenums have bug!
-                pretty();
-            });
-            return editor;
         };
     }
 ]).factory('wordCount', ['mdParse', 'sanitize', 'pretty', 'tools',

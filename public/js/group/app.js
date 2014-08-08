@@ -31,9 +31,9 @@ config(['$httpProvider', 'app',
         });
     }
 ]).run(['app', '$q', '$rootScope', '$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc', '$http', 'wordCount',
+    'mdParse', 'CryptoJS', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store','$http', 'wordCount',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
-        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc, $http, wordCount) {
+        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, CryptoJS, myConf, anchorScroll, isVisible, applyFn, param, store, $http, wordCount) {
 
         var global = $rootScope.global = {
             isLogin: false,
@@ -72,7 +72,6 @@ config(['$httpProvider', 'app',
         app.sanitize = sanitize;
         app.mdParse = mdParse;
         app.CryptoJS = CryptoJS;
-        app.promiseGet = promiseGet;
         app.myConf = myConf;
         app.rootScope = $rootScope;
         angular.extend(app, tools); //添加jsGen系列工具函数

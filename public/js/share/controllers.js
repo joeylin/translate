@@ -14,7 +14,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
         }
         var params = {
             page: 1,
-            perPageItems: 50,
+            perPageItems: 25,
             shareId: $scope.share._id
         };
         var url;
@@ -67,6 +67,9 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             }
         };
         $scope.toggleCollect = function() {
+            if (!app.author) {
+                return false;
+            }
             var url;
             if ($scope.share.has_collect) {
                 url = '/api/user/uncollect';
@@ -214,6 +217,9 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             }
         };
         $scope.forkPopup = function() {
+            if (!app.author) {
+                return false;
+            }
             global.fork.open = true;
             global.fork.share = $scope.share;
 

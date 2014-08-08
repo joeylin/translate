@@ -230,44 +230,6 @@ var disconnect = function(req, res) {
         });
     });
 };
-var getShare = function(req, res) {
-    var user = req.session.user;
-    var connects = user.connects;
-    var page = req.params.page || 0;
-    var perPageItems = 20;
-
-    var connectList = [];
-    connects.map(function(value, key) {
-        connectList.push(value.user);
-    });
-    // todo: avoid using skip() for performance
-    Share.find({
-        user: {
-            $in: connectList
-        },
-        type: 'view'
-    }).sort({
-        createAt: -1
-    }).populate('user').skip(page * perPageItems).limit(perPageItems).exec(function(err, share) {
-        Share.find({
-            user: {
-                $in: connectList
-            }
-        }).count().exec(function(err, count) {
-            if (err) {
-                return res.send({
-                    code: 404
-                });
-            }
-            res.send({
-                code: 200,
-                content: share.length ? share : [],
-                count: count,
-                hasNext: (count - page * perPageItems) > 0 ? true : false
-            });
-        });
-    });
-};
 var getFollowGroupUpdate = function(req, res) {
     var user = req.session.user;
     var page = req.params.page || 0;
@@ -374,7 +336,7 @@ var getTrends = function(req, res) {
                     var result = {};
                     result.type = 'view';
                     result._id = item._id;
-                    result.comments = item.comments;
+                    result.commentsCount = item.comments.length;
                     result.content = item.content;
                     result.createAt = item.createAt.getTime();
                     result.date = item.date;
@@ -626,7 +588,7 @@ var getMyShare = function(req, res) {
                 var result = {};
                 result.type = 'view';
                 result._id = item._id;
-                result.comments = item.comments;
+                result.commentsCount = item.comments.length;
                 result.content = item.content;
                 result.createAt = item.createAt.getTime();
                 result.date = item.date;
@@ -777,7 +739,7 @@ var getMyCollect = function(req, res) {
                 var result = {};
                 result.type = 'view';
                 result._id = item._id;
-                result.comments = item.comments;
+                result.commentsCount = item.comments.length;
                 result.content = item.content;
                 result.createAt = item.createAt.getTime();
                 result.date = item.date;
@@ -2048,7 +2010,6 @@ module.exports = function(app) {
     app.post('/api/user/acitveResend', middleware.apiLogin, reSendActiveCode);
 
     // trends
-    app.get('/api/user/share', middleware.check_login, getShare);
     app.get('/api/user/trend', middleware.check_login, getTrends);
     app.get('/api/user/myActive', middleware.check_login, getMyActive);
     app.get('/api/user/myShare', middleware.check_login, getMyShare);

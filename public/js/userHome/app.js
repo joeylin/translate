@@ -31,9 +31,9 @@ config(['$httpProvider', 'app',
         });
     }
 ]).run(['app', '$q', '$rootScope', '$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc', '$http',
+    'mdParse',  'CryptoJS',  'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', '$http',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
-        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc, $http) {
+        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, CryptoJS, myConf, anchorScroll, isVisible, applyFn, param, store, $http) {
 
         var global = $rootScope.global = {
             isLogin: false,
@@ -73,10 +73,9 @@ config(['$httpProvider', 'app',
         app.sanitize = sanitize;
         app.mdParse = mdParse;
         app.CryptoJS = CryptoJS;
-        app.promiseGet = promiseGet;
         app.myConf = myConf;
         app.rootScope = $rootScope;
-        angular.extend(app, tools); //添加jsGen系列工具函数
+        angular.extend(app, tools); 
 
         app.user = window.user;
         $rootScope.current = {};

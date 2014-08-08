@@ -15,6 +15,10 @@ var RequestSchema = new Schema({
     type: {
         type: String
     },
+    shareId: {
+        type: ObjectId,
+        ref: 'Share'
+    },
     group: {
         type: ObjectId,
         ref: 'Group'
@@ -54,13 +58,13 @@ RequestSchema.virtual('date').get(function() {
     }
 });
 RequestSchema.path('type').validate(function(type) {
-    var array = ['connect', 'message', 'group', 'reply', 'comment'];
+    var array = ['connect', 'message', 'group', 'at', 'comment'];
     if (array.indexOf(type) >= 0) {
         return true;
     } else {
         return false;
     }
-}, 'type should be connect or message');
+}, 'type error');
 
 // statics
 RequestSchema.statics.createNew = function(obj, cb) {
@@ -70,6 +74,7 @@ RequestSchema.statics.createNew = function(obj, cb) {
     Request.type = obj.type;
     Request.content = obj.content;
     Request.group = obj.group;
+    Request.shareId = obj.shareId;
     Request.save(cb);
 };
 RequestSchema.statics.delete = function(id, cb) {

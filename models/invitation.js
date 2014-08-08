@@ -15,7 +15,7 @@ var InvitationSchema = new Schema({
         ref: 'User'
     },
     type: {
-        type: String // 'user group'
+        type: String // 'user group job'
     },
     content: {
         type: String

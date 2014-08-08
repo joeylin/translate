@@ -8,6 +8,10 @@ var CommentSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
+    shareId: {
+        type: ObjectId,
+        ref: 'Share'
+    },
     content: {
         type: String
     },
@@ -55,7 +59,9 @@ CommentSchema.statics.createNew = function(obj, cb) {
     comment.content = obj.content;
     comment.user = obj.user;
     comment.replyTo = obj.replyTo;
+    comment.shareId = obj.shareId;
     comment.save(cb);
+    sendRequest(comment);
 };
 
 // middleware
@@ -65,3 +71,46 @@ CommentSchema.pre('save', function(next) {
 });
 
 mongoose.model('Comment', CommentSchema);
+
+function sendRequest(comment) {
+    var Request = mongoose.model('Request');
+    var User = mongoose.model('User');
+    var atStr = comment.content.match(/\B@\w*\b/g);
+    var atList = atStr ? atStr.split(',') : [];
+    var atArray  = [];
+    atList.map(function(value,key) {
+        atArray.push(value.replace('@',''));
+    });
+    var query = {
+        name: {
+            $in: atArray
+        }
+    };
+    User.find(query).exec(function(err, users) {
+        if (err || !users) {
+            return false;
+        }
+        var atAuthor = false;
+        users.map(function(user, key) {
+            var obj = {};
+            obj.to = user._id;
+            obj.shareId = comment.shareId;
+            obj.from = comment.user;
+            if (user._id.toString() == comment.replyTo) {
+                obj.type = 'comment';
+                atAuthor = true;
+            } else {
+                obj.type = 'at';
+            }
+            Request.createNew(obj);
+        });
+        if (!atAuthor) {
+            var req = {};
+            req.to = comment.replyTo;
+            req.from = comment.user;
+            req.shareId = comment.shareId;
+            req.type = 'comment';
+            Request.createNew(req);
+        }
+    });
+}

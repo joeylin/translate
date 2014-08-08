@@ -13,7 +13,7 @@
         <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="/public/css/main.css">
+        <link rel="stylesheet" href="/public/css/common.css">
         <!-- magnific popup style -->
         <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
         <!-- atwho -->
@@ -32,6 +32,16 @@
            * Style tweaks
            * --------------------------------------------------
            */
+          body {
+            font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
+            background: url("/public/imgs/bg.png") 0 0 repeat;
+          }
+          .profile-body {
+            min-height: 940px;
+          }
+          .navbar {
+            border-radius: 0px;
+          }
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -213,23 +223,12 @@
             min-height: 74px;
           }
 
-          /* reset adminTLE carbonad */
-          .carbonad {
-            padding: 15px;
-            border-radius: 4px;
-            height: 96px;
-            background-color: #fff;
+          .well {
+            -webkit-box-shadow: none;
+            box-shadow: none;
           }
-          .carbonad-image img {
-            width: 64px;
-            height: 64px;
-          }
-          .carbonad-info {
-            padding-left: 79px;
-          }
-          .carbonad-info .carbonad-title {
-            font-size: 16px;
-          }
+
+          
           /* footer */
           footer {
             border-top: 1px solid #E0E0E0;
@@ -272,7 +271,7 @@
               <ul class="nav navbar-nav navbar-right" ng-cloak>
                   <% if (!locals.author) { %>
                   <li class="dropdown" id="menuLogin" >
-                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.share.user.id %>" target="_self">Login</a>
+                      <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.share.user.id %>" target="_self">登录</a>
                   </li>
                   <% } else { %>
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
@@ -323,10 +322,10 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">Account</a>
+                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">退出</a>
                                 </div>
                             </li>
                         </ul>
@@ -336,8 +335,7 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
-                <li><a href="/group" target="_self">群组</a></li>
-                
+                <li><a href="/group" target="_self">圈子</a></li>
               </ul>
             </div> 
           </div>
@@ -345,7 +343,8 @@
         <div class="container">
           <div class="profile-body col-md-9" ng-controller="indexCtrl">
             <div class="well" ng-cloak>
-              <div class="title" ng-if="share.group">来自 <a href="/group/{{share.group.id}}" target="_self" style="color:#333;"> {{share.group.name}}</a> 兴趣圈</div>
+              <div class="title" ng-if="share.group">来自 <a href="/group/{{share.group.id}}" target="_self" style="color:#333;"> {{share.group.name}}</a> 兴趣圈 <a href="/profile/{{share.user.id}}" target="_self">{{ '@' + share.user.name}} :</a></div>
+              <div class="title" ng-if="!share.group"><a href="/profile/{{share.user.id}}" target="_self">{{ '@' + share.user.name}} :</a></div>
               <p md-content="share.content"></p>
               <div class="forkContent" ng-if="share.isFork">
                 <p ng-if="share.from.group"><a href="/profile/{{share.from.user.id}}" target="_self">{{'@' + share.from.user.name}}</a> 发布于 <a href="/group/{{share.from.group.id}}" target="_self">{{share.from.group.name}}</a></p>
@@ -353,6 +352,7 @@
                 <p md-content="share.from.share.content"></p>
                 <div class="date" style="color:#99a1a6;font-size:0.9em;">{{share.from.share.createAt | formatDate:true}}</div>
               </div>
+              <% if (locals.author) { %>
               <div class="clearfix media-info" ng-cloak>
                 <span class="pull-left media-control">
                   <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
@@ -366,12 +366,22 @@
 
                 </span>
                 <a href="" class="comment pull-right" style="line-height:28px;"><i class="fa fa-fw fa-comments"></i>({{share.total}})</a>
-              </div>        
+              </div>
+              <% } else { %> 
+              <div class="clearfix media-info" ng-cloak>
+                <span class="pull-left media-control">
+                  <a href="#" class="date" style="margin-right:15px;">{{share.createAt | formatDate:true}}</a>
+                  <span class="like"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</span>
+                  <span class="toMyFriends"><span>分享({{share.fork}})</span></span>
+                </span>
+                <a href="" class="comment pull-right" style="line-height:28px;"><i class="fa fa-fw fa-comments"></i>({{share.total}})</a>
+              </div>
+              <% } %>       
             </div>
             <div class="panel reply-panel" ng-cloak>
               <div class="panel-body reply-container">
                 <div class="input-group comment-editor">
-                    <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="share.newComment"></textarea>
+                    <textarea class="form-control" rows="3" placeholder="您有什么看法呢..." ng-model="share.newComment"></textarea>
                     <span class="input-group-btn">
                         <% if (locals.author) { %>
                         <button class="btn btn-primary reply-submit btn-sm" type="button" ng-click="submitComment()">评论</button>
@@ -405,6 +415,9 @@
                   </div>
                 </div>
                 <hr ng-repeat-end ng-show="!$last">
+                <div ng-show="share.comments.length === 0" class="text-center">
+                  还没有人发表回复哦，快来回复一下吧。
+                </div>
                 <hr ng-show="share.comments.length > 0 && share.comments.length < total">
                 <div ng-show="share.comments.length > 0 && share.comments.length < total">
                   <ul class="pager">
@@ -430,14 +443,20 @@
               <!-- Menu Body -->
               <div class="user-signature clearfix">
                   <i class="fa fa-fw fa-quote-left" style="font-size:11px;"></i>
-                  <span><%= locals.share.user.signature || 'Think different' %></span>
+                  <span><%= locals.share.user.signature || '作者还没填写呢' %></span>
                   <i class="fa fa-fw fa-quote-right" style="font-size:11px;"></i>
               </div>
             </div>
             <div class="panel panel-default section">
               <div class="panel-heading">相关微说</div>
               <div class="panel-body">
-                Panel content
+                暂时还没有呢
+              </div>
+            </div>
+            <div class="panel panel-default section">
+              <div class="panel-heading">推荐职位</div>
+              <div class="panel-body">
+                暂时还没有呢
               </div>
             </div>
           </div>     
@@ -446,7 +465,7 @@
           <p class="">© by Joeylin 331547274@qq.com <a href="/about/feedback" target="_blank">意见与反馈</a></p>
         </footer>
         <div id="login-popup" class="white-popup-block mfp-hide">
-          You need Login First !
+          你还没有登录哦!
         </div>
         <div class="mfp-bg mfp-ready" ng-cloak ng-if="global.fork.open"></div>
         <div class="mfp-wrap mfp-close-btn-in mfp-ready fork-popup" style="overflow-y: auto; overflow-x: hidden;" ng-cloak ng-if="global.fork.open">

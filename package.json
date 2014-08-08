@@ -1,6 +1,7 @@
 {
   "name": "application-name",
   "version": "0.0.1",
+  "author": "joeylin",
   "private": true,
   "scripts": {
     "start": "node app"
@@ -17,6 +18,7 @@
     "moment": "latest",
     "mongoose": "latest",
     "mongoose-random": "0.0.2",
+    "body-parser": "~1.0.2",
     "nodemailer": "latest",
     "passport": "latest",
     "passport-facebook": "latest",
@@ -28,5 +30,14 @@
     "qiniu": "latest",
     "thenjs": "latest",
     "xss": "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-concat": "*",
+    "grunt-jsdoc": "~0.5.6",
+    "ink-docstrap": "~0.4.12"
   }
 }

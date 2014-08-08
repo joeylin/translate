@@ -28,7 +28,7 @@
             <span class="toMyFriends pull-left"><a href="" ng-click="vm.forkPopup(share)">分享({{share.fork}})</a></span>
             <span class="pull-right media-control">
               <a href="#" class="like" ng-class="{liked:share.liked}" ng-click="vm.toggleLike(share)"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-              <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.comments.length}})</a>
+              <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.commentsCount}})</a>
             </span>
             
             
@@ -67,6 +67,10 @@
                     </span>
                 </div>
               </div>
+            </div>
+            <hr class="reply-hr" ng-show="share.comments.length < share.commentsCount">
+            <div ng-show="share.comments.length < share.commentsCount" class="clearfix">
+              <a class="pull-right" href="/view/{{share.id}}" target="_blank">查看更多评论 <i class="fa fa-fw fa-angle-double-right"></i></a>
             </div>
           </div>
         </div>

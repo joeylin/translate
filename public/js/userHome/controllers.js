@@ -216,6 +216,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                     date: data.content.createAt
                 };
                 share.comments.unshift(comment);
+                share.commentsCount += 1;
                 share.newComment = '';
             });
         };
@@ -237,6 +238,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 commentIndex: index
             }).success(function(data) {
                 share.comments.splice(index, 1);
+                share.commentsCount -= 1;
             });
         };
         $scope.vm.reply = function(comment) {
@@ -1059,50 +1061,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         }
 
         getConnects();
-    }
-]).controller('myShareCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
-    function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.keyword = '';
-        $scope.content = [];
-        var url = '/api/user/share';
-        var params = {
-            pager: 0,
-            keyword: $scope.keyword
-        };
-        $scope.submit = function() {
-            // reset the config before submit
-            var params = {
-                pager: 0,
-                keyword: $scope.keyword
-            };
-            get();
-        };
-        $scope.next = function() {
-            if (!$scope.vm.pager.hasLast) {
-                return false;
-            }
-            $scope.vm.pager.current += 1;
-            params.pager = $scope.vm.pager.current;
-            get();
-        };
-        $scope.prev = function() {
-            if (!$scope.vm.pager.current) {
-                return false;
-            }
-            $scope.vm.pager.current -= 1;
-            params.pager = $scope.vm.pager.current;
-            get();
-        };
-
-        function get() {
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.vm.pager.hasLast = data.hasLast;
-            });
-        }
-        get();
     }
 ]).controller('myJobCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {

@@ -342,27 +342,27 @@ var getPost = function(req, res) {
                 result.id = item.id;
                 result.fork = item.fork;
                 result.isFork = item.isFork;
-                    if (item.isFork) {
-                        result.from = {
-                            user: {
-                                name: item.from.user.name,
-                                id: item.from.user.id,
-                                _id: item.from.user._id
-                            },
-                            share: {
-                                createAt: item.from.share.createAt,
-                                content: item.from.share.content,
-                                _id: item.from.share._id
-                            }
-                        };
-                        if (item.from.group) {
-                            result.from.group = {
-                                name: item.from.group.name,
-                                id: item.from.group.id,
-                                _id: item.from.group._id
-                            };
+                if (item.isFork) {
+                    result.from = {
+                        user: {
+                            name: item.from.user.name,
+                            id: item.from.user.id,
+                            _id: item.from.user._id
+                        },
+                        share: {
+                            createAt: item.from.share.createAt,
+                            content: item.from.share.content,
+                            _id: item.from.share._id
                         }
+                    };
+                    if (item.from.group) {
+                        result.from.group = {
+                            name: item.from.group.name,
+                            id: item.from.group.id,
+                            _id: item.from.group._id
+                        };
                     }
+                }
                 result.user = {
                     name: item.user.name,
                     avatar: item.user.avatar,
@@ -827,7 +827,7 @@ var getTrends = function(req, res) {
                     var result = {};
                     result.type = 'view';
                     result._id = item._id;
-                    result.comments = item.comments;
+                    result.commentsCount = item.comments.length;
                     result.content = item.content;
                     result.createAt = item.createAt.getTime();
                     result.id = item.id;

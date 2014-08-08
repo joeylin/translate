@@ -2,8 +2,8 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('headerCtrl', ['app', '$scope', '$routeParams', 'getToc', 'getChapter', '$http',
-    function(app, $scope, $routeParams, getToc, getChapter, $http) {
+controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
+    function(app, $scope, $routeParams,$http) {
         $scope.name = app.user.name || 'add your display name';
         $scope.signature = app.user.signature || 'add your signature';
 

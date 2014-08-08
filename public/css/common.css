@@ -27,26 +27,6 @@
     background-color:#313146;
 }
 
-/* doc.css*/
-
-.bs-callout {
-	margin: 20px 0;
-	padding: 20px;
-	border-left: 3px solid #eee;
-}
-.bs-callout-info {
-	background-color: #f4f8fa;
-	border-color: #5bc0de;
-}
-.bs-callout-info h4 {
-	color: #5bc0de;
-}
-.bs-callout h4 {
-	margin-top: 0;
-	margin-bottom: 5px;
-}
-
-/*login*/
 .dropdown-menu > li > a:hover {
 	background-color: #428bca;
 	color: #fff;
@@ -71,27 +51,7 @@
 	background-color: #428bca;
 }
 
-/*translate*/
-.content-translate-origin {
-	font-weight: 700;
-}
-.translate-part .translate-part-info {
-	font-style: italic;
-	color: #aaa;
-}
-.translate-part .translate-part-info a {
-	font-style: normal;
-}
-.translate-part {
-	padding-bottom: 10px;
-}
-.content-translate .form-control {
-	min-height: 50px;
-	height: 100%;
-}
-
-/* chapter translateBy */
-.translateBy {
-	height: 100%;
-	line-height: 34px;
+.navbar-inverse .navbar-nav>li>a:hover, 
+.navbar-inverse .navbar-nav>li>a:focus {
+	background: #36404c;
 }

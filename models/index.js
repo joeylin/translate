@@ -11,11 +11,8 @@ mongoose.connect(config.db, function(err) {
 // social network
 require('./user');
 require('./userProfile');
-require('./companyProfile');
-require('./job');
 require('./share');
 require('./comment');
-require('./trend');
 require('./request');
 require('./group');
 require('./idGenerator');
@@ -24,11 +21,8 @@ require('./feedback');
 
 exports.User = mongoose.model('User');
 exports.UserProfile = mongoose.model('UserProfile');
-exports.CompanyProfile = mongoose.model('CompanyProfile');
-exports.Job = mongoose.model('Job');
 exports.Share = mongoose.model('Share');
 exports.Comment = mongoose.model('Comment');
-exports.Trend = mongoose.model('Trend');
 exports.Request = mongoose.model('Request');
 exports.Group = mongoose.model('Group');
 exports.IdGenerator = mongoose.model('IdGenerator');

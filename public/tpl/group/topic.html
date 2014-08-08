@@ -1,5 +1,5 @@
 <div class="group-topic-add row clearfix">
-  <a class="btn btn-primary" href="#" ng-click="open()" ng-show="!isSearch"> <i class="fa fa-fw" ng-class="{true:'fa-minus',false:'fa-plus'}[isOpened]"></i> 发布群微说</a>
+  <a class="btn btn-primary" href="#" ng-click="open()" ng-show="!isSearch"> <i class="fa fa-fw" ng-class="{true:'fa-minus',false:'fa-plus'}[isOpened]"></i> 发布圈微说</a>
   <div class="group-add-content" ng-cloak ng-show="isOpened">
     <div class="well custom-well">
         <div class="arrow"></div>
@@ -55,12 +55,12 @@
           <span class="pull-right media-control">
             <a href="#" class="delete" ng-show="global.user.name === share.user.name || global.isAdmin || global.isCreator" ng-click="vm.deletePopup(share)"><i class="fa fa-fw fa-trash-o"></i></a>
             <a href="#" class="like" ng-class="{liked:share.liked}" ng-click="vm.toggleLike(share)"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
-            <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.comments.length}})</a>
+            <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.commentsCount}})</a>
           </span>
         </div>
         <div class="reply-container" ng-show="share.isShowComment">
           <div class="comment-editor" ng-show="global.user">
-              <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="share.newComment"></textarea>
+              <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="输入 ..." ng-model="share.newComment"></textarea>
               <span class="input-group-btn">
                   <button class="btn btn-primary pull-right btn-sm reply-submit" type="button" ng-click="vm.submitComment(share)">评论</button>
               </span>
@@ -86,13 +86,17 @@
                 </span>
               </div>
               <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
-                  <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
+                  <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="输入 ..." ng-model="comment.newComment"></textarea>
                   <span class="input-group-btn">
                       <button class="btn btn-primary btn-sm" type="button" ng-click="vm.submitInlineComment(comment,share)">评论</button>
                   </span>
               </div>
             </div>
           </div>
+          <hr class="reply-hr" ng-show="share.comments.length < share.commentsCount">
+            <div ng-show="share.comments.length < share.commentsCount" class="clearfix">
+              <a class="pull-right" href="/view/{{share.id}}" target="_blank">查看更多评论 <i class="fa fa-fw fa-angle-double-right"></i></a>
+            </div>
         </div>
       </div>
     </div>

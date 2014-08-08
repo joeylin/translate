@@ -13,7 +13,7 @@
         <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="/public/css/main.css">
+        <link rel="stylesheet" href="/public/css/common.css">
         <!--  -->
         <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
 
@@ -28,6 +28,10 @@
            * Style tweaks
            * --------------------------------------------------
            */
+          body {
+            font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
+            background: url("/public/imgs/bg.png") 0 0 repeat;
+          }
           .home-container {
             padding-top: 19px;
           }
@@ -119,7 +123,7 @@
           }
           /*group*/
           .group > .col-md-9 {
-            background-color: #ddd;
+            background-color: #fff;
             border-radius: 4px;
           }
           .search {
@@ -174,10 +178,13 @@
             margin-bottom: 15px;
           }
           .carbonad {
-            background-color: #fff;
             padding: 15px;
             border-radius: 4px;
             margin-bottom: 15px;
+            border: 1px solid #ddd;
+          }
+          .carbonad:hover {
+            background-color: #ddd;
           }
           .carbonad-image img {
             width: 75px;
@@ -217,6 +224,9 @@
           }
           .notifications-menu .dropdown-menu {
             width: 130px!important;
+          }
+          .navbar {
+            border-radius: 0px;
           }
           /* footer */
           footer {
@@ -326,7 +336,7 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
-                <li><a href="/group" target="_self">圈子</a></li>
+                <li class="active"><a href="/group" target="_self">圈子</a></li>
               </ul>
             </div>
           </div>
@@ -452,6 +462,7 @@
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
+            '/public/js/lib/xss.js',
             '/public/js/lib/qiniu.uploader.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/lib/angular-ui.js',

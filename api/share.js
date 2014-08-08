@@ -41,7 +41,7 @@ var getShareById = function(req, res) {
 var getShareComments = function(req, res) {
     var shareId = req.query.shareId;
     var page = req.query.page || 1;
-    var perPageItems = req.query.perPageItems || 15;
+    var perPageItems = req.query.perPageItems || 10;
     Share.findOne({
         _id: shareId
     }).exec(function(err, share) {
@@ -53,15 +53,14 @@ var getShareComments = function(req, res) {
         }
         var count = share.comments.length;
         // todo fix pager
-        var latest = share.comments.slice(-15);
+        var latest = share.comments.reverse().slice(perPageItems * (page -1), perPageItems * page);
         Comment.find({
             _id: {
                 $in: latest
             }
-        }).sort({
-            createAt: -1
-        }).populate('user').exec(function(err, comments) {
+        }).sort('-createAt').populate('user').exec(function(err, comments) {
             var results = [];
+            var hasNext;
             comments.map(function(comment) {
                 var result = {
                     content: comment.content,
@@ -78,7 +77,8 @@ var getShareComments = function(req, res) {
             res.send({
                 code: 200,
                 comments: results,
-                count: count
+                count: count,
+                hasNext: hasNext
             });
         });
     });
@@ -888,8 +888,8 @@ module.exports = function(app) {
     app.post('/api/share/edit', middleware.check_login, editShare);
     app.get('/api/share/user', middleware.check_login, getShareByUser);
     app.get('/api/share/id/:id', middleware.check_login, getShareById);
-    app.get('/api/share/comments', middleware.check_login, getShareComments);
     app.get('/api/share/randomOne', middleware.check_login, getRandomJob);
+    app.get('/api/share/comments', getShareComments);
 
     // comments
     app.post('/api/share/comments/add', middleware.check_login, addComment);

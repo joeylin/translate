@@ -13,7 +13,7 @@
         <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="/public/css/main.css">
+        <link rel="stylesheet" href="/public/css/common.css">
 
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -476,7 +476,7 @@
               </ul>
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">首页</a></li>
-                <li><a href="/profile" target="_self">个人主页</a></li>
+                <li class="active"><a href="/profile" target="_self">个人主页</a></li>
                 <li><a href="/group" target="_self">圈子</a></li>
                 
               </ul>
@@ -500,7 +500,7 @@
                         <img src="<%= locals.user.avatar %>" alt="User Image">
                     </div>
                   </div>
-                  <div class="panel">
+                  <div class="panel" style="border-top-left-radius:0;border-top-right-radius:0;">
                     <div class="panel-body clearfix">
                       <div class="text-left" style="font-size:0.9em; display:inline-block;">
                           <div style="margin-bottom:3px;"><span style="color:#999;">状态： </span> <span><%= locals.user.location %> | <%= locals.user.occupation %></span></div>
