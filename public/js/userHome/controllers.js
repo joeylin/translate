@@ -436,6 +436,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $rootScope.current.request -= 1;
         };
         $scope.vm = {};
+        // connect
         $scope.vm.accept = function(request) {
             var params = {
                 value: true,
@@ -485,33 +486,36 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 $rootScope.request.group -= 1;
             });
         };
-
-        // comment reply
-        $scope.vm.replyView = function(request) {
-            if (request.hasDisposed) {
+        // comment
+        $scope.vm.toggleReply = function(request) {
+            request.open = !request.open;
+        };
+        $scope.vm.reply = function(request) {
+            var comment = request.comment;
+            var share = request.share;
+            if (request.newComment === '') {
                 return false;
             }
-            var data = {
-                groupId: request.group
-            };
-            var url = '/api/notify/reply/read';
-            $http.post(url, function(data) {
-                request.hasDisposed = true;
-                $rootScope.request.reply -= 1;
+            var url = '/api/share/comments/add';
+            $http.post(url, {
+                shareId: share._id,
+                replyComment: comment._id,
+                content: request.newComment,
+                replyTo: comment.user._id
+            }).success(function(data) {
+                var result = {
+                    user: app.user,
+                    content: comment.newComment,
+                    replyTo: comment.user._id,
+                    _id: data.content._id,
+                    date: data.content.createAt
+                };
+                share.comments.unshift(result);
+                comment.isShowReply = false;
             });
         };
-        $scope.vm.commentView = function(request) {
-            if (request.hasDisposed) {
-                return false;
-            }
-            var data = {
-                groupId: request.group
-            };
-            var url = '/api/notify/reply/read';
-            $http.post(url, function(data) {
-                request.hasDisposed = true;
-                $rootScope.request.comment -= 1;
-            });
+        $scope.vm.delete = function(request) {
+
         };
 
         var url;
@@ -520,9 +524,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         }
         if ($rootScope.current.path === 'group') {
             url = '/api/notify/group';
-        }
-        if ($rootScope.current.path === 'reply') {
-            url = '/api/notify/reply';
         }
         if ($rootScope.current.path === 'comment') {
             url = '/api/notify/comment';
@@ -534,9 +535,41 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             url = '/api/notify/all';
         }
 
-        $http.get(url).success(function(data) {
-            $scope.requests = data.requests;
-        });
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
+        var params = {
+            page: 1
+        };
+
+        $scope.next = function() {
+            if (!$scope.pager.hasNext) {
+                return false;
+            }
+            $scope.pager.current += 1;
+            params.page = $scope.pager.current;
+            getNotify();
+        };
+        $scope.prev = function() {
+            if ($scope.pager.current <= 1) {
+                return false;
+            }
+            $scope.pager.current -= 1;
+            params.page = $scope.pager.current;
+            getNotify();
+        };
+
+        var getNotify = function() {
+            params.page = 1;
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.requests = data.requests;
+            });
+        };
+
+        getNotify();
     }
 ]).controller('messageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {

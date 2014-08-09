@@ -1242,7 +1242,10 @@ var getNotifyCount = function(req, res) {
 };
 var getRequest = function(req, res) {
     var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
     var op = req.params.op;
+    var query = {};
     if (['group', 'reply', 'comment', 'connect', 'all'].indexOf(op) < 0) {
         return res.send({
             code: 404,
@@ -1250,180 +1253,221 @@ var getRequest = function(req, res) {
         });
     }
     if (op === 'all') {
-        Request.find({
+        query = {
             to: user._id,
+            type: {
+                $in: ['connect','group']
+            },
             hasDisposed: false
-        }).populate('from').populate('group').sort('-createAt').limit(20).exec(function(err, requests) {
-            var items = [];
-            requests.map(function(request) {
-                var result = {};
-                result.from = {
-                    id: request.from.id,
-                    _id: request.from._id,
-                    name: request.from.name,
-                    avatar: request.from.avatar
-                };
-                result.group = {
-                    id: request.group && request.group.id,
-                    _id: request.group && request.group._id,
-                    avatar: request.group && request.group.avatar,
-                    name: request.group && request.group.name
-                };
-                result._id = request._id;
-                result.hasDisposed = request.hasDisposed;
-                result.isPass = request.isPass;
-                result.type = request.type;
-                result.content = request.content;
-                items.push(result);
+        };
+        Request.find(query).populate('from').populate('group').sort('-createAt')
+        .skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, requests) {
+            Request.find(query).count().exec(function(err, count) {
+                var items = [];
+                var hasNext;
+                requests.map(function(request) {
+                    var result = {};
+                    result.from = {
+                        id: request.from.id,
+                        _id: request.from._id,
+                        name: request.from.name,
+                        avatar: request.from.avatar
+                    };
+                    result.group = {
+                        id: request.group && request.group.id,
+                        _id: request.group && request.group._id,
+                        avatar: request.group && request.group.avatar,
+                        name: request.group && request.group.name
+                    };
+                    result._id = request._id;
+                    result.hasDisposed = request.hasDisposed;
+                    result.isPass = request.isPass;
+                    result.type = request.type;
+                    result.content = request.content;
+                    items.push(result);
+                });
+                if ((page - 1) * perPageItems + requests.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
+                }
+                res.send({
+                    code: 200,
+                    requests: items,
+                    count: count,
+                    hasNext: hasNext
+                });
             });
-            res.send({
-                code: 200,
-                requests: items
-            });
+                
         });
     } else {
-        Request.find({
+        query = {
             to: user._id,
             type: op
-        }).populate('from').populate('group')
+        };
+        Request.find(query).populate('from').populate('group')
         .populate('replyComment').populate('shareId')
         .sort('-createAt')
-        .limit(20).exec(function(err, requests) {
-            var items = [];
-            requests.map(function(request) {
-                var result = {};
-                if (request.type == 'comment') {
-                    if (request.replyComment) {
-                        result.replyComment = true;
-                        result.comment = {
-                            _id: request.replyComment._id,
-                            content: request.replyComment.content.slice(0, 20)
-                        };
-                        result.share = {
-                            _id: request.shareId._id,
-                            id: request.shareId.id,
-                        };
-                    } else {
-                        result.share = {
-                            _id: request.shareId._id,
-                            id: request.shareId.id,
-                            content: request.shareId.content.slice(0, 20)
+        .skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, requests) {
+            Request.find(query).count().exec(function(err, count) {
+                var items = [];
+                var hasNext;
+                requests.map(function(request) {
+                    var result = {};
+                    if (request.type == 'comment') {
+                        if (request.replyComment) {
+                            result.replyComment = true;
+                            result.comment = {
+                                _id: request.replyComment._id,
+                                content: request.replyComment.content.slice(0, 20)
+                            };
+                            result.share = {
+                                _id: request.shareId._id,
+                                id: request.shareId.id,
+                            };
+                        } else {
+                            result.share = {
+                                _id: request.shareId._id,
+                                id: request.shareId.id,
+                                content: request.shareId.content.slice(0, 20)
+                            }
                         }
                     }
+                    
+                    result.from = {
+                        id: request.from.id,
+                        _id: request.from._id,
+                        name: request.from.name,
+                        avatar: request.from.avatar
+                    };
+                    result.group = {
+                        id: request.group && request.group.id,
+                        _id: request.group && request.group._id,
+                        avatar: request.group && request.group.avatar,
+                        name: request.group && request.group.name
+                    };
+                    result._id = request._id;
+                    result.hasDisposed = request.hasDisposed;
+                    result.isPass = request.isPass;
+                    result.date = request.createAt.getTime();
+                    result.type = request.type;
+                    result.content = request.content;
+                    items.push(result);
+                });
+                if ((page - 1) * perPageItems + requests.length < count) {
+                    hasNext = true;
+                } else {
+                    hasNext = false;
                 }
-                
-                result.from = {
-                    id: request.from.id,
-                    _id: request.from._id,
-                    name: request.from.name,
-                    avatar: request.from.avatar
-                };
-                result.group = {
-                    id: request.group && request.group.id,
-                    _id: request.group && request.group._id,
-                    avatar: request.group && request.group.avatar,
-                    name: request.group && request.group.name
-                };
-                result._id = request._id;
-                result.hasDisposed = request.hasDisposed;
-                result.isPass = request.isPass;
-                result.date = request.createAt.getTime();
-                result.type = request.type;
-                result.content = request.content;
-                items.push(result);
-            });
-            res.send({
-                code: 200,
-                requests: items
-            });
+                res.send({
+                    code: 200,
+                    requests: items,
+                    count: count,
+                    hasNext: hasNext
+                });
+            });              
         });  
     }
 };
-
 var getAtShare = function(req, res) {
     var user = req.session.user;
-    Request.find({
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var query = {
         to: user._id,
         type: 'at'
-    }).exec(function(err, requests) {
-        var shareList = [];
-        requests.map(function(item, key) {
-            shareList.push(item.shareId.toString());
-        });
-        if (shareList.length === 0) {
-            return res.send({
-                code: 200,
-                requests: []
+    };
+    Request.find(query).exec(function(err, requests) {
+        Request.find(query).count().exec(function(err, count) {
+            var shareList = [];
+            var hasNext;
+            requests.map(function(item, key) {
+                shareList.push(item.shareId.toString());
             });
-        }
-        Share.find({
-            _id: {
-                $in: shareList
+            if (shareList.length === 0) {
+                return res.send({
+                    code: 200,
+                    requests: [],
+                    count: 0,
+                    hasNext: false
+                });
             }
-        }).populate('group').populate('user')
-        .populate('from.share').populate('from.user').populate('from.group')
-        .exec(function(err, shares) {
-            var content = [];
-            shares.map(function(item, key) {
-                var result = {};
-                result.type = 'view';
-                result._id = item._id;
-                result.commentsCount = item.comments.length;
-                result.content = item.content;
-                result.createAt = item.createAt.getTime();
-                result.date = item.date;
-                result.id = item.id;
-                result.user = {
-                    name: item.user.name,
-                    avatar: item.user.avatar,
-                    _id: item.user._id,
-                    id: item.user.id
-                };
-                if (item.group) {
-                    result.group = {
-                        name: item.group.name,
-                        id: item.group.id,
-                        _id: item.group._id,
-                        avatar: item.group.avatar
-                    };
+            if ((page - 1) * perPageItems + requests.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            Share.find({
+                _id: {
+                    $in: shareList
                 }
-                result.isFork = item.isFork;
-                if (item.isFork) {
-                    result.from = {
-                        user: {
-                            name: item.from.user.name,
-                            id: item.from.user.id,
-                            _id: item.from.user._id
-                        },
-                        share: {
-                            createAt: item.from.share.createAt,
-                            content: item.from.share.content,
-                            _id: item.from.share._id
-                        }
+            }).populate('group').populate('user')
+            .populate('from.share').populate('from.user').populate('from.group')
+            .exec(function(err, shares) {
+                var content = [];
+                shares.map(function(item, key) {
+                    var result = {};
+                    result.type = 'view';
+                    result._id = item._id;
+                    result.commentsCount = item.comments.length;
+                    result.content = item.content;
+                    result.createAt = item.createAt.getTime();
+                    result.date = item.date;
+                    result.id = item.id;
+                    result.user = {
+                        name: item.user.name,
+                        avatar: item.user.avatar,
+                        _id: item.user._id,
+                        id: item.user.id
                     };
-                    if (item.from.group) {
-                        result.from.group = {
-                            name: item.from.group.name,
-                            id: item.from.group.id,
-                            _id: item.from.group._id
+                    if (item.group) {
+                        result.group = {
+                            name: item.group.name,
+                            id: item.group.id,
+                            _id: item.group._id,
+                            avatar: item.group.avatar
                         };
                     }
-                }
-                result.liked = false;
-                item.likes.map(function(like) {
-                    if (like.toString() == user._id.toString()) {
-                        result.liked = true;
+                    result.isFork = item.isFork;
+                    if (item.isFork) {
+                        result.from = {
+                            user: {
+                                name: item.from.user.name,
+                                id: item.from.user.id,
+                                _id: item.from.user._id
+                            },
+                            share: {
+                                createAt: item.from.share.createAt,
+                                content: item.from.share.content,
+                                _id: item.from.share._id
+                            }
+                        };
+                        if (item.from.group) {
+                            result.from.group = {
+                                name: item.from.group.name,
+                                id: item.from.group.id,
+                                _id: item.from.group._id
+                            };
+                        }
                     }
+                    result.liked = false;
+                    item.likes.map(function(like) {
+                        if (like.toString() == user._id.toString()) {
+                            result.liked = true;
+                        }
+                    });
+                    result.likes = item.likes.length;
+                    content.push(result);
                 });
-                result.likes = item.likes.length;
-                content.push(result);
+                res.send({
+                    code: 200,
+                    requests: content.reverse(),
+                    count: count,
+                    hasNext: hasNext 
+                });
             });
-            res.send({
-                code: 200,
-                requests: content.reverse() 
-            })
         });
-    })
+    });
 };
 var readRequest = function(req, res) {
     var user = req.session.user;
