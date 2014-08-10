@@ -137,6 +137,8 @@
           }
           .comment-editor.comment-editor-inline {
             margin-top: 9px;
+            padding: 10px 20px;
+            background-color: #ddd;
           }
           .comment-editor .input-group-btn {
             vertical-align: bottom;
@@ -297,15 +299,14 @@
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
+                            <span class="label label-wraning">{{request.connect + request.group}}</span>
                         </a>
                         <ul class="dropdown-menu" class="request-container">
-                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} friends request</a></li>
-                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} group request</a></li>
-                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} reply</a></li>
-                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} comment</a></li>
-                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} at</a></li>
-                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">No notify</li>
+                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} 个好友请求</a></li>
+                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} 个圈消息</a></li>
+
+                            <li><a href="/request/comment" target="_self">查看评论</a></li>
+                            <li><a href="/request/at" target="_self">查看@我</a></li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu">

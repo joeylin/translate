@@ -234,7 +234,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             var url = '/api/share/comments/delete';
             $http.post(url, {
                 shareId: share._id,
-                commentIndex: index
+                commentId: comment._id
             }).success(function(data) {
                 share.comments.splice(index, 1);
                 share.commentsCount -= 1;
@@ -428,8 +428,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $scope.message = message;
         });
     }
-]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
-    function(app, $scope, $routeParams, $location, $http, $rootScope) {
+]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 'setPos',
+    function(app, $scope, $routeParams, $location, $http, $rootScope, setPos) {
         $scope.requests = [];
 
         var dispose = function() {
@@ -488,7 +488,13 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         };
         // comment
         $scope.vm.toggleReply = function(request) {
-            request.open = !request.open;
+            request.showReply = !request.showReply;
+            if (request.showReply) {
+                request.newComment = '@' + request.from.name + ' ';
+                setTimeout(function() {
+                    setPos($('#' + request._id).find('textarea')[0]);
+                }, 100);
+            }
         };
         $scope.vm.reply = function(request) {
             var comment = request.comment;
@@ -499,23 +505,30 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             var url = '/api/share/comments/add';
             $http.post(url, {
                 shareId: share._id,
-                replyComment: comment._id,
+                replyComment: request._id,
                 content: request.newComment,
-                replyTo: comment.user._id
+                replyTo: request.from._id
             }).success(function(data) {
-                var result = {
-                    user: app.user,
-                    content: comment.newComment,
-                    replyTo: comment.user._id,
-                    _id: data.content._id,
-                    date: data.content.createAt
-                };
-                share.comments.unshift(result);
-                comment.isShowReply = false;
+                var $success = $('#submit-success').clone().css({display:'block'});
+                $success.appendTo('#' + request._id);
+                setTimeout(function() {
+                    $success.remove();
+                }, 500);
+                request.showReply = false;
             });
         };
-        $scope.vm.delete = function(request) {
-
+        $scope.vm.deleteComment = function(request) {
+            var share = request.share;
+            var comment = request.comment;
+            var index = $scope.requests.indexOf(request);
+            var url = '/api/share/comments/delete';
+            $http.post(url, {
+                shareId: share._id,
+                commentId: request._id
+            }).success(function(data) {
+                $scope.requests.splice(index, 1);
+                $scope.commentsCount -= 1;
+            });
         };
 
         var url;
@@ -1271,6 +1284,31 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             });
         };
 
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
+        var url = '/api/user/trend';
+        var params = {
+            page: 1
+        };
+        $scope.next = function() {
+            if (!$scope.pager.hasNext) {
+                return false;
+            }
+            $scope.pager.current += 1;
+            params.page = $scope.pager.current;
+            getTrend();
+        };
+        $scope.prev = function() {
+            if ($scope.pager.current <= 1) {
+                return false;
+            }
+            $scope.pager.current -= 1;
+            params.page = $scope.pager.current;
+            getTrend();
+        };
+
         $scope.content = [];
         var getGroup = function() {
             var url = '/api/myGroup';
@@ -1477,7 +1515,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             var url = '/api/share/comments/delete';
             $http.post(url, {
                 shareId: share._id,
-                commentIndex: index
+                commentId: comment._id,
             }).success(function(data) {
                 share.comments.splice(index, 1);
             });

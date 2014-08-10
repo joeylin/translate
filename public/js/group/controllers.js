@@ -243,7 +243,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             var url = '/api/share/comments/delete';
             $http.post(url, {
                 shareId: share._id,
-                commentIndex: index
+                commentId: comment._id,
             }).success(function(data) {
                 share.comments.splice(index, 1);
                 share.commentsCount -= 1;
@@ -262,6 +262,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             var url = '/api/share/comments/add';
             $http.post(url, {
                 shareId: share._id,
+                replyComment: comment._id,
                 content: comment.newComment,
                 replyTo: comment.user._id
             }).success(function(data) {

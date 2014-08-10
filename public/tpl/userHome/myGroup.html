@@ -33,7 +33,13 @@
         </div>
       </div>
       <hr ng-repeat-end ng-class="{displayNone:$last}">
-     
+      <hr ng-show="content.length > 0 && share.pager">
+      <div ng-show="content.length > 0 && share.pager">
+        <ul class="pager" style="font-size:12px;">
+          <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+          <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

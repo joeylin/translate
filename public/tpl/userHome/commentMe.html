@@ -5,19 +5,25 @@
         <a class="pull-left" href="/profile/{{request.from.id}}" target="_self">
           <img class="media-object" alt="48x48" ng-src="{{request.from.avatar}}" style="width: 48px; height: 48px;">
         </a>
-        <div class="media-body">
-          <div><a href="/profile/{{request.from.id}}" target="_self">@{{request.from.name}}</a>: {{request.content}}</div>
+        <div class="media-body" id="{{request._id}}" style="position:relative;">
+          <div><a href="/profile/{{request.from.id}}" target="_self">{{request.from.name}}</a>: {{request.content}}</div>
           <div ng-if="request.replyComment">
-            <span>回复我的评论</span> <a href="/view/{{request.share.id}}" target="_blank">"{{request.comment.content}}..."</a>
+            <span style="color:#999;">回复我的评论</span> <a href="/view/{{request.share.id}}" target="_blank">"{{request.comment.content}}..."</a>
           </div>
           <div ng-if="!request.replyComment">
-            <span>评论我的微说</span> <a href="/view/{{request.share.id}}" target="_blank">"{{request.share.content}}..."</a>
+            <span style="color:#999;">评论我的微说</span> <a href="/view/{{request.share.id}}" target="_blank">"{{request.share.content}}..."</a>
           </div>
           <div class="date clearfix" style="color:#99a1a6;font-size:0.9em;">
             {{request.date | formatDate:true}}
-            <span class="pull-right">
-              <a href="" style="margin-right: 10px;" ng-show="request.comment">删除</a>
-              <a href="">回复</a>
+            <span class="pull-right" style="margin-right: 5px;">
+              <a href="" style="margin-right: 10px;" ng-show="!request.replyComment || request.myShare" ng-click="vm.deleteComment(request);">删除</a>
+              <a href="" ng-click="vm.toggleReply(request);">回复</a>
+            </span>
+          </div>
+          <div class="fastReply input-group comment-editor comment-editor-inline" ng-if="request.showReply">
+            <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="输入评论..." ng-model="request.newComment"></textarea>
+            <span class="input-group-btn">
+                <button class="btn btn-primary btn-sm" type="button" ng-click="vm.reply(request)">评论</button>
             </span>
           </div>
         </div>
@@ -34,4 +40,9 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="comment-success" id="submit-success" style="background-color:#fff;">
+  <i class="fa fa-fw fa-check-circle"></i>
+  <span style="font-size:16px;">评论成功 !</span>
 </div>

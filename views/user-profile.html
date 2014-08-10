@@ -407,27 +407,18 @@
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning"><%= (locals.request.connect + locals.request.group + locals.request.reply + locals.request.comment + locals.request.at) || '' %></span>
+                            <span class="label label-wraning"><%= (locals.request.connect + locals.request.group) || 0 %></span>
                         </a>
                         <ul class="dropdown-menu" class="request-container">
                             <% if (locals.request.connect > 0) { %>
-                            <li><a href="/request/connect" target="_self"><%= locals.request.connect %>好友请求</a></li>
+                            <li><a href="/request/connect" target="_self"><%= locals.request.connect %> 个好友请求</a></li>
                             <% } %>
                             <% if (locals.request.group > 0) { %>
-                            <li><a href="/request/group" target="_self"><%= locals.request.group %> 圈请求</a></li>
+                            <li><a href="/request/group" target="_self"><%= locals.request.group %> 个圈请求</a></li>
                             <% } %>
-                            <% if (locals.request.reply > 0) { %>
-                            <li><a href="/request/reply" target="_self"><%= locals.request.reply %> 回复</a></li>
-                            <% } %>
-                            <% if (locals.request.comment > 0) { %>
-                            <li><a href="/request/comment" target="_self"><%= locals.request.comment %> 评论</a></li>
-                            <% } %>
-                            <% if (locals.request.at > 0) { %>
-                            <li><a href="/request/at" target="_self"><%= locals.request.at %> @</a></li>
-                            <% } %>
-                            <% if (locals.request.group + locals.request.connect + locals.request.reply + locals.request.comment + locals.request.at === 0) { %>
-                            <li class="no-notify">没有未处理的通知</li>
-                            <% } %>
+                            
+                            <li><a href="/request/comment" target="_self">查看评论</a></li>
+                            <li><a href="/request/at" target="_self">查看@我</a></li>
                         </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">

@@ -1206,7 +1206,8 @@ var getNotifyCount = function(req, res) {
     var user = req.session.user;
     Request.find({
         to: user._id,
-        hasDisposed: false
+        hasDisposed: false,
+        is_delete: false
     }, function(err, requests) {
         var comment = [];
         var reply = [];
@@ -1214,29 +1215,23 @@ var getNotifyCount = function(req, res) {
         var connect = [];
         var at = [];
         requests.map(function(request) {
-            if (request.type === 'comment') {
-                comment.push(request);
-            }
             if (request.type === 'group') {
                 group.push(request);
             }
-            if (request.type === 'reply') {
-                reply.push(request);
-            }
             if (request.type === 'connect') {
                 connect.push(request);
+            }
+            if (request.type === 'comment') {
+                comment.push(request);
             }
             if (request.type === 'at') {
                 at.push(request);
             }
         });
         res.send({
-            code: 200,
-            comment: comment.length,
-            reply: reply.length,
+            code: 200, 
             group: group.length,
-            connect: connect.length,
-            at: at.length
+            connect: connect.length
         });
     });
 };
@@ -1297,8 +1292,7 @@ var getRequest = function(req, res) {
                     count: count,
                     hasNext: hasNext
                 });
-            });
-                
+            });        
         });
     } else {
         query = {
@@ -1314,26 +1308,6 @@ var getRequest = function(req, res) {
                 var hasNext;
                 requests.map(function(request) {
                     var result = {};
-                    if (request.type == 'comment') {
-                        if (request.replyComment) {
-                            result.replyComment = true;
-                            result.comment = {
-                                _id: request.replyComment._id,
-                                content: request.replyComment.content.slice(0, 20)
-                            };
-                            result.share = {
-                                _id: request.shareId._id,
-                                id: request.shareId.id,
-                            };
-                        } else {
-                            result.share = {
-                                _id: request.shareId._id,
-                                id: request.shareId.id,
-                                content: request.shareId.content.slice(0, 20)
-                            }
-                        }
-                    }
-                    
                     result.from = {
                         id: request.from.id,
                         _id: request.from._id,
@@ -1368,6 +1342,86 @@ var getRequest = function(req, res) {
             });              
         });  
     }
+};
+var getCommentMe = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var query = {
+        replyTo: user._id,
+        is_delete: false
+    };
+    Comment.find(query)
+    .populate('user').populate('shareId')
+    .populate('replyTo').populate('replyComment')
+    .skip((page - 1) * perPageItems).limit(perPageItems)
+    .sort('-createAt').exec(function(err, comments) {
+        Comment.find(query).count().exec(function(err, count) {
+            var items = [];
+            var hasNext;
+
+            comments.map(function(comment, key) {
+                var result = {};
+                if (comment.shareId.user.toString() == user._id) {
+                    result.myShare = true;
+                } else {
+                    result.myShare = false;
+                }
+                result.share = {
+                    id: comment.shareId.id,
+                    _id: comment.shareId._id
+                };
+                if (comment.replyComment) {
+                    result.replyComment = true;
+                    result.comment = {
+                        id: comment.replyComment.id,
+                        _id: comment.replyComment._id,
+                        content: comment.replyComment.content.slice(0,20)
+                    }
+                } else {
+                    result.replyComment = false;
+                    result.share.content = comment.shareId.content.slice(0,20);
+                }
+                result.from = {
+                    name: comment.user.name,
+                    id: comment.user.id,
+                    _id: comment.user._id,
+                    avatar: comment.user.avatar
+                };
+                result.content = comment.content;
+                result._id = comment._id;
+                result.date = comment.createAt.getTime();
+                items.push(result);
+            });
+
+            if ((page - 1) * perPageItems + comments.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                requests: items,
+                count: count,
+                hasNext: hasNext
+            });
+            Request.find({
+                to: user._id,
+                type: 'comment',
+                is_delete: false
+            }).exec(function(err, requests) {
+                if (err || !requests) {
+                    return false;
+                }
+                requests.map(function(request,key) {
+                    request.is_delete = true;
+                    request.save(function(err,request) {
+                        consle.log('read comment msg : ' + request.is_delete);
+                    });
+                })
+            });
+        });
+    });
 };
 var getAtShare = function(req, res) {
     var user = req.session.user;
@@ -1465,6 +1519,21 @@ var getAtShare = function(req, res) {
                     count: count,
                     hasNext: hasNext 
                 });
+                Request.find({
+                    to: user._id,
+                    type: 'at',
+                    is_delete: false
+                }).exec(function(err, requests) {
+                    if (err || !requests) {
+                        return false;
+                    }
+                    requests.map(function(request,key) {
+                        request.is_delete = true;
+                        request.save(function(err,request) {
+                            consle.log('read at msg : ' + request.is_delete);
+                        });
+                    })
+                });
             });
         });
     });
@@ -1532,12 +1601,18 @@ var getConnectList = function(req, res) {
 };
 var getGroupByUser = function(req, res) {
     var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = req.query.perPageItems || 20;
+
     User.findOne({
         _id: user._id
     }).populate('groups.join').exec(function(err, user) {
         var joinGroups = user.groups.join;
         var results = [];
-        joinGroups.map(function(group, key) {
+        var count = joinGroups.length;
+        var hasNext, pager;
+        var content = joinGroups.reverse().slice(perPageItems * (page -1), perPageItems * page);
+        content.map(function(group, key) {
             var result = {
                 avatar: group.avatar,
                 id: group.id,
@@ -1549,9 +1624,21 @@ var getGroupByUser = function(req, res) {
             };
             results.push(result);
         });
+        if (perPageItems * page < count) {
+            hasNext = true;
+        } else {
+            hasNext = false;
+        }
+        if (perPageItems < count) {
+            pager = true;
+        } else {
+            pager = false;
+        }
         res.send({
             code: 200,
-            count: results.length,
+            count: count,
+            hasNext: hasNext,
+            pager: pager,
             content: results
         });
     });
@@ -2195,6 +2282,7 @@ module.exports = function(app) {
 
     // notify
     app.get('/api/notify', middleware.check_login, getNotifyCount);
+    app.get('/api/notify/comment', middleware.check_login, getCommentMe);
     app.get('/api/notify/at', middleware.check_login, getAtShare);
     app.get('/api/notify/:op', middleware.check_login, getRequest);
     app.post('/api/notify/:op/read', middleware.check_login, readRequest);

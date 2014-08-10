@@ -134,6 +134,8 @@
           }
           .comment-editor.comment-editor-inline {
             margin-top: 9px;
+            padding: 10px 20px;
+            background-color: #ddd;
           }
           .comment-editor .input-group-btn:last-child >.btn {
             margin-left: 8px;
@@ -668,6 +670,91 @@
             background: #f9f9f9;
             color: #999;
           }
+          /* message comment */
+          .nav-tabs-custom > .nav-tabs {
+             border-bottom-color: transparent; 
+          }
+          .comment-success {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            margin-left: -50px;
+            background-color: #fff;
+            display: none;
+          }
+          .comment-success >i {
+            color: #5cb85c;
+            font-size: 30px;
+          }
+          .comment-success >span {
+            position: relative;
+            top: -5px;
+            font-size: 16px;
+            color: #999;
+          }
+
+          /* notify */
+          .navbar-nav > .user-menu.notify > .dropdown-menu {
+            border-radius: 4px;
+          }
+          .dropdown .dropdown-toggle {
+            position: relative;
+          }
+          .dropdown .dropdown-toggle .notify-dot {
+            position: absolute;
+            top: 14px;
+            right: 10px;
+            background-color: #d9534f;
+            padding: 3px;
+            border-radius: 3px;
+          }
+          .dropdown .dropdown-toggle .notify-tag {
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            position: absolute;
+            top: 7px;
+            right: 2px;
+            font-size: 10px;
+            font-weight: normal;
+            width: 15px;
+            height: 15px;
+            line-height: 1.0em;
+            text-align: center;
+            padding: 2px;
+            background-color: #5cb85c;
+            color: #fff;
+          }
+          .dropdown .dropdown-toggle:hover .notify-tag {
+            top: 3px;
+          }
+          .dropdown-menu .msg {
+            padding-left: 15px;
+            padding-right: 15px;
+          }
+          .dropdown-menu .header {
+            padding: 6px 15px;
+            border-bottom: 1px solid #eee;
+          }
+          .dropdown-menu .notify-container {
+            margin: 0;
+            padding: 0;
+            margin-left: 33px;
+            list-style-type: disc;
+          }
+          .dropdown-menu .notify-container > li {
+            padding: 3px 15px 3px 0;
+          }
+          .dropdown-menu .readmore {
+            background-color: #F4F4F4;
+            padding: 6px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            margin-top: 5px;
+          }
+          .dropdown-menu .readmore a {
+            color: #333;
+          }
           
         </style>
         <!-- for angular ng-cloak -->
@@ -700,17 +787,41 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right" ng-cloak>
-                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
+                  <li class="dropdown user-menu notify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                           <i class="fa fa-bell"></i> 
-                          <span class="label label-wraning">{{request.connect + request.group}}</span>
+                          <span class="notify-dot" ng-show="request.connect + request.group"></span>
                       </a>
-                      <ul class="dropdown-menu" class="request-container">
-                          <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} 好友请求</a></li>
-                          <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} 圈消息</a></li>
+                      <div class="dropdown-menu request-container">
+                          <div class="header">
+                            <span>{{0}} 条通知</span>
+                            <span>{{0}} 条请求</span>
+                          </div>
+                          <ul class="notify-container">
+                              <li>joeylin 添加你为好友</li>
+                              <li>leo 申请加入 angularjs 圈</li>
+                              <li>你已成为 angularjs 管理员</li>
+                          </ul>
+                          <div class="msg" style="margin-top: 5px;">
+                            {{request.connect ? request.connect + '个':''}}<a href="/request/connect" target="_self"> 查看好友请求</a>
+                          </div>
+                          <div class="msg">
+                            {{request.group ? request.group + '个':''}} <a href="/request/group" target="_self"> 查看圈消息</a>
+                          </div>
+                          <div class="readmore text-center">
+                            <a href="">查看更多通知</a>
+                          </div>
+                      </div>
+                          
+                  </li>
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                          <i class="fa fa-envelope"></i> 
+                          <span class="notify-tag" ng-show="request.connect + request.group">{{request.connect + request.group}}</span>
+                      </a>
+                      <ul class="dropdown-menu" class="request-container" style="padding: 10px 0!important;">
                           <li><a href="/request/comment" target="_self">查看评论</a></li>
                           <li><a href="/request/at" target="_self">查看@我</a></li>
-                          
                       </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">

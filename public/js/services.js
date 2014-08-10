@@ -226,6 +226,22 @@ factory('restAPI', ['$resource',
             return outerDOM.innerHTML;
         };
     }
+]).factory('setPos', ['tools',
+    function(tools) {
+        var setpos = function(o){ 
+          if (o.setSelectionRange) { 
+              setTimeout(function(){
+              o.setSelectionRange(o.value.length, o.value.length);  
+              o.focus()} ,0) 
+          }else if (o.createTextRange) {
+            var textrange=o.createTextRange();
+            textrange.moveStart("character",o.value.length);
+            textrange.moveEnd("character",0);
+            textrange.select();
+          }
+        };
+        return setpos;
+    }
 ]).factory('wordCount', ['mdParse', 'sanitize', 'pretty', 'tools',
     function(mdParse, sanitize, pretty, tools) {
         var textareaGetLength = (function() {

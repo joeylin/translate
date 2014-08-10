@@ -118,7 +118,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             var url = '/api/share/comments/delete';
             $http.post(url, {
                 shareId: $scope.share._id,
-                commentIndex: index
+                commentId: comment._id
             }).success(function(data) {
                 $scope.share.comments.splice(index, 1);
                 $scope.share.total -= 1;
@@ -140,6 +140,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             var url = '/api/share/comments/add';
             $http.post(url, {
                 shareId: $scope.share._id,
+                replyComment: comment._id,
                 content: comment.newComment,
                 replyTo: comment.user._id
             }).success(function(data) {

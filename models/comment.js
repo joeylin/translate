@@ -65,8 +65,12 @@ CommentSchema.statics.createNew = function(obj, cb) {
     comment.replyTo = obj.replyTo;
     comment.shareId = obj.shareId;
     comment.replyComment = obj.replyComment;
-    comment.save(cb);
-    sendRequest(obj);
+    comment.save(function(err,comment) {
+        cb(err, comment);
+        obj._id = comment._id;
+        sendRequest(obj);
+    });
+    
 };
 
 // middleware
@@ -87,6 +91,7 @@ function sendRequest(comment) {
         request.from = comment.user;
         request.shareId = comment.shareId;
         request.content = comment.content;
+        request.currentComment = comment._id;
         request.type = 'comment';
         Request.createNew(request);
         return false;
@@ -112,6 +117,7 @@ function sendRequest(comment) {
             obj.content = comment.content;
             obj.from = comment.user;
             obj.replyComment = comment.replyComment;
+            obj.currentComment = comment._id;
             if (user._id.toString() == comment.replyTo) {
                 obj.type = 'comment';
                 atAuthor = true;
@@ -123,6 +129,7 @@ function sendRequest(comment) {
             var req = {};
             req.to = comment.replyTo;
             req.from = comment.user;
+            req.currentComment = comment._id;
             req.content = comment.content;
             req.shareId = comment.shareId;
             req.type = 'comment';

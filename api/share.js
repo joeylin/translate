@@ -52,7 +52,6 @@ var getShareComments = function(req, res) {
             });
         }
         var count = share.comments.length;
-        // todo fix pager
         var latest = share.comments.reverse().slice(perPageItems * (page -1), perPageItems * page);
         Comment.find({
             _id: {
@@ -224,22 +223,41 @@ var addComment = function(req, res) {
 var deleteComment = function(req, res) {
     var shareId = req.body.shareId;
     var user = req.session.user;
-    var index = req.body.commentIndex;
+    var commentId = req.body.commentId;
     Share.findOne({
         _id: shareId
     }, function(err, share) {
-        if (index < 0) {
+        if (err || !share) {
             return res.send({
                 code: 404,
-                info: 'no auth'
+                info: 'no share'
             });
-        } else {
-            Comment.findOne({
-                _id: share.comments[index]
-            }, function(err, comment) {
-                // only comment author or share author can delete comment
-                if (comment.user.toString() == user._id || share.user.toString() == user._id) {
-                    comment.remove();
+        }
+        Comment.findOne({
+            _id: commentId
+        }, function(err, comment) {
+            if (err || !comment) {
+                return res.send({
+                    code: 404,
+                    info: 'no comment'
+                });
+            }
+            if (comment.user.toString() == user._id || share.user.toString() == user._id) {
+                var index = -1;
+                share.comments.map(function(item, key) {
+                    if (item.toString() == comment._id.toString()) {
+                        index = key;
+                        return false;
+                    }
+                });
+                if (index === -1) {
+                    return res.send({
+                        code: 404,
+                        info: 'no your comment, or deleted'
+                    });
+                }
+                comment.is_delete = true;
+                comment.save(function(err, comment) {
                     share.comments.splice(index, 1);
                     share.save(function(err) {
                         res.send({
@@ -247,14 +265,14 @@ var deleteComment = function(req, res) {
                             info: 'success'
                         });
                     });
-                } else {
-                    return res.send({
-                        code: 404,
-                        info: 'no auth'
-                    });
-                }
-            });
-        }
+                });
+            } else {
+                return res.send({
+                    code: 404,
+                    info: 'no auth'
+                });
+            }
+        });
     });
 };
 var shareLike = function(req, res) {
