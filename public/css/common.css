@@ -39,7 +39,8 @@
 	padding-right: 8px;
 }
 .navbar .nav-user-pic {
-	width: 20px;
+	width: 18px;
+	height: 18px;
 	margin-right: 10px;
 	display: inline-block;
 }
@@ -55,3 +56,4 @@
 .navbar-inverse .navbar-nav>li>a:focus {
 	background: #36404c;
 }
+

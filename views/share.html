@@ -2,8 +2,8 @@
 <html lang="en">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
-        <title>Translate</title>
-        <meta name="generator" content="translate" />
+        <title>MPush</title>
+        <meta name="generator" content="MPush" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
@@ -25,7 +25,7 @@
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <!-- CSS code from translate.com editor -->
+        <!-- CSS code from MPush.com editor -->
         
         <style type="text/css">
             /*
@@ -227,6 +227,26 @@
             -webkit-box-shadow: none;
             box-shadow: none;
           }
+          .comment-editor {
+            position: relative;
+          }
+          .comment-editor-inline .input-group-btn {
+            top: -1px;
+          }
+          .comment-editor-inline.comment-editor .flex-text-wrap > pre {
+            min-height: 20px;
+          }
+          .comment-editor .flex-text-wrap > pre {
+            min-height: 74px;
+            margin-bottom: 0;
+            padding: 6px 12px;
+            line-height: 1.42857143;
+          }
+          .comment-editor .flex-text-wrap textarea {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+          }
 
           
           /* footer */
@@ -265,7 +285,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Forin</a>
+              <a class="navbar-brand" href="#">多推</a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right" ng-cloak>
@@ -381,7 +401,7 @@
             <div class="panel reply-panel" ng-cloak>
               <div class="panel-body reply-container">
                 <div class="input-group comment-editor">
-                    <textarea class="form-control" rows="3" placeholder="您有什么看法呢..." ng-model="share.newComment"></textarea>
+                    <textarea auto-cut auto-height class="form-control" rows="3" placeholder="您有什么看法呢..." ng-model="share.newComment"></textarea>
                     <span class="input-group-btn">
                         <% if (locals.author) { %>
                         <button class="btn btn-primary reply-submit btn-sm" type="button" ng-click="submitComment()">评论</button>
@@ -407,7 +427,7 @@
                       </span>
                     </div>
                     <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
-                        <textarea class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
+                        <textarea auto-height auto-cut class="form-control" rows="1" placeholder="输入评论" ng-model="comment.newComment"></textarea>
                         <span class="input-group-btn">
                             <button class="btn btn-primary btn-sm" type="button" ng-click="submitInlineComment(comment)">评论</button>
                         </span>
@@ -418,11 +438,11 @@
                 <div ng-show="share.comments.length === 0" class="text-center">
                   还没有人发表回复哦，快来回复一下吧。
                 </div>
-                <hr ng-show="share.comments.length > 0 && share.comments.length < total">
-                <div ng-show="share.comments.length > 0 && share.comments.length < total">
-                  <ul class="pager">
-                    <li ng-class="{'disabled': page.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
-                    <li ng-class="{'disabled': !page.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
+                <hr ng-show="share.comments.length > 0 && share.pager">
+                <div ng-show="share.comments.length > 0 && share.pager">
+                  <ul class="pager" style="font-size:12px;">
+                    <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
+                    <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
                   </ul>
                 </div>
               </div>

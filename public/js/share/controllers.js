@@ -25,6 +25,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             }).success(function(data) {
                 $scope.share.comments = data.comments;
                 $scope.pager.hasNext = data.hasNext;
+                $scope.share.pager = data.pager;
             });
         };
         $scope.next = function() {

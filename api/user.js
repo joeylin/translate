@@ -1285,10 +1285,33 @@ var getRequest = function(req, res) {
         Request.find({
             to: user._id,
             type: op
-        }).populate('from').populate('group').sort('-createAt').limit(20).exec(function(err, requests) {
+        }).populate('from').populate('group')
+        .populate('replyComment').populate('shareId')
+        .sort('-createAt')
+        .limit(20).exec(function(err, requests) {
             var items = [];
             requests.map(function(request) {
                 var result = {};
+                if (request.type == 'comment') {
+                    if (request.replyComment) {
+                        result.replyComment = true;
+                        result.comment = {
+                            _id: request.replyComment._id,
+                            content: request.replyComment.content.slice(0, 20)
+                        };
+                        result.share = {
+                            _id: request.shareId._id,
+                            id: request.shareId.id,
+                        };
+                    } else {
+                        result.share = {
+                            _id: request.shareId._id,
+                            id: request.shareId.id,
+                            content: request.shareId.content.slice(0, 20)
+                        }
+                    }
+                }
+                
                 result.from = {
                     id: request.from.id,
                     _id: request.from._id,
@@ -1304,6 +1327,7 @@ var getRequest = function(req, res) {
                 result._id = request._id;
                 result.hasDisposed = request.hasDisposed;
                 result.isPass = request.isPass;
+                result.date = request.createAt.getTime();
                 result.type = request.type;
                 result.content = request.content;
                 items.push(result);
@@ -1312,8 +1336,94 @@ var getRequest = function(req, res) {
                 code: 200,
                 requests: items
             });
-        });
+        });  
     }
+};
+
+var getAtShare = function(req, res) {
+    var user = req.session.user;
+    Request.find({
+        to: user._id,
+        type: 'at'
+    }).exec(function(err, requests) {
+        var shareList = [];
+        requests.map(function(item, key) {
+            shareList.push(item.shareId.toString());
+        });
+        if (shareList.length === 0) {
+            return res.send({
+                code: 200,
+                requests: []
+            });
+        }
+        Share.find({
+            _id: {
+                $in: shareList
+            }
+        }).populate('group').populate('user')
+        .populate('from.share').populate('from.user').populate('from.group')
+        .exec(function(err, shares) {
+            var content = [];
+            shares.map(function(item, key) {
+                var result = {};
+                result.type = 'view';
+                result._id = item._id;
+                result.commentsCount = item.comments.length;
+                result.content = item.content;
+                result.createAt = item.createAt.getTime();
+                result.date = item.date;
+                result.id = item.id;
+                result.user = {
+                    name: item.user.name,
+                    avatar: item.user.avatar,
+                    _id: item.user._id,
+                    id: item.user.id
+                };
+                if (item.group) {
+                    result.group = {
+                        name: item.group.name,
+                        id: item.group.id,
+                        _id: item.group._id,
+                        avatar: item.group.avatar
+                    };
+                }
+                result.isFork = item.isFork;
+                if (item.isFork) {
+                    result.from = {
+                        user: {
+                            name: item.from.user.name,
+                            id: item.from.user.id,
+                            _id: item.from.user._id
+                        },
+                        share: {
+                            createAt: item.from.share.createAt,
+                            content: item.from.share.content,
+                            _id: item.from.share._id
+                        }
+                    };
+                    if (item.from.group) {
+                        result.from.group = {
+                            name: item.from.group.name,
+                            id: item.from.group.id,
+                            _id: item.from.group._id
+                        };
+                    }
+                }
+                result.liked = false;
+                item.likes.map(function(like) {
+                    if (like.toString() == user._id.toString()) {
+                        result.liked = true;
+                    }
+                });
+                result.likes = item.likes.length;
+                content.push(result);
+            });
+            res.send({
+                code: 200,
+                requests: content.reverse() 
+            })
+        });
+    })
 };
 var readRequest = function(req, res) {
     var user = req.session.user;
@@ -2041,6 +2151,7 @@ module.exports = function(app) {
 
     // notify
     app.get('/api/notify', middleware.check_login, getNotifyCount);
+    app.get('/api/notify/at', middleware.check_login, getAtShare);
     app.get('/api/notify/:op', middleware.check_login, getRequest);
     app.post('/api/notify/:op/read', middleware.check_login, readRequest);
 

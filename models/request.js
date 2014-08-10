@@ -15,6 +15,10 @@ var RequestSchema = new Schema({
     type: {
         type: String
     },
+    replyComment: {
+        type: ObjectId,
+        ref: 'Comment'
+    },
     shareId: {
         type: ObjectId,
         ref: 'Share'
@@ -74,6 +78,7 @@ RequestSchema.statics.createNew = function(obj, cb) {
     Request.type = obj.type;
     Request.content = obj.content;
     Request.group = obj.group;
+    Request.replyComment = obj.replyComment;
     Request.shareId = obj.shareId;
     Request.save(cb);
 };

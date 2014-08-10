@@ -215,7 +215,12 @@ ShareSchema.statics.createNew = function(obj, cb) {
     var IdGenerator = mongoose.model('IdGenerator');
     IdGenerator.getNewId('share', function(err, doc) {
         share.id = doc.currentId;
-        share.save(cb);
+        share.save(function(err, share) {
+            cb(err, share);
+            if (share.type == 'view' || share.type == 'group') {
+                sendRequest(share);
+            }
+        });
     });
 };
 ShareSchema.statics.delete = function(id, userId, cb) {
@@ -272,3 +277,44 @@ ShareSchema.pre('save', function(next) {
 });
 
 mongoose.model('Share', ShareSchema);
+
+function sendRequest(share) {
+    var Request = mongoose.model('Request');
+    var User = mongoose.model('User');
+    var content;
+    if (share.isFork && share.content.match('\/\/')) {
+        content = share.content.match('/(\w*)\/\//')[1];
+    } else {
+        content = share.content;
+    }
+    var atList = content.match(/\B@\w*\b/g);
+    if (!atList) {
+        return false;
+    }
+    var atArray  = [];
+    atList.map(function(value,key) {
+        atArray.push(value.replace('@',''));
+    });
+    var query = {
+        name: {
+            $in: atArray
+        }
+    };
+    User.find(query).exec(function(err, users) {
+        if (err || !users) {
+            return false;
+        }
+        users.map(function(user, key) {
+            if (user._id.toString() == share.user.toString()) {
+                return false;
+            }
+            var obj = {};
+            obj.to = user._id;
+            obj.shareId = share._id;
+            obj.from = share.user;
+            obj.type = 'at';
+            Request.createNew(obj);
+        });
+
+    });
+}

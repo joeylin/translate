@@ -40,6 +40,23 @@ directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
             }
         };
     }
+]).directive('autoCut', ['mdParse', 'wordCount', 'pretty', 'isVisible', '$timeout',
+    function(mdParse, wordCount, pretty, isVisible, $timeout) {
+        return {
+            restrict: 'AE',
+            link: function(scope, element, attrs) {
+                if (!$(element).is('textarea')) {
+                    return false;
+                }
+                $(element).on('keydown', function(e) {
+                    var key = e.keyCode || e.which;
+                    if (wordCount(this.value) > 140) {
+                        
+                    }
+                });
+            }
+        };
+    }
 ]).directive('mdContent', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
     function(mdParse, sanitize, pretty, isVisible, $timeout) {
         return function(scope, element, attr) {

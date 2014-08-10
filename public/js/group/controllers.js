@@ -234,6 +234,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
                     date: data.content.createAt
                 };
                 share.comments.unshift(comment);
+                share.commentsCount += 1;
                 share.newComment = '';
             });
         };
@@ -245,6 +246,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
                 commentIndex: index
             }).success(function(data) {
                 share.comments.splice(index, 1);
+                share.commentsCount -= 1;
             });
         };
         $scope.vm.reply = function(comment) {

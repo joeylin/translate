@@ -50,7 +50,7 @@
           </div>
           <div class="reply-container" ng-show="share.isShowComment">
             <div class="comment-editor">
-                <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="share.newComment"></textarea>
+                <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="输入评论..." ng-model="share.newComment"></textarea>
                 <span class="input-group-btn">
                     <button class="btn btn-primary btn-sm pull-right reply-submit" type="button" ng-click="vm.submitComment(share)">评论</button>
                 </span>
@@ -74,7 +74,7 @@
                   </span>
                 </div>
                 <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
-                    <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
+                    <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="输入评论..." ng-model="comment.newComment"></textarea>
                     <span class="input-group-btn">
                         <button class="btn btn-primary btn-sm" type="button" ng-click="vm.submitInlineComment(comment,share)">评论</button>
                     </span>

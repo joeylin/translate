@@ -2,8 +2,8 @@
 <html lang="en">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
-        <title>Translate</title>
-        <meta name="generator" content="translate" />
+        <title>MPush</title>
+        <meta name="generator" content="MPush" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
@@ -25,7 +25,7 @@
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <!-- CSS code from translate.com editor -->
+        <!-- CSS code from MPush.com editor -->
         
         <style type="text/css">
             /*
@@ -323,6 +323,10 @@
             margin-bottom: 5px;
           }
           /* for auto Height*/
+          .well {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+          }
           .comment-editor-inline .form-control {
             position: absolute;
           }
@@ -692,23 +696,23 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Forin</a>
+              <a class="navbar-brand" href="#">多推</a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right" ng-cloak>
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                            <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning">{{request.connect + request.group + request.reply + request.comment || ''}}</span>
-                        </a>
-                        <ul class="dropdown-menu" class="request-container">
-                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} 好友请求</a></li>
-                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} 群消息</a></li>
-                            <li ng-show="request.reply"><a href="/request/reply" target="_self">{{request.reply}} 回复</a></li>
-                            <li ng-show="request.comment"><a href="/request/comment" target="_self">{{request.comment}} 评论</a></li>
-                            <li ng-show="request.at"><a href="/request/at" target="_self">{{request.at}} @我</a></li>
-                            <li ng-show="!request.comment && !request.reply && !request.group && !request.connect" class="no-notify">没有未处理的通知</li>
-                        </ul>
+                          <i class="fa fa-bell"></i> 
+                          <span class="label label-wraning">{{request.connect + request.group}}</span>
+                      </a>
+                      <ul class="dropdown-menu" class="request-container">
+                          <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} 好友请求</a></li>
+                          <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} 圈消息</a></li>
+                          <li><a href="/request/reply" target="_self">查看回复</a></li>
+                          <li><a href="/request/comment" target="_self">查看评论</a></li>
+                          <li><a href="/request/at" target="_self">查看@我</a></li>
+                          
+                      </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -19,6 +19,10 @@ var CommentSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     },
+    replyComment: {
+        type: ObjectId,
+        ref: 'Comment'
+    },
     is_delete: {
         type: Boolean,
         default: false
@@ -60,8 +64,9 @@ CommentSchema.statics.createNew = function(obj, cb) {
     comment.user = obj.user;
     comment.replyTo = obj.replyTo;
     comment.shareId = obj.shareId;
+    comment.replyComment = obj.replyComment;
     comment.save(cb);
-    sendRequest(comment);
+    sendRequest(obj);
 };
 
 // middleware
@@ -75,8 +80,17 @@ mongoose.model('Comment', CommentSchema);
 function sendRequest(comment) {
     var Request = mongoose.model('Request');
     var User = mongoose.model('User');
-    var atStr = comment.content.match(/\B@\w*\b/g);
-    var atList = atStr ? atStr.split(',') : [];
+    var atList = comment.content.match(/\B@\w*\b/g);
+    if (!atList) {
+        var request = {};
+        request.to = comment.replyTo;
+        request.from = comment.user;
+        request.shareId = comment.shareId;
+        request.content = comment.content;
+        request.type = 'comment';
+        Request.createNew(request);
+        return false;
+    }
     var atArray  = [];
     atList.map(function(value,key) {
         atArray.push(value.replace('@',''));
@@ -95,19 +109,21 @@ function sendRequest(comment) {
             var obj = {};
             obj.to = user._id;
             obj.shareId = comment.shareId;
+            obj.content = comment.content;
             obj.from = comment.user;
+            obj.replyComment = comment.replyComment;
             if (user._id.toString() == comment.replyTo) {
                 obj.type = 'comment';
                 atAuthor = true;
-            } else {
-                obj.type = 'at';
+                Request.createNew(obj);
             }
-            Request.createNew(obj);
+            
         });
         if (!atAuthor) {
             var req = {};
             req.to = comment.replyTo;
             req.from = comment.user;
+            req.content = comment.content;
             req.shareId = comment.shareId;
             req.type = 'comment';
             Request.createNew(req);

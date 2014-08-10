@@ -206,12 +206,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.post(url, {
                 shareId: share._id,
                 content: share.newComment,
-                replyTo: share.replyTo
+                replyTo: share.user._id
             }).success(function(data) {
                 var comment = {
                     user: app.user,
                     content: share.newComment,
-                    replyTo: share.replyTo,
                     _id: data.content._id,
                     date: data.content.createAt
                 };
@@ -254,6 +253,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             var url = '/api/share/comments/add';
             $http.post(url, {
                 shareId: share._id,
+                replyComment: comment._id,
                 content: comment.newComment,
                 replyTo: comment.user._id
             }).success(function(data) {
@@ -1426,12 +1426,12 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.post(url, {
                 shareId: share._id,
                 content: share.newComment,
-                replyTo: share.replyTo
+                replyTo: share.user._id
             }).success(function(data) {
                 var comment = {
                     user: app.user,
                     content: share.newComment,
-                    replyTo: share.replyTo,
+                    replyTo: share.user._id,
                     _id: data.content._id,
                     date: data.content.createAt
                 };

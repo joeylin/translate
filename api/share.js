@@ -61,9 +61,11 @@ var getShareComments = function(req, res) {
         }).sort('-createAt').populate('user').exec(function(err, comments) {
             var results = [];
             var hasNext;
+            var pager;
             comments.map(function(comment) {
                 var result = {
                     content: comment.content,
+                    _id: comment._id,
                     date: comment.createAt.getTime(),
                     user: {
                         name: comment.user.name,
@@ -74,11 +76,22 @@ var getShareComments = function(req, res) {
                 };
                 results.push(result);
             });
+            if (perPageItems * page < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            if (perPageItems < count) {
+                pager = true;
+            } else {
+                pager = false;
+            }
             res.send({
                 code: 200,
                 comments: results,
                 count: count,
-                hasNext: hasNext
+                hasNext: hasNext,
+                pager: pager
             });
         });
     });
@@ -186,6 +199,8 @@ var addComment = function(req, res) {
     var user = req.session.user;
     var comment = {
         content: req.body.content,
+        shareId: req.body.shareId,
+        replyComment: req.body.replyComment,
         replyTo: req.body.replyTo,
         user: user._id
     };

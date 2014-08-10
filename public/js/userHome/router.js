@@ -98,7 +98,7 @@ constant('app', {
             path: 'reply'
         };
         var comment = {
-            templateUrl: getFileProvider.html('request.html'),
+            templateUrl: getFileProvider.html('commentMe.html'),
             controller: 'requestCtrl',
             path: 'comment'
         };
@@ -108,7 +108,7 @@ constant('app', {
             path: 'group'
         };
         var at = {
-            templateUrl: getFileProvider.html('request.html'),
+            templateUrl: getFileProvider.html('atMe.html'),
             controller: 'requestCtrl',
             path: 'at'
         };
