@@ -12,7 +12,7 @@
         <a class="pull-left" href="/group/{{share.group.id}}" target="_self">
           <img class="media-object" alt="64x64" ng-src="{{share.group.avatar}}" style="width: 50px; height: 50px;">
         </a>
-        <div class="media-body">
+        <div class="media-body" id="{{share._id}}">
           <h4 class="media-heading clearfix">
             {{share.group.name}} <small style="padding-left:5px;">来自 <a href="/profile/{{share.user.id}}" target="_self">{{share.user.name}}</a> 的发布</small>
           </h4>
@@ -30,12 +30,10 @@
               <a href="#" class="like" ng-class="{liked:share.liked}" ng-click="vm.toggleLike(share)"><i class="fa fa-fw fa-thumbs-o-up"></i>({{share.likes}})</a>
               <a href="#" class="comment" ng-click="vm.toggleComment(share)"><i class="fa fa-fw fa-comments"></i>({{share.commentsCount}})</a>
             </span>
-            
-            
           </div>
           <div class="reply-container" ng-show="share.isShowComment">
             <div class="comment-editor" ng-show="global.user">
-                <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="输入评论..." ng-model="share.newComment"></textarea>
+                <textarea spellcheck="false" auto-height atwho="userList" class="form-control" rows="1" placeholder="输入评论..." ng-model="share.newComment"></textarea>
                 <span class="input-group-btn">
                     <button class="btn btn-primary pull-right btn-sm reply-submit" type="button" ng-click="vm.submitComment(share)">评论</button>
                 </span>
@@ -49,7 +47,7 @@
               <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
                 <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
               </a>
-              <div class="media-body">
+              <div class="media-body" id="{{comment._id}}">
                 <p class="reply-content">
                   <span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span><span md-content="comment.content"></span>
                 </p>
@@ -61,7 +59,7 @@
                   </span>
                 </div>
                 <div class="input-group comment-editor comment-editor-inline" ng-show="comment.isShowReply">
-                    <textarea auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
+                    <textarea spellcheck="false" auto-height atwho="userList" class="form-control" rows="1" placeholder="Enter ..." ng-model="comment.newComment"></textarea>
                     <span class="input-group-btn">
                         <button class="btn btn-primary btn-sm" type="button" ng-click="vm.submitInlineComment(comment,share)">评论</button>
                     </span>

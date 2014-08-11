@@ -129,3 +129,7 @@
 	color: #333;
 }
 
+/* fix navbar */
+.navbar {
+	border-radius: 0;
+}

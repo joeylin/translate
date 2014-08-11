@@ -276,22 +276,48 @@
                       <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>">登录</a>
                   </li>
                   <% } else { %>
-                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
+                  <li class="dropdown user-menu notify" id="notify">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <i class="fa fa-bell"></i> 
+                          <span class="notify-dot" style="display:none;"></span>
+                      </a>
+                      <div class="dropdown-menu request-container" style="width:278px;" >
+                          <div id="dropdown-notice" style="display:none;">
+                            <div class="header">
+                              <span>__info__ 条新通知</span>
+                              <span>__request__ 条未处理请求</span>
+                            </div>
+                            <ul class="notify-container">
+                                <li><a href="">暂时没有通知</a></li>
+                            </ul>
+                            <div class="msg" style="margin-top: 5px;">
+                              <a href="/request/connect" target="_self"> 查看好友请求</a> __connect__
+                            </div>
+                            <div class="msg">
+                              <a href="/request/group" target="_self"> 查看圈消息</a> __group__ 
+                            </div>
+                            <div class="readmore text-center">
+                              <a href="/request/notice" target="_self">查看更多通知</a>
+                            </div>
+                          </div>
+                          <div id="dropdown-loading" style="text-align: center;padding: 30px 10px;">
+                            正在加载中...
+                          </div>
+                      </div> 
+                  </li>
+                  <li class="dropdown notifications-menu user-menu" id="notifyMsg">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                            <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning"><%= (locals.request.connect + locals.request.group || 0 %></span>
-                        </a>
-                        <ul class="dropdown-menu" class="request-container">
-                            <% if (locals.request.connect > 0) { %>
-                            <li><a href="/request/connect" target="_self"><%= locals.request.connect %> 个好友请求</a></li>
-                            <% } %>
-                            <% if (locals.request.group > 0) { %>
-                            <li><a href="/request/group" target="_self"><%= locals.request.group %> 个圈请求</a></li>
-                            <% } %>
-                            
-                            <li><a href="/request/comment" target="_self">查看评论</a></li>
-                            <li><a href="/request/at" target="_self">查看@我</a></li>
-                        </ul>
+                          <i class="fa fa-envelope"></i>
+                          <span class="notify-tag" style="display:none;"></span>
+                      </a>
+                      <ul class="dropdown-menu" class="request-container" style="padding: 10px 0!important;">
+                          <li class="dropdown-comment">
+                            <a href="/request/comment"></a>
+                          </li>
+                          <li class="dropdown-at">
+                            <a href="/request/at"></a>
+                          </li>
+                      </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -420,43 +446,7 @@
             <div class="well" style="padding-top:15px;">
               <h5 style="font-size:16px;font-weight:700;margin-bottom:15px;">团队简介</h5>
               <div><%- locals.share.companyIntro %></div>
-              
             </div>
-           <!--  <div class="well" ng-cloak ng-if="isManage" style="padding-bottom: 30px;">
-              <div class="row">
-                <div class="col-md-4" ng-repeat="user in postList">
-                  <div class="carbonad clearfix">
-                    <span class="carbonad-image pull-left">
-                      <a href="/profile/{{user.id}}" target="_self">
-                        <img class="carbonad-image carbonad-img" ng-src="{{user.avatar}}" title="user.name">
-                      </a>
-                    </span>
-                    <div class="carbonad-info">
-                      <div class="carbonad-title">
-                        <a href="/profile/{{user.id}}" target="_self">{{user.name}}</a>
-                      </div>
-                      <div>
-                        <span>{{user.occupation}}</span>
-                      </div>
-                      <div>
-                        <span>{{user.school}} </span>
-                        <span>{{user.workYear}}</span>
-                      </div>
-                      
-                    </div>  
-                  </div>
-
-
-                </div>
-              </div>
-              <hr ng-show="postList.length > 0 && postList.length < total">
-              <div ng-show="postList.length > 0 && postList.length < total">
-                <ul class="pager">
-                  <li ng-class="{'disabled': page.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>
-                  <li ng-class="{'disabled': !page.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
-                </ul>
-              </div>
-            </div> -->
           </div>
           <div class="profile-sidebar col-md-3 view-sidebar">
             <div class="panel">
@@ -536,6 +526,7 @@
         </div>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/notify.js"></script>
         <script type="text/javascript" src="/public/js/lib/magnific-popup/jquery.magnific-popup.js"></script>
         <script>
           $('.popup-tip').magnificPopup({

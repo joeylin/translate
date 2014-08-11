@@ -2,8 +2,8 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount',
-    function(app, $scope, $rootScope, $location, $http, wordCount) {
+controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount','setPos',
+    function(app, $scope, $rootScope, $location, $http, wordCount, setPos) {
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -89,7 +89,7 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             }
         };
         $scope.submitComment = function() {
-            if ($scope.share.newComment === '' || !app.author) {
+            if (!$scope.share.newComment || !app.author) {
                 return false;
             }
             var url = '/api/share/comments/add';
@@ -131,10 +131,13 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
                 comment.newComment = '@' + comment.user.name + ' ';
+                setTimeout(function() {
+                    setPos($('#' + comment._id).find('textarea')[0]);
+                }, 100);
             }
         };
         $scope.submitInlineComment = function(comment) {
-            if (comment.newComment === '' || !app.author) {
+            if (!comment.newComment || !app.author) {
                 return false;
             }
             var url = '/api/share/comments/add';
@@ -155,7 +158,6 @@ controller('indexCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
                 comment.isShowReply = false;
             });
         };
-
         $scope.post = function() {
             var url = '/api/job/post';
             var data = {

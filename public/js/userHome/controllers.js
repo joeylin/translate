@@ -2,8 +2,8 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate']).
-controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount',
-    function(app, $scope, $rootScope, $location, $http, wordCount) {
+controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount', 'setPos',
+    function(app, $scope, $rootScope, $location, $http, wordCount, setPos) {
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -17,7 +17,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         };
         $scope.submit = function() {
             var url = '/api/share/add';
-            if ($scope.newShare === '') {
+            if (!$scope.newShare) {
                 return false;
             }
             if ($scope.shareCount > 140) {
@@ -195,11 +195,12 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                     params: params
                 }).success(function(data) {
                     share.comments = data.comments;
+                    $('#' + share._id).find('.comment-editor textarea').focus();
                 });
             }
         };
         $scope.vm.submitComment = function(share) {
-            if (share.newComment === '') {
+            if (!share.newComment) {
                 return false;
             }
             var url = '/api/share/comments/add';
@@ -244,10 +245,13 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
                 comment.newComment = '@' + comment.user.name + ' ';
+                setTimeout(function() {
+                    setPos($('#' + comment._id).find('textarea')[0]);
+                }, 100);
             }
         };
         $scope.vm.submitInlineComment = function(comment, share) {
-            if (comment.newComment === '') {
+            if (!comment.newComment) {
                 return false;
             }
             var url = '/api/share/comments/add';
@@ -500,7 +504,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.vm.reply = function(request) {
             var comment = request.comment;
             var share = request.share;
-            if (request.newComment === '') {
+            if (!request.newComment) {
                 return false;
             }
             var url = '/api/share/comments/add';
@@ -1332,8 +1336,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
 
         getGroup();
     }
-]).controller('groupTrendsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 'wordCount',
-    function(app, $scope, $routeParams, $location, $http, $rootScope, wordCount) {
+]).controller('groupTrendsCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 'wordCount', 'setPos',
+    function(app, $scope, $routeParams, $location, $http, $rootScope, wordCount, setPos) {
         $scope.pager = {
             hasNext: false,
             current: 1
@@ -1494,11 +1498,12 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                     params: params
                 }).success(function(data) {
                     share.comments = data.comments;
+                    $('#' + share._id).find('.comment-editor textarea').focus();
                 });
             }
         };
         $scope.vm.submitComment = function(share) {
-            if (share.newComment === '') {
+            if (!share.newComment) {
                 return false;
             }
             var url = '/api/share/comments/add';
@@ -1532,10 +1537,13 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
                 comment.newComment = '@' + comment.user.name + ' ';
+                setTimeout(function() {
+                    setPos($('#' + comment._id).find('textarea')[0]);
+                }, 100);
             }
         };
         $scope.vm.submitInlineComment = function(comment, share) {
-            if (comment.newComment === '') {
+            if (!comment.newComment) {
                 return false;
             }
             var url = '/api/share/comments/add';

@@ -26,6 +26,11 @@
            * Style tweaks
            * --------------------------------------------------
            */
+          body {
+            font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
+            background: url("/public/imgs/bg.png") 0 0 repeat;
+            min-height: 960px;
+          }
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -279,24 +284,6 @@
             margin-bottom: 0;
             margin-left: 74px;
           }
-          .no-notify {
-            padding: 15px;
-          }
-          .notifications-menu .dropdown-menu {
-            width: 130px!important;
-          }
-          .notifications-menu > a {
-            background: url(../public/imgs/icon_msg.png) no-repeat center center;
-            height: 52px;
-            position: relative;
-            top: 3px;
-          }
-          .notifications-menu > a:hover {
-            background-color: #363d40;
-          }
-          .notifications-menu > a > i {
-            width: 30px;
-          }
           .custom-input.input-group {
             width: 100%;
             margin-bottom: 15px;
@@ -357,11 +344,13 @@
         <script src="/public/bower_components/reserveLoadjs/reserveLoad.js"></script>
         <script type="text/javascript">
           window.user = null;
+          window.author = null;
           window.profile = null;
           window.chooseTab = null;
           window.lastUpdate = null;
           <% if (locals.user) { %>
             window.user = <%- JSON.stringify(locals.user) %>;
+            window.author = true;
           <% } %>
           <% if (locals.profile) { %>
             window.profile = <%- JSON.stringify(locals.profile) %>;
@@ -386,18 +375,48 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown notifications-menu user-menu" id="menuNotify" ng-cloak>
+                  <li class="dropdown user-menu notify" id="notify">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <i class="fa fa-bell"></i> 
+                          <span class="notify-dot" style="display:none;"></span>
+                      </a>
+                      <div class="dropdown-menu request-container" style="width:278px;" >
+                          <div id="dropdown-notice" style="display:none;">
+                            <div class="header">
+                              <span>__info__ 条新通知</span>
+                              <span>__request__ 条未处理请求</span>
+                            </div>
+                            <ul class="notify-container">
+                                <li><a href="">暂时没有通知</a></li>
+                            </ul>
+                            <div class="msg" style="margin-top: 5px;">
+                              <a href="/request/connect" target="_self"> 查看好友请求</a> __connect__
+                            </div>
+                            <div class="msg">
+                              <a href="/request/group" target="_self"> 查看圈消息</a> __group__ 
+                            </div>
+                            <div class="readmore text-center">
+                              <a href="/request/notice" target="_self">查看更多通知</a>
+                            </div>
+                          </div>
+                          <div id="dropdown-loading" style="text-align: center;padding: 30px 10px;">
+                            正在加载中...
+                          </div>
+                      </div> 
+                  </li>
+                  <li class="dropdown notifications-menu user-menu" id="notifyMsg">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                            <i class="fa"></i> 
-                            <span class="label label-wraning">{{request.connect + request.group}}</span>
-                        </a>
-                        <ul class="dropdown-menu" class="request-container">
-                            <li ng-show="request.connect"><a href="/request/connect" target="_self">{{request.connect}} 个好友请求</a></li>
-                            <li ng-show="request.group"><a href="/request/group" target="_self">{{request.group}} 个圈消息</a></li>
-
-                            <li><a href="/request/comment" target="_self">查看评论</a></li>
-                            <li><a href="/request/at" target="_self">查看@我</a></li>
-                        </ul>
+                          <i class="fa fa-envelope"></i>
+                          <span class="notify-tag" style="display:none;"></span>
+                      </a>
+                      <ul class="dropdown-menu" class="request-container" style="padding: 10px 0!important;">
+                          <li class="dropdown-comment">
+                            <a href="/request/comment"></a>
+                          </li>
+                          <li class="dropdown-at">
+                            <a href="/request/at"></a>
+                          </li>
+                      </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
@@ -1073,6 +1092,7 @@
             '/public/js/lib/angular-ui.js',
             '/public/js/lib/xss.js',
             '/public/js/lib/bootstrap.min.js',
+            '/public/js/lib/notify.js',
             '/public/js/lib/hmac-sha256.js',
             '/public/js/lib/sanitize.js',
             '/public/js/lib/store.js',

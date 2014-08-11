@@ -385,6 +385,12 @@
           }
         </style>    
     </head>
+    <script type="text/javascript">
+      window.author = null;
+      <% if (locals.author) { %>
+        window.author = true;
+      <% } %>
+    </script>
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
           <div class="container">
@@ -404,72 +410,48 @@
                       <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>">登录</a>
                   </li>
                   <% } else { %>
-                  <!-- <li class="dropdown user-menu notify">
+                  <li class="dropdown user-menu notify" id="notify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           <i class="fa fa-bell"></i> 
-                          <% if (locals.request.connect + locals.request.group + locals.request.info) { %> 
-                          <span class="notify-dot"></span>
-                          <% } %>
+                          <span class="notify-dot" style="display:none;"></span>
                       </a>
                       <div class="dropdown-menu request-container" style="width:278px;" >
-                          <div ng-show="showNotice">
+                          <div id="dropdown-notice" style="display:none;">
                             <div class="header">
-                              <span>{{notice.info}} 条新通知</span>
-                              <span>{{notice.connect + notice.group}} 条未处理请求</span>
+                              <span>__info__ 条新通知</span>
+                              <span>__request__ 条未处理请求</span>
                             </div>
                             <ul class="notify-container">
-                                <li ng-repeat="item in notice.content"><a href="">{{item.content}}</a></li>
-                                <li ng-show="!notice.content.length"><a href="">暂时没有通知</a></li>
+                                <li><a href="">暂时没有通知</a></li>
                             </ul>
                             <div class="msg" style="margin-top: 5px;">
-                              <a href="/request/connect" > 查看好友请求</a> {{notice.connect ? notice.connect + '个':''}}
+                              <a href="/request/connect" target="_self"> 查看好友请求</a> __connect__
                             </div>
                             <div class="msg">
-                              <a href="/request/group"> 查看圈消息</a> {{notice.group ? notice.group + '个':''}} 
+                              <a href="/request/group" target="_self"> 查看圈消息</a> __group__ 
                             </div>
                             <div class="readmore text-center">
-                              <a href="/request/notice">查看更多通知</a>
+                              <a href="/request/notice" target="_self">查看更多通知</a>
                             </div>
                           </div>
-                          <div ng-show="!showNotice" style="text-align: center;padding: 30px 10px;">
+                          <div id="dropdown-loading" style="text-align: center;padding: 30px 10px;">
                             正在加载中...
                           </div>
                       </div> 
                   </li>
-                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
+                  <li class="dropdown notifications-menu user-menu" id="notifyMsg">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                           <i class="fa fa-envelope"></i>
-                          <% if (locals.request.comment + locals.request.at) { %> 
-                          <span class="notify-tag"><%= (locals.request.comment + locals.request.at) || 0 %></span>
-                          <% } %>
+                          <span class="notify-tag" style="display:none;"></span>
                       </a>
                       <ul class="dropdown-menu" class="request-container" style="padding: 10px 0!important;">
-                          <li><a href="/request/comment">
-                            <%= locals.request.comment ? (locals.request.comment + ' 个新回复') :'查看评论' %>
-                            </a>
+                          <li class="dropdown-comment">
+                            <a href="/request/comment"></a>
                           </li>
-                          <li><a href="/request/at">
-                            <%= locals.request.at ? (locals.request.at + ' 个@到你') :'查看@我' %>
-                            </a>
+                          <li class="dropdown-at">
+                            <a href="/request/at"></a>
                           </li>
                       </ul>
-                  </li> -->
-                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                            <i class="fa fa-bell"></i> 
-                            <span class="label label-wraning"><%= (locals.request.connect + locals.request.group) || 0 %></span>
-                        </a>
-                        <ul class="dropdown-menu" class="request-container">
-                            <% if (locals.request.connect > 0) { %>
-                            <li><a href="/request/connect" target="_self"><%= locals.request.connect %> 个好友请求</a></li>
-                            <% } %>
-                            <% if (locals.request.group > 0) { %>
-                            <li><a href="/request/group" target="_self"><%= locals.request.group %> 个圈请求</a></li>
-                            <% } %>
-                            
-                            <li><a href="/request/comment" target="_self">查看评论</a></li>
-                            <li><a href="/request/at" target="_self">查看@我</a></li>
-                        </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -718,6 +700,7 @@
         </footer>
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/public/js/lib/notify.js"></script>
         <script type="text/javascript">
           $(document).ready(function() {
             $('#btnLogout').click(function() {
@@ -745,7 +728,6 @@
                 });
               }
             });
-            
           });
         </script>
     </body>
