@@ -112,10 +112,10 @@ constant('app', {
             controller: 'requestCtrl',
             path: 'at'
         };
-        var all = {
-            templateUrl: getFileProvider.html('request.html'),
+        var notice = {
+            templateUrl: getFileProvider.html('notice.html'),
             controller: 'requestCtrl',
-            path: 'all'
+            path: 'notice'
         };
         var newJob = {
             templateUrl: getFileProvider.html('newJob.html'),
@@ -149,7 +149,7 @@ constant('app', {
         when('/request/comment', comment).
         when('/request/group', group).
         when('/request/at', at).
-        when('/request/all', all).
+        when('/request/notice', notice).
         when('/message', message);
         $locationProvider.html5Mode(true).hashPrefix('!');
     }

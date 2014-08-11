@@ -708,6 +708,9 @@
             padding: 3px;
             border-radius: 3px;
           }
+          .dropdown .dropdown-toggle:hover .notify-dot {
+            top: 11px;
+          }
           .dropdown .dropdown-toggle .notify-tag {
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
@@ -739,11 +742,16 @@
           .dropdown-menu .notify-container {
             margin: 0;
             padding: 0;
-            margin-left: 33px;
-            list-style-type: disc;
+            list-style-type: none;
+            border-bottom: 1px solid #eee;
           }
-          .dropdown-menu .notify-container > li {
-            padding: 3px 15px 3px 0;
+          .dropdown-menu .notify-container > li a {
+            display: block;
+            padding: 3px 15px;
+          }
+          .dropdown-menu .notify-container > li a:hover {
+            background-color: #428bca;
+            color: #fff;
           }
           .dropdown-menu .readmore {
             background-color: #F4F4F4;
@@ -787,41 +795,44 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right" ng-cloak>
-                  <li class="dropdown user-menu notify">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                  <li class="dropdown user-menu notify" dropdown open="getNotice();">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           <i class="fa fa-bell"></i> 
-                          <span class="notify-dot" ng-show="request.connect + request.group"></span>
+                          <span class="notify-dot" ng-show="notice.connect + notice.group + notice.info"></span>
                       </a>
-                      <div class="dropdown-menu request-container">
-                          <div class="header">
-                            <span>{{0}} 条通知</span>
-                            <span>{{0}} 条请求</span>
+                      <div class="dropdown-menu request-container" style="width:278px;" >
+                          <div ng-show="showNotice">
+                            <div class="header">
+                              <span>{{notice.info}} 条新通知</span>
+                              <span>{{notice.connect + notice.group}} 条未处理请求</span>
+                            </div>
+                            <ul class="notify-container">
+                                <li ng-repeat="item in notice.content"><a href="">{{item.content}}</a></li>
+                                <li ng-show="!notice.content.length"><a href="">暂时没有通知</a></li>
+                            </ul>
+                            <div class="msg" style="margin-top: 5px;">
+                              <a href="/request/connect" > 查看好友请求</a> {{notice.connect ? notice.connect + '个':''}}
+                            </div>
+                            <div class="msg">
+                              <a href="/request/group"> 查看圈消息</a> {{notice.group ? notice.group + '个':''}} 
+                            </div>
+                            <div class="readmore text-center">
+                              <a href="/request/notice">查看更多通知</a>
+                            </div>
                           </div>
-                          <ul class="notify-container">
-                              <li>joeylin 添加你为好友</li>
-                              <li>leo 申请加入 angularjs 圈</li>
-                              <li>你已成为 angularjs 管理员</li>
-                          </ul>
-                          <div class="msg" style="margin-top: 5px;">
-                            {{request.connect ? request.connect + '个':''}}<a href="/request/connect" target="_self"> 查看好友请求</a>
+                          <div ng-show="!showNotice" style="text-align: center;padding: 30px 10px;">
+                            正在加载中...
                           </div>
-                          <div class="msg">
-                            {{request.group ? request.group + '个':''}} <a href="/request/group" target="_self"> 查看圈消息</a>
-                          </div>
-                          <div class="readmore text-center">
-                            <a href="">查看更多通知</a>
-                          </div>
-                      </div>
-                          
+                      </div> 
                   </li>
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                           <i class="fa fa-envelope"></i> 
-                          <span class="notify-tag" ng-show="request.connect + request.group">{{request.connect + request.group}}</span>
+                          <span class="notify-tag" ng-show="request.comment + request.at">{{request.comment + request.at}}</span>
                       </a>
                       <ul class="dropdown-menu" class="request-container" style="padding: 10px 0!important;">
-                          <li><a href="/request/comment" target="_self">查看评论</a></li>
-                          <li><a href="/request/at" target="_self">查看@我</a></li>
+                          <li><a href="/request/comment">{{request.comment ? request.comment + ' 个新回复':'查看评论'}} </a></li>
+                          <li><a href="/request/at">{{request.at ? request.at + ' 个@到你':'查看@我'}} </a></li>
                       </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
@@ -883,13 +894,11 @@
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>动态</a></li>
                     <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>圈子</a></li>
                     <li ng-class="{active: ['job','myJob','newJob','editJob','mySending'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>职位</a></li>
-                    <li ng-class="{active: ['connect','group','reply','comment','at','all'].indexOf(current.path) >= 0}"><a ng-href="/request/at"><i class="fa fa-fw fa-info-circle"></i>消息</a></li>
+                    <li ng-class="{active: ['connect','group','reply','comment','at','notice'].indexOf(current.path) >= 0}"><a ng-href="/request/at"><i class="fa fa-fw fa-info-circle"></i>消息</a></li>
                     <li ng-class="{active: current.path === 'groupTrends'}"><a ng-href="/groupTrends"><i class="fa fa-fw fa-rocket"></i>圈动态</a></li>
-                    <!-- <li ng-class="{active: current.path === 'message'}"><a ng-href="/message"><i class="fa fa-fw fa-envelope-o"></i>Message</a></li> -->
                     <li ng-class="{active: current.path === 'myPeople' || current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>人脉</a></li>
                     <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>我的微说</a></li>
                     <li ng-class="{active: current.path === 'myCollect'}"><a ng-href="/myCollect"><i class="fa fa-fw fa-asterisk"></i>我的收藏</a></li>
-                    <!-- <li ng-class="{active: current.path === 'company' || current.path === 'myCompany'}"><a ng-href="/company"><i class="fa fa-fw fa-credit-card"></i>Know Company</a></li> -->
                     
                   </ul>
               </div>            
@@ -903,13 +912,7 @@
                   <li ng-class="{active: current.path === 'myPeople'}"><a ng-href="/myPeople">管理</a></li>
               </ul>
             </div>
-            <!-- <div class="nav-tabs-custom" ng-show="current.path === 'share' || current.path === 'myShare'" ng-cloak>
-              <ul class="nav nav-tabs pull-left">
-                  <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Discover</li>
-                  <li ng-class="{active: current.path === 'share'}"><a ng-href="/share">Find</a></li>
-                  <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare">My Share</a></li>
-              </ul>
-            </div> -->
+
             <div class="nav-tabs-custom" ng-show="current.path === 'company' || current.path === 'myCompany'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-users"></i>Company</li>
@@ -925,14 +928,14 @@
                   <li ng-class="{active: current.path === 'mySending'}"><a ng-href="/mySending">申请</a></li>
               </ul>
             </div>
-            <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at' || current.path === 'all'" ng-cloak>
+            <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at' || current.path === 'notice'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-info-circle"></i>消息</li>
-                  <!-- <li ng-class="{active: current.path === 'all'}"><a ng-href="/request/all">全部</a></li> -->
                   <li ng-class="{active: current.path === 'at'}"><a ng-href="/request/at">@我</a></li>
                   <li ng-class="{active: current.path === 'comment'}"><a ng-href="/request/comment">评论</a></li>
                   <li ng-class="{active: current.path === 'connect'}"><a ng-href="/request/connect">人脉</a></li>
                   <li ng-class="{active: current.path === 'group'}"><a ng-href="/request/group">圈子</a></li>
+                  <li ng-class="{active: current.path === 'notice'}"><a ng-href="/request/notice">通知</a></li>
               </ul>
             </div>
             <div class="row" id="main" ng-view ng-cloak></div>

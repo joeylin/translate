@@ -31,6 +31,12 @@ var RequestSchema = new Schema({
         type: ObjectId,
         ref: 'Group'
     },
+    title: {
+        type: String
+    },
+    html: {
+        type: String
+    },
     content: {
         type: String
     },
@@ -40,6 +46,10 @@ var RequestSchema = new Schema({
     },
     isPass: {
         type: Boolean
+    },
+    is_delete: {
+        type: Boolean,
+        default: false
     },
     createAt: {
         type: Date,
@@ -65,6 +75,7 @@ RequestSchema.virtual('date').get(function() {
         return date.format('YYYY-M-D HH:mm');
     }
 });
+
 RequestSchema.path('type').validate(function(type) {
     var array = ['connect', 'message', 'group', 'at', 'comment'];
     if (array.indexOf(type) >= 0) {
@@ -93,6 +104,57 @@ RequestSchema.statics.delete = function(id, cb) {
     }, function(err, Request) {
         Request.remove(cb);
     });
+};
+RequestSchema.statics.notice = function(obj, cb) {
+    var Request = new this();
+    var User = mongoose.model('User');
+    var Group = mongoose.model('Group');
+    Request.type = 'notice';
+    Request.to = obj.to;
+    Request.group = obj.group;
+    Request.title = obj.title;
+
+    if (obj.title == 'connect') {
+        User.findOne({
+            _id: obj.to
+        }).exec(function(err, user) {
+            if (err || !user) {
+                return false;
+            }
+            Request.content = user.name +　' 添加你为好友';
+            Request.html = '<a href="/profile/' + user.id + '" target="_blank">' + user.name + '</a> 添加你为好友';
+            Request.save(cb);
+        });
+    }
+    if (obj.title == 'admin') {
+        Group.findOne({
+            _id: obj.group
+        }).exec(function(err, group) {
+            if (err || !group) {
+                return false;
+            }
+            Request.content = '你已经成为 ' + group.name + ' 管理员';
+            Request.html = '你已经成为 ' + '<a href="/profile/' + group.id + '" target="_blank">' + group.name + '</a>' + ' 管理员';
+            Request.save(cb);
+        });
+    }
+    if (obj.title == 'member') {
+        Group.findOne({
+            _id: obj.group
+        }).exec(function(err, group) {
+            if (err || !group) {
+                return false;
+            }
+            Request.content = '你已成功加入 ' + group.name;
+            Request.html = '你已成功加入 ' +  '<a href="/profile/' + group.id + '" target="_blank">' + group.name + '</a>';
+            Request.save(cb);
+        });
+    }
+    if (obj.title == 'system') {
+        Request.content = obj.content;
+        Request.html = obj.content;
+        Request.save(cb);
+    } 
 };
 
 // methods

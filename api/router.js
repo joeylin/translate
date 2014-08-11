@@ -813,7 +813,7 @@ module.exports = function(app) {
     app.get('/request/reply', middleware.check_login, getHome);
     app.get('/request/group', middleware.check_login, getHome);
     app.get('/request/at', middleware.check_login, getHome);
-    app.get('/request/all', middleware.check_login, getHome);
+    app.get('/request/notice', middleware.check_login, getHome);
 
     // login
     app.get('/login', getLogin);

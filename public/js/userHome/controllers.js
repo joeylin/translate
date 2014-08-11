@@ -422,6 +422,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $http.get(url).success(function(data) {
             var request = data.notify.request;
             var message = data.notify.message;
+            var comment = 
 
             $scope.total = request + message;
             $scope.request = request;
@@ -446,7 +447,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.post(checkUrl, params).success(function(data) {
                 request.hasDisposed = true;
                 request.isPass = true;
-                $rootScope.request.connect -= 1;
+                $rootScope.notice.connect -= 1;
             });
         };
         $scope.vm.reject = function(request) {
@@ -458,7 +459,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.post(checkUrl, params).success(function(data) {
                 request.hasDisposed = true;
                 request.isPass = false;
-                $rootScope.request.connect -= 1;
+                $rootScope.notice.connect -= 1;
             });
         };
         // group
@@ -471,7 +472,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.post(checkUrl, params).success(function(data) {
                 request.hasDisposed = true;
                 request.isPass = true;
-                $rootScope.request.group -= 1;
+                $rootScope.notice.group -= 1;
             });
         };
         $scope.vm.groupReject = function(request) {
@@ -483,7 +484,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $http.post(checkUrl, params).success(function(data) {
                 request.hasDisposed = true;
                 request.isPass = false;
-                $rootScope.request.group -= 1;
+                $rootScope.notice.group -= 1;
             });
         };
         // comment
@@ -544,8 +545,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         if ($rootScope.current.path === 'at') {
             url = '/api/notify/at';
         }
-        if ($rootScope.current.path === 'all') {
-            url = '/api/notify/all';
+        if ($rootScope.current.path === 'notice') {
+            url = '/api/notify/notice';
         }
 
         $scope.pager = {
@@ -579,6 +580,13 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 params: params
             }).success(function(data) {
                 $scope.requests = data.requests;
+                $rootScope.request = $rootScope.request || {};
+                if ($rootScope.current.path === 'comment') {
+                    $rootScope.request.comment = 0;
+                }
+                if ($rootScope.current.path === 'at') {
+                    $rootScope.request.at = 0;
+                }
             });
         };
 

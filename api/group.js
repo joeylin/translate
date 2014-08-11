@@ -111,10 +111,14 @@ var checkRequest = function(req, res) {
                         isPass: true
                     }
                 }, options, function(err, num) {
-
                     res.send({
                         code: 200
                     });
+                    var obj = {
+                        to: request.from,
+                        title: 'member'
+                    };
+                    Request.notice(obj);
                 });
             });
         } else {
@@ -303,6 +307,11 @@ var adminAdd = function(req, res) {
             res.send({
                 code: 200
             });
+            var obj = {
+                to: adminId,
+                title: 'admin'
+            };
+            Request.notice(obj);
         });
     });
 };

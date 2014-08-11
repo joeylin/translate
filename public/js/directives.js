@@ -101,7 +101,6 @@ directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
                     position: 'relative',
                     display: 'inline-block'
                 });
-                var userId = $scope.$eval(attrs.userId);
                 var relates = [];
                 var $template;
                 var optionClick = function() {
@@ -185,6 +184,31 @@ directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
                         left: left
                     });
                 };
+            }
+        };
+    }
+]).directive('dropdown', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$http',
+    function(mdParse, sanitize, pretty, isVisible, $http) {
+        return {
+            restrict: 'AE',
+            scope: {
+                open: '&',
+                close: '&'
+            },
+            link: function($scope, element, attrs) {
+                if (!$(element).find('.dropdown-toggle')) {
+                    return false;
+                }
+                $(element).on('show.bs.dropdown', function() {
+                    if (typeof $scope.open == 'function') {
+                        $scope.open();
+                    }
+                });
+                $(element).on('hide.bs.dropdown', function() {
+                    if (typeof $scope.close == 'function') {
+                        $scope.close();
+                    }
+                });
             }
         };
     }

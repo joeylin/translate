@@ -404,6 +404,56 @@
                       <a class="dropdown-toggle" href="/login?re=/profile/<%= locals.user.id %>">登录</a>
                   </li>
                   <% } else { %>
+                  <!-- <li class="dropdown user-menu notify">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <i class="fa fa-bell"></i> 
+                          <% if (locals.request.connect + locals.request.group + locals.request.info) { %> 
+                          <span class="notify-dot"></span>
+                          <% } %>
+                      </a>
+                      <div class="dropdown-menu request-container" style="width:278px;" >
+                          <div ng-show="showNotice">
+                            <div class="header">
+                              <span>{{notice.info}} 条新通知</span>
+                              <span>{{notice.connect + notice.group}} 条未处理请求</span>
+                            </div>
+                            <ul class="notify-container">
+                                <li ng-repeat="item in notice.content"><a href="">{{item.content}}</a></li>
+                                <li ng-show="!notice.content.length"><a href="">暂时没有通知</a></li>
+                            </ul>
+                            <div class="msg" style="margin-top: 5px;">
+                              <a href="/request/connect" > 查看好友请求</a> {{notice.connect ? notice.connect + '个':''}}
+                            </div>
+                            <div class="msg">
+                              <a href="/request/group"> 查看圈消息</a> {{notice.group ? notice.group + '个':''}} 
+                            </div>
+                            <div class="readmore text-center">
+                              <a href="/request/notice">查看更多通知</a>
+                            </div>
+                          </div>
+                          <div ng-show="!showNotice" style="text-align: center;padding: 30px 10px;">
+                            正在加载中...
+                          </div>
+                      </div> 
+                  </li>
+                  <li class="dropdown notifications-menu user-menu" id="menuNotify">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                          <i class="fa fa-envelope"></i>
+                          <% if (locals.request.comment + locals.request.at) { %> 
+                          <span class="notify-tag"><%= (locals.request.comment + locals.request.at) || 0 %></span>
+                          <% } %>
+                      </a>
+                      <ul class="dropdown-menu" class="request-container" style="padding: 10px 0!important;">
+                          <li><a href="/request/comment">
+                            <%= locals.request.comment ? (locals.request.comment + ' 个新回复') :'查看评论' %>
+                            </a>
+                          </li>
+                          <li><a href="/request/at">
+                            <%= locals.request.at ? (locals.request.at + ' 个@到你') :'查看@我' %>
+                            </a>
+                          </li>
+                      </ul>
+                  </li> -->
                   <li class="dropdown notifications-menu user-menu" id="menuNotify">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                             <i class="fa fa-bell"></i> 

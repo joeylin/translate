@@ -194,6 +194,11 @@ var checkConnect = function(req, res) {
                             code: 200,
                             info: 'check true'
                         });
+                        var obj = {
+                            title: 'connect',
+                            to: request.from
+                        };
+                        Request.notice(obj);
                     });
                 });
             } else {
@@ -1214,6 +1219,7 @@ var getNotifyCount = function(req, res) {
         var group = [];
         var connect = [];
         var at = [];
+        var info = [];
         requests.map(function(request) {
             if (request.type === 'group') {
                 group.push(request);
@@ -1227,11 +1233,17 @@ var getNotifyCount = function(req, res) {
             if (request.type === 'at') {
                 at.push(request);
             }
+            if (request.type === 'notice') {
+                info.push(request);
+            }
         });
         res.send({
             code: 200, 
             group: group.length,
-            connect: connect.length
+            connect: connect.length,
+            comment: comment.length,
+            at: at.length,
+            info: info.length
         });
     });
 };
@@ -1300,7 +1312,6 @@ var getRequest = function(req, res) {
             type: op
         };
         Request.find(query).populate('from').populate('group')
-        .populate('replyComment').populate('shareId')
         .sort('-createAt')
         .skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, requests) {
             Request.find(query).count().exec(function(err, count) {
@@ -1359,9 +1370,12 @@ var getCommentMe = function(req, res) {
         Comment.find(query).count().exec(function(err, count) {
             var items = [];
             var hasNext;
-
             comments.map(function(comment, key) {
                 var result = {};
+                if (!comment.shareId || !comment.user) {
+                    console.log(comment);
+                    return false;
+                }
                 if (comment.shareId.user.toString() == user._id) {
                     result.myShare = true;
                 } else {
@@ -1416,7 +1430,7 @@ var getCommentMe = function(req, res) {
                 requests.map(function(request,key) {
                     request.is_delete = true;
                     request.save(function(err,request) {
-                        consle.log('read comment msg : ' + request.is_delete);
+                        console.log('read comment msg : ' + request.is_delete);
                     });
                 })
             });
@@ -1530,12 +1544,84 @@ var getAtShare = function(req, res) {
                     requests.map(function(request,key) {
                         request.is_delete = true;
                         request.save(function(err,request) {
-                            consle.log('read at msg : ' + request.is_delete);
+                            console.log('read at msg : ' + request.is_delete);
                         });
                     })
                 });
             });
         });
+    });
+};
+var getNotice = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = req.query.perPageItems || 30;
+    var query = {
+        to: user._id,
+        type: 'notice',
+        is_delete: false
+    };
+
+    Request.find(query).populate('to').populate('group')
+    .sort('-createAt')
+    .skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, requests) {
+        Request.find(query).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            requests.map(function(request, key) {
+                var result = {};
+                result.isNew = !request.hasDisposed;
+                result.html = request.html;
+                content.push(result);
+            });
+            if ((page - 1) * perPageItems + requests.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                requests: content,
+                count: count,
+                hasNext: hasNext
+            });
+
+            // 查阅之后设置为已读
+            requests.map(function(request,key) {
+                request.hasDisposed = true;
+                request.save();
+            });
+        });
+    });
+};
+var getShortNotice = function(req, res) {
+    var user = req.session.user;
+    var query = {
+        to: user._id,
+        type: 'notice',
+        hasDisposed: false,
+        is_delete: false
+    };
+    Request.find(query).count().exec(function(err, count) {
+        Request.find({
+            to: user._id,
+            type: 'notice',
+            is_delete: false
+        }).sort('-createAt').limit(5).exec(function(err, requests) {
+            var content = [];
+            requests.map(function(request, key) {
+                var result = {};
+                result.isNew = !request.hasDisposed;
+                result.content = request.content;
+                content.push(result);
+            });
+            res.send({
+                code: 200,
+                info: count,
+                hasMore: count - content.length,
+                content: content
+            });
+        })
     });
 };
 var readRequest = function(req, res) {
@@ -2284,6 +2370,8 @@ module.exports = function(app) {
     app.get('/api/notify', middleware.check_login, getNotifyCount);
     app.get('/api/notify/comment', middleware.check_login, getCommentMe);
     app.get('/api/notify/at', middleware.check_login, getAtShare);
+    app.get('/api/notify/notice', middleware.check_login, getNotice);
+    app.get('/api/notify/shortNotice', middleware.check_login, getShortNotice);
     app.get('/api/notify/:op', middleware.check_login, getRequest);
     app.post('/api/notify/:op/read', middleware.check_login, readRequest);
 

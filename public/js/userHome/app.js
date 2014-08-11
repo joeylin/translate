@@ -111,12 +111,29 @@ config(['$httpProvider', 'app',
                 $rootScope.$broadcast('putFinish', url);
             }
         });
-        $http.get('/api/notify').success(function(data) {
-            $rootScope.request = {};
-            $rootScope.request.comment = data.comment;
-            $rootScope.request.reply = data.reply;
-            $rootScope.request.connect = data.connect;
-            $rootScope.request.group = data.group;
-        });
+        setTimeout(function() {
+            $http.get('/api/notify').success(function(data) {
+                $rootScope.request = {};
+                $rootScope.request.comment = data.comment;
+                $rootScope.request.at = data.at;
+                $rootScope.request.connect = data.connect;
+                $rootScope.request.group = data.group;
+
+                var notice = $rootScope.notice = {};
+                notice.connect = data.connect;
+                notice.group = data.group;
+                notice.info = data.info;
+                
+                $rootScope.getNotice = function() {
+                    $http.get('/api/notify/shortNotice').success(function(result) {
+                        notice.content = result.content;
+                        notice.hasMore = result.hasMore;
+                        notice.info = result.info;
+                        $rootScope.showNotice = true;
+                    });
+                };
+            });
+        },100);
+            
     }
 ]);
