@@ -33,51 +33,88 @@ var create = function(req, res) {
         if (!invitation) {
             return res.send({
                 code: 404,
+                invite: true,
                 info: '邀请码无效'
             });
         }
         if (invitation.is_delete) {
             return res.send({
                 code: 404,
+                invite: true,
                 info: '邀请码已使用过'
             });
         }
-        var user = new User(options);
-        var profile;
-        if (options.role === 'user') {
-            profile = new UserProfile({
-                user: user._id,
-                name: 'user'
+        User.findOne({
+            email: options.email
+        }).exec(function(err, user) {
+            if (err) {
+                return res.send({
+                    code: 404,
+                    info: err.msg
+                });
+            }
+            if (user) {
+                return res.send({
+                    code: 404,
+                    email: true,
+                    info: '该邮箱已被注册'
+                });
+            }
+            User.findOne({
+                name: options.name
+            }).exec(function(err, user) {
+                if (err) {
+                    return res.send({
+                        code: 404,
+                        info: err.msg
+                    });
+                }
+                if (user) {
+                    return res.send({
+                        code: 404,
+                        name: true,
+                        info: '用户名已被使用'
+                    });
+                }
+
             });
-        }
-        if (options.role === 'company') {
-            profile = new CompanyProfile({
-                user: user._id,
-                name: 'company'
-            });
-        }
-        user.provider = 'local';
-        profile.save(function(err, _profile) {
-            IdGenerator.getNewId('user', function(err, doc) {
-                user.id = doc.currentId;
-                user.profile = _profile._id;
-                user.save(function(err, user) {
-                    if (err) {
-                        var message = err.message;
-                        return res.send({
-                            code: 404,
-                            user: null,
-                            info: message
-                        });
-                    }
-                    req.session.user = user;
-                    invitation.is_delete = true;
-                    invitation.save(function(err, invitation) {
-                        res.send({
-                            code: 200,
-                            user: req.session.user
-                        });
-                    }); 
+            var user = new User(options);
+            var profile;
+            if (options.role === 'user') {
+                profile = new UserProfile({
+                    user: user._id,
+                    name: 'user'
+                });
+            }
+            if (options.role === 'company') {
+                profile = new CompanyProfile({
+                    user: user._id,
+                    name: 'company'
+                });
+            }
+            user.provider = 'local';
+            profile.save(function(err, _profile) {
+                IdGenerator.getNewId('user', function(err, doc) {
+                    user.id = doc.currentId;
+                    user.profile = _profile._id;
+                    user.save(function(err, user) {
+                        if (err) {
+                            var message = err.message;
+                            return res.send({
+                                code: 404,
+                                user: null,
+                                info: message
+                            });
+                        }
+                        req.session.user = user;
+                        invitation.is_delete = true;
+                        invitation.save(function(err, invitation) {
+                            res.send({
+                                code: 200,
+                                user: req.session.user
+                            });
+                        }); 
+                    });
                 });
             });
         });
@@ -95,13 +132,15 @@ var login = function(req, res) {
         }
         if (!user) {
             return res.send({
-                code: 200,
+                code: 404,
+                email: true,
                 info: '该邮箱尚未注册'
             });
         }
         if (!user.authenticate(password)) {
             return res.send({
-                code: 200,
+                code: 404,
+                password: true,
                 info: '密码错误'
             });
         }
@@ -2337,16 +2376,16 @@ module.exports = function(app) {
     app.post('/api/user/acitveResend', middleware.apiLogin, reSendActiveCode);
 
     // trends
-    app.get('/api/user/trend', middleware.check_login, getTrends);
-    app.get('/api/user/myActive', middleware.check_login, getMyActive);
-    app.get('/api/user/myShare', middleware.check_login, getMyShare);
-    app.get('/api/user/myShare/search', middleware.check_login, myShareSearch);
-    app.get('/api/user/myjob', middleware.check_login, getMyJob);
-    app.get('/api/user/mayknow', middleware.check_login, getMayKnowConnects);
-    app.get('/api/user/id', middleware.check_login, searchById);
-    app.get('/api/user/sending', middleware.check_login, getMysending);
-    app.get('/api/user/jobrecommend', middleware.check_login, getJobRecommend);
-    app.get('/api/user/getSidebar', middleware.check_login, getSidebarList);
+    app.get('/api/user/trend', middleware.authLogin, getTrends);
+    app.get('/api/user/myActive', middleware.authLogin, getMyActive);
+    app.get('/api/user/myShare', middleware.authLogin, getMyShare);
+    app.get('/api/user/myShare/search', middleware.authLogin, myShareSearch);
+    app.get('/api/user/myjob', middleware.authLogin, getMyJob);
+    app.get('/api/user/mayknow', middleware.authLogin, getMayKnowConnects);
+    app.get('/api/user/id', middleware.authLogin, searchById);
+    app.get('/api/user/sending', middleware.authLogin, getMysending);
+    app.get('/api/user/jobrecommend', middleware.authLogin, getJobRecommend);
+    app.get('/api/user/getSidebar', middleware.authLogin, getSidebarList);
     
     // company profile
     app.post('/api/user/like', middleware.check_login, companyLike);
@@ -2376,7 +2415,7 @@ module.exports = function(app) {
     app.post('/api/notify/:op/read', middleware.check_login, readRequest);
 
     // Group
-    app.get('/api/myGroup', middleware.check_login, getGroupByUser);
+    app.get('/api/myGroup', middleware.authLogin, getGroupByUser);
     app.get('/api/groupUpdate',middleware.check_login, getFollowGroupUpdate);
 
     // connect

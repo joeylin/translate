@@ -76,14 +76,14 @@ RequestSchema.virtual('date').get(function() {
     }
 });
 
-RequestSchema.path('type').validate(function(type) {
-    var array = ['connect', 'message', 'group', 'at', 'comment'];
-    if (array.indexOf(type) >= 0) {
-        return true;
-    } else {
-        return false;
-    }
-}, 'type error');
+// RequestSchema.path('type').validate(function(type) {
+//     var array = ['connect', 'message', 'group', 'at', 'comment'];
+//     if (array.indexOf(type) >= 0) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }, 'type error');
 
 // statics
 RequestSchema.statics.createNew = function(obj, cb) {

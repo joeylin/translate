@@ -31,6 +31,17 @@ var apiLogin = function(req, res, next) {
         next();
     }
 };
-
+var authLogin = function(req, res, next) {
+    var user = req.session.user;
+    if (!user) {
+        res.send({
+            code: 401,
+            info: 'no login'
+        });
+    } else {
+        next();
+    }
+};
 exports.check_login = check_login;
 exports.apiLogin = apiLogin;
+exports.authLogin = authLogin;

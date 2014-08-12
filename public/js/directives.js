@@ -212,4 +212,15 @@ directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
             }
         };
     }
+]).directive('addHtml', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$http',
+    function(mdParse, sanitize, pretty, isVisible, $http) {
+        return {
+            restrict: 'AE',
+            link: function($scope, element, attrs) {
+                var value = $scope.$eval(attrs.addHtml);
+                var content = sanitize(value);
+                element.html(content).find('a').attr('target','_self');
+            }
+        };
+    }
 ]);

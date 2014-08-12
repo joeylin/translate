@@ -1,13 +1,15 @@
 <div class="profile-body col-md-9">
   <div class="panel search-result">
     <div class="panel-body">
-      <div ng-repeat-start="request in requests">
-        <i class="fa fa-fw fa-bullhorn"></i><span ng-bind-html="request.html"></span>
+      <div class="clearfix" ng-repeat="request in requests" style="margin-bottom: 5px;">
+        <i class="fa fa-fw fa-bullhorn pull-left" style="position: relative;top: 4px;"></i>
+        <span style="padding-left: 20px;" add-html="request.html"></span>
       </div>
-      <hr ng-repeat-end>
+      
       <div ng-show="requests.length === 0">
         <div class="text-center" style="padding:15px;">暂无未处理的消息</div>
       </div>
+      <hr ng-show="requests.length > 0">
       <div ng-show="requests.length > 0">
         <ul class="pager">
           <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>

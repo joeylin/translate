@@ -22,15 +22,22 @@
         <![endif]-->
 
         <style type="text/css">
+          body, html {
+            font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
+            background: url("/public/imgs/bg.png") 0 0 repeat;
+          }
           .mfp-container:before {
             content: '';
             display: inline-block;
-            height: 10%;
+            height: 8%;
             vertical-align: middle;
+          }
+          .mfp-bg {
+            background: transparent;
           }
           .register-user {
             width: 880px;
-            min-height: 650px;
+            min-height: 485px;
           }
           .register-user h3 {
             margin-bottom: 45px;
@@ -59,12 +66,13 @@
           }
           .profile-feature {
             display: inline-block;
-            background-color: #FDF9DF;
+            /*background-color: #FDF9DF;*/
+            background-color: #d6e9c6;
             padding: 15px 35px 20px;
             margin-top: 91px;
             border-radius: 10px;
-            -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            /*-webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);*/
           }
           .profile-feature h4 {
             font-weight: 700;
@@ -162,7 +170,7 @@
                   <i class="fa fa-fw fa-circle" ng-class="{active: current.path === 'step3'}"></i>
                 </div>
                 <div class="container-footer">
-                  <p class="text-center">©Joeylin 331547274@qq.com</p>
+                  <p class="text-center" style="color:#999;">© by Joeylin 331547274@qq.com <a href="/about/feedback" target="_blank">意见与反馈</a></p>
                 </div>                 
               </div>
                 
@@ -170,9 +178,9 @@
             <div class="mfp-preloader">Loading...</div>
           </div>
         </div>
-        <footer class="text-center">
+        <!-- <footer class="text-center">
           <p class="">© by Joeylin 331547274@qq.com <a href="/about/feedback" target="_blank">意见与反馈</a></p>
-        </footer>
+        </footer> -->
         
         <script>
           reserveLoad(

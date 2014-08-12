@@ -9,6 +9,9 @@ config(['$httpProvider', 'app',
             return {
                 response: function(res) {
                     var error, data = res.data;
+                    if (data.code == 401) {
+                        window.location = '/login';
+                    }
                     if (data.code === 404) {
                         app.timestamp = data.timestamp;
                         error = data.info;
@@ -86,6 +89,12 @@ config(['$httpProvider', 'app',
                 $rootScope.current.path = next.$$route.path;
             }
         });
+        $rootScope.logout = function() {
+            var url = '/api/user/logout';
+            $http.post(url).success(function(data) {
+                window.location = '/login';
+            });
+        };
 
         window.initQiniuUploader({
             // input ID

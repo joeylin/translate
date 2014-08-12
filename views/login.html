@@ -21,8 +21,12 @@
         <!-- CSS code from MPush.com editor -->
         
         <style type="text/css">
-          body {
-            background: #fff;
+          body,html,.navbar-header {
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAYCAYAAACIhL/AAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAACYUlEQVRIx42WYXLrIAyEBSb3v2OvkSDen7f0y0Y49UynDgYhrVYrtZ+fn/V4PGLOGRERa62IiGitvb231iIiIjOj9x561lp7X+89MnN/u64r1lqRmduGzmdmrLU+9tBG7z2GLtbh6llrbQf5+H5dquB0sd61npn7rILzgLV/aKMi0EME3RAdI8qOtlDQhUJHSDFwrdFGay0GI9fFfknl8LfnFNzdQ7B0ZtAB8eGEDh11jlZpYhr5V9kmt2lvcMENeOReHNzHb478af0vyA6mt0or14jc6eLqvPaLg6ziKjCeGadUni4k0Yksif8NvdN3nt9Fcl3X5h61Sr+pSSQytU+/SW79JkKUlznnm4PSYZerUZHXUWCqvUDudJKBZGaMMW5VgpKzOajUXNf1Idgu3lWXYdSy4YGJa6eiqFIrv8acM+ac8Xq9ynbl6MhpBuHSUfGaSHphsNu4QgwS3KXEHaTjXs3uCB1iMN/aKB3NzF+ZqdqZizFTQSNe4XSGRVS1sqo1EuXRe/+oUKFadRDXNBdxn1oqLSVyfocjO06OONycRIiKf6c88V1VrMx4/2eVv3FwzhnP57M8SEc8TZVznlpRQo55toSwayrtvKWYhNXhSvkpH3ekp8ZS4KvZs+L/fz96OY146Z8qrRJ2rv91xuQgy/tHNeY44St99JQzbacJR9+47u8e0HDBJNkrOakEmkZPE/paazcETtP6z16sPt1ai04dvOPEtzGsCqripTgvqar6L9f2NMMq8wnmrtq8q9C4pqQq5U4daibRHyQn+Xjqx3d9+jRtnzLknclRbK3FP3PnY9UL0WZ9AAAAAElFTkSuQmCC) repeat fixed;
+          }
+          .nav-tabs-custom, 
+          .nav-tabs-custom > .tab-content {
+            background-color: transparent;
           }
           .navbar {
             border: none;
@@ -62,9 +66,10 @@
             box-shadow: none;
           }
           .signupTab > h3 {
-            opacity: 0.7;
             position: relative;
-            left: -8px;
+            left: -13px;
+            color: #008d4c;
+            font-size: 20px;
           }
           .signupTab .nav-tabs>li>a {
             border: 0;
@@ -113,9 +118,9 @@
           }
           .signupFooter label.error {
             position: relative;
-            top: 0;
+            top: 4px;
             left: 0;
-            line-height: 33px;
+            line-height: 27px;
             float: right;
             display: inline-block;
             width: inherit;
@@ -142,14 +147,39 @@
           }
           .iradio_minimal {
             margin-right: 5px;
+            -webkit-border-radius: 10px; 
+            -moz-border-radius: 10px;
+            border-radius: 10px; 
           }
           .form-group .radio {
             margin-bottom: 0;
             margin-top: 0;
           }
-          .form-inline input.error:focus {
+          input.error:focus {
             border-color: red!important;
           }
+          .form-inline .form-group {
+            position: relative;
+          }
+          .form-inline .form-group .tip {
+            position: absolute;
+            top: -29px;
+            left: 0;
+            color: red;
+            font-size: 13px;
+            display: none;
+            height: 14px;
+          }
+          .findPassword {
+            color: #929292;
+            font-size: 13px;
+            position: absolute;
+            bottom: 30px;
+            right: -84px;
+            display: inline-block;
+            line-height: 20px;
+          }
+
           /* footer */
           footer {
             border-top: 1px solid #E0E0E0;
@@ -167,7 +197,7 @@
         <nav class="navbar" role="navigation">
           <div class="container">
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">多推</a>
+              <a class="navbar-brand" href="#">Mpush 多推</a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
@@ -175,18 +205,22 @@
                   <form class="form-inline" role="form" id="formLogin">
                     <div class="form-group">
                       <input type="email" class="form-control" id="loginEmail" placeholder="邮箱">
+                      <span class="tip">该邮箱尚未注册</span>
                     </div>
                     <div class="form-group">
                       <input type="password" class="form-control" id="loginPassword" placeholder="密码">
+                      <span class="tip">密码错误</span>
+                      
                     </div>
                     <div class="form-group" style="margin-right: 0;">
                       <button type="button" id="btnLogin" class="btn btn-primary">登录</button>
                     </div>
+                    <a href="" class="findPassword">找回密码 <i class="fa fa-fw fa-angle-double-right"></i></a>
                   </form>
                 </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
-                <li class="subTile">提升你的职业价值</li>
+                <li class="subTile">寻找你的兴趣圈</li>
               </ul>
             </div>
           </div>
@@ -201,7 +235,7 @@
                           <form action="" method="post" id="formUser">
                             <div class="row">
                               <div class="col-xs-3">
-                                <label>邀请码 :</label>
+                                <label for="inviteCode">邀请码 :</label>
                               </div>
                               <div class="col-xs-9">
                                 <input class="form-control" name="inviteCode" id="inviteCode" type="text" placeholder="邀请码" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" required="">
@@ -209,31 +243,31 @@
                             </div>
                             <div class="row">
                               <div class="col-xs-3">
-                                <label>用户名 :</label>
+                                <label for="inputName">用户名 :</label>
                               </div>
                               <div class="col-xs-9">
-                                <input class="form-control" name="name" id="inputName" type="text" placeholder="用户名" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" required="">
+                                <input class="form-control" name="inputName" id="inputName" type="text" placeholder="用户名" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" required="">
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-xs-3">
-                                <label>邮箱 :</label>
+                                <label for="inputEmail">邮箱 :</label>
                               </div>
                               <div class="col-xs-9">
-                                <input class="form-control" name="email" id="inputEmail" type="email" placeholder="邮箱" required="" required="">
+                                <input class="form-control" name="inputEmail" id="inputEmail" type="email" placeholder="邮箱" required="">
                               </div>
                             </div>   
                             <div class="row" style="margin-bottom:10px;">
                               <div class="col-xs-3">
-                                <label>密码 :</label>
+                                <label for="inputPassword">密码 :</label>
                               </div>
                               <div class="col-xs-9">
-                                <input class="form-control" name="password" id="inputPassword" type="password" placeholder="密码" required="">
+                                <input class="form-control" name="inputPassword" id="inputPassword" type="password" placeholder="密码" required="">
                               </div>
                             </div>
                             <div class="row" style="margin-bottom:0px;">
                               <div class="col-xs-3">
-                                <label>性别 :</label>
+                                <label for="userSex">性别 :</label>
                               </div>
                               <div class="col-xs-9">
                                 <div class="form-group clearfix"> 
@@ -254,6 +288,9 @@
                             </div>
                             <div class="clearfix signupFooter">
                                 <button type="submit" class="btn btn-success pull-right" id="btnRegister">立即加入</button>
+                                <div class="pull-right text-right" style="width:100%; margin-top: 10px;">
+                                  <a href="">获得邀请码 <i class="fa fa-fw fa-angle-double-right"></i></a>
+                                </div>
                             </div>
                           </form>
                       </div>
@@ -278,16 +315,6 @@
         <script type="text/javascript">
             $('#formUser').validate({
                 onkeyup: false,
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    password: {
-                        required: true,
-                        minlength: 5
-                    }
-                },
                 submitHandler:function(form) {
                     var data = {
                         name: $('#inputName').val(),
@@ -303,19 +330,32 @@
                         type: "post",
                         data: data,
                         success: function (data) {
-                            if (data.code === 200) {
+                            if (data.code == 200) {
                                 $('#btnRegister').attr("disabled","disabled");
                                 $('#btnRegister').text("立即加入");
                                 window.location.href = '/register/step1';
                             }
-                            else {
-                                $('#btnRegister').text("立即加入");
-                                $(errorHtml).text(data.info).appendTo('.signupFooter');
+                            if (data.code == 404) {
+                              if (data.invite) {
+                                $('#inviteCode').addClass('error').focus();
+                              }
+                              if (data.email) {
+                                $('#inputEmail').addClass('error').focus();
+                              }
+                              if (data.name) {
+                                $('#inputName').addClass('error').focus();
+                              }
+                              $('#btnRegister')
+                                .text("立即加入")
+                                .after($(errorHtml).text(data.info));
                             }
+                            return false;
                         },
                         error: function (e) {
-                            $('#btnRegister').text("立即加入");
-                            $(errorHtml).text(data.info).appendTo('.signupFooter');
+                            $('#btnRegister')
+                              .text("立即加入")
+                              .after($(errorHtml).text(data.info));
+                           
                         }
                     });
                     return false;
@@ -360,8 +400,16 @@
                             window.location.href = '/home';
                           }
                       } else {
-                          $('#loginEmail').addClass('error');
-                          $('#loginEmail').focus();
+                          if (data.email) {
+                            $('#loginEmail').next('.tip').css({display:'inline-block'});
+                            $('#loginEmail').addClass('error');
+                            $('#loginEmail').focus();
+                          }
+                          if (data.password) {
+                            $('#loginPassword').next('.tip').css({display:'inline-block'});
+                            $('#loginPassword').addClass('error');
+                            $('#loginPassword').focus();
+                          }
                       }
                   },
                   error: function (e) {
@@ -369,11 +417,13 @@
                       $('#loginEmail').focus();
                   }
               });
+              return false;
             });
-            $('#loginEmail').add('#loginPassword').on('blur', function() {
+            $('#loginEmail').add('#loginPassword').on('change keydown', function() {
               $(this).removeClass('error');
+              $('#formLogin').find('.tip').css({display: 'none'});
             });
-            $('#loginPassword').on('keydown', function(e) {
+            $('#loginPassword').add('#loginEmail').on('keydown', function(e) {
               var key = e.keyCode || e.which;
               if (key === 13) {
                   $('#btnLogin').click();

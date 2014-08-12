@@ -116,6 +116,7 @@ var checkRequest = function(req, res) {
                     });
                     var obj = {
                         to: request.from,
+                        group: request.group,
                         title: 'member'
                     };
                     Request.notice(obj);
@@ -309,9 +310,12 @@ var adminAdd = function(req, res) {
             });
             var obj = {
                 to: adminId,
+                group: group._id,
                 title: 'admin'
             };
-            Request.notice(obj);
+            Request.notice(obj, function(err, request) {
+                console.log(err, request);
+            });
         });
     });
 };

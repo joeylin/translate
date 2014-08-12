@@ -433,7 +433,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             $scope.message = message;
         });
     }
-]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 'setPos',
+]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 'setPos', 
     function(app, $scope, $routeParams, $location, $http, $rootScope, setPos) {
         $scope.requests = [];
 

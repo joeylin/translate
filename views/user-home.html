@@ -871,7 +871,7 @@
                                     <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">退出</a>
+                                    <a href="#" class="btn btn-default btn-flat" ng-click="logout()">退出</a>
                                 </div>
                             </li>
                         </ul>
@@ -894,7 +894,7 @@
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>动态</a></li>
                     <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>圈子</a></li>
                     <li ng-class="{active: ['job','myJob','newJob','editJob','mySending'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>职位</a></li>
-                    <li ng-class="{active: ['connect','group','reply','comment','at','notice'].indexOf(current.path) >= 0}"><a ng-href="/request/at"><i class="fa fa-fw fa-info-circle"></i>消息</a></li>
+                    <li ng-class="{active: ['connect','group','reply','comment','at','notice'].indexOf(current.path) >= 0}"><a ng-href="/request/notice"><i class="fa fa-fw fa-info-circle"></i>消息</a></li>
                     <li ng-class="{active: current.path === 'groupTrends'}"><a ng-href="/groupTrends"><i class="fa fa-fw fa-rocket"></i>圈动态</a></li>
                     <li ng-class="{active: current.path === 'myPeople' || current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>人脉</a></li>
                     <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>我的微说</a></li>
@@ -931,11 +931,11 @@
             <div class="nav-tabs-custom" ng-show="current.path === 'reply' || current.path === 'comment' || current.path === 'connect' || current.path === 'group' || current.path === 'at' || current.path === 'notice'" ng-cloak>
               <ul class="nav nav-tabs pull-left">
                   <li class="pull-left header"><i class="fa fa-fw fa-info-circle"></i>消息</li>
+                  <li ng-class="{active: current.path === 'notice'}"><a ng-href="/request/notice">通知</a></li>
                   <li ng-class="{active: current.path === 'at'}"><a ng-href="/request/at">@我</a></li>
                   <li ng-class="{active: current.path === 'comment'}"><a ng-href="/request/comment">评论</a></li>
                   <li ng-class="{active: current.path === 'connect'}"><a ng-href="/request/connect">人脉</a></li>
                   <li ng-class="{active: current.path === 'group'}"><a ng-href="/request/group">圈子</a></li>
-                  <li ng-class="{active: current.path === 'notice'}"><a ng-href="/request/notice">通知</a></li>
               </ul>
             </div>
             <div class="row" id="main" ng-view ng-cloak></div>

@@ -23,6 +23,8 @@ var moment = require('moment');
 
 module.exports = function(app) {
     var getLogin = function(req, res) {
+        req.session.user = null;
+        req.session.destroy();
         res.render('login');
     };
 
@@ -747,6 +749,10 @@ module.exports = function(app) {
                 registerStage: user.registerStage
             };
             app.locals.user = result;
+
+            // if (user.registerStage > 2) {
+
+            // }
             res.render('register');
         });
     };
@@ -776,10 +782,9 @@ module.exports = function(app) {
             });
         });
     };
-
     var feedback = function(req, res) {
         res.render('feedback');
-    }
+    };
 
     // home
     app.get('/', middleware.check_login, getMain);

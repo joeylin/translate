@@ -40,7 +40,7 @@
       <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
         <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
       </a>
-      <div class="media-body">
+      <div class="media-body" id="{{share._id}}">
         <h4 class="media-heading">{{share.user.name}}</h4>
         <div>
           <p md-content="share.content"></p>
@@ -74,7 +74,7 @@
             <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
               <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
             </a>
-            <div class="media-body">
+            <div class="media-body" id="{{comment._id}}">
               <p class="reply-content">
                 <span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span><span md-content="comment.content"></span>
               </p>

@@ -2,8 +2,8 @@
 /*global angular*/
 
 angular.module('jsGen.controllers', ['ui.validate', 'ui.bootstrap.pagination']).
-controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount',
-    function(app, $scope, $rootScope, $location, $http, wordCount) {
+controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wordCount', 'setPos',
+    function(app, $scope, $rootScope, $location, $http, wordCount, setPos) {
         $scope.isOpened = false;
         $scope.isSearch = false;
         $scope.keyword = '';
@@ -45,6 +45,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
                 var share = {
                     user: app.author,
                     comments: [],
+                    commentsCount: 0,
                     likes: 0,
                     content: $scope.newShare,
                     liked: false,
@@ -210,6 +211,7 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
                     params: params
                 }).success(function(data) {
                     share.comments = data.comments;
+                    $('#' + share._id).find('.comment-editor textarea').focus();
                 });
             }
         };
@@ -253,6 +255,9 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             comment.isShowReply = !comment.isShowReply;
             if (comment.isShowReply) {
                 comment.newComment = '@' + comment.user.name + ' ';
+                setTimeout(function() {
+                    setPos($('#' + comment._id).find('textarea')[0]);
+                }, 100);
             }
         };
         $scope.vm.submitInlineComment = function(comment, share) {

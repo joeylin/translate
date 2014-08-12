@@ -929,15 +929,15 @@ module.exports = function(app) {
     app.post('/api/share/comments/delete', middleware.check_login, deleteComment);
 
     // jobs
-    app.get('/api/job/latest', getLatestJobs);
-    app.get('/api/job/search', jobsSearch);
-    app.get('/api/job/latestFilter', latestJobsFilter);
-    app.get('/api/job/postList', getPostJobList);
-    app.post('/api/job/close', closeJob);
-    app.post('/api/job/remove', removeJob);
-    app.post('/api/job/publish', publishJob);
-    app.post('/api/job/post', postJob);
-    app.get('/api/job/intern', getIntern);
-    app.post('/api/job/giveup', giveUpJob);
-    app.get('/api/jobs/:id', getJobById);
+    app.get('/api/job/latest', middleware.check_login, getLatestJobs);
+    app.get('/api/job/search', middleware.check_login, jobsSearch);
+    app.get('/api/job/latestFilter', middleware.check_login, latestJobsFilter);
+    app.get('/api/job/postList', middleware.check_login, getPostJobList);
+    app.post('/api/job/close', middleware.check_login, closeJob);
+    app.post('/api/job/remove', middleware.check_login, removeJob);
+    app.post('/api/job/publish', middleware.check_login, publishJob);
+    app.post('/api/job/post', middleware.check_login, postJob);
+    app.get('/api/job/intern', middleware.check_login, getIntern);
+    app.post('/api/job/giveup', middleware.check_login, giveUpJob);
+    app.get('/api/jobs/:id', middleware.check_login, getJobById);
 };
