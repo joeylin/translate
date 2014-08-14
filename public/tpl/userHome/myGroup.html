@@ -77,6 +77,14 @@
         <input type="text" class="form-control" placeholder="所属行业" ng-model="vm.industry" ng-change="change()">
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-3">
+        <label class="inline-label">申请理由 :</label>
+      </div>
+      <div class="col-md-9">
+        <textarea auto-height type="text" class="form-control" placeholder="简要说明申请理由" ng-model="vm.reason" ng-change="change()"></textarea>
+      </div>
+    </div>
     <div class="clearfix">
       <a href="#" class="btn btn-primary pull-right" ng-click="create()">创建</a>
       <span class="pull-right error" ng-show="error" style="line-height: 35px; margin-right:15px;">信息填写不完整</span>

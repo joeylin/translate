@@ -9,6 +9,9 @@ config(['$httpProvider', 'app',
             return {
                 response: function(res) {
                     var error, data = res.data;
+                    if (data.code == 401) {
+                        window.location = '/login';
+                    }
                     if (data.code === 404) {
                         app.timestamp = data.timestamp;
                         error = data.info;
@@ -31,9 +34,9 @@ config(['$httpProvider', 'app',
         });
     }
 ]).run(['app', '$q', '$rootScope', '$routeParams', '$location', '$timeout', '$filter', '$locale', 'getFile', 'tools', 'toast', 'timing', 'cache', 'restAPI', 'sanitize',
-    'mdParse', 'mdEditor', 'CryptoJS', 'promiseGet', 'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', 'getToc', '$http',
+    'mdParse',  'CryptoJS',  'myConf', 'anchorScroll', 'isVisible', 'applyFn', 'param', 'store', '$http',
     function(app, $q, $rootScope, $routeParams, $location, $timeout, $filter, $locale,
-        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, mdEditor, CryptoJS, promiseGet, myConf, anchorScroll, isVisible, applyFn, param, store, getToc, $http) {
+        getFile, tools, toast, timing, cache, restAPI, sanitize, mdParse, CryptoJS, myConf, anchorScroll, isVisible, applyFn, param, store, $http) {
 
         var global = $rootScope.global = {
             isLogin: false,
@@ -54,6 +57,7 @@ config(['$httpProvider', 'app',
 
         window.jsGen = app;
         app.q = $q;
+        app.applyFn = applyFn;
         app.store = store;
         app.toast = toast;
         app.param = param;
@@ -72,22 +76,73 @@ config(['$httpProvider', 'app',
         app.sanitize = sanitize;
         app.mdParse = mdParse;
         app.CryptoJS = CryptoJS;
-        app.promiseGet = promiseGet;
         app.myConf = myConf;
         app.rootScope = $rootScope;
-        angular.extend(app, tools); //添加jsGen系列工具函数
+        angular.extend(app, tools); 
 
         app.user = window.user;
         $rootScope.current = {};
         $rootScope.global.user = window.user;
+        $rootScope.global.shareCount = window.shareCount;
         $rootScope.$on('$routeChangeStart', function(event, next, current) {
             if (next && next.$$route) {
                 $rootScope.current.path = next.$$route.path;
             }
         });
-        $http.get('/api/notify').success(function(data) {
-            $rootScope.current.request = data.notify.request;
-            $rootScope.current.message = data.notify.message;
+        $rootScope.logout = function() {
+            var url = '/api/user/logout';
+            $http.post(url).success(function(data) {
+                window.location = '/login';
+            });
+        };
+
+        window.initQiniuUploader({
+            // input ID
+            input: 'avatar-upload',
+            progress: function(p, s, n) {
+                var title = p + '%';
+                var $progress = $('#upload-progress');
+                $progress.css({
+                    display: 'block'
+                });
+                $progress.text(title);
+            },
+            putFailure: function(msg) {
+                var $progress = $('#upload-progress');
+                $progress.addClass('error').text('failure').fadeOut(1000);
+            },
+            putFinished: function(fsize, res, taking) {
+                // res.key
+                var url = '//' + res.host + '/' + res.key;
+                var $progress = $('#upload-progress');
+                // 完成进度
+                $progress.text('Success').fadeOut(1000);
+                $rootScope.$broadcast('putFinish', url);
+            }
         });
+        setTimeout(function() {
+            $http.get('/api/notify').success(function(data) {
+                $rootScope.request = {};
+                $rootScope.request.comment = data.comment;
+                $rootScope.request.at = data.at;
+                $rootScope.request.connect = data.connect;
+                $rootScope.request.group = data.group;
+
+                var notice = $rootScope.notice = {};
+                notice.connect = data.connect;
+                notice.group = data.group;
+                notice.info = data.info;
+                
+                $rootScope.getNotice = function() {
+                    $http.get('/api/notify/shortNotice').success(function(result) {
+                        notice.content = result.content;
+                        notice.hasMore = result.hasMore;
+                        notice.info = result.info;
+                        $rootScope.showNotice = true;
+                    });
+                };
+            });
+        },100);
+            
     }
 ]);

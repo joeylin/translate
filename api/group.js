@@ -1068,6 +1068,7 @@ var delHire = function(req, res) {
     });
 };
 
+// invite code
 var getGroupInviteCode = function(req, res) {
     var user = req.session.user;
     var id = req.query.id;
@@ -1153,6 +1154,162 @@ var groupGenerateCode = function(req, res) {
     })
 };
 
+// apply
+var apply = function(req, res) {
+    var user = req.session.user;
+    var name = req.body.name;
+    var industry = req.body.industry;
+    var reason = req.body.industry;
+
+    var request = new Request();
+    request.type = 'admin';
+    request.role = 'group';
+    request.info.name = name;
+    request.info.industry = industry;
+    request.info.reason = reason;
+    request.from = user._id;
+    request.markModified('info.name');
+    request.markModified('info.industry');
+    request.markModified('info.reason');
+    request.save(function(err, request) {
+        if (err || !request) {
+            return res.send({
+                code: 404
+            });
+        }
+        res.send({
+            code: 200
+        });
+    });
+};
+var passGroup = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Request.findOne({
+        _id: id
+    }).exec(function(err, request) {
+        var name = request.info.name;
+        var industry = request.info.industry;
+        var from = request.from;
+        request.hasDisposed = true;
+        request.isPass = true;
+        request.save(function(err, request) {
+            if (err) {
+                return res.send({
+                    code: 404,
+                    info: err.msg
+                });
+            }
+            var obj = {
+                name: name,
+                create: from,
+                industry: industry
+            };
+            Group.createNew(obj, function(err, group) {
+                if (err || !group) {
+                    return res.send({
+                        code: 404,
+                        info: err.msg
+                    });
+                }
+                var notice = {
+                    to: from,
+                    group: group._id,
+                    title: 'group-pass'
+                };
+                Request.notice(notice, function(err) {
+                    res.send({
+                        code: 200
+                    });
+                });
+            });
+        });
+    });
+};
+var failGroup = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    var msg = req.body.msg;
+    Request.findOne({
+        _id: id
+    }).exec(function(err, request) {
+        var name = request.info.name;
+        var industry = request.info.industry;
+        var from = request.from;
+        request.hasDisposed = true;
+        request.isPass = false;
+        request.info.msg = msg;
+        request.markModified('info.msg');
+        request.save(function(err, request) {
+            if (err) {
+                return res.send({
+                    code: 404,
+                    info: err.msg
+                });
+            }
+            var notice = {
+                to: from,
+                info: {
+                    name: name,
+                    industry: industry,
+                    msg: msg
+                },
+                group: group._id,
+                title: 'group-fail'
+            };
+            Request.notice(notice, function(err) {
+                res.send({
+                    code: 200
+                });
+            });
+        });
+    });
+};
+var getApply = function(req, res) {
+    var user = req.session.user;
+    var page = req.query.page || 1;
+    var perPageItems = 30;
+    var query = {
+        type: 'admin',
+        hasDisposed: false,
+        role: 'group'
+    };
+    Request.find(query).skip((page - 1) * perPageItems).limit(perPageItems)
+    .populate('from').exec(function(err, requests) {
+        Request.find(query).count().exec(function(err, count) {
+            var content = [];
+            var hasNext;
+            requests.map(function(item, key) {
+                var result = {};
+                result._id = item._id;
+                result.name = item.info.name;
+                result.reason = item.info.reason;
+                result.industry = item.info.industry;
+                result.user = {};
+                result.user.name = item.from.name;
+                result.user.id = item.from.id;
+                result.user._id = item.from._id;
+                result.hasDisposed = item.hasDisposed;
+                result.isPass = item.isPass;
+                result.msg = item.msg;
+                content.push(result);
+            });
+
+            if ((page - 1) * perPageItems + content.length < count) {
+                hasNext = true;
+            } else {
+                hasNext = false;
+            }
+            res.send({
+                code: 200,
+                count: count,
+                hasNext: hasNext,
+                content: content
+            });   
+        });
+    });
+};
+
 module.exports = function(app) {
     app.post('/api/group/create', middleware.apiLogin, create);
     app.post('/api/group/joinRequest', middleware.apiLogin, joinRequest);
@@ -1182,4 +1339,10 @@ module.exports = function(app) {
     app.get('/api/group/:id/post', getPost);
     app.get('/api/group/:id/search', groupPostSearch);
     app.post('/api/group/post/delete', middleware.apiLogin, deleteShare);
+
+    // admin
+    app.post('/api/group/apply', middleware.apiLogin, apply);
+    app.post('/api/group/apply/pass', middleware.check_admin, passGroup);
+    app.post('/api/group/apply/fail', middleware.check_admin, failGroup);
+    app.get('/api/group/getApply', middleware.check_admin, getApply);
 };

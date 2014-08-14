@@ -1,3 +1,4 @@
+
 var config = {
   host: 'localhost',
   port: 3000,
@@ -14,7 +15,7 @@ var config = {
   description: 'translate community',
   qiniu: {
       accessKey: '',
-      secretKey: '-X3',
+      secretKey: '',
       bucket: '',
       bucketHost: ''
   },
@@ -23,7 +24,20 @@ var config = {
       service: '',
       user: '',
       pass: ''
-  }
+  },
+  skins: [{
+    header: 'http://img.t.sinajs./t5//public/profile_cover/006.jpg',
+    body: '#f9f9f9'
+  }, {
+    header: 'http://img.t.sinajs.cn/t5/skin/public/profile_cover/050.jpg',
+    body: '#f9f9f9'
+  }, {
+    header: 'http://img.t.sinajs.cn/t5/skin/public/profile_cover/051.jpg',
+    body: '#f9f9f9'
+  }, {
+    header: 'http://img.t.sinajs.cn/t5/skin/public/profile_cover/003.jpg',
+    body: '#f9f9f9'
+  }]
 };
 
 module.exports = config;

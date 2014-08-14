@@ -47,6 +47,12 @@ var RequestSchema = new Schema({
     isPass: {
         type: Boolean
     },
+    // admin
+    role: {
+        type: String
+    },
+    info: {},
+
     is_delete: {
         type: Boolean,
         default: false
@@ -105,6 +111,7 @@ RequestSchema.statics.delete = function(id, cb) {
         Request.remove(cb);
     });
 };
+// to group title ( info 可选)
 RequestSchema.statics.notice = function(obj, cb) {
     var Request = new this();
     var User = mongoose.model('User');
@@ -112,7 +119,7 @@ RequestSchema.statics.notice = function(obj, cb) {
     Request.type = 'notice';
     Request.to = obj.to;
     Request.group = obj.group;
-    Request.title = obj.title;
+    Request.title = obj.title; 
 
     if (obj.title == 'connect') {
         User.findOne({
@@ -154,7 +161,35 @@ RequestSchema.statics.notice = function(obj, cb) {
         Request.content = obj.content;
         Request.html = obj.content;
         Request.save(cb);
+    }
+    if (obj.title == 'apply-pass') {
+        Group.findOne({
+            _id: obj.group
+        }).exec(function(err, group) {
+            if (err || !group) {
+                return false;
+            }
+            Request.content = '你创建的圈子 ' + group.name + ' 已经通过审核';
+            Request.html = '你创建的圈子 ' + '<a href="/profile/' + group.id + '" target="_blank">' + group.name + '</a>' + ' 已经通过审核';
+            Request.save(cb);
+        });
     } 
+    if (obj.title == 'apply-fail') {
+        Group.findOne({
+            _id: obj.group
+        }).exec(function(err, group) {
+            if (err || !group) {
+                return false;
+            }
+            Request.info = obj.info;
+            Request.content = '你申请的圈子 ' + group.name + ' 已经未通过审核';
+            Request.html = '你申请的圈子 ' + group.name + ' 已经未通过审核' + 
+                '<p>信息: ' + info.name + ' ' + info.industry + ' ' + ' ' + info.reason + '</p>' +
+                '<p>原因: ' + info.msg + '</p>';
+            Request.markModified();
+            Request.save(cb);
+        });
+    }
 };
 
 // methods

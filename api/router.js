@@ -796,6 +796,23 @@ module.exports = function(app) {
         res.render('feedback');
     };
 
+    // admin
+    var getAdmin = function(req, res) {
+        var user = req.session.user;
+        User.findOne({
+            _id: user._id
+        }).exec(function(err, user) {
+            if (user.isAdmin) {
+                res.render('admin');
+            } else {
+                res.send({
+                    code: 404,
+                    info: 'no auth'
+                });
+            }
+        });  
+    }
+
     // home
     app.get('/', middleware.check_login, getMain);
     app.get('/home', middleware.check_login, getHome);
@@ -870,4 +887,12 @@ module.exports = function(app) {
 
     // feedback
     app.get('/about/feedback', feedback);
+
+    // admin
+    app.get('/admin', getAdmin);
+    app.get('/admin/group', getAdmin);
+    app.get('/admin/user', getAdmin);
+    app.get('/admin/count', getAdmin);
+    app.get('/admin/invite', getAdmin);
+    app.get('/admin/report', getAdmin);
 };

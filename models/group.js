@@ -59,6 +59,10 @@ var GroupSchema = new Schema({
         type: Number,
         default: 0
     },
+    is_active: {
+        type: Boolean,
+        default: false
+    },
     is_delete: {
         type: Boolean,
         default: false

@@ -20,6 +20,17 @@ var check_login = function(req, res, next) {
         }
     }
 };
+var check_admin = function(req, res, next) {
+    var user = req.session.user;
+    if (user && user.isAdmin) {
+        next();
+    } else {
+        res.send({
+            code: 404,
+            info: 'no auth'
+        });
+    }
+};
 var apiLogin = function(req, res, next) {
     var user = req.session.user;
     if (!user) {
@@ -45,3 +56,4 @@ var authLogin = function(req, res, next) {
 exports.check_login = check_login;
 exports.apiLogin = apiLogin;
 exports.authLogin = authLogin;
+exports.check_admin = check_admin;

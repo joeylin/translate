@@ -426,7 +426,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $http.get(url).success(function(data) {
             var request = data.notify.request;
             var message = data.notify.message;
-            var comment = 
 
             $scope.total = request + message;
             $scope.request = request;
@@ -1258,24 +1257,29 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.vm = {};
         $scope.vm.name = '';
         $scope.vm.industry = '';
+        $scope.vm.reason = '';
         $scope.error = false;
         $scope.create = function() {
-            if ($scope.vm.name === '' || $scope.vm.industry === '') {
+            if ($scope.vm.name === '' || $scope.vm.industry === '' || $scope.vm.reason === '') {
                 $scope.error = true;
                 return false;
             }
-            var url = '/api/group/create';
+            var url = '/api/group/apply';
             var data = {
                 name: $scope.vm.name,
-                industry: $scope.vm.industry
+                industry: $scope.vm.industry,
+                reason: $scope.vm.reason
             };
             $http.post(url, data).success(function(data) {
                 $.magnificPopup.close();
-                window.location.href = '/group/' + data.groupId + '/settings';
             });
+            // $http.post(url, data).success(function(data) {
+            //     $.magnificPopup.close();
+            //     window.location.href = '/group/' + data.groupId + '/settings';
+            // });
         };
         $scope.change = function() {
-            if ($scope.vm.name !== '' && $scope.vm.industry !== '') {
+            if ($scope.vm.name !== '' && $scope.vm.industry !== '' && $scope.vm.reason !== '') {
                 $scope.error = false;
             }
         };
