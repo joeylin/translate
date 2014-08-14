@@ -79,14 +79,18 @@ module.exports = function(app) {
                         }
 
                         if (req.session.user && (req.session.user.id !== user.id)) {
-                            UserProfile.findOne({
-                                _id: req.session.user.profile
-                            }).exec(function(err, profile) {
-                                profile.view += 1;
-                                profile.save();
-                            });
+                            profile.view += 1;
+                            profile.save();
                         }
-
+                        if (config.skins) {
+                            app.locals.skin = config.skins[profile.skinIndex || 0];
+                        } else {
+                            app.locals.skin = {
+                                header: '',
+                                body: ''
+                            };
+                        }
+                        
                         Request.find({
                             to: user._id,
                             hasDisposed: false
@@ -159,6 +163,12 @@ module.exports = function(app) {
                 avatar: user.avatar,
                 connectsCount: user.connects.length
             }
+            if (user.registerStage == 1) {
+                return res.redirect('/register/step1');
+            }
+            // if (user.registerStage == 2) {
+            //     return res.redirect('/register/step2');
+            // }
             app.locals.user = author;
             if (user.role === 'user') {
                 Share.find({
@@ -750,9 +760,9 @@ module.exports = function(app) {
             };
             app.locals.user = result;
 
-            // if (user.registerStage > 2) {
-
-            // }
+            if (user.registerStage >= 3) {
+                return res.redirect('/home');
+            }
             res.render('register');
         });
     };

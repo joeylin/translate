@@ -45,7 +45,7 @@ var create = function(req, res) {
             });
         }
         User.findOne({
-            email: options.email
+            name: options.name
         }).exec(function(err, user) {
             if (err) {
                 return res.send({
@@ -53,15 +53,16 @@ var create = function(req, res) {
                     info: err.msg
                 });
             }
+                
             if (user) {
                 return res.send({
                     code: 404,
-                    email: true,
-                    info: '该邮箱已被注册'
+                    name: true,
+                    info: '用户名已被使用'
                 });
             }
             User.findOne({
-                name: options.name
+                email: options.email
             }).exec(function(err, user) {
                 if (err) {
                     return res.send({
@@ -72,51 +73,50 @@ var create = function(req, res) {
                 if (user) {
                     return res.send({
                         code: 404,
-                        name: true,
-                        info: '用户名已被使用'
+                        email: true,
+                        info: '该邮箱已被注册'
                     });
                 }
-
-            });
-            var user = new User(options);
-            var profile;
-            if (options.role === 'user') {
-                profile = new UserProfile({
-                    user: user._id,
-                    name: 'user'
-                });
-            }
-            if (options.role === 'company') {
-                profile = new CompanyProfile({
-                    user: user._id,
-                    name: 'company'
-                });
-            }
-            user.provider = 'local';
-            profile.save(function(err, _profile) {
-                IdGenerator.getNewId('user', function(err, doc) {
-                    user.id = doc.currentId;
-                    user.profile = _profile._id;
-                    user.save(function(err, user) {
-                        if (err) {
-                            var message = err.message;
-                            return res.send({
-                                code: 404,
-                                user: null,
-                                info: message
-                            });
-                        }
-                        req.session.user = user;
-                        invitation.is_delete = true;
-                        invitation.save(function(err, invitation) {
-                            res.send({
-                                code: 200,
-                                user: req.session.user
-                            });
-                        }); 
+                var user = new User(options);
+                var profile;
+                if (options.role === 'user') {
+                    profile = new UserProfile({
+                        user: user._id,
+                        name: 'user'
+                    });
+                }
+                if (options.role === 'company') {
+                    profile = new CompanyProfile({
+                        user: user._id,
+                        name: 'company'
+                    });
+                }
+                user.provider = 'local';
+                profile.save(function(err, _profile) {
+                    IdGenerator.getNewId('user', function(err, doc) {
+                        user.id = doc.currentId;
+                        user.profile = _profile._id;
+                        user.save(function(err, user) {
+                            if (err) {
+                                var message = err.message;
+                                return res.send({
+                                    code: 404,
+                                    user: null,
+                                    info: message
+                                });
+                            }
+                            req.session.user = user;
+                            invitation.is_delete = true;
+                            invitation.save(function(err, invitation) {
+                                res.send({
+                                    code: 200,
+                                    user: req.session.user
+                                });
+                            }); 
+                        });
                     });
                 });
-            });
+            });     
         });
     });       
 };

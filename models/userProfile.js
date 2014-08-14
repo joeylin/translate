@@ -69,6 +69,10 @@ var UserProfileSchema = new Schema({
             default: 0
         }
     },
+    skinIndex: {
+        type: Number,
+        default: 0
+    },
     createAt: {
         type: Date,
         default: Date.now

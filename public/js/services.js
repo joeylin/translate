@@ -49,7 +49,6 @@ factory('restAPI', ['$resource',
 ]).factory('anchorScroll', function() {
     function toView(element, top, height) {
         var winHeight = $(window).height();
-
         element = $(element);
         height = height > 0 ? height : winHeight / 10;
         $('html, body').animate({

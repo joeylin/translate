@@ -9,6 +9,7 @@ var Request = Models.Request;
 var Group = Models.Group;
 
 var middleware = require('./middleware');
+var config = require('../config/config').config;
 
 var editHeader = function(req, res) {
     var user = req.session.user;
@@ -219,16 +220,40 @@ var getWeekVist = function(req, res) {
         });
     });
 };
+var getSkinList = function(req, res) {
+    var user = req.session.user;
+    res.send({
+        code: 200,
+        skins: config.skins
+    });
+};
+var setCurrentSkin = function(req, res) {
+    var user = req.session.user;
+    var index = req.body.index;
+    UserProfile.findOne({
+        user: user._id
+    }).exec(function(err, profile) {
+        profile.skinIndex = index;
+        profile.save(function(err) {
+            res.send({
+                code: 200,
+                info: 'set success'
+            });
+        }); 
+    });
+};
 
 module.exports = function(app) {
-    app.post('/api/userProfile/header', editHeader);
-    app.post('/api/userProfile/basic', editBasic);
-    app.post('/api/userProfile/avatar', editAvatar);
-    app.post('/api/userProfile/desc', editDesc);
-    app.post('/api/userProfile/experience', editExperience);
-    app.post('/api/userProfile/edu', editEdu);
-    app.post('/api/userProfile/works', editWorks);
-    app.post('/api/userProfile/social', editSocial);
+    app.post('/api/userProfile/header', middleware.authLogin, editHeader);
+    app.post('/api/userProfile/basic', middleware.authLogin, editBasic);
+    app.post('/api/userProfile/avatar', middleware.authLogin, editAvatar);
+    app.post('/api/userProfile/desc', middleware.authLogin, editDesc);
+    app.post('/api/userProfile/experience', middleware.authLogin, editExperience);
+    app.post('/api/userProfile/edu', middleware.authLogin, editEdu);
+    app.post('/api/userProfile/works', middleware.authLogin, editWorks);
+    app.post('/api/userProfile/social', middleware.authLogin, editSocial);
+    app.post('/api/userProfile/setSkin', middleware.authLogin, setCurrentSkin);
 
-    app.get('/api/userProfile/weekvisit', getWeekVist);
+    app.get('/api/userProfile/weekvisit', middleware.authLogin, getWeekVist);
+    app.get('/api/userProfile/skins', middleware.authLogin, getSkinList);
 };

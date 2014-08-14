@@ -26,7 +26,6 @@
            * Style tweaks
            * --------------------------------------------------
            */
-
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -375,6 +374,75 @@
             opacity: 1;
             background-color: rgba(46, 167, 224, 0.7);
           }
+
+          /* skin-setting style */
+          .custom-well {
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px transparent;
+            box-shadow: inset 0 1px 1px transparent;
+            padding: 0;
+            margin-bottom: 0px;
+          }
+          .skin-container {
+            position: absolute;
+            z-index: 100;
+            padding: 15px;
+            padding-right: 5px;
+            width: 320px;
+            top: 31px;
+            right: 0px;
+            margin-top: 12px;
+            background-color: #fff;
+            border: 1px solid #999;
+            border: 1px solid rgba(0,0,0,.2);
+            border-radius: 6px;
+            -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+            box-shadow: 0 3px 9px rgba(0,0,0,.5);
+            background-clip: padding-box;
+            outline: 0;
+            display: none;
+          }
+          .skin-container .arrow {
+            position: absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 11px;
+            right: 31px;
+            margin-left: -11px;
+            border-top-width: 0;
+            border-bottom-color: rgba(0,0,0,.25);
+            top: -11px;
+          }
+          .skin-container .arrow:after {
+            position: absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 10px;
+            content: " ";
+            top: 1px;
+            margin-left: -10px;
+            border-top-width: 0;
+            border-bottom-color: #fff;
+          }
+          .skin-list .item img {
+            width: 64px;
+            height: 64px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            padding: 2px;
+          }
+          .skin-list .item img:hover,
+          .skin-list .item.active img {
+            border-color: #428bca;
+          }
           /* footer */
           footer {
             border-top: 1px solid #E0E0E0;
@@ -387,8 +455,12 @@
     </head>
     <script type="text/javascript">
       window.author = null;
+      window.profileSkin = null;
       <% if (locals.author) { %>
         window.author = true;
+      <% } %>
+      <% if (locals.skin) { %>
+        window.profileSkin = <%- JSON.stringify(locals.skin) %>;
       <% } %>
     </script>
     <body>
@@ -501,20 +573,42 @@
                 <li><a href="/home" target="_self">首页</a></li>
                 <li class="active"><a href="/profile" target="_self">个人主页</a></li>
                 <li><a href="/group" target="_self">圈子</a></li>
-                
               </ul>
             </div>
           </div>
         </nav>
         <div class="container"> 
-          <div class="jumbotron user-header">
+          <div class="jumbotron user-header" style="background-image:url(<%= locals.skin.header %>)">
             <% if (locals.author && locals.author.id === locals.user.id) { %>
-            <a class="btn btn-primary pull-right" href="/settings/profile" target="_self">编辑</a>
+            <a class="btn btn-primary pull-right btn-sm" href="/settings/profile" target="_self">
+              <i class="fa fa-edit"></i>
+              编辑资料
+            </a>
+            <div class="pull-right" style="margin-right: 10px; position:relative;">
+              <a class="btn btn-primary pull-right btn-sm"  id="setting-skin" >
+                <i class="fa fa-fw fa-plus"></i>
+                更换皮肤
+              </a>
+              <div class="skin-container" id="skin-container">
+                <div class="well custom-well">
+                  <div class="arrow"></div>
+                  <div class="skin-list clearfix"></div>
+                  <hr style="margin-top:15px;margin-bottom:15px;display:none;">
+                  <div class="ctrl-btn clearfix" id="setting-btn" style="margin-right:10px;display:none;">
+                    <a href="" class="btn btn-success btn-sm pull-right save">保存</a>
+                    <a href="" class="btn btn-default btn-sm pull-right cancel" style="margin-right:10px;">取消</a>
+                  </div>
+                  <div class="loading text-center">
+                    正在加载中...
+                  </div>
+                </div>
+              </div>
+            </div>
             <% } %>
             <h1><span><%= locals.user.name %></span></h1>
             <p class="desc"><span><%= locals.user.signature || 'add your signature' %></span> </p>
           </div>
-          <div class="panel">
+          <div class="panel" style="border:0px;">
             <div class="panel-body" style="background-color:#ddd;">  
               <div class="media">
                 <span class="pull-left" style="width:207px;margin-right:15px;">
@@ -698,9 +792,11 @@
         <footer class="text-center">
           <p class="">© by Joeylin 331547274@qq.com <a href="/about/feedback" target="_blank">意见与反馈</a></p>
         </footer>
+        
         <script type="text/javascript" src="/public/js/lib/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/bootstrap.min.js"></script>
         <script type="text/javascript" src="/public/js/lib/notify.js"></script>
+        <script type="text/javascript" src="/public/js/lib/skin.js"></script>
         <script type="text/javascript">
           $(document).ready(function() {
             $('#btnLogout').click(function() {

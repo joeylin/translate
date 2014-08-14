@@ -8,7 +8,8 @@ var GroupSchema = new Schema({
         default: false
     },
     total: {
-        type: Number // 限制成员的总人数
+        type: Number, // 限制成员的总人数
+        default: 50
     },
     intro: {
         type: String
@@ -133,6 +134,9 @@ GroupSchema.statics.join = function(id, userId, cb) {
     this.findOne({
         _id: id
     }, function(err, group) {
+        if (group.admin.length + group.members.length + 1 >= group.total) {
+            cb({msg:'超过成员人数'},null);
+        }
         if (group.isJoined(userId)) {
             cb(null, null);
         } else {

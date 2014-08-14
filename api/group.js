@@ -102,6 +102,12 @@ var checkRequest = function(req, res) {
         };
         if (value) {
             Group.join(request.group, request.from.toString(), function(err, group) {
+                if (!group) {
+                    return res.send({
+                        code: 200,
+                        info: err.msg
+                    });
+                }
                 Request.update({
                     from: request.from,
                     group: request.group

@@ -681,7 +681,7 @@
                 </div>
               </div>
               <div class="white-popup-block" ng-if="global.popup.type == 'quit'">
-                <label>是否要退出群组 ?</label>
+                <label>是否要退出圈子 ?</label>
                 <div class="clearfix">
                     <button class="btn btn-primary pull-right" ng-click="global.popup.close()">否</button>
                     <button class="btn btn-default pull-right" ng-click="global.quit()" style="margin-right:10px;">是</button>
@@ -842,7 +842,12 @@
               <% } %>
 
               <% if (locals.author && !locals.isJoined) { %>
+              <% if (locals.group.admin.length + locals.group.members.length + 1 >= locals.group.total) { %>
+              <span class="pull-right manage">该圈已满</span>
+              <% } else { %>
               <a  href="#" type="button" class="pull-right manage" ng-click="global.join()">申请加入</a>
+              <% } %>
+              
               <% } %>
               <% if (!locals.author) { %>
               <a  href="#" type="button" class="pull-right manage" ng-click="global.join()">
@@ -866,7 +871,7 @@
                 </div>
                 <div class="members-desc" style="margin-bottom:5px;">
                   <span class="title">成员 : </span>
-                  <span> <%= locals.group.admin.length + locals.group.members.length + 1 %> / 50</span>
+                  <span> <%= locals.group.admin.length + locals.group.members.length + 1 %> / <%= group.total %></span>
                 </div>
                 <div class="members-desc">
                   <span class="title" style="font-weight:700;">简介 : </span>

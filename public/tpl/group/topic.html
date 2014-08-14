@@ -18,14 +18,13 @@
             <i class="fa fa-fw" ng-class="{true:'fa-check-square-o', false:'fa-square-o'}[toMyShare]"></i>
             同时发布到我的好友圈
           </span>
-          <!-- <a class="btn btn-primary pull-right" role="button" ng-click="submit()" ng-class="{'default': newShare === ''}">发布</a> -->
         </div>
     </div>
   </div>
   <a class="btn btn-success" href="" ng-click="backPost()" ng-show="isSearch"><i class="fa fa-fw fa-angle-double-left"></i> 返回群主页</a>
   <div class="pull-right" style="width: 250px;">
     <div class="input-search">
-        <input type="text" class="form-control" placeholder="搜索本群" ng-model="keyword" ng-keydown="enter($event)">
+        <input type="text" class="form-control" placeholder="搜索本圈" ng-model="keyword" ng-keydown="enter($event)">
         <span class="input-search-addon"><i class="fa fa-fw fa-search"></i>
         </span>
     </div>
