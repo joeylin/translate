@@ -535,6 +535,18 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             });
         };
 
+        // notice
+        $scope.vm.delReq = function(request) {
+            var url = '/api/notify/delNotice';
+            var data = {
+                id: request._id
+            };
+            $http.post(url, data).success(function(data) {
+                var index = $scope.requests.indexOf(request);
+                $scope.requests.splice(index, 1);
+            });
+        };
+
         var url;
         if ($rootScope.current.path === 'connect') {
             url = '/api/notify/connect';

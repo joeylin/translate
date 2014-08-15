@@ -763,6 +763,26 @@
           .dropdown-menu .readmore a {
             color: #333;
           }
+
+          /* notice */
+          .notice-panel .notice-item {
+            position: relative;
+          }
+          .notice-item .hover-tag {
+            display: none;
+            position: absolute;
+            top: 3px;
+            right: 0;
+            color: #999;
+          }
+          .notice-item:hover .hover-tag {
+            display: block;
+          }
+          .notice-item .hover-tag:hover {
+            background: #9C9C9C;
+            color: #FFF !important;
+          }
+
           
         </style>
         <!-- for angular ng-cloak -->
@@ -807,7 +827,7 @@
                               <span>{{notice.connect + notice.group}} 条未处理请求</span>
                             </div>
                             <ul class="notify-container">
-                                <li ng-repeat="item in notice.content"><a href="">{{item.content}}</a></li>
+                                <li ng-repeat="item in notice.content" ><a href="/request/notice" style="white-space:nowrap;overflow:hidden;">{{item.content}}</a></li>
                                 <li ng-show="!notice.content.length"><a href="">暂时没有通知</a></li>
                             </ul>
                             <div class="msg" style="margin-top: 5px;">

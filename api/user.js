@@ -1611,6 +1611,8 @@ var getNotice = function(req, res) {
                 var result = {};
                 result.isNew = !request.hasDisposed;
                 result.html = request.html;
+                result._id = request._id;
+                result.date = request.createAt.getTime();
                 content.push(result);
             });
             if ((page - 1) * perPageItems + requests.length < count) {
@@ -1629,6 +1631,39 @@ var getNotice = function(req, res) {
             requests.map(function(request,key) {
                 request.hasDisposed = true;
                 request.save();
+            });
+        });
+    });
+};
+var delNotice = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+
+    Request.findOne({
+        _id: id
+    }).exec(function(err, request) {
+        if (err || !request) {
+            return res.send({
+                code: 404,
+                info: 'no request'
+            });
+        }
+        if (request.type !== 'notice') {
+            return res.send({
+                code: 404,
+                info: 'wrong operation'
+            });
+        }
+        if (request.to.toString() !== user._id) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
+        request.is_delete = true;
+        request.save(function(err, request) {
+            res.send({
+                code: 200
             });
         });
     });
@@ -2411,6 +2446,7 @@ module.exports = function(app) {
     app.get('/api/notify/at', middleware.check_login, getAtShare);
     app.get('/api/notify/notice', middleware.check_login, getNotice);
     app.get('/api/notify/shortNotice', middleware.check_login, getShortNotice);
+    app.post('/api/notify/delNotice', middleware.check_login, delNotice);
     app.get('/api/notify/:op', middleware.check_login, getRequest);
     app.post('/api/notify/:op/read', middleware.check_login, readRequest);
 

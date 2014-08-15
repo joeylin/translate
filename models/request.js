@@ -51,7 +51,7 @@ var RequestSchema = new Schema({
     role: {
         type: String
     },
-    info: {},
+    info: Schema.Types.Mixed,
 
     is_delete: {
         type: Boolean,
@@ -141,7 +141,7 @@ RequestSchema.statics.notice = function(obj, cb) {
                 return false;
             }
             Request.content = '你已经成为 ' + group.name + ' 管理员';
-            Request.html = '你已经成为 ' + '<a href="/profile/' + group.id + '" target="_blank">' + group.name + '</a>' + ' 管理员';
+            Request.html = '你已经成为 ' + '<a href="/group/' + group.id + '" target="_blank">' + group.name + '</a>' + ' 管理员';
             Request.save(cb);
         });
     }
@@ -169,26 +169,19 @@ RequestSchema.statics.notice = function(obj, cb) {
             if (err || !group) {
                 return false;
             }
-            Request.content = '你创建的圈子 ' + group.name + ' 已经通过审核';
-            Request.html = '你创建的圈子 ' + '<a href="/profile/' + group.id + '" target="_blank">' + group.name + '</a>' + ' 已经通过审核';
+            Request.content = '恭喜, 你创建的圈子 ' + group.name + ' 已经通过审核';
+            Request.html = '恭喜, 你创建的圈子 ' + '<a href="/group/' + group.id + '" target="_blank">' + group.name + '</a>' + ' 已经通过审核';
             Request.save(cb);
         });
     } 
     if (obj.title == 'apply-fail') {
-        Group.findOne({
-            _id: obj.group
-        }).exec(function(err, group) {
-            if (err || !group) {
-                return false;
-            }
-            Request.info = obj.info;
-            Request.content = '你申请的圈子 ' + group.name + ' 已经未通过审核';
-            Request.html = '你申请的圈子 ' + group.name + ' 已经未通过审核' + 
-                '<p>信息: ' + info.name + ' ' + info.industry + ' ' + ' ' + info.reason + '</p>' +
-                '<p>原因: ' + info.msg + '</p>';
-            Request.markModified();
-            Request.save(cb);
-        });
+        Request.info = obj.info;
+        Request.content = '你申请的圈子 ' + obj.info.name + ' 未通过审核';
+        Request.html = '你申请的圈子 <span style="color:#3c8dbc;">' + obj.info.name + '</span> 未通过审核' + 
+            '<div><span style="font-weight:700;">信息</span> : ' + obj.info.name + ' ' + obj.info.industry + ' ' + ' ' + obj.info.reason + '</div>' +
+            '<div><span style="font-weight:700;">原因</span> : ' + obj.info.msg + '</div>';
+        Request.markModified('info');
+        Request.save(cb);
     }
 };
 

@@ -33,10 +33,11 @@ controller('groupCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
         $scope.vm.pass = function(item) {
             var url = '/api/group/apply/pass';
             var data = {
-                id: item.id
+                id: item._id
             };
             $http.post(url,data).success(function(data) {
                 item.hasDisposed = true;
+                item.isPass = true;
             });
         };
         $scope.vm.toggleMsg = function(item) {
@@ -53,6 +54,7 @@ controller('groupCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
             }
             $http.post(url,data).success(function(data) {
                 item.hasDisposed = true;
+                item.isPass = false;
             });
         };
         var getApply = function() {

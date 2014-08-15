@@ -13,9 +13,9 @@
 	</div>
 	<div style="width:360px;" ng-if="item.showMsgBtn && !item.hasDisposed" id="{{item._id}}">
 		<textarea auto-height class="form-control" ng-model="item.msg" placeholder="请简短的输入拒绝的理由"></textarea>
-		<div class="text-right">
-			<button class="btn btn-default btn-sm" ng-click="item.showMsgBtn=false;">取消</button>
+		<div class="text-left">
 			<button class="btn btn-primary btn-sm" ng-click="vm.fail(item)">发送</button>
+			<button class="btn btn-default btn-sm" ng-click="item.showMsgBtn=false;">取消</button>
 		</div>   
 	</div>
 	<div ng-if="item.hasDisposed">

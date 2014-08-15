@@ -1164,13 +1164,13 @@ var apply = function(req, res) {
     var request = new Request();
     request.type = 'admin';
     request.role = 'group';
-    request.info.name = name;
-    request.info.industry = industry;
-    request.info.reason = reason;
+    request.info = {
+        name: name,
+        industry: industry,
+        reason: reason
+    };
     request.from = user._id;
-    request.markModified('info.name');
-    request.markModified('info.industry');
-    request.markModified('info.reason');
+    request.markModified('info');
     request.save(function(err, request) {
         if (err || !request) {
             return res.send({
@@ -1188,6 +1188,12 @@ var passGroup = function(req, res) {
     Request.findOne({
         _id: id
     }).exec(function(err, request) {
+        if (err || !request) {
+            return res.send({
+                code: 404,
+                info: 'wrong operation'
+            });
+        }
         var name = request.info.name;
         var industry = request.info.industry;
         var from = request.from;
@@ -1202,7 +1208,7 @@ var passGroup = function(req, res) {
             }
             var obj = {
                 name: name,
-                create: from,
+                creator: from,
                 industry: industry
             };
             Group.createNew(obj, function(err, group) {
@@ -1215,7 +1221,7 @@ var passGroup = function(req, res) {
                 var notice = {
                     to: from,
                     group: group._id,
-                    title: 'group-pass'
+                    title: 'apply-pass'
                 };
                 Request.notice(notice, function(err) {
                     res.send({
@@ -1235,6 +1241,7 @@ var failGroup = function(req, res) {
     }).exec(function(err, request) {
         var name = request.info.name;
         var industry = request.info.industry;
+        var reason = request.info.reason;
         var from = request.from;
         request.hasDisposed = true;
         request.isPass = false;
@@ -1252,10 +1259,10 @@ var failGroup = function(req, res) {
                 info: {
                     name: name,
                     industry: industry,
+                    reason: reason,
                     msg: msg
                 },
-                group: group._id,
-                title: 'group-fail'
+                title: 'apply-fail'
             };
             Request.notice(notice, function(err) {
                 res.send({

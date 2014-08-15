@@ -1,9 +1,11 @@
 <div class="profile-body col-md-9">
-  <div class="panel search-result">
+  <div class="panel notice-panel">
     <div class="panel-body">
-      <div class="clearfix" ng-repeat="request in requests" style="margin-bottom: 5px;">
-        <i class="fa fa-fw fa-bullhorn pull-left" style="position: relative;top: 4px;"></i>
-        <span style="padding-left: 20px;" add-html="request.html"></span>
+      <div class="clearfix notice-item" ng-repeat="request in requests" style="margin-bottom: 10px;">
+        <span class="hover-tag" ng-click="vm.delReq(request)"><i class="fa fa-fw fa-times"></i></span>
+        <i class="fa fa-fw fa-bullhorn pull-left" style="position:relative;top:4px;"></i>
+        <span style="padding-left:20px;display:inline-block;" add-html="request.html"></span>
+        <div style="padding-left:41px;color:#999;font-size:13px;">{{request.date | formatDate:true}}</div>
       </div>
       
       <div ng-show="requests.length === 0">
