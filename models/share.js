@@ -55,7 +55,7 @@ var ShareSchema = new Schema({
     },
     companyLogo: {
         type: String,
-        default: '/public/imgs/company.jpg'
+        default: 'http://valuenet.qiniudn.com/company-avatar.jpg'
     },
     companyIntro: {
         type: String

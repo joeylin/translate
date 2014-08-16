@@ -11,10 +11,10 @@
     <div class="panel-body">
       <div class="media" ng-repeat-start="share in shareList">
         <a class="pull-left" href="/group/{{share.group.id}}" target="_self" ng-if="share.group">
-          <img class="media-object" alt="64x64" ng-src="{{share.group.avatar}}" style="width: 50px; height: 50px;">
+          <img class="media-object" alt="64x64" ng-src="{{share.group.avatar + '-small'}}" style="width: 50px; height: 50px;">
         </a>
         <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self" ng-if="!share.group">
-          <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
+          <img class="media-object" alt="64x64" ng-src="{{share.user.avatar + '-small'}}" style="width: 50px; height: 50px;">
         </a>
         <div class="media-body">
           <span class="hover-tag" ng-click="collect.cancel(share)"><i class="fa fa-fw fa-times"></i></span>
@@ -49,7 +49,7 @@
             <hr class="reply-hr" ng-repeat-start="comment in share.comments">
             <div class="media reply-item" ng-repeat-end>
               <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
-                <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
+                <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar + '-sm'}}" style="width: 34px; height: 34px;">
               </a>
               <div class="media-body">
                 <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span><span md-content="comment.content"></span></p>

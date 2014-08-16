@@ -420,7 +420,7 @@
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <img src="<%= locals.user.avatar %>" alt="" class="nav-user-pic img-responsive">
+                            <img src="<%= locals.user.avatar + '-xs' %>" alt="" class="nav-user-pic img-responsive">
                             <span id="lblUsername" style="margin-left: 5px;">
                               <%= locals.user.name %>
                             </span>
@@ -429,7 +429,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="<%= locals.user.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.user.avatar + '-normal' %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
                                     <span class="user_username"> <%= locals.user.name %></span>
                                 </p>
@@ -491,7 +491,7 @@
               <div class="media" ng-show="showContent">
                 <div class="pull-right user-avatar">
                   <a href="#">
-                    <img ng-src="{{avatar}}" id="changeAvatar">
+                    <img ng-src="{{avatar + '-normal'}}" id="changeAvatar">
                   </a>
                 </div>
                 <div class="media-body user-info">
@@ -578,7 +578,7 @@
                   </div>
                   <div class="col-md-3 basic-settings-avatar">
                     <a href="#">
-                      <img ng-src="{{avatar}}" id="changeAvatar">
+                      <img ng-src="{{avatar + '-normal'}}" id="changeAvatar">
                     </a>
                     <input type="file" id="avatar-upload" multiple />
                     <div class="upload-progress" id="upload-progress"></div>

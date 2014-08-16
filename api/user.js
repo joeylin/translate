@@ -1677,11 +1677,7 @@ var getShortNotice = function(req, res) {
         is_delete: false
     };
     Request.find(query).count().exec(function(err, count) {
-        Request.find({
-            to: user._id,
-            type: 'notice',
-            is_delete: false
-        }).sort('-createAt').limit(5).exec(function(err, requests) {
+        Request.find(query).sort('-createAt').limit(5).exec(function(err, requests) {
             var content = [];
             requests.map(function(request, key) {
                 var result = {};

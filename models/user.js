@@ -76,7 +76,7 @@ var UserSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: '/public/imgs/avatar.jpg'
+        default: 'http://valuenet.qiniudn.com/user-avatar.jpg'
     },
     signature: {
         type: String

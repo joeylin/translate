@@ -21,7 +21,7 @@
       </div>
       <div class="media" ng-repeat-start="share in shareList">
         <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
+          <img class="media-object" alt="64x64" ng-src="{{share.user.avatar + '-small'}}" style="width: 50px; height: 50px;">
         </a>
         <div class="media-body" id="{{share._id}}">
           <h4 class="media-heading">{{share.user.name}}</h4>
@@ -62,7 +62,7 @@
             <hr class="reply-hr" ng-repeat-start="comment in share.comments">
             <div class="media reply-item" ng-repeat-end>
               <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
-                <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
+                <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar + '-sm'}}" style="width: 34px; height: 34px;">
               </a>
               <div class="media-body" id="{{comment._id}}">
                 <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span><span md-content="comment.content"></span></p>
@@ -103,7 +103,7 @@
     <div class="user-header bg-modena clearfix">
         <div class="pull-left">
           <a href="/profile/{{global.user.id}}" target="_self">
-            <img ng-src="{{global.user.avatar}}" style="height: 78px;width: 78px">
+            <img ng-src="{{global.user.avatar + '-normal'}}" style="height: 78px;width: 78px">
           </a>
         </div>
         <div class="pull-left">
@@ -129,7 +129,7 @@
     <div class="panel-body">
       <div class="media" ng-repeat="item in sidebar.connects">
           <a class="pull-left" target="_self" href="/profile/{{item.id}}">
-              <img class="media-object" alt="64x64" ng-src="{{item.avatar}}" style="width: 50px; height: 50px;" >
+              <img class="media-object" alt="64x64" ng-src="{{item.avatar + '-small'}}" style="width: 50px; height: 50px;" >
           </a>
           <div class="media-body">
               <span class="hover-tag" ng-click="sidebar.removeConnect(item)"><i class="fa fa-fw fa-times"></i></span>
@@ -145,7 +145,7 @@
     <div class="panel-body">
       <div class="media" ng-repeat="item in sidebar.jobs">
           <a class="pull-left" target="_self" href="/profile/{{item.user.id}}">
-              <img class="media-object" alt="64x64" ng-src="{{item.user.avatar}}" style="width: 50px; height: 50px;" >
+              <img class="media-object" alt="64x64" ng-src="{{item.user.avatar + '-small'}}" style="width: 50px; height: 50px;" >
           </a>
           <div class="media-body">
               <span class="hover-tag" ng-click="sidebar.removeJob(item)"><i class="fa fa-fw fa-times"></i></span>

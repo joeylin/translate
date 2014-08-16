@@ -28,7 +28,7 @@ var GroupSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: '/public/imgs/group.png'
+        default: 'http://valuenet.qiniudn.com/group-avatar.jpg'
     },
     announcement: {
         type: String

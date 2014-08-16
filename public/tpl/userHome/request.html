@@ -3,7 +3,7 @@
     <div class="panel-body">
       <div class="media" ng-repeat-start="request in requests">
         <a class="pull-left" ng-href="/profile/{{request.from.id}}" target="_self">
-          <img class="media-object" alt="48x48" ng-src="{{request.from.avatar}}" style="width: 48px; height: 48px;">
+          <img class="media-object" alt="48x48" ng-src="{{request.from.avatar + '-small'}}" style="width: 48px; height: 48px;">
         </a>
         <div class="media-body" ng-if="request.type === 'connect'">
           <h4 class="media-heading">{{request.from.name}}</h4>

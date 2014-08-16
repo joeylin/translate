@@ -14,8 +14,10 @@
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/css/common.css">
-        <!--  -->
+        <!-- popup -->
         <link rel="stylesheet" href="/public/js/lib/magnific-popup/magnific-popup.css">
+        <!-- flexText -->
+        <link rel="stylesheet" href="/public/js/lib/flexText/jquery.flexText.css">
 
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -157,6 +159,11 @@
           }
           .group-line {
             margin-top: 0;
+          }
+          .createContainer .flex-text-wrap pre {
+            min-height: 74px;
+            padding-top: 7px;
+            padding-bottom: 7px;
           }
           
 
@@ -320,7 +327,7 @@
                   </li>
                   <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
+                            <img src="<%= locals.author && locals.author.avatar + '-xs' %>" alt="" class="nav-user-pic img-responsive">             
                             <span id="lblUsername" style="margin-left: 5px;">
                               <%= locals.author && locals.author.name %>
                             </span>
@@ -329,7 +336,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="<%= locals.author && locals.author.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.author && locals.author.avatar + '-normal' %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
                                     <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                                 </p>
@@ -388,7 +395,7 @@
                       <div class="carbonad clearfix">
                         <span class="carbonad-image pull-left">
                           <a href="/group/{{item.id}}" target="_self">
-                            <img class="carbonad-image carbonad-img" ng-src="{{item.avatar}}" title="Hack Reactor" alt="Hack Reactor">
+                            <img class="carbonad-image carbonad-img" ng-src="{{item.avatar + '-normal'}}" title="Hack Reactor" alt="Hack Reactor">
                           </a>
                         </span>
                         <div class="carbonad-info">
@@ -459,9 +466,17 @@
               <input type="text" class="form-control" placeholder="所处行业" ng-model="industry" ng-change="change()">
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-3">
+              <label class="inline-label">申请理由 :</label>
+            </div>
+            <div class="col-md-9">
+              <textarea auto-height type="text" class="form-control" placeholder="简要说明申请理由" ng-model="reason" ng-change="change()"></textarea>
+            </div>
+          </div>
           <div class="clearfix">
-            <a href="#" class="btn btn-primary pull-right" ng-click="create()">创建</a>
-            <span class="pull-right error" ng-show="error" style="line-height:34px;margin-right:15px;">不能为空</span>
+            <a href="#" class="btn btn-primary pull-right" ng-click="create()">申请</a>
+            <span class="pull-right error" ng-show="error" style="line-height:34px;margin-right:15px;">信息填写不完整哦</span>
           </div>
         </div>
         <% } else { %>
@@ -494,6 +509,7 @@
             '/public/js/lib/utf8.js',
             '/public/js/lib/xss.js',
             '/public/js/lib/qiniu.uploader.js',
+            '/public/js/lib/flexText/jquery.flexText.min.js',
             '/public/js/lib/magnific-popup/jquery.magnific-popup.js',
             '/public/js/lib/angular-ui.js',
             '/public/js/bootply.js',

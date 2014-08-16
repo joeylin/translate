@@ -12,7 +12,7 @@
         <div class="col-md-3" ng-repeat="user in content" >
           <div class="thumbnail">
             <a href="/profile/{{user.id}}" target="_self">
-                <img ng-src="{{user.avatar}}" alt="{{user.name}}" />
+                <img ng-src="{{user.avatar + '-big'}}" alt="{{user.name}}" />
             </a>
             <div class="caption">
               <div><a href="/profile/{{user.id}}" target="_self">{{user.name}}</a></div>

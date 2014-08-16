@@ -65,6 +65,7 @@ controller('homeCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
     function(app, $scope, $rootScope, $location, $http) {
         $scope.name = '';
         $scope.industry = '';
+        $scope.reason = '';
         $scope.error = false;
         $scope.create = function() {
             if ($scope.name === '' || $scope.industry === '') {
@@ -78,14 +79,14 @@ controller('homeCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
             var data = {
                 name: $scope.name,
                 industry: $scope.industry,
+                reason: $scope.reason
             };
             $http.post(url, data).success(function(data) {
                 $.magnificPopup.close();
-                window.location.href = '/group/' + data.groupId + '/settings';
             });
         };
         $scope.change = function() {
-            if ($scope.name !== '' && $scope.industry !== '') {
+            if ($scope.name !== '' && $scope.industry !== '' && $scope.reason !== '') {
                 $scope.error = false;
             }
         };

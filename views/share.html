@@ -341,7 +341,7 @@
                   </li>
                   <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
+                            <img src="<%= locals.author && locals.author.avatar + '-xs' %>" alt="" class="nav-user-pic img-responsive">             
                             <span id="lblUsername" style="margin-left: 5px;">
                               <%= locals.author && locals.author.name %>
                             </span>
@@ -350,7 +350,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="<%= locals.author && locals.author.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.author && locals.author.avatar + '-normal' %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
                                     <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                                 </p>
@@ -444,7 +444,7 @@
                 <hr>
                 <div class="media reply-item" ng-repeat-start="comment in share.comments">
                   <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
-                    <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
+                    <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar + '-sm'}}" style="width: 34px; height: 34px;">
                   </a>
                   <div class="media-body" id="{{comment._id}}">
                     <p class="reply-content"><span class="reply-user"><a ng-href="/profile/{{comment.user.id}}" target="_self">{{comment.user.name}}</a>: </span>{{comment.content}}</p>
@@ -483,7 +483,7 @@
             <div class="well" ng-cloak>
               <div class="media">
                   <a class="pull-left" target="_self" href="/profile/<%= locals.share.user.id %>">
-                      <img class="media-object" alt="64x64" src="<%= locals.share.user.avatar %>"  style="width: 74px; height: 74px;" >
+                      <img class="media-object" alt="64x64" src="<%= locals.share.user.avatar + '-normal' %>"  style="width: 74px; height: 74px;" >
                   </a>
                   <div class="media-body">
                       <h4><%= locals.share.user.name %></h4>

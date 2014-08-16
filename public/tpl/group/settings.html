@@ -61,7 +61,7 @@
 				<div class="col-md-4">
 					<div class="basic-settings-avatar">
 	                    <a href="#">
-	                        <img ng-src="{{basic.avatar}}" id="changeAvatar">
+	                        <img ng-src="{{basic.avatar + '-normal'}}" id="changeAvatar">
 	                    </a>
 	                    <input type="file" id="avatar-upload" multiple />
 	                    <div class="upload-progress" id="upload-progress"></div>
@@ -156,7 +156,7 @@
 				  </tr>
 				  <tr ng-repeat="item in [creator].concat(admin,members)|filter:vm.filter|orderBy:vm.sort.column:vm.sort.direction===-1|paging:vm.page.index:vm.page.size">
 				    <td>
-				      <img ng-src="{{item.avatar}}">
+				      <img ng-src="{{item.avatar + '-xs'}}">
 				      <span>{{item.name}}</span>
 				      <i class="fa fa-fw fa-user" ng-class="{'admin':item.isAdmin,'creator':item.isCreator}" ng-show="item.isAdmin || item.isCreator"></i>
 				    </td>
@@ -214,7 +214,7 @@
 				  </tr>
 				  <tr ng-repeat="item in [creator].concat(admin,members)|filter:vm.filter|orderBy:vm.sort.column:vm.sort.direction===-1|paging:vm.page.index:vm.page.size">
 				    <td>
-				      <img ng-src="{{item.avatar}}">
+				      <img ng-src="{{item.avatar + '-xs'}}">
 				      <span>{{item.name}}</span>
 				      <i class="fa fa-fw fa-user" ng-class="{'admin':item.isAdmin,'creator':item.isCreator}" ng-show="item.isAdmin || item.isCreator"></i>
 				    </td>

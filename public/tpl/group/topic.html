@@ -37,7 +37,7 @@
     </div>
     <div class="media" ng-repeat-start="share in shareList">
       <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
-        <img class="media-object" alt="64x64" ng-src="{{share.user.avatar}}" style="width: 50px; height: 50px;">
+        <img class="media-object" alt="64x64" ng-src="{{share.user.avatar + '-small'}}" style="width: 50px; height: 50px;">
       </a>
       <div class="media-body" id="{{share._id}}">
         <h4 class="media-heading">{{share.user.name}}</h4>
@@ -71,7 +71,7 @@
           <hr class="reply-hr" ng-repeat-start="comment in share.comments" ng-class="{'displayNone': $first}">
           <div class="media reply-item" ng-repeat-end>
             <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
-              <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
+              <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar + '-sm'}}" style="width: 34px; height: 34px;">
             </a>
             <div class="media-body" id="{{comment._id}}">
               <p class="reply-content">

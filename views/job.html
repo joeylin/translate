@@ -321,7 +321,7 @@
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="<%= locals.author && locals.author.avatar %>" alt="" class="nav-user-pic img-responsive">             
+                            <img src="<%= locals.author && locals.author.avatar + '-xs' %>" alt="" class="nav-user-pic img-responsive">             
                             <span id="lblUsername" style="margin-left: 5px;">
                               <%= locals.author && locals.author.name %>
                             </span>
@@ -330,7 +330,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-modena">
-                                <img src="<%= locals.author && locals.author.avatar %>" class="img-circle" alt="User Image" class="user_avatar">
+                                <img src="<%= locals.author && locals.author.avatar + '-normal' %>" class="img-circle" alt="User Image" class="user_avatar">
                                 <p>
                                     <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                                 </p>
@@ -366,7 +366,7 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
-                <li><a href="/group" target="_self">群组</a></li>
+                <li><a href="/group" target="_self">圈子</a></li>
                 
               </ul>
             </div>
@@ -378,7 +378,7 @@
               <div class="panel-body">
                 <div class="media job-header">
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="<%= locals.share.companyLogo %>" style="width: 146px; height: 146px;">
+                        <img class="media-object" src="<%= locals.share.companyLogo + '-home' %>" style="width: 146px; height: 146px;">
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading" style="margin-bottom:15px;margin-top:5px;"><%= locals.share.position %></h3>
@@ -457,7 +457,7 @@
                 </div>
                 <div class="media">
                     <a class="pull-left" href="/profile/<%= locals.share.user.id %>" target="_self">
-                        <img class="media-object" src="<%= locals.share.user.avatar %>" style="width: 64px; height: 64px;">
+                        <img class="media-object" src="<%= locals.share.user.avatar + '-normal' %>" style="width: 64px; height: 64px;">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading" style="margin-bottom:0;font-weight:400;"><a href="/profile/<%= locals.share.user.id %>" target="_self"><%= locals.share.user.name %></a></h4>
@@ -474,7 +474,7 @@
                   <% locals.visitorRecord.forEach(function(item,key){ %>
                       <div class="media">
                           <a class="pull-left" href="/job/<%= item.id %>" target="_self">
-                              <img class="media-object" src="<%= item.companyLogo %>" style="width: 54px; height: 54px;">
+                              <img class="media-object" src="<%= item.companyLogo + '-normal2' %>" style="width: 54px; height: 54px;">
                           </a>
                           <div class="media-body">
                               <div><a href="" style="font-size:13px;"><%= item.position %></a></div>
@@ -498,7 +498,7 @@
         <div id="account-update" class="white-popup-block mfp-hide contact" style="max-width:480px;">
             <div class="media">
                 <a class="pull-left" href="/profile/502104" target="_self" style="margin-right:15px;">
-                    <img class="media-object" src="/public/imgs/avatar.jpg" style="width: 64px; height: 64px;">
+                    <img class="media-object" src="<%= locals.share.user.avatar + '-normal' %>" style="width: 64px; height: 64px;">
                 </a>
                 <div class="media-body">
                     <h4 style="margin-top: 0;font-size: 16px;">联系信息</h4>

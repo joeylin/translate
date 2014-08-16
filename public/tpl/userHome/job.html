@@ -30,7 +30,7 @@
     <div class="panel-body">
       <div class="media" ng-repeat-start="job in content">
         <a class="pull-left" href="/profile/{{job.owner.id}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{job.companyLogo}}" style="width: 64px; height: 64px;">
+          <img class="media-object" alt="64x64" ng-src="{{job.companyLogo + '-normal2'}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
           <h4 class="media-heading">{{job.position}}</h4>

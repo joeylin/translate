@@ -420,18 +420,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             getMyCollect();
         }
     }
-]).controller('notifyCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
-        var url = '/api/notify';
-        $http.get(url).success(function(data) {
-            var request = data.notify.request;
-            var message = data.notify.message;
-
-            $scope.total = request + message;
-            $scope.request = request;
-            $scope.message = message;
-        });
-    }
 ]).controller('requestCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 'setPos', 
     function(app, $scope, $routeParams, $location, $http, $rootScope, setPos) {
         $scope.requests = [];
@@ -601,6 +589,9 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 }
                 if ($rootScope.current.path === 'at') {
                     $rootScope.request.at = 0;
+                }
+                if ($rootScope.current.path === 'notice') {
+                    $rootScope.notice.info = 0;
                 }
             });
         };
@@ -913,164 +904,6 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.degree = '';
         $scope.location = '';
         get();
-    }
-]).controller('companyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
-    function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        $scope.content = [];
-        $scope.pager = {
-            hasNext: false,
-            current: 1
-        };
-        var url = '/api/search/company';
-        var params = {
-            pager: 1,
-            location: $scope.location,
-            name: $scope.name,
-            industry: $scope.industry,
-            phase: $scope.phase
-        };
-        $scope.submit = function() {
-            // reset the config before submit
-            params.pager = 1;
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.next = function() {
-            if (!$scope.pager.hasNext) {
-                return false;
-            }
-            $scope.pager.current += 1;
-            params.pager = $scope.pager.current;
-            $scope.pager.link(url, params, function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.prev = function() {
-            if ($scope.pager.current <= 1) {
-                return false;
-            }
-            $scope.pager.current -= 1;
-            params.pager = $scope.pager.current;
-            $scope.pager.link(url, params, function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        var addFilter = function(key, value) {
-            params[key] = value;
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.addFilter = addFilter;
-        $scope.enter = function(e, key, value) {
-            var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) {
-                addFilter(key, value);
-            }
-        };
-        $scope.follow = function(user) {
-            var url = '/api/user/follow';
-            var params = {
-                userId: user._id
-            };
-            $http.post(url, params).success(function(data) {
-                user.isFollowed = true;
-            });
-        };
-
-        // default config
-        $scope.phase = 'all';
-    }
-]).controller('myCompanyCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
-    function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        var url = '/api/user/companys';
-        $scope.content = [];
-        $scope.industry = [];
-        $scope.location = [];
-        $scope.name = '';
-        $scope.pager = {
-            hasNext: false,
-            current: 1
-        };
-        var params = {
-            pager: 1
-        };
-        $scope.next = function() {
-            if (!$scope.pager.hasNext) {
-                return false;
-            }
-            $scope.pager.current += 1;
-            params.pager = $scope.pager.current;
-            $http.get(url, {
-                params: params
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.prev = function() {
-            if ($scope.pager.current <= 1) {
-                return false;
-            }
-            $scope.pager.current -= 1;
-            params.pager = $scope.pager.current;
-            $http.get(url, {
-                params: params
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.enter = function(e) {
-            var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) {
-                $scope.searchByName();
-            }
-        };
-        $scope.searchByName = function() {
-            if ($scope.name === '') {
-                return false;
-            }
-            params.name = $scope.name;
-            params.pager = 1;
-            $http.get(url, {
-                params: params,
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.vm = {};
-        $scope.vm.classify = function(key, value) {
-            params.type = 'classify';
-            params.name = key;
-            params.value = value;
-            $http.get(url, {
-                params: params
-            }).success(function(data) {
-                $scope.content = data.content;
-                $scope.pager.hasNext = data.hasNext;
-            });
-        };
-        $scope.vm.unFollow = function(company) {
-            var url = '/api/user/unFollow';
-            var params = {
-                userId: company._id
-            };
-            $http.post(url, params).success(function(data) {
-                var index = $scope.content.indexOf(company);
-                $scope.content.splice(index, 1);
-            });
-        };
     }
 ]).controller('myPeopleCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
     function(app, $scope, $routeParams, $location, $http, $rootScope) {

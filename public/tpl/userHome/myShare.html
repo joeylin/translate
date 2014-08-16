@@ -40,7 +40,7 @@
             <hr class="reply-hr" ng-repeat-start="comment in share.comments">
             <div class="media reply-item" ng-repeat-end>
               <a class="pull-left" ng-href="/profile/{{comment.user.id}}" target="_self">
-                <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar}}" style="width: 34px; height: 34px;">
+                <img class="media-object" alt="34x34" ng-src="{{comment.user.avatar + '-sm'}}" style="width: 34px; height: 34px;">
               </a>
               <div class="media-body">
                 <p class="reply-content"><span class="reply-user"><a href="#">{{comment.user.name}}</a>: </span><span md-content="comment.content"></span></p>

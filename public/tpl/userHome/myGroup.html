@@ -14,7 +14,7 @@
     <div class="panel-body">
       <div class="media" ng-repeat-start="group in content">
         <a class="pull-left" href="/group/{{group.id}}" target="_self">
-          <img class="media-object" alt="64x64" ng-src="{{group.avatar}}" style="width: 64px; height: 64px;">
+          <img class="media-object" alt="64x64" ng-src="{{group.avatar + '-normal'}}" style="width: 64px; height: 64px;">
         </a>
         <div class="media-body">
           <h4 class="media-heading">{{group.name}}</h4>
@@ -86,8 +86,14 @@
       </div>
     </div>
     <div class="clearfix">
-      <a href="#" class="btn btn-primary pull-right" ng-click="create()">创建</a>
-      <span class="pull-right error" ng-show="error" style="line-height: 35px; margin-right:15px;">信息填写不完整</span>
+      <a href="#" class="btn btn-primary pull-right" ng-click="create()">申请</a>
+      <span class="pull-right error" ng-show="error" style="line-height: 35px; margin-right:15px;">信息填写不完整哦</span>
+    </div>
+    <div style="display:none;" id="apply-success" class="apply-success">
+      <i></i><span>申请成功，我们会在24小时内处理你的申请。</span>
+    </div>
+    <div style="display:none;" id="apply-fail" class="apply-fail">
+      <i></i><span>对不起，申请提交失败。</span>
     </div>
 </div>
 <div id="create-popup" class="white-popup-block mfp-hide createContainer" ng-if="groupCount > 4">
