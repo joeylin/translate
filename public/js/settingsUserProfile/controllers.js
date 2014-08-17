@@ -415,8 +415,77 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
             });
         }
     }
-]).controller('userImageCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {}
+]).controller('currentCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
+    function(app, $scope, $routeParams, $location, $http) {
+        $scope.location = app.user.location || '';
+        $scope.occupation = app.user.occupation || '';
+        $scope.degree = app.user.degree || 'add your degree';
+        $scope.status = app.user.workYear || 'how many';
+        $scope.phone = app.user.phone || 'your cellphone';
+        $scope.email = app.user.email || 'your email';
+        $scope.avatar = app.user.avatar;
+        $scope.isPublic = app.user.isPubicBasic || false;
+
+        $scope.showEditIcon = true;
+        $scope.showContent = true;
+        $scope.showSettings = false;
+
+        $scope.edit = function() {
+            $scope.showEditIcon = false;
+            $scope.showContent = false;
+            $scope.showSettings = true;
+
+            $scope.inputRealName = $scope.real_name;
+            $scope.inputSex = $scope.sex;
+            $scope.inputDegree = $scope.degree;
+            $scope.inputWorkYear = parseInt($scope.workYear, 10);
+            $scope.inputPhone = $scope.phone;
+            $scope.inputEmail = $scope.email;
+            $scope.isInputPublic = $scope.isPublic;
+        };
+        $scope.save = function() {
+            $scope.showEditIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+
+            setValue({
+                real_name: $scope.inputRealName,
+                sex: $scope.inputSex,
+                degree: $scope.inputDegree,
+                workYear: $scope.inputWorkYear,
+                phone: $scope.inputPhone,
+                isPubicBasic: $scope.isInputPublic
+            });
+        };
+        $scope.cancel = function() {
+            $scope.showEditIcon = true;
+            $scope.showContent = true;
+            $scope.showSettings = false;
+        };
+
+        $scope.$on('putFinish', function(event, imageUrl) {
+            var data = {
+                avatar: imageUrl
+            };
+            var url = '/api/userProfile/avatar';
+            $http.post(url, data).success(function() {
+                $scope.avatar = imageUrl;
+            });
+        });
+
+        function setValue(obj) {
+            var data = obj;
+            var url = '/api/userProfile/basic';
+            $http.post(url, obj).success(function() {
+                $scope.real_name = obj.real_name;
+                $scope.sex = obj.sex;
+                $scope.degree = obj.degree;
+                $scope.workYear = obj.workYear;
+                $scope.phone = obj.phone;
+                $scope.isPublic = obj.isPubicBasic;
+            });
+        }
+    }
 ]).controller('worksCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',
     function(app, $scope, $routeParams, $http, $rootScope) {
         $scope.statusAdd = false;

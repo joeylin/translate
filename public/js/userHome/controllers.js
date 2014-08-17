@@ -681,11 +681,14 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             getConnects();
         };
         var getConnects = function() {
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url, {
                 params: params,
             }).success(function(data) {
                 $scope.content = data.content;
                 $scope.pager.hasNext = data.hasNext;
+                $scope.loading = false;
             });
         };
 
@@ -969,8 +972,11 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
 
         function getConnects() {
             var url = '/api/connects';
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url).success(function(data) {
                 $scope.content = data.content;
+                $scope.loading = false;
             });
         }
 

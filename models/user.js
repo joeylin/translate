@@ -63,13 +63,8 @@ var UserSchema = new Schema({
         type: Number,
         default: 0
     },
-    current: {
-        location: {
-            type: String
-        },
-        status: {
-            type: String
-        }
+    status: {
+        type: String
     },
     id: {
         type: Number

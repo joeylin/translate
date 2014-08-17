@@ -26,7 +26,7 @@
            * Style tweaks
            * --------------------------------------------------
            */
-          body {
+          body,html {
             font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
             background: url("/public/imgs/bg.png") 0 0 repeat;
             min-height: 960px;
@@ -36,7 +36,18 @@
             padding-right: 15px;
             background-color: #fff;
           }
-
+          .container {
+            max-width: 980px;
+          }
+          .profile-body {
+            padding-left: 0;
+          }
+          .user-header {
+            background-color: #fff;
+          }
+          .setting-profile {
+            min-height: 960px;
+          }
           .skin-blue .navbar {
             background-color: #222;
           }
@@ -328,6 +339,11 @@
           .password-settings .form-item > .row label {
             line-height: 34px;
           }
+          .well {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            margin-bottom: 10px;
+          }
           /* footer */
           footer {
             border-top: 1px solid #E0E0E0;
@@ -465,13 +481,12 @@
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
                 <li><a href="/group" target="_self">圈子</a></li>
-                
               </ul>
             </div>
           </div>
         </nav>
-        <div class="container" ng-cloak>    
-          <div class="profile-body col-md-9" ng-if="global.profile">
+        <div class="container setting-profile">    
+          <div class="profile-body col-md-9" ng-if="global.profile" ng-cloak>
             <div class="clearfix header-info">
               <span class="pull-left">上次更新: {{lastUpdate | formatDate:true}}</span>
               <span class="pull-right">
@@ -482,6 +497,65 @@
             <div class="jumbotron user-header" ng-controller="headerCtrl">
               <h1><span ng-show="showNameContent" class="header-display">{{name}}</span></h1>
               <p class="desc"><span ng-show="showSignContent" class="header-display">{{signature}}</span> <input ng-model="signature" ng-blur="enterSign()" ng-keydown="enterSign($event)" ng-show="showSignInput" /> <i class="fa fa-edit" ng-show="showSignEdit" ng-click="editSign()"></i></p>
+            </div>
+            <div class="panel custom-box basic" ng-controller="currentCtrl">
+              <div class="panel-heading">
+                <i class="fa fa-edit pull-right basic-editt" ng-show="showAddIcon" ng-click="edit()"></i>
+                <h3>当前状态</h3>
+              </div>
+              <div class="panel-body social-info" ng-show="showContent">
+                <div>
+                  <span>状态 :</span>
+                  <span>{{location}} | {{occupation}}</span>
+                </div>
+                <div>
+                  <span>当前 :</span>
+                  <span>{{status}}</span>
+                  <span ng-if="status === 'a'">
+                    {{school}}
+                  </span>
+                  <span ng-if="status === 'b'">
+                    {{company}}
+                  </span>
+                  <span ng-if="status === 'c'">
+                    待业
+                  </span>
+                </div>
+              </div>
+              <div class="media" ng-show="showHome">
+                <div class="media-body">
+                  <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                  <span><a href="#" ng-click="add()">添加社交网络，让同行更了解你。</a></span>
+                </div>
+              </div>
+              <div class="panel-body current-settings" ng-show="showSettings">        
+                <div class="row">
+                    <div class="col-md-12">
+                      <label>地点 :</label>
+                      <input type="text" class="form-control" ng-model="inputLocation" placeholder="你当前的常住地">
+                    </div>
+                    <div class="col-md-12" style="padding-left:0;">
+                      <label>职位 :</label>
+                      <input type="text" class="form-control" ng-model="inputOccupation" placeholder="你从事的职业">
+                    </div>
+                    <div class="col-md-12" style="padding-left:0;">
+                      <label>状态 :</label>
+                      <select class="form-control" ng-model="inputStatus">
+                        <option value="">当前状态</option>
+                        <option value="a">在职</option>
+                        <option value="b">待业</option>
+                        <option value="c">在校生</option>
+                        <option value="d">自由职业</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 clearfix">
+                    <a class="btn btn-primary pull-right" role="button" ng-show="statusEdit" ng-click="editSave()">保存</a>
+                    <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;">取消</a>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="panel custom-box basic" ng-controller="basicCtrl">
               <div class="panel-heading">
@@ -1017,7 +1091,7 @@
               </div>
             </div>
           </div> 
-          <div class="profile-body col-md-9" ng-if="!global.profile" >
+          <div class="profile-body col-md-9" ng-if="!global.profile" ng-cloak>
             <div class="clearfix header-info">
               <span class="pull-right">
                 <a ng-href="/settings/profile" ng-click="gotoProfile()">主页设置</a>
@@ -1029,34 +1103,34 @@
               </div>
               <div class="panel-body password-settings">
                 <div class="row">
-                  <div class="col-md-9 form-item">
+                  <div class="col-md-7 form-item">
                     <div class="row">
                         <div class="col-md-3">
-                            <label>旧密码</label>
+                            <label>旧密码 :</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" ng-model="password" placeholder="your address">
+                            <input type="text" class="form-control" ng-model="password" placeholder="旧密码">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>新密码</label>
+                            <label>新密码 :</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" ng-model="password1" placeholder="your new password">
+                            <input type="text" class="form-control" ng-model="password1" placeholder="新密码">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>新密码</label>
+                            <label>新密码 :</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" ng-model="password2" placeholder="your new password again">
+                            <input type="text" class="form-control" ng-model="password2" placeholder="再次输入新密码">
                         </div>
                     </div>
                     <div ng-show="error"><p>密码错误 !</p></div>
                     <div class="clearfix">
-                      <a class="btn btn-primary pull-right" role="button" style="margin-right: 10px;" ng-click="save()">保存</a>
+                      <a class="btn btn-primary pull-right" role="button" ng-click="save()">保存</a>
                     </div>
                   </div>
                 </div>
@@ -1071,7 +1145,17 @@
               </div>
             </div>
           </div> 
-          <div class="profile-sidebar col-md-3">
+          <div class="profile-sidebar col-md-3 pull-right" ng-if="global.profile" ng-cloak>
+            <div class="well well-sm">
+              <div class="text-center" style="font-size:18px;">
+                <a href="" style="color:#333;">添加文章</a>
+              </div>
+            </div>
+            <div class="well well-sm">
+              <div class="text-center" style="font-size:18px;">
+                <a href="" style="color:#333;">荣誉奖励</a>
+              </div>
+            </div>
           </div>         
         </div>
         <footer class="text-center">

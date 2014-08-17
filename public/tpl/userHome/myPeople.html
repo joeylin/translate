@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" ng-show="!loading">
       <div class="row">
         <div class="col-md-3" ng-repeat="user in content|filter:vm.filter" >
           <div class="thumbnail">
@@ -38,6 +38,9 @@
       <div>
         <pager total-items="content|filter:vm.filter|size" ng-model="vm.page.index" items-per-page="vm.page.size" class="pagination-sm pull-right" boundary-links="true"></pager>
       </div>
+    </div>
+    <div class="panel-body" style="padding-right:20px;" ng-show="loading">
+      <div class="loading"><span class="loading-gif"></span>正在加载中 ...</div>
     </div>
   </div>
 </div>
