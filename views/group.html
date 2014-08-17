@@ -39,10 +39,29 @@
           html,body {
             font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
             background: url("/public/imgs/bg.png") 0 0 repeat;
+            min-height: 960px;
+          }
+          .group {
+            min-height: 960px;
           }
           .home-container {
             padding-top: 19px;
           }
+          /* loading */
+          .loading {
+            text-align: center;
+            padding: 20px 0 27px 0;
+          }
+          .loading .loading-gif {
+            width: 25px;
+            height: 25px;
+            background-image: url("/public/imgs/loading.gif");
+            display: inline-block;
+            position: relative;
+            top: 7px;
+            margin-right: 7px;
+          }
+          
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -243,9 +262,6 @@
           }
           .group-title .follow .option:hover {
             color: #333;
-          }
-          .group {
-            min-height: 960px;
           }
 
           .container.group .col-md-2 {
@@ -787,7 +803,7 @@
                       <ul class="dropdown-menu">
                           <!-- User image -->
                           <li class="user-header bg-modena">
-                              <img src="<%= locals.author && locals.author.avatar + 'normal' %>" class="img-circle" alt="User Image" class="user_avatar">
+                              <img src="<%= locals.author && locals.author.avatar + '-normal' %>" class="img-circle" alt="User Image" class="user_avatar">
                               <p>
                                   <span class="user_username"> <%= locals.author &&locals.author.name %></span>
                               </p>

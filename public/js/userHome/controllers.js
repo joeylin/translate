@@ -53,6 +53,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             page: 1
         };
         var getTrend = function() {
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url, {
                 params: params,
             }).success(function(data) {
@@ -64,17 +66,21 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 if ($scope.groupUpdate > 0) {
                     $scope.showCircle = true;
                 }
+                $scope.loading = false;
             });
         };
         var getMyShare = function() {
             url = '/api/user/myShare';
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url, {
                 params: params
             }).success(function(data) {
                 $scope.shareList = data.content;
-                $scope.hasNext = data.hasNext;
+                $scope.pager.hasNext = data.hasNext;
                 $scope.total = data.count;
                 $scope.isSearch = false;
+                $scope.loading = false;
             });
         };
         var getUserList = function() {
@@ -370,13 +376,16 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         // for mycollect
         var getMyCollect = function() {
             url = '/api/user/myCollect';
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url, {
                 params: params
             }).success(function(data) {
                 $scope.shareList = data.content;
-                $scope.hasNext = data.hasNext;
+                $scope.pager.hasNext = data.hasNext;
                 $scope.total = data.count;
                 $scope.collect.isSearch = false;
+                $scope.loading = false;
             });
         };
         $scope.collect = {};
@@ -579,6 +588,8 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
 
         var getNotify = function() {
             params.page = 1;
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url, {
                 params: params
             }).success(function(data) {
@@ -593,6 +604,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
                 if ($rootScope.current.path === 'notice') {
                     $rootScope.notice.info = 0;
                 }
+                $scope.loading = false;
             });
         };
 
@@ -1198,12 +1210,15 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             page: 1
         };
         var getTrend = function() {
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url, {
                 params: params,
             }).success(function(data) {
                 $scope.shareList = data.content;
                 $scope.pager.hasNext = data.hasNext;
                 $scope.total = data.count;
+                $scope.loading = false;
             });
         };
         $scope.next = function() {

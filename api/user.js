@@ -615,17 +615,14 @@ var getMyShare = function(req, res) {
     var user = req.session.user;
     var page = req.query.page || 1;
     var perPageItems = 30;
-    Share.find({
+    var query = {
         user: user._id,
         type: 'view',
         is_delete: false
-    }).populate('from.share').populate('from.user').populate('from.group')
+    };
+    Share.find(query).populate('from.share').populate('from.user').populate('from.group')
     .sort('-createAt').skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, shares) {
-        Share.find({
-            user: user._id,
-            type: 'view',
-            is_delete: false
-        }).count().exec(function(err, count) {
+        Share.find(query).count().exec(function(err, count) {
             var content = [];
             var hasNext;
             shares.map(function(item, key) {
@@ -834,7 +831,7 @@ var getMyCollect = function(req, res) {
                 content.push(result);
             });
             if ((page - 1) * perPageItems + content.length < count) {
-                Next = true;
+                hasNext = true;
             } else {
                 hasNext = false;
             }

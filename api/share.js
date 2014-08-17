@@ -196,6 +196,10 @@ var deleteShare = function(req, res) {
 var addComment = function(req, res) {
     var shareId = req.body.shareId;
     var user = req.session.user;
+    var content = req.body.content;
+    if (content.length > 280) {
+        content = content.substring(0, 280);
+    }
     var comment = {
         content: req.body.content,
         shareId: req.body.shareId,

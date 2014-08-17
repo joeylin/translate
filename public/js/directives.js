@@ -48,12 +48,15 @@ directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
                 if (!$(element).is('textarea')) {
                     return false;
                 }
-                $(element).on('keydown', function(e) {
-                    var key = e.keyCode || e.which;
-                    if (wordCount(this.value) > 140) {
-                        
+                var a = $(element)[0];
+                a.onpropertychange = obj;
+                a.oninput = obj; 
+                function obj(){
+                    if(a.value.length > 280){
+                        var str = a.value.substring(0, 280);
+                        a.value = str;
                     }
-                });
+                }
             }
         };
     }

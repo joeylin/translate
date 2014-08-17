@@ -89,12 +89,15 @@ controller('topicCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'w
             getTrend();
         };
         var getTrend = function() {
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url, {
                 params: params,
             }).success(function(data) {
                 $scope.shareList = data.content;
                 $scope.pager.hasNext = data.hasNext;
                 $scope.total = data.count;
+                $scope.loading = false;
             });
         };
         var getMembersList = function() {
