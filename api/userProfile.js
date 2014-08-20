@@ -99,10 +99,8 @@ var editExperience = function(req, res) {
             profile.experience.push(data);
         }
         if (type === 'edit') {
-            profile.experience[index].startYear = data.startYear;
-            profile.experience[index].startMonth = data.startMonth;
-            profile.experience[index].endYear = data.endYear;
-            profile.experience[index].endMonth = data.endMonth;
+            profile.experience[index].startDate = data.startDate;
+            profile.experience[index].endDate = data.endDate;
             profile.experience[index].company = data.company;
             profile.experience[index].title = data.title;
             profile.experience[index].location = data.location;
@@ -112,6 +110,7 @@ var editExperience = function(req, res) {
         if (type === 'delete') {
             profile.experience.splice(index, 1);
         }
+        profile.markModified('experience');
         profile.save(function(err) {
             if (err) {
                 console.log(err);
@@ -138,10 +137,8 @@ var editEdu = function(req, res) {
             profile.edu.push(data);
         }
         if (type === 'edit') {
-            profile.edu[index].startYear = data.startYear;
-            profile.edu[index].startMonth = data.startMonth;
-            profile.edu[index].endYear = data.endYear;
-            profile.edu[index].endMonth = data.endMonth;
+            profile.edu[index].startDate = data.startDate;
+            profile.edu[index].endDate = data.endDate;
             profile.edu[index].degree = data.degree;
             profile.edu[index].field = data.field;
             profile.edu[index].school = data.school;

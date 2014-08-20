@@ -272,7 +272,7 @@
           }
           .group-avatar img {
             width: 100%;
-            height: 173px;
+            height: 146px;
           }
           .group-op-btn {
             border: 1px solid #ddd;
@@ -425,7 +425,7 @@
             position: absolute;
             z-index: 100;
             padding: 15px;
-            width: 80%;
+            width: 92%;
             left: 0;
             margin-top: 12px;
             background-color: #fff;
@@ -436,7 +436,6 @@
             box-shadow: 0 3px 9px rgba(0,0,0,.5);
             background-clip: padding-box;
             outline: 0;
-            
           }
           .group-add-content .custom-well {
             margin-bottom: 0;
@@ -450,7 +449,7 @@
             border-style: solid;
 
             border-width: 11px;
-            left: 65px;
+            left: 60px;
             margin-left: -11px;
             border-top-width: 0;
             border-bottom-color: rgba(0,0,0,.25);
@@ -726,7 +725,6 @@
                 <button title="Close" type="button" class="mfp-close" ng-click="global.popup.close()">×</button>
               </div>
             </div>
-            <div class="mfp-preloader">Loading...</div>
           </div>
         </div>
 
@@ -785,10 +783,10 @@
                       </a>
                       <ul class="dropdown-menu" class="request-container" style="padding: 10px 0!important;">
                           <li class="dropdown-comment">
-                            <a href="/request/comment"></a>
+                            <a href="/request/comment" target="_self"></a>
                           </li>
                           <li class="dropdown-at">
-                            <a href="/request/at"></a>
+                            <a href="/request/at" target="_self"></a>
                           </li>
                       </ul>
                   </li>
@@ -839,8 +837,7 @@
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
-                <li class="active"><a href="/group" target="_self">圈子</a></li>
-                
+                <li class="active"><a href="/group" target="_self">圈子</a></li>              
               </ul>
             </div>
           </div>
@@ -901,7 +898,7 @@
               </div>
             </div>
             <div class="panel panel-default member-panel">
-              <div class="panel-heading" style="font-weight:700;">圈成员</div>
+              <div class="panel-heading" style="font-weight:700;">管理员</div>
               <div class="panel-body" style="padding-top:10px;">
                 <div class="members-item">
                   <span class="title">【创建者】</span>

@@ -74,6 +74,9 @@
         </div>
       </div>
       <hr ng-repeat-end>
+      <div ng-if="!shareList.length" class="text-center" style="margin: 20px 0;">
+        你关注的圈子没有任何更新，快去添加更多你感兴趣的圈子 ...
+      </div>
       <div ng-show="shareList.length > 0">
         <ul class="pager">
           <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>

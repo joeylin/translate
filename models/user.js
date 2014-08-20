@@ -133,6 +133,14 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    isPubicCurrent: {
+        type: Boolean,
+        default: false
+    },
+    isPubicDesc: {
+        type: Boolean,
+        default: false
+    },
     isAdmin: {
         type: Boolean,
         default: false

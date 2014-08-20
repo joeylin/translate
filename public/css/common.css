@@ -133,3 +133,17 @@
 .navbar {
 	border-radius: 0;
 }
+
+/* reset datapicker */
+.datepicker table tr td span {
+	height: 34px;
+	line-height: 34px;
+}
+.input-daterange input {
+	text-align: left;
+}
+
+/* reset container */
+.container {
+	max-width: 1010px;
+}

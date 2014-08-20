@@ -159,6 +159,36 @@ var logout = function(req, res) {
         user: null
     });
 };
+var setCurrent = function(req, res) {
+    var user = req.session.user;
+    var location = req.body.location;
+    var occupation = req.body.occupation;
+    var status = req.body.status;
+    var school = req.body.school;
+    var company = req.body.company;
+    var isPubicCurrent = req.body.isPubicCurrent;
+
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        user.location = location;
+        user.occupation = occupation;
+        user.status = status;
+        user.school = school;
+        user.company = company;
+        user.isPubicCurrent = isPubicCurrent;
+        user.save(function(err, user) {
+            if (err) {
+                return res.send({
+                    code: 404
+                });
+            }
+            res.send({
+                code: 200
+            });
+        });
+    })
+};
 var findUser = function(req, res) {
     var id = req.body.id;
     User.findOne({
@@ -350,15 +380,31 @@ var getTrends = function(req, res) {
         followList.map(function(value, key) {
             array.push(value.toString());
         });
-        Share.find({
-            user: {
-                $in: array
-            },
-            type: 'view',
-            is_delete: false
-        }).sort({
-            createAt: -1
-        }).populate('user').populate('from.share')
+        var query, sort, noFriend;
+        if (array.length === 1) {
+            query = {
+                type: 'view',
+                is_delete: false,
+                createAt: {
+                    '$gt': Date.now() - 30 * 24 * 3600 * 1000  
+                }
+            };
+            sort = '-count.like -count.collect -count.fork';
+            noFriend = true;
+        } else {
+            query = {
+                user: {
+                    $in: array
+                },
+                type: 'view',
+                is_delete: false
+            };
+            sort = {
+                createAt: -1
+            };
+            noFriend = false;
+        }
+        Share.find(query).sort(sort).populate('user').populate('from.share')
         .populate('from.user').populate('from.group')
         .skip((page - 1) * perPageItems).limit(perPageItems).exec(function(err, trends) {
             if (!trends) {
@@ -367,13 +413,7 @@ var getTrends = function(req, res) {
                     info: 'no share'
                 });
             }
-            Share.find({
-                user: {
-                    $in: array
-                },
-                type: 'view',
-                is_delete: false
-            }).count().exec(function(err, count) {
+            Share.find(query).count().exec(function(err, count) {
                 var content = [];
                 var hasNext;
                 trends.map(function(item, key) {
@@ -457,6 +497,7 @@ var getTrends = function(req, res) {
                         count: count,
                         groupUpdate: groupUpdate,
                         hasNext: hasNext,
+                        noFriend: noFriend,
                         content: content
                     });   
                 });                                     
@@ -464,6 +505,7 @@ var getTrends = function(req, res) {
         });
     });
 };
+
 var getConnects = function(req, res) {
     var user = req.session.user;
     var perPageItems = 20;
@@ -1816,7 +1858,6 @@ var changeRelate = function(req, res) {
                 item.relate = content;
             }
         });
-        // user.markModified('connects.relate');
         user.save(function() {
             res.send({
                 code: 200
@@ -2132,23 +2173,13 @@ var setUserBasic = function(req, res) {
     var school = req.body.school;
     var company = req.body.company;
     var occupation = req.body.occupation;
-    var workYear = req.body.workYear;
     var location = req.body.location;
-    var schoolStart = req.body.schoolStart;
-    var schoolEnd = req.body.schoolEnd;
-    var isFreelance = req.body.isFreelance;
-    var professional = req.body.professional;
+    var status = req.body.status;
 
-    if (professional && (!workYear || !location || !occupation || (!isFreelance && !company))) {
+    if (!status || !location || !occupation) {
         return res.send({
             code: 404,
             info: 'professional info incomplete'
-        });
-    }
-    if (!professional && (!school || !location || !occupation || !schoolStart || !schoolEnd)) {
-        return res.send({
-            code: 404,
-            info: 'student info incomplete'
         });
     }
     User.findOne({
@@ -2156,12 +2187,8 @@ var setUserBasic = function(req, res) {
     }, function(err, user) {
         user.company = company;
         user.occupation = occupation;
-        user.workYear = workYear;
         user.school = school;
-        user.isStudent = !professional;
-        user.isFreelance = isFreelance;
-        user.schoolStart = schoolStart;
-        user.schoolEnd = schoolEnd;
+        user.status = status;
         user.location = location;
         user.registerStage = 2;
 
@@ -2401,7 +2428,9 @@ module.exports = function(app) {
     app.post('/api/user/login', login);
     app.post('/api/user/logout', logout);
     app.post('/api/user/userbasic', middleware.apiLogin, setUserBasic);
+    app.post('/api/user/current', middleware.apiLogin, setCurrent);
     app.post('/api/user/acitveResend', middleware.apiLogin, reSendActiveCode);
+
 
     // trends
     app.get('/api/user/trend', middleware.authLogin, getTrends);

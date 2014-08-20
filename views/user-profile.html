@@ -31,9 +31,6 @@
             padding-right: 15px;
             background-color: #fff;
           }
-          .container {
-            max-width: 980px;
-          }
           .navbar {
             margin-bottom: 0;
             border-radius: 0;
@@ -444,6 +441,26 @@
           .skin-list .item.active img {
             border-color: #428bca;
           }
+          /* new */
+          .edu-box .media {
+            padding: 0;
+          }
+          .edu-box .media .pull-left span {
+            display: inline-block;
+            width: 80px;
+            color: #999;
+          }
+          .edu-box .media-body {
+            padding-top: 0px;
+          }
+          .edu-box .media-body h4 {
+            margin-top: 0;
+            margin-bottom: 3px;
+          }
+          .edu-box .media-body .subTitle {
+            color: #999;
+            font-size: 16px;
+          }
           /* footer */
           footer {
             border-top: 1px solid #E0E0E0;
@@ -578,7 +595,7 @@
             </div>
           </div>
         </nav>
-        <div class="container"> 
+        <div class="container" style="padding-right:30px;padding-left:30px;"> 
           <div class="jumbotron user-header" style="background-image:url(<%= locals.skin.header %>)">
             <% if (locals.author && locals.author.id === locals.user.id) { %>
             <a class="btn btn-primary pull-right btn-sm" href="/settings/profile" target="_self">
@@ -621,15 +638,23 @@
                   <div class="panel" style="border-top-left-radius:0;border-top-right-radius:0;">
                     <div class="panel-body clearfix">
                       <div class="text-left" style="font-size:0.9em; display:inline-block;">
+                          <% if (locals.user.isPubicCurrent) { %>
                           <div style="margin-bottom:3px;"><span style="color:#999;">状态： </span> <span><%= locals.user.location %> | <%= locals.user.occupation %></span></div>
-                          <% if (locals.user.isStudent) { %>
-                          <div><span style="color:#999;">教育： </span> <span><%= locals.user.school %></span></div>
+                          <% if (locals.user.status === 'a') { %>
+                          <div><span style="color:#999;">就职： </span> <span><%= locals.user.company %></span></div>
+                          <% } %>
+                          <% if (locals.user.status === 'b') { %>
+                          <div><span style="color:#999;">当前： </span> <span>待业</span></div>
+                          <% } %>
+                          <% if (locals.user.status === 'c') { %>
+                          <div><span style="color:#999;">就读： </span> <span><%= locals.user.school %></span></div>
+                          <% } %>
+                          <% if (locals.user.status === 'd') { %>
+                          <div><span style="color:#999;">当前： </span> <span>自由职业者</span></div>
+                          <% } %>
                           <% } else { %>
-                          <div><span style="color:#999;">目前就职： </span> <span><%= locals.user.isFreelance ? 'freelance' : locals.user.company %></span></div>
-                          <% if (locals.user.school) { %>
-                          <div><span style="color:#999;">教育： </span> <span><%= locals.user.school %></span></div>
-                          <% } %> 
-                          <% } %> 
+                          <div class="text-center" style="margin-bottom:3px;">状态未填写或隐藏</div>
+                          <% } %>
 
                           <!-- <a href="#" class="btn btn-primary btn-sm">Connect</a> -->
                       </div>
@@ -682,7 +707,7 @@
                     <% if (locals.user.isPubicBasic) { %>
                     <div class="media basicContent basicHide" id='basicContent'>
                       <div class="media-body user-info">
-                        <p><%= locals.user.real_name %> | <%= locals.user.sex %> | <%= locals.user.degree %> | <%= locals.user.workYear %> 年工作经验</p>
+                        <p><%= locals.user.real_name %> <%= locals.user.sex ? '| ' + locals.user.sex : '' %> <%= locals.user.degree ? '| ' + locals.user.degree : '' %> <%= locals.user.workYear ? '| ' + locals.user.workYear + '年工作经验' : '' %> </p>
                         <p> <%= locals.user.phone %>  <%= locals.user.email %></p>
                       </div>
                     </div>
@@ -690,28 +715,15 @@
                     <div class="basicContent basicHide" id="basicContent">用户未公开基本资料 !</div>
                     <% } %>
                   </div>
-                  
-                  <% if (locals.profile.desc) { %>
-                  <div class="panel custom-box">
-                    <div class="panel-heading">
-                      <h3>自我描述</h3>
-                    </div>
-                    <div class="panel-body">
-                      <div class="section">
-                        <p><%= locals.profile.desc %></p>
-                      </div>
-                    </div>
-                  </div>
-                  <% } %>
 
                   <div class="panel custom-box">
                     <div class="panel-heading">
-                      <h3>经验</h3>
+                      <h3>工作经验</h3>
                     </div>
                     <div class="panel-body">    
                       <% locals.profile.experience.forEach(function(item,key){ %>
                           <div class="section">
-                            <h4><%= item.company %>-<%= item.title %> <small><%= item.startYear %>/<%= item.startMonth %>-<%= item.endYear %>/<%= item.endMonth %></small></h4>
+                            <h4><%= item.company %>-<%= item.title %> <small><%= item.startDate %>-<%= item.endDate %></small></h4>
                             <p><%= item.desc %></p>
                           </div>
                           <hr class="<%if(key === locals.profile.experience.length -1){%> displayNone <%}%>">
@@ -737,22 +749,33 @@
                       <h3>教育经历</h3>
                     </div>
                     <div class="panel-body edu-box">
-                      <div class="row">
-                        <% locals.profile.edu.forEach(function(item,key){ %>
-                          <div class="col-md-6 section">
-                            <span class="edu-date"><%= item.startYear %>/<%= item.startMonth %>--<%= item.endYear %>/<%= item.endMonth %></span>
-                            <div class="content">
-                              <div class="edu-school"> <%= item.school %></div>
-                              <div class="edu-info">
-                                <span><%= item.field %> | <%= item.degree %></span>
-                              </div>
-                              <div class="edu-desc"><%= item.desc %></div>
-                            </div>
-                          </div>
-                        <% }) %>
+                      <% locals.profile.edu.forEach(function(item,key){ %>
+                      <div class="media">
+                        <span class="pull-left" target="_self">
+                          <span><%= item.startDate %> 到 <%= item.endDate %></span>
+                        </span>
+                        <div class="media-body section">
+                          <h4><%= item.field %></h4>
+                          <div class="subTitle"><%= item.school %> <%= item.degree %></div>
+                          <div class="edu-desc"><%= item.desc %></div>
+                        </div>
+                      </div>
+                      <hr class="<%if(key === locals.profile.edu.length -1){%> displayNone <%}%>">
+                      <% }) %>
+                    </div>
+                  </div> 
+                  <% if (locals.profile.desc) { %>
+                  <div class="panel custom-box">
+                    <div class="panel-heading">
+                      <h3>总结</h3>
+                    </div>
+                    <div class="panel-body">
+                      <div class="section">
+                        <p><%= locals.profile.desc %></p>
                       </div>
                     </div>
-                  </div>   
+                  </div>
+                  <% } %>  
                   <div class="panel custom-box social">
                     <div class="panel-heading">
                       <h3>社交网络</h3>
@@ -760,9 +783,9 @@
                     <div class="panel-body social-info">
                       <% locals.profile.social.forEach(function(item,key){ %>
                           <div class="clearfix section">
-                            <div class="row">
-                              <div class="col-md-3"><%= item.name %>:</div>
-                              <div class="col-md-6"><a href="#"><%= item.id %></a></div>
+                            <div class="row" style="margin-left:0px;">
+                              <span style="min-width:70px;margin-right:10px;display:inline-block;"><%= item.name %> :</span>
+                              <span><%= item.id %></span>
                             </div>  
                           </div>
                       <% }) %>

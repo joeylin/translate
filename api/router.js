@@ -41,8 +41,9 @@ module.exports = function(app) {
         }
         User.getProfile(id, function(err, profile, user) {
             if (err) {
-                // here send 404 page
-                console.log(err);
+                return res.send({
+                    code: 404
+                });
             }
             app.locals.profile = profile;
             app.locals.user = user;
@@ -166,6 +167,7 @@ module.exports = function(app) {
             if (user.registerStage == 1) {
                 return res.redirect('/register/step1');
             }
+            
             // if (user.registerStage == 2) {
             //     return res.redirect('/register/step2');
             // }
@@ -794,6 +796,11 @@ module.exports = function(app) {
     };
     var feedback = function(req, res) {
         res.render('feedback');
+    };
+
+    // register
+    var step1 = function(req, res) {
+        res.render('step1');
     };
 
     // admin

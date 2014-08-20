@@ -169,7 +169,6 @@ directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
                 $template.on('click', function() {
                     return false;
                 });
-
                 var position = function($element) {
                     var offset = $element.offset(),
                         height = $element.outerHeight(),
@@ -223,6 +222,44 @@ directive('popup', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$timeout',
                 var value = $scope.$eval(attrs.addHtml);
                 var content = sanitize(value);
                 element.html(content).find('a').attr('target','_self');
+            }
+        };
+    }
+]).directive('daterange', ['mdParse', 'sanitize', 'pretty', 'isVisible', '$http',
+    function(mdParse, sanitize, pretty, isVisible, $http) {
+        return {
+            restrict: 'AE',
+            scope: {
+                options: '=',
+                date: '='
+            },
+            link: function($scope, element, attrs) {
+                var options = $scope.options || {
+                    format: "yyyy/mm",
+                    minViewMode: 1,
+                    todayBtn: "linked",
+                    language: "zh-CN"
+                };
+                if (!$scope.date) {
+                    $scope.date = {};
+                }
+                var start = $scope.date.start;
+                var end = $scope.date.end;
+               $(element).datepicker(options);
+               $scope.$watch('date', function(value) {
+                    $(element).find('.start').datepicker('update',value.start);
+                    $(element).find('.end').datepicker('update',value.end);
+               }, true);
+
+               $(element).find('.start').on('changeDate', function(e) {
+                    $scope.date.start = e.format('yyyy/mm');
+               });
+               $(element).find('.end').on('changeDate', function(e) {
+                    $scope.date.end = e.format('yyyy/mm');
+               });
+               $scope.$on("$destroy",function(){
+                $(element).remove();
+              });
             }
         };
     }

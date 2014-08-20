@@ -13,6 +13,11 @@
         <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <!-- flexText -->
+        <link rel="stylesheet" href="/public/js/lib/flexText/jquery.flexText.css">
+        <!-- datapicker -->
+        <link rel="stylesheet" href="/public/js/lib/bootstrap-datepicker/css/datepicker.css">
+        <!-- common -->
         <link rel="stylesheet" href="/public/css/common.css">
 
         <!--[if lt IE 9]>
@@ -35,9 +40,6 @@
             padding-left: 15px;
             padding-right: 15px;
             background-color: #fff;
-          }
-          .container {
-            max-width: 980px;
           }
           .profile-body {
             padding-left: 0;
@@ -308,9 +310,6 @@
           .custom-input.input-group .input-group-addon input {
             margin-bottom: 0;
           }
-          .container {
-            /*font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Segoe UI', 'Microsoft Yahei', Tahoma, Arial, STHeiti, sans-serif;*/
-          }
           .tags-item {
             background: #eee;
             float: left;
@@ -343,6 +342,46 @@
             -webkit-box-shadow: none;
             box-shadow: none;
             margin-bottom: 10px;
+          }
+          .inline-item {
+            margin-bottom: 15px;
+          }
+          .inline-item label {
+            margin-right: 15px;
+          }
+          .inline-item .form-control {
+            display: inline-block;
+            width: 220px;
+          }
+          .form-control.error {
+            border-color: red!important;
+          }
+          span.error {
+            color: red;
+            padding-left: 8px;
+            display: none;
+          }
+          .flex-text-wrap > pre {
+            min-height: 100px;
+          }
+          .edu-box .media {
+            padding: 0;
+          }
+          .edu-box .media .pull-left span {
+            display: inline-block;
+            width: 80px;
+            color: #999;
+          }
+          .edu-box .media-body {
+            padding-top: 0px;
+          }
+          .edu-box .media-body h4 {
+            margin-top: 0;
+            margin-bottom: 3px;
+          }
+          .edu-box .media-body .subTitle {
+            color: #999;
+            font-size: 16px;
           }
           /* footer */
           footer {
@@ -500,59 +539,81 @@
             </div>
             <div class="panel custom-box basic" ng-controller="currentCtrl">
               <div class="panel-heading">
-                <i class="fa fa-edit pull-right basic-editt" ng-show="showAddIcon" ng-click="edit()"></i>
+                <i class="fa fa-edit pull-right basic-editt" ng-show="showEditIcon" ng-click="edit()"></i>
                 <h3>当前状态</h3>
               </div>
-              <div class="panel-body social-info" ng-show="showContent">
+              <div class="panel-body social-info" ng-if="showContent"> 
+                <div>
+                  <span>权限 :</span>
+                  <span>{{isPubicCurrent ? '已公开' : '未公开'}}</span>
+                </div>
                 <div>
                   <span>状态 :</span>
-                  <span>{{location}} | {{occupation}}</span>
+                  <span>{{location}} {{occupation ?  '| ' + occupation:''}}</span>
                 </div>
                 <div>
                   <span>当前 :</span>
-                  <span>{{status}}</span>
                   <span ng-if="status === 'a'">
-                    {{school}}
+                    就职于 {{company}}
                   </span>
                   <span ng-if="status === 'b'">
-                    {{company}}
+                    待业
                   </span>
                   <span ng-if="status === 'c'">
-                    待业
+                    就读于 {{school}}
+                  </span>
+                  <span ng-if="status === 'd'">
+                    自由职业
                   </span>
                 </div>
               </div>
               <div class="media" ng-show="showHome">
+                <a class="pull-left add-icon" href="#">
+                  <i class="fa fa-fw fa-plus-circle" ng-click="edit()"></i>
+                </a>
                 <div class="media-body">
                   <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                  <span><a href="#" ng-click="add()">添加社交网络，让同行更了解你。</a></span>
+                  <span><a href="#" ng-click="edit()">添加社交网络，让同行更了解你。</a></span>
                 </div>
               </div>
-              <div class="panel-body current-settings" ng-show="showSettings">        
+              <!--  -->
+              <div class="panel-body current-settings" ng-show="showSettings">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 inline-item">
+                      <div class="custom-input">
+                        <label>是否公开:</label>
+                        <span style="line-height:26px;">
+                          <span ng-click="isPubicCurrent = true;" style="cursor:pointer;"><i class="fa fa-fw" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[isPubicCurrent]"></i> 是</span>
+                          <span ng-click="isPubicCurrent = false;" style="cursor:pointer;"><i class="fa fa-fw fa-circle-o" ng-class="{true:'fa-dot-circle-o',false:'fa-circle-o'}[!isPubicCurrent]"></i> 否</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-12 inline-item">
                       <label>地点 :</label>
                       <input type="text" class="form-control" ng-model="inputLocation" placeholder="你当前的常住地">
                     </div>
-                    <div class="col-md-12" style="padding-left:0;">
+                    <div class="col-md-12 inline-item">
                       <label>职位 :</label>
-                      <input type="text" class="form-control" ng-model="inputOccupation" placeholder="你从事的职业">
+                      <input type="text" class="form-control" ng-model="inputOccupation" placeholder="你从事或感兴趣的职位" id="currentOccupation">
                     </div>
-                    <div class="col-md-12" style="padding-left:0;">
+                    <div class="col-md-12 inline-item">
                       <label>状态 :</label>
-                      <select class="form-control" ng-model="inputStatus">
+                      <select class="form-control" ng-model="inputStatus" style="width:170px; position:relative;top:1px; margin-right:10px;" id="currentStatus">
                         <option value="">当前状态</option>
                         <option value="a">在职</option>
                         <option value="b">待业</option>
                         <option value="c">在校生</option>
                         <option value="d">自由职业</option>
                       </select>
+                      <input type="text" class="form-control" ng-show="inputStatus==='a'" ng-model="inputCompany" placeholder="所在的公司(可选)">
+                      <input type="text" class="form-control" ng-show="inputStatus==='c'" ng-model="inputSchool" placeholder="就读的院校(可选)">
                     </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 clearfix">
-                    <a class="btn btn-primary pull-right" role="button" ng-show="statusEdit" ng-click="editSave()">保存</a>
-                    <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;">取消</a>
+                    <a class="btn btn-primary btn-sm" role="button" ng-click="save()">保存</a>
+                    <a class="btn btn-default btn-sm" role="button" ng-click="cancel()">取消</a>
+                    <span class="error" id="currentError">不能为空哦</span>
                   </div>
                 </div>
               </div>
@@ -569,8 +630,8 @@
                   </a>
                 </div>
                 <div class="media-body user-info">
-                  <p>状态 : {{isPublic ? '已公开' : '未公开'}}</p>
-                  <p>{{real_name}} | {{sex}} | {{degree}} | {{workYear && workYear + '年工作经验'}}</p>
+                  <p>权限 : {{isPublic ? '已公开' : '未公开'}}</p>
+                  <p>{{real_name}} {{sex ? '| ' + sex: '' }} {{degree ? '| ' + degree:''}} {{workYear ? '| ' + workYear + '年工作经验': ''}}</p>
                   <p> {{phone}}  {{email}}</p>
                 </div>
               </div>
@@ -646,8 +707,8 @@
                         </div>
                     </div>
                     <div class="clearfix">
-                      <a class="btn btn-primary pull-right" role="button" ng-click="save()">保存</a>
-                      <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;" >取消</a>
+                      <a class="btn btn-primary btn-sm" role="button" ng-click="save()">保存</a>
+                      <a class="btn btn-default btn-sm" role="button" ng-click="cancel()" style="margin-right: 10px;" >取消</a>
                     </div>
                   </div>
                   <div class="col-md-3 basic-settings-avatar">
@@ -661,37 +722,7 @@
                 </div>
               </div>
             </div>
-            <div class="panel custom-box" ng-controller="describeCtrl">
-              <div class="panel-heading">
-                <i class="fa fa-edit pull-right" ng-show="showEditIcon" ng-click="edit()"></i>
-                <h3>自我描述</h3>
-              </div>
-              <div class="panel-body" ng-show="showContent">
-                <div class="section">
-                  <p>{{desc}}</p>
-                </div>
-              </div>
-              <div class="media" ng-show="showHome">
-                <a class="pull-left add-icon" href="#">
-                  <i class="fa fa-fw fa-plus-circle" ng-click="add()"></i>
-                </a>
-                <div class="media-body">
-                  <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
-                  <span><a href="#" ng-click="add()">开始描述自己吧</a></span>
-                </div>
-              </div>
-              <div class="panel-body settings" ng-show="showSettings">
-                <div class="row">
-                  <div class="form-group col-md-8">
-                      <textarea class="form-control" rows="3" ng-model="inputDesc" placeholder="描述你的特长，爱好，性格等等"></textarea>
-                  </div>
-                </div>
-                <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="save()">保存</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
-                </div>
-              </div>
-            </div>
+            
             <div class="panel custom-box" ng-controller="experienceCtrl">
               <div class="panel-heading">
                 <i class="fa fa-fw fa-plus-circle pull-right" ng-show="showAddIcon" ng-click="add()"></i>
@@ -703,7 +734,7 @@
                     <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
                     <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                   </div>
-                  <h4>{{item.company}}-{{item.title}} <small>{{item.startYear}}/{{item.startMonth}}-{{item.endYear}}/{{item.endMonth}}</small></h4>
+                  <h4>{{item.title}} <small style="color:#333;">{{item.company}} </small><small>{{item.startDate}}-{{item.endDate}}</small></h4>
                   <p>{{item.desc}}</p>
                 </div>
                 <hr ng-repeat-end ng-class="{displayNone: $last}">
@@ -720,111 +751,40 @@
               <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                     <div class="col-md-4">
-                        <label>所在公司</label>
+                        <label>公司 :</label>
                         <input type="text" class="form-control" ng-model="inputCompany" placeholder="所在公司">
                     </div>
                     <div class="col-md-4">
-                        <label>担任职位</label>
+                        <label>职位 :</label>
                         <input type="text" class="form-control" ng-model="inputTitle" placeholder="担任职位">
                     </div>
                 </div>
                 <div class="row">
-                    <div style="padding: 0 15px;margin-bottom: 0;"><label>从业时间</label></div>
-                    <div class="col-md-4 divide">
-                        <div class="col-md-6 one">
-                          <select class="form-control" ng-model="inputStartYear">
-                            <option value="">开始年份</option>
-                            <option>2014</option>
-                            <option>2013</option>
-                            <option>2012</option>
-                            <option>2011</option>
-                            <option>2010</option>
-                            <option>2009</option>
-                            <option>2008</option>
-                            <option>2007</option>
-                            <option>2006</option>
-                            <option>2005</option>
-                            <option>2004</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6 two">
-                          <select class="form-control" ng-model="inputStartMonth">
-                            <option value="">开始月份</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                          </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4 divide">
-                        <div class="col-md-6 one">
-                          <select class="form-control" ng-model="inputEndYear">
-                            <option value="">结束年份</option>
-                            <option>2014</option>
-                            <option>2013</option>
-                            <option>2012</option>
-                            <option>2011</option>
-                            <option>2010</option>
-                            <option>2009</option>
-                            <option>2008</option>
-                            <option>2007</option>
-                            <option>2006</option>
-                            <option>2005</option>
-                            <option>2004</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6 two">
-                          <select class="form-control" ng-model="inputEndMonth">
-                            <option value="">结束月份</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                          </select>
-                        </div>
+                    <div style="padding: 0 15px;margin-bottom: 0;"><label>时间 :</label></div>
+                    <div class="col-md-6">
+                      <div daterange date="workDate" class="input-daterange input-group">
+                          <input type="text" class="form-control start" name="start" />
+                          <span class="input-group-addon">到</span>
+                          <input type="text" class="form-control end" name="end" />
+                      </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label>工作地点</label>
+                        <label>地点 :</label>
                         <input type="text" class="form-control" ng-model="inputLocation" placeholder="工作地点">
-                    </div>
-                    <div class="col-md-4">
-                        <label>是否当前工作 :</label>
-                        <select class="form-control" ng-model="inputIsCurrentJob">
-                          <option value="yes">是</option>
-                          <option value="no">否</option>
-                        </select>
                     </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
-                      <textarea class="form-control" ng-model="inputDesc" rows="2" placeholder="简要描述你的工作内容..."></textarea>
+                      <label>描述 : </label>
+                      <textarea auto-height class="form-control" ng-model="inputDesc" rows="2" placeholder="简要描述你的工作内容..."></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusAdd" ng-click="addSave()">添加</a>
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-show="statusEdit" ng-click="editSave()">保存</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
+                  <a class="btn btn-primary btn-sm" role="button" ng-show="statusAdd" ng-click="addSave()">添加</a>
+                  <a class="btn btn-primary btn-sm" role="button" ng-show="statusEdit" ng-click="editSave()">保存</a>
+                  <a class="btn btn-default btn-sm" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
             </div>  
@@ -834,23 +794,22 @@
                 <h3>教育经历</h3>
               </div>
               <div class="panel-body edu-box" ng-show="showContent">
-                <div class="row">
-                  <div class="col-md-6 section" ng-repeat="item in content">
+                <div class="media" ng-repeat-start="item in content">
+                  <span class="pull-left" target="_self">
+                    <span>{{item.startDate}} 到 {{item.endDate}}</span>
+                  </span>
+                  <div class="media-body section">
                     <div class="change pull-right">
                       <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
                       <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                     </div>
-                    <span class="edu-date">{{item.startYear}}/{{item.startMonth}}--{{item.endYear}}/{{item.endMonth}}</span>
-                    <div class="content">
-                      <div class="edu-school">  {{item.field}}</div>
-                      <div class="edu-info">
-                        <span>{{item.school}} | {{item.degree}}</span>
-                      </div>
-                      <div class="edu-desc">{{item.desc}}</div>
-                    </div>
+                    <h4>{{item.field}}</h4>
+                    <div class="subTitle">{{item.school}} {{item.degree}}</div>
+                    <div class="edu-desc">{{item.desc}}</div>
                   </div>
-                  
                 </div>
+                <hr ng-repeat-end ng-hide="$last">
+
               </div>
               <div class="media" ng-show="showHome">
                 <a class="pull-left add-icon" href="#">
@@ -863,120 +822,49 @@
               </div>
               <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
-                    <div class="col-md-4" style="margin-bottom:0px;">
-                        <div class="input-group custom-input" style="left:-12px;">
-                            <span class="input-group-addon">所在学校:</span>
-                            <input type="text" class="form-control" ng-model="inputSchool" placeholder="学校">
-                        </div>
+                    <div class="col-md-4">
+                        <label>院校:</label>
+                        <input type="text" class="form-control" ng-model="inputSchool" placeholder="学校">
                     </div>
-                    <div class="col-md-4" style="margin-bottom:0px;">
-                        <div class="input-group custom-input" style="left:-12px;">
-                            <span class="input-group-addon">专业:</span>
-                            <input type="text" class="form-control" ng-model="inputField" placeholder="专业">
-                        </div>
+                    <div class="col-md-4">
+                        <label>专业:</label>
+                        <input type="text" class="form-control" ng-model="inputField" placeholder="专业">
                     </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-4" style="margin-bottom:0px;">
-                      <div class="input-group custom-input" style="left:-12px;">
-                          <span class="input-group-addon">所获学历:</span>
-                          <select class="form-control" ng-model="inputDegree">
-                              <option value=''>学历</option>
-                              <option value="职高">职高</option>
-                              <option value="专科">专科</option>
-                              <option value="本科">本科</option>
-                              <option value="硕士">硕士</option>
-                              <option value="博士">博士</option>
-                              <option value="博士后">博士后</option>
-                          </select>
-                      </div>
-                          
+                  <div class="col-md-4">
+                      <label>学历:</label>
+                      <select class="form-control" ng-model="inputDegree">
+                          <option value=''>学历</option>
+                          <option value="职高">职高</option>
+                          <option value="专科">专科</option>
+                          <option value="本科">本科</option>
+                          <option value="硕士">硕士</option>
+                          <option value="博士">博士</option>
+                          <option value="博士后">博士后</option>
+                      </select> 
                   </div>
                 </div>
                 <div class="row">
-                    <div style="padding: 0 15px;margin-bottom: 10px;"><label>教育时间:</label></div>
-                    <div class="col-md-4 divide">
-                        <div class="col-md-6 one">
-                          <select class="form-control" ng-model="inputStartYear">
-                            <option value="">开始年份</option>
-                            <option>2014</option>
-                            <option>2013</option>
-                            <option>2012</option>
-                            <option>2011</option>
-                            <option>2010</option>
-                            <option>2009</option>
-                            <option>2008</option>
-                            <option>2007</option>
-                            <option>2006</option>
-                            <option>2005</option>
-                            <option>2004</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6 two">
-                          <select class="form-control" ng-model="inputStartMonth">
-                            <option value="">开始月份</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                          </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4 divide">
-                        <div class="col-md-6 one">
-                          <select class="form-control" ng-model="inputEndYear">
-                            <option value="">结束年份</option>
-                            <option>2014</option>
-                            <option>2013</option>
-                            <option>2012</option>
-                            <option>2011</option>
-                            <option>2010</option>
-                            <option>2009</option>
-                            <option>2008</option>
-                            <option>2007</option>
-                            <option>2006</option>
-                            <option>2005</option>
-                            <option>2004</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6 two">
-                          <select class="form-control" ng-model="inputEndMonth">
-                            <option value="">结束月份</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                          </select>
-                        </div>
+                    <div style="padding: 0 15px;margin-bottom:0px;"><label>时间:</label></div>
+                    <div class="col-md-6">
+                      <div daterange date="workDate" class="input-daterange input-group">
+                          <input type="text" class="form-control start" name="start" />
+                          <span class="input-group-addon">到</span>
+                          <input type="text" class="form-control end" name="end" />
+                      </div>
                     </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
-                      <textarea class="form-control" rows="3" placeholder="简要描述在这个期间你所获得的收获" ng-model="inputDesc"></textarea>
+                      <label>描述 :</label>
+                      <textarea auto-height class="form-control" rows="3" placeholder="简要描述在这个期间你所获得的收获" ng-model="inputDesc"></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="editSave()" ng-show="statusEdit">保存</a>
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;" ng-click="addSave()" ng-show="statusAdd">添加</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
+                  <a class="btn btn-primary btn-sm" role="button" ng-click="editSave()" ng-show="statusEdit">保存</a>
+                  <a class="btn btn-primary btn-sm" role="button" ng-click="addSave()" ng-show="statusAdd">添加</a>
+                  <a class="btn btn-default btn-sm" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
             </div>
@@ -1008,22 +896,55 @@
               <div class="panel-body settings" ng-show="showSettings">
                 <div class="row">
                     <div class="col-md-8">
+                        <label>链接 :</label>
                         <input type="text" class="form-control" ng-model="inputUrl" placeholder="作品链接">
                     </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-8">
+                      <label>描述 :</label>
                       <textarea class="form-control" rows="3" ng-model="inputDesc" placeholder="作品描述 ..."></textarea>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="addSave()" ng-show="statusAdd">添加</a>
-                  <a class="btn btn-primary pull-left" role="button" style="margin-right: 10px;"ng-click="editSave()" ng-show="statusEdit">保存</a>
-                  <a class="pure-btn pull-left" role="button" ng-click="cancel()">取消</a>
+                  <a class="btn btn-primary btn-sm" role="button" ng-click="addSave()" ng-show="statusAdd">添加</a>
+                  <a class="btn btn-primary btn-sm" role="button" ng-click="editSave()" ng-show="statusEdit">保存</a>
+                  <a class="btn btn-default btn-sm" role="button" ng-click="cancel()">取消</a>
                 </div>
               </div>
             </div> 
-            <div class="panel custom-box social" ng-controller="skillsCtrl">               
+            <div class="panel custom-box" ng-controller="describeCtrl">
+              <div class="panel-heading">
+                <i class="fa fa-edit pull-right" ng-show="showEditIcon" ng-click="edit()"></i>
+                <h3>总结</h3>
+              </div>
+              <div class="panel-body" ng-show="showContent">
+                <div class="section">
+                  <p>{{desc}}</p>
+                </div>
+              </div>
+              <div class="media" ng-show="showHome">
+                <a class="pull-left add-icon" href="#">
+                  <i class="fa fa-fw fa-plus-circle" ng-click="add()"></i>
+                </a>
+                <div class="media-body">
+                  <p class="reply-content">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at.</p>
+                  <span><a href="#" ng-click="add()">开始描述自己吧</a></span>
+                </div>
+              </div>
+              <div class="panel-body settings" ng-show="showSettings">
+                <div class="row">
+                  <div class="form-group col-md-8">
+                      <textarea auto-height class="form-control" rows="3" ng-model="inputDesc" placeholder="描述你的特长，爱好，性格等等"></textarea>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <a class="btn btn-primary btn-sm" role="button" ng-click="save()">保存</a>
+                  <a class="btn btn-default btn-sm" role="button" ng-click="cancel()">取消</a>
+                </div>
+              </div>
+            </div>
+            <div class="panel custom-box social" ng-controller="skillsCtrl">
               <div class="panel-heading">            
                 <h3>擅长技能</h3>
               </div>
@@ -1057,9 +978,9 @@
                     <i class="fa fa-edit edit" ng-click="vm.edit(item)"></i>
                     <i class="fa fa-times-circle delete" ng-click="vm.delete(item)"></i>
                   </div>
-                  <div class="row">
-                    <div class="col-md-3">{{item.name}}:</div>
-                    <div class="col-md-6"><a href="#">{{item.id}}</a></div>
+                  <div class="row" style="margin-left:0;">
+                    <span style="min-width:70px;margin-right:10px;display:inline-block;">{{item.name}} :</span>
+                    <span>{{item.id}}</span>
                   </div>  
                 </div>
               </div>
@@ -1074,18 +995,20 @@
               </div>
               <div class="panel-body socail-settings" ng-show="showSettings">        
                 <div class="row">
-                    <div class="col-md-2">
-                      <input type="text" class="form-control" ng-model="inputName" placeholder="item name">
+                    <div class="col-md-3">
+                      <label>名称 :</label>
+                      <input type="text" class="form-control" ng-model="inputName" placeholder="网络名称">
                     </div>
-                    <div class="col-md-4" style="padding-left:0;">
-                      <input type="text" class="form-control" ng-model="inputId" placeholder="item id">
+                    <div class="col-md-5" style="padding-left:0;">
+                      <label>ID :</label>
+                      <input type="text" class="form-control" ng-model="inputId" placeholder="地址或ID">
                     </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 clearfix">
-                    <a class="btn btn-primary pull-right" role="button" ng-show="statusAdd" ng-click="addSave()">添加</a>
-                    <a class="btn btn-primary pull-right" role="button" ng-show="statusEdit" ng-click="editSave()">保存</a>
-                    <a class="pure-btn pull-right" role="button" ng-click="cancel()" style="margin-right: 10px;">取消</a>
+                    <a class="btn btn-primary btn-sm" role="button" ng-show="statusAdd" ng-click="addSave()">添加</a>
+                    <a class="btn btn-primary btn-sm" role="button" ng-show="statusEdit" ng-click="editSave()">保存</a>
+                    <a class="btn btn-default btn-sm" role="button" ng-click="cancel()" style="margin-right: 10px;">取消</a>
                   </div>
                 </div>
               </div>
@@ -1130,7 +1053,7 @@
                     </div>
                     <div ng-show="error"><p>密码错误 !</p></div>
                     <div class="clearfix">
-                      <a class="btn btn-primary pull-right" role="button" ng-click="save()">保存</a>
+                      <a class="btn btn-primary btn-sm pull-right" role="button" ng-click="save()">保存</a>
                     </div>
                   </div>
                 </div>
@@ -1153,7 +1076,7 @@
             </div>
             <div class="well well-sm">
               <div class="text-center" style="font-size:18px;">
-                <a href="" style="color:#333;">荣誉奖励</a>
+                <a href="" style="color:#333;">荣誉证书</a>
               </div>
             </div>
           </div>         
@@ -1182,6 +1105,9 @@
             '/public/js/lib/store.js',
             '/public/js/lib/utf8.js',
             '/public/js/lib/qiniu.uploader.js',
+            '/public/js/lib/flexText/jquery.flexText.min.js',
+            '/public/js/lib/bootstrap-datepicker/js/bootstrap-datepicker.js',
+            '/public/js/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js',
             '/public/js/upload.js',
             '/public/js/bootply.js',
             '/public/js/locale_zh-cn.js',

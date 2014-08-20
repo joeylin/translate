@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" ng-show="!loading">
       <div class="media" ng-repeat-start="group in content">
         <a class="pull-left" href="/group/{{group.id}}" target="_self">
           <img class="media-object" alt="64x64" ng-src="{{group.avatar + '-normal'}}" style="width: 64px; height: 64px;">
@@ -33,6 +33,10 @@
         </div>
       </div>
       <hr ng-repeat-end ng-class="{displayNone:$last}">
+      <div ng-if="!content.length" style="margin-bottom:20px;">
+        <p>你还没有参与任何圈子, 快到右侧的搜索框, 输入关键字查找你感兴趣的圈子吧</p>
+        <a href="" class="btn btn-primary btn-sm" ng-click="vm.keyword='';search();">浏览所有圈子</a>
+      </div>
       <hr ng-show="content.length > 0 && share.pager">
       <div ng-show="content.length > 0 && share.pager">
         <ul class="pager" style="font-size:12px;">
@@ -40,6 +44,9 @@
           <li ng-class="{'disabled': !pager.hasNext}" ng-click="next()"><a href="#">下一页</a></li>
         </ul>
       </div>
+    </div>
+    <div class="panel-body" ng-show="loading">
+      <div class="loading"><span class="loading-gif"></span>正在加载中 ...</div>
     </div>
   </div>
 </div>

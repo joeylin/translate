@@ -19,6 +19,13 @@
         你关注的圈子有 {{groupUpdate}} 条更新，<a href="/groupTrends" class="alert-link" target="_self">快去查看哦</a>
         <a href="" class="pull-right" ng-click="showCircle = false;"><i class="fa fa-fw fa-times"></i></a>
       </div>
+      <div ng-if="noFriend">
+        <p style="margin-bottom: 10px;margin-top: 10px;font-weight: 700;">你还没有添加任何好友，添加好友，扩展人脉，获取好友最新动态</p>
+        <a href="/people" class="btn btn-primary btn-sm" >添加好友</a>
+        <hr>
+        <h4 style="font-weight:700;">热门微说</h4>
+        <hr>
+      </div>
       <div class="media" ng-repeat-start="share in shareList">
         <a class="pull-left" ng-href="/profile/{{share.user.id}}" target="_self">
           <img class="media-object" alt="64x64" ng-src="{{share.user.avatar + '-small'}}" style="width: 50px; height: 50px;">
@@ -102,17 +109,17 @@
   </div>  
 </div>
 <div class="profile-sidebar col-md-3">
-  <div class="well">
+  <div class="well" style="padding:15px;">
     <div class="user-header bg-modena clearfix">
-        <div class="pull-left">
-          <a href="/profile/{{global.user.id}}" target="_self">
-            <img ng-src="{{global.user.avatar + '-normal'}}" style="height: 78px;width: 78px">
+        <div class="media">
+          <a class="pull-left" href="/profile/{{global.user.id}}" target="_self">
+            <img ng-src="{{global.user.avatar + '-normal'}}" style="height: 64px;width: 64px">
           </a>
-        </div>
-        <div class="pull-left">
-          <h3 style="margin-top: 4px;">{{global.user.name}}</h3>
-          <div style="margin-left: 12px;"><a class="unStyle" href="/myShare">微说 : {{global.shareCount || 0}}</a></div>
-          <div style="margin-left: 12px;"><a class="unStyle" href="/myPeople">人脉 : {{global.user.connectsCount}}</a></div>
+          <div class="media-body">
+            <h3>{{global.user.name}}</h3>
+            <div><a class="unStyle" href="/myShare">微说 : {{global.shareCount || 0}}</a></div>
+            <div><a class="unStyle" href="/myPeople">人脉 : {{global.user.connectsCount}}</a></div>
+          </div>
         </div>
     </div>
   </div>

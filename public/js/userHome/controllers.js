@@ -60,6 +60,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
             }).success(function(data) {
                 $scope.shareList = data.content;
                 $scope.pager.hasNext = data.hasNext;
+                $scope.noFriend = data.noFriend;
                 $scope.total = data.count;
                 $scope.groupUpdate = data.groupUpdate || 0;
 
@@ -1191,10 +1192,13 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.content = [];
         var getGroup = function() {
             var url = '/api/myGroup';
+            $scope.loading = true;
+            $('body').scrollTop(0);
             $http.get(url).success(function(data) {
                 $scope.content = data.content;
                 $scope.isSearch = false;
                 $scope.groupCount = data.count;
+                $scope.loading = false;
             });
         };
         $scope.refresh = function() {

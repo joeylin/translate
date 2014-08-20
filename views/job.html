@@ -28,6 +28,10 @@
            * Style tweaks
            * --------------------------------------------------
            */
+          body,html {
+            font-family: 'Helvetica Neue', 微软雅黑, Tohoma;
+            background: url("/public/imgs/bg.png") 0 0 repeat;
+          }
           footer {
             padding-left: 15px;
             padding-right: 15px;
@@ -223,6 +227,10 @@
           .color-card:hover {
             background-color: #fff;
           }
+          .well {
+            -webkit-box-shadow: none; 
+            box-shadow: none; 
+          }
           /* contact */
           .contact strong {
             width: 53px;
@@ -367,13 +375,12 @@
                 <li><a href="/home" target="_self">首页</a></li>
                 <li><a href="/profile" target="_self">个人主页</a></li>
                 <li><a href="/group" target="_self">圈子</a></li>
-                
               </ul>
             </div>
           </div>
         </nav>
         <div class="container">
-          <div class="profile-body col-md-9" ng-controller="indexCtrl">
+          <div class="profile-body col-md-9" ng-controller="indexCtrl" style="padding-left:0px;">
             <div class="panel">
               <div class="panel-body">
                 <div class="media job-header">
@@ -448,7 +455,7 @@
               <div><%- locals.share.companyIntro %></div>
             </div>
           </div>
-          <div class="profile-sidebar col-md-3 view-sidebar">
+          <div class="profile-sidebar col-md-3 view-sidebar" style="padding-left:0px;">
             <div class="panel">
               <div class="panel-body">
                 <div style="margin-bottom:25px;">

@@ -123,6 +123,11 @@ var ShareSchema = new Schema({
             type: Date
         }
     }],
+    count: {
+        like: Number,
+        collect: Number,
+        fork: Number
+    },
     likes: [{
         type: ObjectId,
         ref: 'User'
@@ -270,6 +275,9 @@ ShareSchema.methods.unlike = function(userId, cb) {
 // middleware
 ShareSchema.pre('save', function(next) {
     this.updateAt = new Date();
+    this.count.like = this.likes.length;
+    this.count.fork = this.fork;
+    this.count.collect = this.collects.length;
     if (this.type === 'job') {
         this.tags = this.position + ' ' + this.skills + ' ' + this.degree + ' ' + this.location;
     }

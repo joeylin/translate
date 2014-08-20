@@ -67,6 +67,9 @@
         </div>
       </div>
       <hr ng-repeat-end>
+      <div ng-if="!shareList.length" class="text-center" style="margin: 20px 0;">
+        你还没有发表任何微说, 赶快去跟好友分享 ...
+      </div>
       <div ng-show="shareList.length > 0">
         <ul class="pager">
           <li ng-class="{'disabled': pager.current === 1}" ng-click="prev()"><a href="#">上一页</a></li>

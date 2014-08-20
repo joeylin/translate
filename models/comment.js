@@ -69,8 +69,7 @@ CommentSchema.statics.createNew = function(obj, cb) {
         cb(err, comment);
         obj._id = comment._id;
         sendRequest(obj);
-    });
-    
+    });  
 };
 
 // middleware

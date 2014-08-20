@@ -85,6 +85,10 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
 
         $scope.statusAdd = false;
         $scope.statusEdit = false;
+        $scope.workDate = {
+            start: '',
+            end: ''
+        };
 
         $scope.content = app.profile.edu || [];
         var itemNumber = '';
@@ -99,10 +103,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
 
             $scope.inputSchool = '';
             $scope.inputField = '';
-            $scope.inputStartYear = '';
-            $scope.inputStartMonth = '';
-            $scope.inputEndYear = '';
-            $scope.inputEndMonth = '';
+            $scope.workDate.start = '';
+            $scope.workDate.end = '';
             $scope.inputDesc = '';
             $scope.inputDegree = '';
         };
@@ -118,10 +120,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
             var data = {
                 school: $scope.inputSchool,
                 field: $scope.inputField,
-                startYear: $scope.inputStartYear,
-                startMonth: $scope.inputStartMonth,
-                endYear: $scope.inputEndYear,
-                endMonth: $scope.inputEndMonth,
+                startDate: $scope.workDate.start,
+                endDate: $scope.workDate.end,
                 degree: $scope.inputDegree,
                 desc: $scope.inputDesc
             };
@@ -141,10 +141,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
             var data = {
                 school: $scope.inputSchool,
                 field: $scope.inputField,
-                startYear: $scope.inputStartYear,
-                startMonth: $scope.inputStartMonth,
-                endYear: $scope.inputEndYear,
-                endMonth: $scope.inputEndMonth,
+                startDate: $scope.workDate.start,
+                endDate: $scope.workDate.end,
                 degree: $scope.inputDegree,
                 desc: $scope.inputDesc,
             };
@@ -166,10 +164,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
             itemNumber = $scope.content.indexOf(item);
             $scope.inputSchool = item.school;
             $scope.inputField = item.field;
-            $scope.inputStartYear = item.startYear;
-            $scope.inputStartMonth = item.startMonth;
-            $scope.inputEndYear = item.endYear;
-            $scope.inputEndMonth = item.endMonth;
+            $scope.workDate.start = item.startDate;
+            $scope.workDate.end = item.endDate;
             $scope.inputDesc = item.desc;
 
             $scope.showAddIcon = false;
@@ -214,14 +210,17 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
         $scope.inputCompany = '';
         $scope.inputTitle = '';
         $scope.inputDesc = '';
-        $scope.inputStartYear = '';
-        $scope.inputStartMonth = '';
-        $scope.inputEndYear = '';
-        $scope.inputEndMonth = '';
-        $scope.inputIsCurrentJob = 'no';
+        $scope.inputIsCurrentJob = 'n';
+        $scope.workDate = {
+            start: '',
+            end: ''
+        };
 
         $scope.statusAdd = false;
         $scope.statusEdit = false;
+
+        $scope.startDate = '';
+        $scope.endDate = '';
 
         $scope.add = function() {
             $scope.showSettings = true;
@@ -232,12 +231,12 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
             $scope.inputCompany = '';
             $scope.inputTitle = '';
             $scope.inputDesc = '';
-            $scope.inputStartYear = '';
-            $scope.inputStartMonth = '';
-            $scope.inputEndYear = '';
-            $scope.inputEndMonth = '';
-            $scope.inputIsCurrentJob = 'no';
+            $scope.inputIsCurrentJob = 'n';
             $scope.inputLocation = '';
+            $scope.workDate = {
+                start: '',
+                end: ''
+            };
 
             $scope.statusAdd = true;
             $scope.statusEdit = false;
@@ -247,10 +246,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
                 company: $scope.inputCompany,
                 title: $scope.inputTitle,
                 desc: $scope.inputDesc,
-                startYear: $scope.inputStartYear,
-                startMonth: $scope.inputStartMonth,
-                endYear: $scope.inputEndYear,
-                endMonth: $scope.inputEndMonth,
+                startDate: $scope.workDate.start,
+                endDate: $scope.workDate.end,
                 location: $scope.inputLocation,
                 isCurrentJob: $scope.inputIsCurrentJob
             };
@@ -279,10 +276,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
             $scope.inputCompany = item.company;
             $scope.inputTitle = item.title;
             $scope.inputDesc = item.desc;
-            $scope.inputStartYear = item.startYear;
-            $scope.inputStartMonth = item.startMonth;
-            $scope.inputEndYear = item.endYear;
-            $scope.inputEndMonth = item.endMonth;
+            $scope.workDate.start = item.startDate;
+            $scope.workDate.end = item.endDate;
             $scope.inputLocation = item.location;
             $scope.inputIsCurrentJob = item.isCurrentJob;
 
@@ -302,10 +297,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
                 company: $scope.inputCompany,
                 title: $scope.inputTitle,
                 desc: $scope.inputDesc,
-                startYear: $scope.inputStartYear,
-                startMonth: $scope.inputStartMonth,
-                endYear: $scope.inputEndYear,
-                endMonth: $scope.inputEndMonth,
+                startDate: $scope.workDate.start,
+                endDate: $scope.workDate.end,
                 location: $scope.inputLocation,
                 isCurrentJob: $scope.inputIsCurrentJob
             };
@@ -346,12 +339,12 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
     }
 ]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
-        $scope.real_name = app.user.real_name || 'add your realname';
-        $scope.sex = app.user.sex || 'edit your sex';
-        $scope.degree = app.user.degree || 'add your degree';
-        $scope.workYear = app.user.workYear || 'how many';
-        $scope.phone = app.user.phone || 'your cellphone';
-        $scope.email = app.user.email || 'your email';
+        $scope.real_name = app.user.real_name || '';
+        $scope.sex = app.user.sex || '';
+        $scope.degree = app.user.degree || '';
+        $scope.workYear = app.user.workYear || '';
+        $scope.phone = app.user.phone || '';
+        $scope.email = app.user.email || '';
         $scope.avatar = app.user.avatar;
         $scope.isPublic = app.user.isPubicBasic || false;
 
@@ -417,73 +410,85 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
     }
 ]).controller('currentCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {
+        $scope.isPubicCurrent = app.user.isPubicCurrent;     
         $scope.location = app.user.location || '';
         $scope.occupation = app.user.occupation || '';
-        $scope.degree = app.user.degree || 'add your degree';
-        $scope.status = app.user.workYear || 'how many';
-        $scope.phone = app.user.phone || 'your cellphone';
-        $scope.email = app.user.email || 'your email';
-        $scope.avatar = app.user.avatar;
-        $scope.isPublic = app.user.isPubicBasic || false;
-
-        $scope.showEditIcon = true;
-        $scope.showContent = true;
-        $scope.showSettings = false;
+        $scope.status = app.user.status || '';
+        $scope.company = app.user.company || '';
+        $scope.school = app.user.school || '';
+        
+        setPanel();
 
         $scope.edit = function() {
+            $scope.inputLocation = $scope.location;
+            $scope.inputOccupation = $scope.occupation;
+            $scope.inputStatus = $scope.status;
+            $scope.inputCompany = $scope.company;
+            $scope.inputSchool = $scope.school;
+
             $scope.showEditIcon = false;
+            $scope.showHome = false;
             $scope.showContent = false;
             $scope.showSettings = true;
-
-            $scope.inputRealName = $scope.real_name;
-            $scope.inputSex = $scope.sex;
-            $scope.inputDegree = $scope.degree;
-            $scope.inputWorkYear = parseInt($scope.workYear, 10);
-            $scope.inputPhone = $scope.phone;
-            $scope.inputEmail = $scope.email;
-            $scope.isInputPublic = $scope.isPublic;
         };
         $scope.save = function() {
-            $scope.showEditIcon = true;
-            $scope.showContent = true;
-            $scope.showSettings = false;
+            if (!$scope.inputLocation) {
+                $('#currentLocation').addClass('error');
+                $('#currentError').css({display:'inline'});
+                return false;
+            }
+            if (!$scope.inputOccupation) {
+                $('#currentOccupation').addClass('error');
+                $('#currentError').css({display:'inline'});
+                return false;
+            }
+            if (!$scope.inputStatus) {
+                $('#currentStatus').addClass('error');
+                $('#currentError').css({display:'inline'});
+                return false;
+            }
+            var data = {
+                school: $scope.inputSchool,
+                occupation: $scope.inputOccupation,
+                status: $scope.inputStatus,
+                company: $scope.inputCompany,
+                location: $scope.inputLocation,
+                isPubicCurrent: $scope.isPubicCurrent
+            };
+            var url = '/api/user/current';
+            $http.post(url, data).success(function() {
+                $scope.showEditIcon = true;
+                $scope.showContent = true;
+                $scope.showHome = false;
+                $scope.showSettings = false;
 
-            setValue({
-                real_name: $scope.inputRealName,
-                sex: $scope.inputSex,
-                degree: $scope.inputDegree,
-                workYear: $scope.inputWorkYear,
-                phone: $scope.inputPhone,
-                isPubicBasic: $scope.isInputPublic
+                $scope.current =  $scope.isPubicCurrent;
+                $scope.location = $scope.inputLocation;
+                $scope.occupation = $scope.inputOccupation;
+                $scope.status = $scope.inputStatus;
+                $scope.company = $scope.inputCompany;
+                $scope.school = $scope.inputSchool;
             });
         };
         $scope.cancel = function() {
-            $scope.showEditIcon = true;
-            $scope.showContent = true;
-            $scope.showSettings = false;
+            setPanel();
         };
 
-        $scope.$on('putFinish', function(event, imageUrl) {
-            var data = {
-                avatar: imageUrl
-            };
-            var url = '/api/userProfile/avatar';
-            $http.post(url, data).success(function() {
-                $scope.avatar = imageUrl;
-            });
+        $('#currentLocation').add('#currentOccupation').add('#currentStatus').on('focus', function() {
+            $(this).removeClass('error');
+            $('#currentError').css({display:'none'});
         });
-
-        function setValue(obj) {
-            var data = obj;
-            var url = '/api/userProfile/basic';
-            $http.post(url, obj).success(function() {
-                $scope.real_name = obj.real_name;
-                $scope.sex = obj.sex;
-                $scope.degree = obj.degree;
-                $scope.workYear = obj.workYear;
-                $scope.phone = obj.phone;
-                $scope.isPublic = obj.isPubicBasic;
-            });
+        function setPanel() {
+            $scope.showSettings = false;
+            if (!$scope.location || !$scope.occupation || !$scope.status ) {
+                $scope.showHome = true;
+                $scope.showContent = false;
+                $scope.showEditIcon = false;
+            } else {
+                $scope.showHome = false;
+                $scope.showContent = true;
+                $scope.showEditIcon = true;
+            }
         }
     }
 ]).controller('worksCtrl', ['app', '$scope', '$routeParams', '$http', '$rootScope',

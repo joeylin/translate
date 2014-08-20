@@ -1,9 +1,10 @@
 var path = require('path');
 var fs = require('fs');
-var file = path.resolve(__dirname, '../public/data/city.json');
+var city = path.resolve(__dirname, '../public/data/city.json');
+var province = path.resolve(__dirname, '../public/data/province.json');
 
 module.exports = function(app) {
-    fs.readFile(file, 'utf8', function(err, data) {
+    fs.readFile(city, 'utf8', function(err, data) {
         var getCities = function(req, res) {
             var user = req.session.user;
             var value = req.query.value;
@@ -23,5 +24,18 @@ module.exports = function(app) {
             });
         };
         app.get('/api/json/city', getCities);
+    });
+    fs.readFile(province, 'utf8', function(err, data) {
+        var getProvinces = function(req, res) {
+            var user = req.session.user;
+            var value = req.query.value;
+            var results = [];
+            var provinces = JSON.parse(data);
+            res.send({
+                code: 200,
+                content: provinces
+            });
+        };
+        app.get('/api/json/province', getProvinces);
     });
 };

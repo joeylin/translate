@@ -32,9 +32,14 @@
             </a>
           </div>
         </div>
-        <div ng-hide="content|filter:vm.filter|size" class="text-center" style="margin:5px 0;">ooh~~ 没有找到 ~~</div>
+        <div ng-if="!content.length" class="text-center" style="margin:20px 0;">
+          你还没添加任何好友，快去添加吧 !
+        </div>
+        <div ng-if="content.length">
+          <div ng-hide="content|filter:vm.filter|size" class="text-center" style="margin:20px 0;">ooh~~ 没有找到 ~~</div>
+        </div>
       </div>
-      <hr>
+      <hr ng-show="content|filter:vm.filter|size">
       <div>
         <pager total-items="content|filter:vm.filter|size" ng-model="vm.page.index" items-per-page="vm.page.size" class="pagination-sm pull-right" boundary-links="true"></pager>
       </div>
