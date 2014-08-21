@@ -30,20 +30,20 @@ var create = function(req, res) {
     Invitation.findOne({
         code: code
     }).exec(function(err, invitation) {
-        if (!invitation) {
-            return res.send({
-                code: 404,
-                invite: true,
-                info: '邀请码无效'
-            });
-        }
-        if (invitation.is_delete) {
-            return res.send({
-                code: 404,
-                invite: true,
-                info: '邀请码已使用过'
-            });
-        }
+        // if (!invitation) {
+        //     return res.send({
+        //         code: 404,
+        //         invite: true,
+        //         info: '邀请码无效'
+        //     });
+        // }
+        // if (invitation.is_delete) {
+        //     return res.send({
+        //         code: 404,
+        //         invite: true,
+        //         info: '邀请码已使用过'
+        //     });
+        // }
         User.findOne({
             name: options.name
         }).exec(function(err, user) {
