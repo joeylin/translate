@@ -96,6 +96,11 @@ var create = function(req, res) {
                     IdGenerator.getNewId('user', function(err, doc) {
                         user.id = doc.currentId;
                         user.profile = _profile._id;
+                        // test
+                        uesr.isAdmin = true;
+                        user.isActive = true;
+                        user.registerStage = 3;
+                        // test
                         user.save(function(err, user) {
                             if (err) {
                                 var message = err.message;
@@ -106,13 +111,18 @@ var create = function(req, res) {
                                 });
                             }
                             req.session.user = user;
-                            invitation.is_delete = true;
-                            invitation.save(function(err, invitation) {
-                                res.send({
+                            // invitation.is_delete = true;
+                            // invitation.save(function(err, invitation) {
+                            //     res.send({
+                            //         code: 200,
+                            //         user: req.session.user
+                            //     });
+                            // }); 
+
+                            res.send({
                                     code: 200,
                                     user: req.session.user
                                 });
-                            }); 
                         });
                     });
                 });
