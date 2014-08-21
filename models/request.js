@@ -118,12 +118,13 @@ RequestSchema.statics.notice = function(obj, cb) {
     var Group = mongoose.model('Group');
     Request.type = 'notice';
     Request.to = obj.to;
+    Request.from = obj.from;
     Request.group = obj.group;
     Request.title = obj.title; 
 
     if (obj.title == 'connect') {
         User.findOne({
-            _id: obj.to
+            _id: obj.from
         }).exec(function(err, user) {
             if (err || !user) {
                 return false;

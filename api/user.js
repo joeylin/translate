@@ -265,6 +265,7 @@ var checkConnect = function(req, res) {
                         });
                         var obj = {
                             title: 'connect',
+                            from:　request.to,
                             to: request.from
                         };
                         Request.notice(obj);
@@ -1801,8 +1802,10 @@ var getGroupByUser = function(req, res) {
 
     User.findOne({
         _id: user._id
-    }).populate('groups.join').exec(function(err, user) {
+    }).populate('groups.join').populate('groups.follow').exec(function(err, user) {
         var joinGroups = user.groups.join;
+        var followGroups = user.groups.follow;
+        var userGroups = [];
         var results = [];
         var count = joinGroups.length;
         var hasNext, pager;

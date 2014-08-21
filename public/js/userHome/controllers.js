@@ -1457,7 +1457,7 @@ controller('newsCtrl', ['app', '$scope', '$rootScope', '$location', '$http', 'wo
         $scope.workYears = '';
         $scope.skills = '';
         $scope.contact = {};
-        $scope.companyLogo = '/public/imgs/company.jpg';
+        $scope.companyLogo = 'http://valuenet.qiniudn.com/company-avatar.jpg';
 
         $scope.showBlankError = false;
         $scope.showNothingError = false;

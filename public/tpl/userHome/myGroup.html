@@ -35,7 +35,7 @@
       <hr ng-repeat-end ng-class="{displayNone:$last}">
       <div ng-if="!content.length" style="margin-bottom:20px;">
         <p>你还没有参与任何圈子, 快到右侧的搜索框, 输入关键字查找你感兴趣的圈子吧</p>
-        <a href="" class="btn btn-primary btn-sm" ng-click="vm.keyword='';search();">浏览所有圈子</a>
+        <a href=""  ng-click="vm.keyword='';search();">浏览所有圈子</a>
       </div>
       <hr ng-show="content.length > 0 && share.pager">
       <div ng-show="content.length > 0 && share.pager">

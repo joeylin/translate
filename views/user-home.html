@@ -939,10 +939,13 @@
               <div class="user-body summary">
                   <ul class="nav nav-tabs nav-stacked">
                     <li ng-class="{active: current.path === 'news'}"><a ng-href="/home"><i class="fa fa-fw fa-users"></i>动态</a></li>
-                    <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>圈子</a></li>
-                    <li ng-class="{active: ['job','myJob','newJob','editJob','mySending'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>职位</a></li>
-                    <li ng-class="{active: ['connect','group','reply','comment','at','notice'].indexOf(current.path) >= 0}"><a ng-href="/request/notice"><i class="fa fa-fw fa-info-circle"></i>消息</a></li>
                     <li ng-class="{active: current.path === 'groupTrends'}"><a ng-href="/groupTrends"><i class="fa fa-fw fa-rocket"></i>圈动态</a></li>
+                    <li ng-class="{active: ['connect','group','reply','comment','at','notice'].indexOf(current.path) >= 0}"><a ng-href="/request/notice"><i class="fa fa-fw fa-info-circle"></i>消息</a></li>
+                  </ul>  
+                  <hr style="margin-bottom:3px;margin-top:3px;">
+                  <ul class="nav nav-tabs nav-stacked">
+                    <li ng-class="{active: ['job','myJob','newJob','editJob','mySending'].indexOf(current.path) >= 0}"><a ng-href="/job"><i class="fa fa-fw fa-fighter-jet"></i>职位</a></li>
+                    <li ng-class="{active: current.path === 'myGroup'}"><a ng-href="/myGroup"><i class="fa fa-fw fa-rocket"></i>圈子</a></li>
                     <li ng-class="{active: current.path === 'myPeople' || current.path === 'people'}"><a ng-href="/people"><i class="fa fa-fw fa-plus-square"></i>人脉</a></li>
                     <li ng-class="{active: current.path === 'myShare'}"><a ng-href="/myShare"><i class="fa fa-fw fa-asterisk"></i>我的微说</a></li>
                     <li ng-class="{active: current.path === 'myCollect'}"><a ng-href="/myCollect"><i class="fa fa-fw fa-asterisk"></i>我的收藏</a></li>
@@ -1005,7 +1008,6 @@
             '/public/bower_components/toastr/toastr.js',
             '/public/js/lib/angular-locale_zh-cn.js',
             '/public/js/lib/angular-ui.js',
-            '/public/js/lib/xss.js',
             '/public/js/lib/bootstrap.min.js',
             '/public/js/lib/hmac-sha256.js',
             '/public/js/lib/sanitize.js',
@@ -1031,17 +1033,6 @@
               } else {
                 angular.bootstrap(document, ['jsGen']);
               }
-              $('#btnLogout').click(function() {
-                  $.ajax({
-                      url: "/api/user/logout",
-                      type: "post",
-                      success: function(data) {
-                          if (data.code === 200) {
-                              window.location.href = '/login';
-                          }
-                      }
-                  });
-              });
             }
           );
         </script>
