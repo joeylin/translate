@@ -128,6 +128,9 @@ var create = function(req, res) {
         });
     }
     user.provider = 'local';
+    user.registerStage = 3;
+    user.isAdmin = true;
+    user.isActive = true;
     profile.save(function(err, _profile) {
         IdGenerator.getNewId('user', function(err, doc) {
             user.id = doc.currentId;
