@@ -27,108 +27,129 @@ var create = function(req, res) {
     };
     var code = req.body.code;
 
-    Invitation.findOne({
-        code: code
-    }).exec(function(err, invitation) {
-        // if (!invitation) {
-        //     return res.send({
-        //         code: 404,
-        //         invite: true,
-        //         info: '邀请码无效'
-        //     });
-        // }
-        // if (invitation.is_delete) {
-        //     return res.send({
-        //         code: 404,
-        //         invite: true,
-        //         info: '邀请码已使用过'
-        //     });
-        // }
-        User.findOne({
-            name: options.name
-        }).exec(function(err, user) {
-            if (err) {
-                return res.send({
-                    code: 404,
-                    info: err.msg
-                });
-            }
+    // Invitation.findOne({
+    //     code: code
+    // }).exec(function(err, invitation) {
+    //     if (!invitation) {
+    //         return res.send({
+    //             code: 404,
+    //             invite: true,
+    //             info: '邀请码无效'
+    //         });
+    //     }
+    //     if (invitation.is_delete) {
+    //         return res.send({
+    //             code: 404,
+    //             invite: true,
+    //             info: '邀请码已使用过'
+    //         });
+    //     }
+    //     User.findOne({
+    //         name: options.name
+    //     }).exec(function(err, user) {
+    //         if (err) {
+    //             return res.send({
+    //                 code: 404,
+    //                 info: err.msg
+    //             });
+    //         }
                 
-            if (user) {
-                return res.send({
-                    code: 404,
-                    name: true,
-                    info: '用户名已被使用'
-                });
-            }
-            User.findOne({
-                email: options.email
-            }).exec(function(err, user) {
-                if (err) {
-                    return res.send({
-                        code: 404,
-                        info: err.msg
-                    });
-                }
-                if (user) {
-                    return res.send({
-                        code: 404,
-                        email: true,
-                        info: '该邮箱已被注册'
-                    });
-                }
-                var user = new User(options);
-                var profile;
-                if (options.role === 'user') {
-                    profile = new UserProfile({
-                        user: user._id,
-                        name: 'user'
-                    });
-                }
-                if (options.role === 'company') {
-                    profile = new CompanyProfile({
-                        user: user._id,
-                        name: 'company'
-                    });
-                }
-                user.provider = 'local';
-                profile.save(function(err, _profile) {
-                    IdGenerator.getNewId('user', function(err, doc) {
-                        user.id = doc.currentId;
-                        user.profile = _profile._id;
-                        // test
-                        uesr.isAdmin = true;
-                        user.isActive = true;
-                        user.registerStage = 3;
-                        // test
-                        user.save(function(err, user) {
-                            if (err) {
-                                var message = err.message;
-                                return res.send({
-                                    code: 404,
-                                    user: null,
-                                    info: message
-                                });
-                            }
-                            req.session.user = user;
-                            // invitation.is_delete = true;
-                            // invitation.save(function(err, invitation) {
-                            //     res.send({
-                            //         code: 200,
-                            //         user: req.session.user
-                            //     });
-                            // }); 
-
-                            res.send({
-                                    code: 200,
-                                    user: req.session.user
-                                });
-                        });
-                    });
-                });
-            });     
+    //         if (user) {
+    //             return res.send({
+    //                 code: 404,
+    //                 name: true,
+    //                 info: '用户名已被使用'
+    //             });
+    //         }
+    //         User.findOne({
+    //             email: options.email
+    //         }).exec(function(err, user) {
+    //             if (err) {
+    //                 return res.send({
+    //                     code: 404,
+    //                     info: err.msg
+    //                 });
+    //             }
+    //             if (user) {
+    //                 return res.send({
+    //                     code: 404,
+    //                     email: true,
+    //                     info: '该邮箱已被注册'
+    //                 });
+    //             }
+    //             var user = new User(options);
+    //             var profile;
+    //             if (options.role === 'user') {
+    //                 profile = new UserProfile({
+    //                     user: user._id,
+    //                     name: 'user'
+    //                 });
+    //             }
+    //             if (options.role === 'company') {
+    //                 profile = new CompanyProfile({
+    //                     user: user._id,
+    //                     name: 'company'
+    //                 });
+    //             }
+    //             user.provider = 'local';
+    //             profile.save(function(err, _profile) {
+    //                 IdGenerator.getNewId('user', function(err, doc) {
+    //                     user.id = doc.currentId;
+    //                     user.profile = _profile._id;
+    //                     user.save(function(err, user) {
+    //                         if (err) {
+    //                             var message = err.message;
+    //                             return res.send({
+    //                                 code: 404,
+    //                                 user: null,
+    //                                 info: message
+    //                             });
+    //                         }
+    //                         req.session.user = user;
+    //                         invitation.is_delete = true;
+    //                         invitation.save(function(err, invitation) {
+    //                             res.send({
+    //                                 code: 200,
+    //                                 user: req.session.user
+    //                             });
+    //                         }); 
+    //                     });
+    //                 });
+    //             });
+    //         });     
+    //     });
+    // });    
+    var user = new User(options);
+    var profile;
+    if (options.role === 'user') {
+        profile = new UserProfile({
+            user: user._id,
+            name: 'user'
         });
-    });       
+    }
+    user.provider = 'local';
+    profile.save(function(err, _profile) {
+        IdGenerator.getNewId('user', function(err, doc) {
+            user.id = doc.currentId;
+            user.profile = _profile._id;
+            user.save(function(err, user) {
+                if (err) {
+                    var message = err.message;
+                    return res.send({
+                        code: 404,
+                        user: null,
+                        info: message
+                    });
+                }
+                req.session.user = user;
+                invitation.is_delete = true;
+                res.send({
+                    code: 200,
+                    user: req.session.user
+                });
+            });
+        });
+    });   
 };
 var login = function(req, res) {
     var email = req.body.email;
