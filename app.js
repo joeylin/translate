@@ -45,6 +45,7 @@ require('./api/share')(app);
 require('./api/account')(app);
 require('./api/userProfile')(app);
 require('./api/group')(app);
+require('./api/admin')(app);
 require('./api/router')(app);
 require('./api/json')(app);
 
