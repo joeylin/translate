@@ -202,11 +202,19 @@ module.exports = function(app) {
             app.locals.profile = profile;
             app.locals.lastUpdate = profile.updateAt.getTime();
             app.locals.chooseTab = 'profile';
-            if (user.role === 'user') {
-                res.render('settings-user-profile');
-            } else {
-                res.render('settings-company-profile');
-            }
+
+            Share.find({
+                user: user._id,
+                is_delete: false,
+                type: 'view'
+            }).count().exec(function(err, count) {
+                app.locals.shareCount = count || 0;
+                if (user.role === 'user') {
+                    res.render('settings-user-profile');
+                }
+            });
+
+                
         });
     };
     var getAccountSettings = function(req, res) {

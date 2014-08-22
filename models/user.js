@@ -443,9 +443,16 @@ UserSchema.methods = {
     },
     connect: function(userId, relate, cb) {
         var User = mongoose.model('User');
+        // 已经添加的不能再添加了
         if (this.checkConnected(userId)) {
             return cb({
-                message: 'hasConnected'
+                message: 'has Connected'
+            });
+        }
+        // 自己不能添加自己
+        if (this._id.toString() == userId.toString()) {
+            return cb({
+                message: 'cannot connect yourself'
             });
         }
         this.connects.push({

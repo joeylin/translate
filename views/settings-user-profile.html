@@ -110,7 +110,7 @@
             display: block;
           }
           .custom-box .panel-heading i:hover {
-            color: blue;
+            color: #3c8dbc;
           }
           .custom-box .media {
             padding: 0 15px 35px 35px;
@@ -124,7 +124,7 @@
             color: #999;
           }
           .custom-box .media:hover .add-icon i {
-            color: blue;
+            color: #3c8dbc;
           }
           .custom-box .media-body {
             padding-top: 18px;
@@ -153,7 +153,7 @@
           }
           .custom-box .change .edit:hover,
           .custom-box .change .delete:hover {
-            color: blue;
+            color: #3c8dbc;
           }
           .custom-box .user-avatar {
             margin-right: 30px;
@@ -474,46 +474,45 @@
                       </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="See your Bootply collection and profile">
-                            <img src="<%= locals.user.avatar + '-xs' %>" alt="" class="nav-user-pic img-responsive">
-                            <span id="lblUsername" style="margin-left: 5px;">
-                              <%= locals.user.name %>
-                            </span>
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header bg-modena">
-                                <img src="<%= locals.user.avatar + '-normal' %>" class="img-circle" alt="User Image" class="user_avatar">
-                                <p>
-                                    <span class="user_username"> <%= locals.user.name %></span>
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="col-xs-6 text-center">
-                                    <a href="#" ><%= locals.user.share.length %></a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#"><%= locals.user.connects.length %></a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#">share</a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#">Connects</a>
-                                </div>
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btnLogout">退出</a>
-                                </div>
-                            </li>
-                        </ul>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <!-- todo have custom user image -->
+                          <img ng-src="{{global.user.avatar + '-xs'}}" alt="" class="nav-user-pic img-responsive" ng-cloak>
+                          <span id="lblUsername" style="margin-left: 5px;" ng-bind="global.user.name"></span>
+                          <b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu">
+                          <!-- User image -->
+                          <li class="user-header">
+                              <img ng-src="{{global.user.avatar}}" class="img-circle" alt="User Image" class="user_avatar">
+                              <p>
+                                  <span>{{global.user.name}}</span>
+                              </p>
+                          </li>
+                          <!-- Menu Body -->
+                          <li class="user-body">
+                              <div class="col-xs-6 text-center">
+                                  <a href="#"><%= locals.shareCount %></a>
+                              </div>
+                              <div class="col-xs-6 text-center">
+                                  <a href="#">{{global.user.connects.length}}</a>
+                              </div>
+                              <div class="col-xs-6 text-center">
+                                  <a href="#">微说</a>
+                              </div>
+                              <div class="col-xs-6 text-center">
+                                  <a href="#">人脉</a>
+                              </div>
+                          </li>
+                          <!-- Menu Footer-->
+                          <li class="user-footer">
+                              <div class="pull-left">
+                                  <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
+                              </div>
+                              <div class="pull-right">
+                                  <a href="#" class="btn btn-default btn-flat" ng-click="logout()">退出</a>
+                              </div>
+                          </li>
+                      </ul>
                   </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">

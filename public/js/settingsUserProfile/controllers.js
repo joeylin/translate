@@ -4,8 +4,8 @@
 angular.module('jsGen.controllers', ['ui.validate']).
 controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
     function(app, $scope, $routeParams,$http) {
-        $scope.name = app.user.name || 'add your display name';
-        $scope.signature = app.user.signature || 'add your signature';
+        $scope.name = app.user.name;
+        $scope.signature = app.user.signature || '编辑你的签名';
 
         $scope.showNameContent = true;
         $scope.showNameEdit = true;

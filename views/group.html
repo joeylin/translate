@@ -343,6 +343,7 @@
           }
           .members-items {
             padding-left: 75px;
+
           }
           .tip {
             margin-bottom: 10px;
@@ -555,6 +556,8 @@
           }
           .members-item {
             margin-left: -9px;
+            white-space: nowrap;
+            overflow: hidden;
           }
           .members-item .title {
             font-weight: 400;
@@ -901,13 +904,13 @@
               <div class="panel-heading" style="font-weight:700;">管理员</div>
               <div class="panel-body" style="padding-top:10px;">
                 <div class="members-item">
-                  <span class="title">【创建者】</span>
+                  <span class="title"><i class="fa fa-fw fa-user" style="color:#f56954;"></i></span>
                   <a href="/profile/<%= locals.group.creator.id %>" target="_self"><%= locals.group.creator.name %></a>
                 </div>
                 
                 <% locals.group.admin.forEach(function(item,key){ %>
                 <div class="members-item">
-                  <span class="title">【管理员】</span>
+                  <span class="title"><i class="fa fa-fw fa-user" style="color:#367fa9;"></i></span>
                   <a href="/profile/<%= item.id %>" target="_self"><%= item.name %></a>
                 </div>
                 <% }) %> 

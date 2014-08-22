@@ -2328,60 +2328,95 @@ var getSidebarList = function(req, res) {
                     jobs.push(result);
                 });
 
-                User.find({
-                    role: 'user',
-                    is_delete: false,
-                    random: {
-                        $near: [Math.random(), 0]
-                    }
-                }).limit(2).exec(function(err, users) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    var connects = [];
-                    users.map(function(item, key) {
-                        var result = {};
-                        result.id = item.id;
-                        result._id = item._id;
-                        result.name = item.name;
-                        result.avatar = item.avatar;
-                        result.occupation = item.occupation;
-                        result.location = item.location;
-                        connects.push(result);
+                User.findOne({
+                    _id: user._id
+                }).populate('connects.user').exec(function(err, user) {
+                    var array = [];
+                    var connects = user.connects;
+                    connects.map(function(item, key) {
+                        array.push(item.user.id);
                     });
-                    res.send({
-                        code: 200,
-                        weekVisit: count,
-                        users: connects,
-                        jobs: jobs
+                    array.push(user.id);
+                    var userQuery = {
+                        role: 'user',
+                        is_delete: false,
+                        id: {
+                            $nin: array
+                        },
+                        random: {
+                            $near: [Math.random(), 0]
+                        }
+                    };
+
+                    User.find(userQuery).limit(2).exec(function(err, users) {
+                        if (err ) {
+                            console.log(err);
+                        }
+                        var connects = [];
+                        users.map(function(item, key) {
+                            var result = {};
+                            result.id = item.id;
+                            result._id = item._id;
+                            result.name = item.name;
+                            result.avatar = item.avatar;
+                            result.occupation = item.occupation;
+                            result.location = item.location;
+                            connects.push(result);
+                        });
+                        res.send({
+                            code: 200,
+                            weekVisit: count,
+                            users: connects,
+                            jobs: jobs
+                        });
                     });
-                });
+                });    
             });    
         });
     });
 };
 var getRandomUser = function(req, res) {
     var user = req.session.user;
-    User.find({
-        role: 'user',
-        is_delete: false,
-        random: {
-            $near: [Math.random(), 0]
+    User.findOne({
+        _id: user._id
+    }).exec(function(err, user) {
+        if (err || !user) {
+            return res.send({
+                code: 404,
+                info: 'wrong user'
+            });
         }
-    }).limit(1).exec(function(err, users) {
-        var user = users[0];
-        var result = {};
-        result.id = user.id;
-        result._id = user._id;
-        result.name = user.name;
-        result.avatar = user.avatar;
-        result.occupation = user.occupation;
-        result.location = user.location;
-        res.send({
-            code: 200,
-            user: result
+        var array = [];
+        var connects = user.connects;
+        connects.map(function(item, key) {
+            array.push(item.user.toString());
         });
-    });
+        array.push(user._id.toString());
+        User.find({
+            role: 'user',
+            is_delete: false,
+            _id: {
+                $nin: array
+            },
+            random: {
+                $near: [Math.random(), 0]
+            }
+        }).limit(1).exec(function(err, users) {
+            var user = users[0];
+            var result = {};
+            result.id = user.id;
+            result._id = user._id;
+            result.name = user.name;
+            result.avatar = user.avatar;
+            result.occupation = user.occupation;
+            result.location = user.location;
+            res.send({
+                code: 200,
+                user: result
+            });
+        });
+
+    });    
 };
 
 // feedback
@@ -2424,7 +2459,6 @@ var feedback = function(req, res) {
         }, true);
     });
 };
-
 
 module.exports = function(app) {
     app.post('/api/user/register', create);
@@ -2507,7 +2541,6 @@ function checkUserRequest(requests, userId, cb) {
         _id: userId
     }).exec(function(err, user) {
         requests.map(function(request) {
-
         });
     });
 }
