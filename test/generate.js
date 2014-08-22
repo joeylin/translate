@@ -35,8 +35,8 @@ Invitation.createNew({
 
 	setTimeout(function() {
 		var options = {
-	        name: 'morepush3',
-	        email: 'morepush3@qq.com',
+	        name: 'morepush',
+	        email: 'morepush@qq.com',
 	        password: 'linyao',
 	        sex: '男',
 	        role: 'admin'
