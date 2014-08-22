@@ -897,10 +897,10 @@ module.exports = function(app) {
     app.get('/about/feedback', feedback);
 
     // admin
-    app.get('/admin', getAdmin);
-    app.get('/admin/group', getAdmin);
-    app.get('/admin/user', getAdmin);
-    app.get('/admin/count', getAdmin);
-    app.get('/admin/invite', getAdmin);
-    app.get('/admin/report', getAdmin);
+    app.get('/admin', middleware.check_admin, getAdmin);
+    app.get('/admin/group', middleware.check_admin, getAdmin);
+    app.get('/admin/user', middleware.check_admin, getAdmin);
+    app.get('/admin/count', middleware.check_admin, getAdmin);
+    app.get('/admin/invite', middleware.check_admin, getAdmin);
+    app.get('/admin/report', middleware.check_admin, getAdmin);
 };
