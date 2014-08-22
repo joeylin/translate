@@ -1,6 +1,6 @@
 
 var config = {
-  host: 'localhost',
+  host: 'http://182.92.193.161:3000',
   port: 3000,
   cookie: {
     secret: 'node',
