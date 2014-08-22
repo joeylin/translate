@@ -307,7 +307,7 @@ var disconnect = function(req, res) {
 };
 var getFollowGroupUpdate = function(req, res) {
     var user = req.session.user;
-    var page = req.params.page || 0;
+    var page = req.params.page || 1;
     var perPageItems = 20;
 
     User.findOne({

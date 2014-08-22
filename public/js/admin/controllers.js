@@ -69,7 +69,41 @@ controller('groupCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     }
 ]).controller('userCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope', 
     function(app, $scope, $routeParams, $location, $http, $rootScope) {
-        
+        $scope.content = [];
+        var url;
+        $scope.pager = {
+            hasNext: false,
+            current: 1
+        };
+        var params = {
+            page: 1
+        };
+        $scope.next = function() {
+            if (!$scope.pager.hasNext) {
+                return false;
+            }
+            $scope.pager.current += 1;
+            params.page = $scope.pager.current;
+        };
+        $scope.prev = function() {
+            if ($scope.pager.current <= 1) {
+                return false;
+            }
+            $scope.pager.current -= 1;
+            params.page = $scope.pager.current;
+            getApply();
+        };
+
+        function getUsers() {
+            url = '/api/admin/user/getUsers';
+            var params = {};
+            $http.get(url, {
+                params: params
+            }).success(function(data) {
+                $scope.content = data.content;
+                $scope.count = data.count;
+            });
+        }
     }
 ]).controller('countCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
     function(app, $scope, $routeParams, $location, $http) {

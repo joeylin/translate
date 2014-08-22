@@ -11,6 +11,10 @@ var GroupSchema = new Schema({
         type: Number, // 限制成员的总人数
         default: 50
     },
+    codeCount: {
+        type: Number,
+        default: 10
+    },
     intro: {
         type: String
     },
