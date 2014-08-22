@@ -27,7 +27,7 @@ User.find({
     users.map(function(item, key) {
         var connects = item.connects;
         connects.map(function(con, _key) {
-            if (con.user.toString() == con._id.toString()) {
+            if (con.user.toString() == item._id.toString()) {
                 item.connects.splice(item.connects.indexOf(con), 1);
                 console.log('find one');
             }
