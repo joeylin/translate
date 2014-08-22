@@ -50,6 +50,7 @@ Invitation.createNew({
         user.provider = 'local';
         user.isActive = true;
         user.registerStage = 3;
+        user.isAdmin = true;
         profile.save(function(err, _profile) {
             IdGenerator.getNewId('user', function(err, doc) {
                 user.id = doc.currentId;
