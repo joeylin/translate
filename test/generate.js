@@ -38,7 +38,7 @@ Invitation.createNew({
 	        name: 'morepush',
 	        email: 'morepush@qq.com',
 	        password: 'linyao',
-	        sex: '男',
+	        sex: 'male',
 	        role: 'admin'
 	    };
 		var user = new User(options);

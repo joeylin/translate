@@ -1155,6 +1155,34 @@ var groupGenerateCode = function(req, res) {
     })
 };
 
+// group
+var apply = function(req, res) {
+    var user = req.session.user;
+    var name = req.body.name;
+    var industry = req.body.industry;
+    var reason = req.body.industry;
+
+    var request = new Request();
+    request.type = 'admin';
+    request.role = 'group';
+    request.info = {
+        name: name,
+        industry: industry,
+        reason: reason
+    };
+    request.from = user._id;
+    request.markModified('info');
+    request.save(function(err, request) {
+        if (err || !request) {
+            return res.send({
+                code: 404
+            });
+        }
+        res.send({
+            code: 200
+        });
+    });
+};
 
 module.exports = function(app) {
     app.post('/api/group/create', middleware.apiLogin, create);
@@ -1185,4 +1213,6 @@ module.exports = function(app) {
     app.get('/api/group/:id/post', getPost);
     app.get('/api/group/:id/search', groupPostSearch);
     app.post('/api/group/post/delete', middleware.apiLogin, deleteShare);
+
+    app.post('/api/group/apply', middleware.apiLogin, apply);
 };

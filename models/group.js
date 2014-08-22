@@ -32,7 +32,7 @@ var GroupSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: 'http://valuenet.qiniudn.com/group-avatar.jpg'
+        default: 'http://valuenet.qiniudn.com/group-avatar.png'
     },
     announcement: {
         type: String

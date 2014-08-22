@@ -68,19 +68,36 @@ controller('homeCtrl', ['app', '$scope', '$rootScope', '$location', '$http',
         $scope.reason = '';
         $scope.error = false;
         $scope.create = function() {
-            if ($scope.name === '' || $scope.industry === '') {
+            // if ($scope.name === '' || $scope.industry === '') {
+            //     $scope.error = true;
+            //     return false;
+            // }
+            // if (app.author.groupCount > 4) {
+            //     return false;
+            // }
+            // var url = '/api/group/create';
+            // var data = {
+            //     name: $scope.name,
+            //     industry: $scope.industry,
+            //     reason: $scope.reason
+            // };
+            // $http.post(url, data).success(function(data) {
+            //     $.magnificPopup.close();
+            // });
+
+            if ($scope.name === '' || $scope.industry === '' || $scope.reason === '') {
                 $scope.error = true;
                 return false;
             }
-            if (app.author.groupCount > 4) {
-                return false;
-            }
-            var url = '/api/group/create';
+            var url = '/api/group/apply';
             var data = {
                 name: $scope.name,
                 industry: $scope.industry,
                 reason: $scope.reason
             };
+            if (app.author.groupCount > 4) {
+                return false;
+            }
             $http.post(url, data).success(function(data) {
                 $.magnificPopup.close();
             });

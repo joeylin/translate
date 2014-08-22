@@ -31,7 +31,7 @@ controller('groupCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
         };
         $scope.vm = {};
         $scope.vm.pass = function(item) {
-            var url = '/api/group/apply/pass';
+            var url = '/api/admin/group/apply/pass';
             var data = {
                 id: item._id
             };
@@ -44,7 +44,7 @@ controller('groupCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
             item.showMsgBtn = !item.showMsgBtn;
         };
         $scope.vm.fail = function(item) {
-            var url = '/api/group/apply/fail';
+            var url = '/api/admin/group/apply/fail';
             var data = {
                 id: item._id,
                 msg: item.msg
@@ -58,7 +58,7 @@ controller('groupCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
             });
         };
         var getApply = function() {
-            var url ='/api/group/getApply';
+            var url ='/api/admin/group/getApply';
             $http.get(url).success(function(data) {
                 $scope.content = data.content;
                 $scope.pager.hasNext = data.hasNext;
