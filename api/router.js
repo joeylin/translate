@@ -182,7 +182,8 @@ module.exports = function(app) {
                     res.render('user-home');
                 });
             } else {
-                res.render('company-home');
+                // todo: fix role
+                res.render('user-home');
             }
         });
     };
