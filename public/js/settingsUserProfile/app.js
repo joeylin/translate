@@ -93,6 +93,12 @@ config(['$httpProvider', 'app',
         $rootScope.gotoAccount = function() {
             $rootScope.global.profile = false;
         };
+        $rootScope.logout = function() {
+            var url = '/api/user/logout';
+            $http.post(url).success(function(data) {
+                window.location = '/login';
+            });
+        };
 
         // qiniu uploader
         window.initQiniuUploader({
