@@ -319,27 +319,21 @@ UserSchema.pre('save', function(next) {
  * Statics
  */
 UserSchema.statics.getProfile = function(id, cb) {
+    console.log(id);
     this.findOne({
         id: id
     }).populate('connects').exec(function(err, user) {
-        if (user.role === 'user') {
-            var UserProfile = mongoose.model('UserProfile');
-            UserProfile.findOne({
-                _id: user.profile
-            }, function(err, profile) {
-                profile.view += 1;
-                cb(err, profile, user);
-            });
+        if (err || !user) {
+            console.log()
+            cb(err, null, null);
         }
-        if (user.role === 'company') {
-            var CompanyProfile = mongoose.model('CompanyProfile');
-            CompanyProfile.findOne({
-                _id: user.profile
-            }, function(err, profile) {
-                profile.view += 1;
-                cb(err, profile, user);
-            });
-        }
+        var UserProfile = mongoose.model('UserProfile');
+        UserProfile.findOne({
+            _id: user.profile
+        }, function(err, profile) {
+            profile.view += 1;
+            cb(err, profile, user);
+        });
     });
 };
 UserSchema.statics.joinGroup = function(id, groupId, cb) {

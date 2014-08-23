@@ -723,7 +723,7 @@
                     <div class="panel-body">    
                       <% locals.profile.experience.forEach(function(item,key){ %>
                           <div class="section">
-                            <h4><%= item.company %>-<%= item.title %> <small><%= item.startDate %>-<%= item.endDate %></small></h4>
+                            <h4><%= item.title %> - <samll><%= item.company %></small> <small><%= item.startDate %>-<%= item.endDate %></small></h4>
                             <p><%= item.desc %></p>
                           </div>
                           <hr class="<%if(key === locals.profile.experience.length -1){%> displayNone <%}%>">
