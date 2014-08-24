@@ -40,7 +40,7 @@ module.exports = function(app) {
             return res.redirect('/profile/' + id);
         }
         User.getProfile(id, function(err, profile, user) {
-            if (err) {
+            if (err || !profile) {
                 return res.send({
                     code: 404
                 });

@@ -325,7 +325,7 @@ UserSchema.statics.getProfile = function(id, cb) {
     }).populate('connects').exec(function(err, user) {
         if (err || !user) {
             console.log()
-            cb(err, null, null);
+            return cb(err, null, null);
         }
         var UserProfile = mongoose.model('UserProfile');
         UserProfile.findOne({
@@ -341,7 +341,7 @@ UserSchema.statics.joinGroup = function(id, groupId, cb) {
         _id: id
     }, function(err, user) {
         if (!user) {
-            cb(null, null);
+            return cb(null, null);
         }
         user.groups.join.push(groupId);
         user.groups.follow.push(groupId);
@@ -353,7 +353,7 @@ UserSchema.statics.quitGroup = function(id, groupId, cb) {
         _id: id
     }, function(err, user) {
         if (!user) {
-            cb(null, null);
+            return cb(null, null);
         }
         var index = -1;
         user.groups.join.map(function(item, key) {
