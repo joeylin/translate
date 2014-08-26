@@ -217,10 +217,14 @@
           .home-container .col-md-2 {
             padding-left: 0;
           }
-          .profile-sidebar {
-            float: right;
-            padding-left: 0;
+          @media (min-width: 992px) {
+            .profile-sidebar {
+              float: right;
+              padding-left: 0;
+            }
           }
+          
+          
           .btn-primary.default {
             background-color: #fafafa;
             color: #666;
@@ -883,45 +887,45 @@
                       </ul>
                   </li>
                   <li class="dropdown user user-menu" id="menuUser">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- todo have custom user image -->
-                            <img ng-src="{{global.user.avatar + '-xs'}}" alt="" class="nav-user-pic img-responsive">
-                            <span id="lblUsername" style="margin-left: 5px;">{{global.user.name}}</span>
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header bg-modena">
-                                <img ng-src="{{global.user.avatar}}" class="img-circle" alt="User Image" class="user_avatar">
-                                <p>
-                                    <span>{{global.user.name}}</span>
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="col-xs-6 text-center">
-                                    <a href="#">{{global.shareCount || 0}}</a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#">{{global.user.connectsCount}}</a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#">微说</a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="#">人脉</a>
-                                </div>
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" ng-click="logout()">退出</a>
-                                </div>
-                            </li>
-                        </ul>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <!-- todo have custom user image -->
+                          <img ng-src="{{global.user.avatar + '-xs'}}" alt="" class="nav-user-pic img-responsive">
+                          <span id="lblUsername" style="margin-left: 5px;">{{global.user.name}}</span>
+                          <b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu">
+                          <!-- User image -->
+                          <li class="user-header bg-modena">
+                              <img ng-src="{{global.user.avatar}}" class="img-circle" alt="User Image" class="user_avatar">
+                              <p>
+                                  <span>{{global.user.name}}</span>
+                              </p>
+                          </li>
+                          <!-- Menu Body -->
+                          <li class="user-body">
+                              <div class="col-xs-6 text-center">
+                                  <a href="#">{{global.shareCount || 0}}</a>
+                              </div>
+                              <div class="col-xs-6 text-center">
+                                  <a href="#">{{global.user.connectsCount}}</a>
+                              </div>
+                              <div class="col-xs-6 text-center">
+                                  <a href="#">微说</a>
+                              </div>
+                              <div class="col-xs-6 text-center">
+                                  <a href="#">人脉</a>
+                              </div>
+                          </li>
+                          <!-- Menu Footer-->
+                          <li class="user-footer">
+                              <div class="pull-left">
+                                  <a href="/settings/account" target="_self" class="btn btn-default btn-flat">账户</a>
+                              </div>
+                              <div class="pull-right">
+                                  <a href="#" class="btn btn-default btn-flat" ng-click="logout()">退出</a>
+                              </div>
+                          </li>
+                      </ul>
                   </li>
               </ul>
               <ul class="nav navbar-nav navbar-left">
