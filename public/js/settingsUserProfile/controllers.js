@@ -337,8 +337,8 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
         }
         reset();
     }
-]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http',
-    function(app, $scope, $routeParams, $location, $http) {
+]).controller('basicCtrl', ['app', '$scope', '$routeParams', '$location', '$http', '$rootScope',
+    function(app, $scope, $routeParams, $location, $http, $rootScope) {
         $scope.real_name = app.user.real_name || '';
         $scope.sex = app.user.sex || '';
         $scope.degree = app.user.degree || '';
@@ -392,6 +392,7 @@ controller('headerCtrl', ['app', '$scope', '$routeParams','$http',
             var url = '/api/userProfile/avatar';
             $http.post(url, data).success(function() {
                 $scope.avatar = imageUrl;
+                $rootScope.global.user.avatar = imageUrl;
             });
         });
 
