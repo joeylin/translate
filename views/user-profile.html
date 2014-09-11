@@ -737,13 +737,15 @@
                     <div class="panel-body">
                       <% locals.profile.works.forEach(function(item,key){ %>
                           <div class="section">
-                            <h4>URL: <a href="#"><%= item.url %></a></h4>
+                            <h4>URL: <a href="<%= item.url %>" target="_blank"><%= item.url %></a></h4>
                             <p><%= item.desc %></p>
                           </div>
                           <hr class="<%if(key === locals.profile.works.length -1){%> displayNone <%}%>">
                       <% }) %>  
                     </div>
-                  </div>  
+                  </div> 
+
+                  <% if (locals.profile.edu.length) { %> 
                   <div class="panel custom-box education">
                     <div class="panel-heading">
                       <h3>教育经历</h3>
@@ -764,6 +766,8 @@
                       <% }) %>
                     </div>
                   </div> 
+                  <% } %>
+
                   <% if (locals.profile.desc) { %>
                   <div class="panel custom-box">
                     <div class="panel-heading">

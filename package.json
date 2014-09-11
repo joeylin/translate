@@ -9,6 +9,7 @@
   "dependencies": {
     "async": "*",
     "blueimp-file-upload-node": "*",
+    "body-parser": "~1.0.2",
     "connect-mongo": "latest",
     "debug": "*",
     "ejs": "*",
@@ -18,7 +19,6 @@
     "moment": "latest",
     "mongoose": "latest",
     "mongoose-random": "0.0.2",
-    "body-parser": "~1.0.2",
     "nodemailer": "latest",
     "passport": "latest",
     "passport-facebook": "latest",
@@ -29,6 +29,7 @@
     "passport-twitter": "latest",
     "qiniu": "latest",
     "thenjs": "latest",
+    "validator": "^3.17.0",
     "xss": "*"
   },
   "devDependencies": {

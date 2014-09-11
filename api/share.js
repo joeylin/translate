@@ -916,32 +916,52 @@ var visitorRecord = function(req, res) {
     });
 };
 
+var setResolve = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    var groupId = req.body.groupId;
+    Group.findOne({
+        _id: groupId
+    }).exec(function(err, group) {
+        Share.findOne({
+            _id: id
+        }).exec(function(err, share) {
+            share.isResolve = true;
+            share.save(function(err,share) {
+                res.send({
+                    code: 200
+                });
+            });
+        });
+    });
+};
+
 module.exports = function(app) {
-    app.post('/api/share/unlike', middleware.check_login, shareUnlike);
-    app.post('/api/share/like', middleware.check_login, shareLike);
-    app.post('/api/share/delete', middleware.check_login, deleteShare);
-    app.post('/api/share/add', middleware.check_login, addShare);
-    app.post('/api/share/fork', middleware.check_login, forkShare);
-    app.post('/api/share/edit', middleware.check_login, editShare);
-    app.get('/api/share/user', middleware.check_login, getShareByUser);
-    app.get('/api/share/id/:id', middleware.check_login, getShareById);
-    app.get('/api/share/randomOne', middleware.check_login, getRandomJob);
+    app.post('/api/share/unlike', middleware.apiLogin, shareUnlike);
+    app.post('/api/share/like', middleware.apiLogin, shareLike);
+    app.post('/api/share/delete', middleware.apiLogin, deleteShare);
+    app.post('/api/share/add', middleware.apiLogin, addShare);
+    app.post('/api/share/fork', middleware.apiLogin, forkShare);
+    app.post('/api/share/edit', middleware.apiLogin, editShare);
+    app.get('/api/share/user', middleware.apiLogin, getShareByUser);
+    app.get('/api/share/id/:id', middleware.apiLogin, getShareById);
+    app.get('/api/share/randomOne', middleware.apiLogin, getRandomJob);
     app.get('/api/share/comments', getShareComments);
 
     // comments
-    app.post('/api/share/comments/add', middleware.check_login, addComment);
-    app.post('/api/share/comments/delete', middleware.check_login, deleteComment);
+    app.post('/api/share/comments/add', middleware.apiLogin, addComment);
+    app.post('/api/share/comments/delete', middleware.apiLogin, deleteComment);
 
     // jobs
-    app.get('/api/job/latest', middleware.check_login, getLatestJobs);
-    app.get('/api/job/search', middleware.check_login, jobsSearch);
-    app.get('/api/job/latestFilter', middleware.check_login, latestJobsFilter);
-    app.get('/api/job/postList', middleware.check_login, getPostJobList);
-    app.post('/api/job/close', middleware.check_login, closeJob);
-    app.post('/api/job/remove', middleware.check_login, removeJob);
-    app.post('/api/job/publish', middleware.check_login, publishJob);
-    app.post('/api/job/post', middleware.check_login, postJob);
-    app.get('/api/job/intern', middleware.check_login, getIntern);
-    app.post('/api/job/giveup', middleware.check_login, giveUpJob);
-    app.get('/api/jobs/:id', middleware.check_login, getJobById);
+    app.get('/api/job/latest', middleware.apiLogin, getLatestJobs);
+    app.get('/api/job/search', middleware.apiLogin, jobsSearch);
+    app.get('/api/job/latestFilter', middleware.apiLogin, latestJobsFilter);
+    app.get('/api/job/postList', middleware.apiLogin, getPostJobList);
+    app.post('/api/job/close', middleware.apiLogin, closeJob);
+    app.post('/api/job/remove', middleware.apiLogin, removeJob);
+    app.post('/api/job/publish', middleware.apiLogin, publishJob);
+    app.post('/api/job/post', middleware.apiLogin, postJob);
+    app.get('/api/job/intern', middleware.apiLogin, getIntern);
+    app.post('/api/job/giveup', middleware.apiLogin, giveUpJob);
+    app.get('/api/jobs/:id', middleware.apiLogin, getJobById);
 };

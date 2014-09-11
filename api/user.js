@@ -16,14 +16,25 @@ var middleware = require('./middleware');
 var async = require('async');
 var moment = require('moment');
 var email = require('../lib/email');
+var utils = require('../lib/utils');
 
 var create = function(req, res) {
+    var name = utils.stripHtml(req.body.name);
+    name = name.trim();
+    var logname = name.toLowerCase();
+    var pass = utils.stripHtml(req.body.password);
+    pass = pass.trim();
+    var email = utils.stripHtml(req.body.email);
+    email = email.trim();
+    email = email.toLowerCase();
+    var sex = utils.stripHtml(req.body.sex).trim();
+    var role = utils.stripHtml(req.body.role).trim();
     var options = {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        sex: req.body.sex,
-        role: req.body.role || 'user'
+        name: logname,
+        email: email,
+        password: pass,
+        sex: sex,
+        role: role || 'user'
     };
     var code = req.body.code;
 
@@ -121,8 +132,13 @@ var create = function(req, res) {
     });       
 };
 var login = function(req, res) {
-    var email = req.body.email;
-    var password = req.body.password;
+    var email = utils.stripHtml(req.body.email);
+    email = email.trim();
+    email = email.toLowerCase();
+
+    var password = utils.stripHtml(req.body.password);
+    password = password.trim();
+    
     User.findOne({
         email: email
     }, function(err, user) {

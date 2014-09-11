@@ -1184,6 +1184,42 @@ var apply = function(req, res) {
     });
 };
 
+var openTags = function(req, res) {
+    var user = req.session.user;
+    var id = req.body.id;
+    Group.findOne({
+        id: id
+    }).exec(function(err, group) {
+        if (!group) {
+            return res.send({
+                code: 404,
+                info: 'no group'
+            });
+        }
+        var admin = group.admin;
+        var creator = group.creator;
+        var auth = false;
+        [creator].concat(admin).map(function(item, key) {
+            if (item.toString() == user._id) {
+                return auth = true;
+            }
+        });
+        if (!auth) {
+            return res.send({
+                code: 404,
+                info: 'no auth'
+            });
+        }
+        group.isOpenTags = true;
+        group.save(function(err) {
+            res.send({
+                code: 200
+            });
+        });
+    });
+};
+
+
 module.exports = function(app) {
     app.post('/api/group/create', middleware.apiLogin, create);
     app.post('/api/group/joinRequest', middleware.apiLogin, joinRequest);

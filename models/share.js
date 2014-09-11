@@ -152,6 +152,14 @@ var ShareSchema = new Schema({
         default: [Math.random(), 0]
     },
     tags: String,
+
+    // group
+    tag: String,
+    isResolve: {
+        type: Boolean,
+        default: false
+    },
+
     createAt: {
         type: Date,
         default: Date.now

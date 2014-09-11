@@ -21,6 +21,11 @@ var GroupSchema = new Schema({
     id: {
         type: Number
     },
+    tags: ['resource','plugin','bug','share'],
+    isOpenTags: {
+        type: Boolean,
+        default: false
+    },
     name: {
         type: String
     },
