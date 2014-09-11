@@ -62,6 +62,6 @@ app.locals.config = config;
 
 // process.version = config.api.version;
 
-http.createServer(app).listen(80, function() {
-    console.log("Express server listening on port " + 80);
+http.createServer(app).listen(app.get('port'), function() {
+    console.log("Express server listening on port " + app.get('port'));
 });
